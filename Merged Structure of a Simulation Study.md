@@ -20,8 +20,13 @@ The overall goal of this project is to develop and test an (adversarial) collabo
     - Complexity: (cross-loaded indicators, Reciprocal paths, Exogenous predictors)
     
     → select target model for (assumed) *general* model types
+
+            
+3. Data Generation Mechanism
+    - resampling vs. parametric model draw
+    - random number draw for data generation
     
-3. Experimental Design Simulation Procedures
+4. Experimental Design Simulation Procedures
     - Determine what factors to vary, on what levels, and whether fully, or partly factorially or one at a time (factor = scenario in Morris et al., 2019)
     - e.g.
         - sample size
@@ -29,10 +34,7 @@ The overall goal of this project is to develop and test an (adversarial) collabo
         - extent of misspecification
             
             …
-            
-4. Data Generation Mechanism
-    - resampling vs. parametric model draw
-    - random number draw for data generation
+
 5. Method Selection
     - Varies depending on research question
     - e.g.
