@@ -1,1 +1,1 @@
-# RedTeamCFA
+# AdversarialCollaboration
