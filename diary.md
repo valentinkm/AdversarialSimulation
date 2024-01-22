@@ -8,7 +8,7 @@ As you reflect on the last steps' discussion, think about the following question
 
 ### Upcoming discussion
 As you reflect on the next steps' upcoming discussion, think about the following questions:
-1. What are your group’s specific objectives for this step?
+1. What are your specific objectives for this step?
 2. How do you plan on addressing them together?
 3. What obstacles do you see on your side?
 
