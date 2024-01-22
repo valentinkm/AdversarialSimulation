@@ -3,7 +3,7 @@ As you reflect on the last steps' discussion, think about the following question
 
 1. Do you think you met your objectives for the past step? Explain how or why.
 2. During the previous step, what kind of interactions you had with your collaborator (emails, chat, phone calls, face-to-face meetings)? Elaborate on your experience with each of these. 
-3. How did you overcome the obstacles you saw before starting this week? Which ones are still not addressed? 
+3. How did you overcome the obstacles you saw before starting this step of collaboration? Which ones are still not addressed? 
 4. Do you think your collaborator had influence on the work that you did individually? How or why?
 
 ### Upcoming discussion
