@@ -1,4 +1,6 @@
 ### Previous discussion
+After each round of collaboration in the merged simulation study, as outlined by the simulation structure, collaborators will document the process by making a diary entry. To facilitate this, a set of guiding questions is provided:
+
 As you reflect on the last steps' discussion, think about the following questions:
 
 1. Do you think you met your objectives for the past step? Explain how or why.
