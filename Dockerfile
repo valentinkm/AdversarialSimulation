@@ -4,6 +4,8 @@ WORKDIR /home/rstudio
 RUN apt-get update -y && apt-get install -y rsync
 RUN tlmgr install collection-latexrecommended libertine pdfpages lualatex-math luatexbase titling pdfx luatex85 colorprofiles
 RUN apt-get update -y && apt-get install -y git rsync
+RUN curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
+RUN gdebi --non-interactive quarto-linux-amd64.deb
 RUN install2.r --error --skipinstalled \ 
   gert \ 
   here \ 
