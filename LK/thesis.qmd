@@ -15,7 +15,10 @@ fontsize: 11pt
 # 3.81 to 5.08cm or 45-90 characters or 2-3 alphabets
 # asymetric geometry is set after/in frontmatter.md
 bibliography: ../bibliography.bib
+engine: knitr
 ---
+
+The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
 Lorem ipsum dolor sit amet [@lohmann_its_2022], consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
 
