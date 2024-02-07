@@ -1,0 +1,27 @@
+---
+title: "Secret Diary"
+output: pdf
+---
+
+```{r echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+library(tidyverse)
+# List all markdown files in the 'meetings/summaries' directory
+lk <- list.files("LK/diary", pattern = "\\.qmd$", full.names = TRUE)
+vk <- list.files("VK/diary", pattern = "\\.qmd$", full.names = TRUE)
+files <- flatten_chr(map2(lk, vk, ~c(.x, .y)))
+
+# Read and print each file with headings prefixed with '#'
+for (file in files) {
+  cat(paste0("# ", basename(file), "\n\n"))
+
+  # Read the file contents
+  file_contents <- readLines(file)
+
+  # Prepend '#' to each heading line
+  modified_contents <- gsub("^#", "##", file_contents, perl = TRUE)
+
+  # Print the modified file contents
+  cat(paste0(modified_contents, collapse = "\n"))
+  cat("\n\n")
+}
+```
