@@ -2,3 +2,4 @@
 *.pdf
 *.tex
 .Rproj.user
+*.ipynb
