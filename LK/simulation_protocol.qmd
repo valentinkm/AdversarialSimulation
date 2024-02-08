@@ -4,10 +4,10 @@ subtitle: "A Principled Perspective on Computational Reproducibility and Preregi
 author: "Leonard Kosanke"
 format:
     pdf:
-        include-in-header: ../LK/preamble_prereg.tex
+        include-in-header: ../preamble.tex
         fontsize: 11pt
         linestretch: 1.2
-        geometry: "left=4cm, right=4cm, top=3cm, bottom=5cm, bindingoffset=7mm"
+        geometry: "left=25mm, right=25mm, top=30mm, bottom=30mm, bindingoffset=7mm"
         classoption: twoside
         papersize: a4
 fontsize: 11pt
