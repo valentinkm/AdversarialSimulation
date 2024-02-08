@@ -4,7 +4,7 @@ subtitle: "A Principled Perspective on Computational Reproducibility and Preregi
 author: "Leonard Kosanke"
 format:
     pdf:
-        include-in-header: ../preamble.tex
+        include-in-header: ../LK/preamble_prereg.tex
         fontsize: 11pt
         linestretch: 1.2
         geometry: "left=4cm, right=4cm, top=3cm, bottom=5cm, bindingoffset=7mm"
@@ -48,7 +48,7 @@ In order to do so in a comprehensive manner, I will closely align the structure 
 
 ## Did any of the contributors already conduct related simulation studies on this specific question?
 CITATIONS
-No, we did not conduct previous simulation studies but base our studies on the previous literature on the topic \parencite{vickers2001use, senn2006change, van2013ancova, clifton2019correlation, ludtke2023ancova, robitzsch2022comparing}.
+No, we did not conduct previous simulation studies but base our studies on the previous literature on the topic [@robitzsch_comparing_2022].
 
 # Aims
 ## What is the aim of the simulation studies?
@@ -66,8 +66,7 @@ We choose the same data-generating parameters as in the original paper.
 
 
 **Study 1**
-
-\[
+$$
 \Lambda = \begin{pmatrix}
   0.55 & 0     \\
   0.55 & 0     \\
@@ -91,9 +90,8 @@ We choose the same data-generating parameters as in the original paper.
   0             & 0            & 0       & 0       & 0      & 0.7975 \\
 \end{pmatrix}
 .    (1)
-\]
+$$
 
-\textit
 We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model has a diagonal error covariance matrix and thus is misspecified. Figure~\ref{fig:simulation1} contains the data-generating model (1).
 
 ```{r schematic 1, eval = TRUE, echo = FALSE, fig.cap="Figure 1"}
@@ -106,8 +104,7 @@ Multiple data-generating scenarios will be simulated. First, with no correlated 
 In this focused simulation study, the small-sample bias of the LSAM estimation method is investigated. We rely on the same model as Study one as portrayed in (1), with 3 differences. Firstly, all factor loadings have the same value and are manipulated as detailed in section 4.2. The factor correlation is also goint to be varied as detailed in the same section. Lastly, we assume a correctly specified model without residual correlations present. Here, the paper is contradictory as in the text it says the model has two residual correlations, but results are only reported for a model without residual correlations [@robitzsch_comparing_2022].
 
 **Study 2**
-
-\[
+$$
 \Lambda = \begin{pmatrix}
   0.55           & \delta_{X1} \\
   0.55           & 0     \\
@@ -131,9 +128,8 @@ In this focused simulation study, the small-sample bias of the LSAM estimation m
   0             & 0            & 0       & 0       & 0      & 0.7975 \\
 \end{pmatrix}
 .    (2)
-\]
+$$
 
-\textit
 We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the cross-loadings. Figure~\ref{fig:simulation2} contains the data-generating model (2).
 
 ```{r schematic 2, eval = TRUE, echo = FALSE, fig.cap="Figure 2"}
@@ -145,8 +141,7 @@ Multiple data-generating scenarios will be simulated. First, for one cross-loadi
 
 
 **Study 3**
-
-\[
+$$
 \Lambda = \begin{pmatrix}
   0.55           & \delta_{X1} \\
   0.55           & 0     \\
@@ -170,9 +165,8 @@ Multiple data-generating scenarios will be simulated. First, for one cross-loadi
   0             & 0            & 0       & 0       & 0      & 0.7975 \\
 \end{pmatrix}
 .    (3)
-\]
+$$
 
-\textit
 We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the misspecification. Figure~\ref{fig:simulation3} contains the data-generating model (3).
 
 ```{r schematic 3, eval = TRUE, echo = FALSE, fig.cap="Figure 3"}
@@ -199,10 +193,10 @@ knitr::include_graphics(here::here("LK/images/FigSim4.pdf"), auto_pdf = TRUE)
 ```
 
 
-We estimate the CFA model by allocating the items to the Factors as shown in Figure~\ref{fig:simulation4}. The model is correctly specified and has a non-saturated covariance structure for the factors. This structure contains a common regression coefficent $\beta$ as shown in Equation~\ref{1}, which was set to 0.1.
+We estimate the CFA model by allocating the items to the Factors as shown in Figure~\ref{fig:simulation4}. The model is correctly specified and has a non-saturated covariance structure for the factors. This structure contains a common regression coefficent $\beta$ as shown in Equation~\ref{4}, which was set to 0.1.
 
-\begin{equation}
-\label{1}
+$$
+\label{4}
 \begin{pmatrix}
 F_1 \\
 F_2 \\
@@ -233,7 +227,7 @@ F_5
 \xi_4 \\
 \xi_5
 \end{pmatrix}
-\end{equation}
+$$
 
 The vector comprising the residual factor variables, denoted as \(\xi_d\) (\(d = 1, \ldots, 5\)), follows an independent normal distribution. Variances have been specified to ensure that \(\text{Var}(F_d) = 1\) for all factor variables \(F_d\) (\(d = 1, \ldots, 5\)). Thus, the model-implied covariance matrix \(\text{Var}(F) = \Phi = \Phi(\beta)\) is a function of the regression parameter \(\beta\).
 
@@ -243,7 +237,7 @@ In this model, three cross-loadings are present, each of which are defined as 0.
 knitr::include_graphics(here::here("LK/images/FigSim5.pdf"), auto_pdf = TRUE)
 ```
 
-The structural model is identical to DGM1 as detailed in Equation~\ref{1}.
+The structural model is identical to DGM1 as detailed in Equation~\ref{4}.
 
 
 
@@ -286,24 +280,18 @@ The other values are subject to manipulation and will be detailed in section 4.2
 
 **Study 1**
 We will vary the factors:
-\begin{itemize}
-    \item extent of misspecification with none, one or two correlated residuals \(\psi_{X1Y1}\) and \(\psi_{X2Y2}\), which, if present, take values of either 0.12 or -0.12, but not both negative and positive values in one condition.
-    \item the sample size N = 50, 100, 250, 500, 1000, 2500, $10^5$
-\end{itemize}
+- extent of misspecification with none, one or two correlated residuals \(\psi_{X1Y1}\) and \(\psi_{X2Y2}\), which, if present, take values of either 0.12 or -0.12, but not both negative and positive values in one condition.
+- the sample size N = 50, 100, 250, 500, 1000, 2500, $10^5$
 
 **Study 1b**
 We will vary the factors:
-\begin{itemize}
-    \item factor loadings as $\lambda$ = 0.4, 0.5, 0.6, 0.7, 0.8
-    \item factor correlation $\phi$ = 0, 0.2, 0.4, 0.6, 0.8  
-\end{itemize}
+- factor loadings as $\lambda$ = 0.4, 0.5, 0.6, 0.7, 0.8
+- factor correlation $\phi$ = 0, 0.2, 0.4, 0.6, 0.8  
 
 **Study 2**
 We will vary the factors:
-\begin{itemize}
-    \item extent of misspecification with one or two cross-loadings \(\delta_{X1}\) and \(\delta_{Y1}\), which, if present, take values of either 0.3 or -0.3, but not both negative and positive values in one condition.
-    \item the sample size N = 50, 100, 250, 500, 1000, 2500, $10^5$
-\end{itemize}
+- extent of misspecification with one or two cross-loadings \(\delta_{X1}\) and \(\delta_{Y1}\), which, if present, take values of either 0.3 or -0.3, but not both negative and positive values in one condition.
+- the sample size N = 50, 100, 250, 500, 1000, 2500, $10^5$
 
 **Study 3**
 We will vary the factor sample size with N = 50, 100, 250, 500, 1000, 2500, $10^5$
@@ -313,17 +301,14 @@ We will vary the factor sample size with N = 50, 100, 250, 500, 1000, 2500, $10^
 
 **Study 5**
 We will vary the factors:
-\begin{itemize}
-    \item extent of misspecification with one, two or 3 cross-loadings. Thus, \(\delta_{2}\) and \(\delta_{3}\), will be set to 0 or 0.4 depending on condition, with \(\delta_{1}\) always being set to 0.4.
-    \item factor correlations that can vary with levels 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6.
+- extent of misspecification with one, two or 3 cross-loadings. Thus, \(\delta_{2}\) and \(\delta_{3}\), will be set to 0 or 0.4 depending on condition, with \(\delta_{1}\) always being set to 0.4.
+- factor correlations that can vary with levels 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6.
 \end{itemize}
 
 **Study 6**
 We will vary the factors:
-\begin{itemize}
-    \item size of correlated residuals where \(\psi\) will be set to 0.2 or 0.4.
-    \item factor correlations that can vary with levels 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6.
-\end{itemize}
+- size of correlated residuals where \(\psi\) will be set to 0.2 or 0.4.
+- factor correlations that can vary with levels 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6.
 
 ## Justification for factor values and Additional simulation settings.
 
@@ -441,10 +426,5 @@ For all studies, we will upload the reproducible simulation script and a data se
 **Across studies**
 I omitted the subsections referring to Monte Carlo Uncertainty, as they are not of interest for our research.
 
+# Bibliography
 
-
-# \newpage
-# \section*{References}
-# \printbibliography[heading=none]
-
-# \end{document}
