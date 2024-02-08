@@ -98,7 +98,7 @@ We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Fa
 
 ```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim1.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim1.pdf"), auto_pdf = TRUE)
 ```
 
 Multiple data-generating scenarios will be simulated. First, with no correlated residuals (\(\psi_{X1Y1} = \psi_{X2Y2} = 0\)). Secondly, the only non-zero residual correlation will be \(\psi_{X1Y1}\), which will be assigned a value of either 0.12 or -0.12. Lastly, both \(\psi_{X1Y1}\) and \(\psi_{X2Y2}\) are assigned values of either 0.12 or -0.12.
@@ -137,9 +137,9 @@ In this focused simulation study, the small-sample bias of the LSAM estimation m
 \textit
 We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the cross-loadings. Figure~\ref{fig:simulation2} contains the data-generating model (2).
 
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 2"}
+```{r schematic 2, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 2"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim2.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim2.pdf"), auto_pdf = TRUE)
 ```
 
 Multiple data-generating scenarios will be simulated. First, for one cross-loading, \(\delta_{X1}\) will be either set to 0.3 or -0.3 and \(\delta_{Y1}\) to 0. For the condition with 2 cross-loadings, both will be set to either 0.3 or -0.3. Again, the condition of having both positive or and negative cross-loadings present, is omitted, similar to Study 1.
@@ -177,9 +177,9 @@ Multiple data-generating scenarios will be simulated. First, for one cross-loadi
 \textit
 We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the misspecification. Figure~\ref{fig:simulation3} contains the data-generating model (3).
 
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 3"}
+```{r schematic 3, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 3"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim3.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim3.pdf"), auto_pdf = TRUE)
 ```
 
 One data-generating scenarios will be simulated, where the cross-loading \(\delta_{X1}\) is set to 0.3 and the residual correlation \(\phi_{X2Y2}\) to 0.12.
@@ -197,9 +197,9 @@ We choose the same data-generating parameters and mechanisms as in the original 
 In this model, no misspecifications are present. 
 Item loadings were selected to achieve a reliability coefficient of 0.70, as measured by McDonald's Omega. The primary factor loading of each item was established to be greater than the secondary and tertiary loadings. Consequently, unlike in Simulation Studies 1 through 3, the data generation process did not assume equal factor loadings. For the replication, we chose to use the exact model parameters and resulting population-level covariance matrices as the original study by @robitzsch_comparing_2022, which can be found at <https://github.com/alexanderrobitzsch/su pplement_sam/tree/main/Study4>.
 
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 4"}
+```{r schematic 4, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 4"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim4.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim4.pdf"), auto_pdf = TRUE)
 ```
 
 
@@ -245,9 +245,9 @@ The vector comprising the residual factor variables, denoted as \(\xi_d\) (\(d =
 
 **DGM2**
 In this model, three cross-loadings are present, each of which are defined as 0.9 $\cdot$ $\lambda_0$, with $\lambda_0$ as the primary loading value. Besides, everything is the same as detailed in DGM1. DGM2 is displayed in Figure~\ref{fig:simulation4DGM2}
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 5"}
+```{r schematic 5, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 5"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim5.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim5.pdf"), auto_pdf = TRUE)
 ```
 
 The structural model is identical to DGM1 as detailed in Equation~\ref{1}.
@@ -257,9 +257,9 @@ The structural model is identical to DGM1 as detailed in Equation~\ref{1}.
 **DGM3**
 In the third DGM, 20 residual correlations are present, whose values are detailed in the github repository of the original paper provided in DGM1. Besides, everything is the same as detailed in DGM1. DGM3 is displayed in Figure~\ref{fig:simulation4DGM3}
 
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 6"}
+```{r schematic 6, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 6"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim6.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim6.pdf"), auto_pdf = TRUE)
 ```
 
 
@@ -269,9 +269,9 @@ In study 5, we specify a three factor Confirmatory Factor Analysis (CFA) model w
 We generate data parametrically, with all observed variables being multivariate normally distributed.
 We will choose the same data-generating parameters as in the original paper: All factor loadings with regards to the same factor will be identical and set to $\lambda_1$ = 0.6, $\lambda_2$ = 0.65, \text{and} $\lambda_3$ = 0.55. The cross-loading $\delta_1$ will be fixed to 0.4. The analysis will be conducted on the population level, using the true covariance matrix as input. Figure~\ref{fig:simulation5} contains the data-generating model for Study 5.
 
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 7"}
+```{r schematic 7, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 7"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim7.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim7.pdf"), auto_pdf = TRUE)
 ```
 
 The other values are subject to manipulation and will be detailed in section 4.2.
@@ -284,9 +284,9 @@ In study 6, we specify a three factor Confirmatory Factor Analysis (CFA) model w
 We generate data parametrically, with all observed variables being multivariate normally distributed.
 We will choose the same data-generating parameters as in the original paper: The factor loading specification is identical to Study 5. The residual correlations $\psi$ will be fixed to either 0.2 or 0.4 and has the same value for all correlations. The analysis will be conducted on the population level, using the true covariance matrix as input. Figure~\ref{fig:simulation6} contains the data-generating model for Study 6.
 
-```{r schematic, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 8"}
+```{r schematic 8, eval = TRUE, echo = FALSE, fig.cap="Schematic illustration of Figure 8"}
 # file gets downloaded in Makefile
-knitr::include_graphics(here::here("LK/images/FigSim8.pdf"), auto_pdf = TRUE)
+#knitr::include_graphics(here::here("LK/images/FigSim8.pdf"), auto_pdf = TRUE)
 ```
 
 The other values are subject to manipulation and will be detailed in section 4.2.
@@ -453,8 +453,8 @@ I omitted the subsections referring to Monte Carlo Uncertainty, as they are not 
 
 
 
-\newpage
-\section*{References}
-\printbibliography[heading=none]
+# \newpage
+# \section*{References}
+# \printbibliography[heading=none]
 
-\end{document}
+# \end{document}
