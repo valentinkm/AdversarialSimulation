@@ -4,7 +4,6 @@ subtitle: "A Principled Perspective on Computational Reproducibility and Preregi
 author: "Leonard Kosanke"
 format:
     pdf:
-        include-in-header: ../preamble.tex
         fontsize: 11pt
         linestretch: 1.2
         geometry: "left=25mm, right=25mm, top=30mm, bottom=30mm, bindingoffset=7mm"
@@ -19,12 +18,6 @@ engine: knitr
 ---
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
-
-Lorem ipsum dolor sit amet [@lohmann_its_2022], consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
-
-
-
-# Start here!!!
 
 # Credit 
 This simulation protocol is based on the ADEMP-PreReg Template for Simulation Studies [@siepe_simulation_2023].
@@ -63,8 +56,6 @@ In the first set of simulation studies, we specify a two factor Confirmatory Fac
 We generate data parametrically, with all observed variables being multivariate normally distributed. The samples of size N is drawn independently of samples units.
 We choose the same data-generating parameters as in the original paper.
 
-
-
 **Study 1**
 $$
 \Lambda = \begin{pmatrix}
@@ -89,15 +80,15 @@ $$
   0             & \psi_{X2Y2}  & 0       & 0       & 0.7975          \\
   0             & 0            & 0       & 0       & 0      & 0.7975 \\
 \end{pmatrix}
-.    (1)
-$$
+$$ {#eq-1}
 
-We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model has a diagonal error covariance matrix and thus is misspecified. Figure~\ref{fig:simulation1} contains the data-generating model (1).
+We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model has a diagonal error covariance matrix and thus is misspecified. @fig-1 contains the data-generating model (1).
 
-```{r schematic 1, eval = TRUE, echo = FALSE, fig.cap="Figure 1"}
+```{r schematic 1, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 1: Data-generating model. Residual correlations are shown with curved dashed red double arrows."}
+#| label: fig-1
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim1.pdf"), auto_pdf = TRUE)
 ```
-
 Multiple data-generating scenarios will be simulated. First, with no correlated residuals (\(\psi_{X1Y1} = \psi_{X2Y2} = 0\)). Secondly, the only non-zero residual correlation will be \(\psi_{X1Y1}\), which will be assigned a value of either 0.12 or -0.12. Lastly, both \(\psi_{X1Y1}\) and \(\psi_{X2Y2}\) are assigned values of either 0.12 or -0.12.
 
 **Study 1b**
@@ -127,12 +118,13 @@ $$
   0             & 0            & 0       & 0       & 0.7975          \\
   0             & 0            & 0       & 0       & 0      & 0.7975 \\
 \end{pmatrix}
-.    (2)
-$$
+$$ {#eq-2}
 
-We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the cross-loadings. Figure~\ref{fig:simulation2} contains the data-generating model (2).
+We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the cross-loadings. @fig-2 contains the data-generating model.
 
-```{r schematic 2, eval = TRUE, echo = FALSE, fig.cap="Figure 2"}
+```{r schematic 2, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 2: Data-generating model. Cross-loadings are shown with dashed red arrows."}
+#| label: fig-2
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim2.pdf"), auto_pdf = TRUE)
 ```
 
@@ -164,12 +156,13 @@ $$
   0             & \psi_{X2Y2}  & 0       & 0       & 0.7975          \\
   0             & 0            & 0       & 0       & 0      & 0.7975 \\
 \end{pmatrix}
-.    (3)
-$$
+$$ {#eq-3}
 
-We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the misspecification. Figure~\ref{fig:simulation3} contains the data-generating model (3).
+We estimate the CFA model by allocating the items \( X_i \)(\(i\) = 1,2,3) to Factor \( F_Y \), and \( Y_i \)( \( i = 1, 2, 3 \)) to Factor \( F_Y \). The model is misspecified as it does not model the misspecification. @fig-3 contains the data-generating model.
 
-```{r schematic 3, eval = TRUE, echo = FALSE, fig.cap="Figure 3"}
+```{r schematic 3, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 3: Data-generating model. Cross-loading is shown with dashed red arrows, residual correlation is shown with curved dashed red double arrow."}
+#| label: fig-3
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim3.pdf"), auto_pdf = TRUE)
 ```
 
@@ -186,17 +179,18 @@ We choose the same data-generating parameters and mechanisms as in the original 
 
 **DGM1**
 In this model, no misspecifications are present. 
-Item loadings were selected to achieve a reliability coefficient of 0.70, as measured by McDonald's Omega. The primary factor loading of each item was established to be greater than the secondary and tertiary loadings. Consequently, unlike in Simulation Studies 1 through 3, the data generation process did not assume equal factor loadings. For the replication, we chose to use the exact model parameters and resulting population-level covariance matrices as the original study by @robitzsch_comparing_2022, which can be found at <https://github.com/alexanderrobitzsch/su pplement_sam/tree/main/Study4>.
+Item loadings were selected to achieve a reliability coefficient of 0.70, as measured by McDonald's Omega. The primary factor loading of each item was established to be greater than the secondary and tertiary loadings. Consequently, unlike in Simulation Studies 1 through 3, the data generation process did not assume equal factor loadings. For the replication, we chose to use the exact model parameters and resulting population-level covariance matrices as the original study by @robitzsch_comparing_2022, which can be found at <https://github.com/alexanderrobitzsch/supplement_sam/tree/main/Study4>.
 
-```{r schematic 4, eval = TRUE, echo = FALSE, fig.cap="Figure 4"}
+```{r schematic 4, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 4: Data-generating model 1 (DGM1)."}
+#| label: fig-4
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim4.pdf"), auto_pdf = TRUE)
 ```
 
 
-We estimate the CFA model by allocating the items to the Factors as shown in Figure~\ref{fig:simulation4}. The model is correctly specified and has a non-saturated covariance structure for the factors. This structure contains a common regression coefficent $\beta$ as shown in Equation~\ref{4}, which was set to 0.1.
+We estimate the CFA model by allocating the items to the Factors as shown in @fig-4. The model is correctly specified and has a non-saturated covariance structure for the factors. This structure contains a common regression coefficent $\beta$ as shown in @eq-4, which was set to 0.1.
 
 $$
-\label{4}
 \begin{pmatrix}
 F_1 \\
 F_2 \\
@@ -227,24 +221,28 @@ F_5
 \xi_4 \\
 \xi_5
 \end{pmatrix}
-$$
+$$ {#eq-4}
 
 The vector comprising the residual factor variables, denoted as \(\xi_d\) (\(d = 1, \ldots, 5\)), follows an independent normal distribution. Variances have been specified to ensure that \(\text{Var}(F_d) = 1\) for all factor variables \(F_d\) (\(d = 1, \ldots, 5\)). Thus, the model-implied covariance matrix \(\text{Var}(F) = \Phi = \Phi(\beta)\) is a function of the regression parameter \(\beta\).
 
 **DGM2**
-In this model, three cross-loadings are present, each of which are defined as 0.9 $\cdot$ $\lambda_0$, with $\lambda_0$ as the primary loading value. Besides, everything is the same as detailed in DGM1. DGM2 is displayed in Figure~\ref{fig:simulation4DGM2}
-```{r schematic 5, eval = TRUE, echo = FALSE, fig.cap="Figure 5"}
+In this model, three cross-loadings are present, each of which are defined as 0.9 $\cdot$ $\lambda_0$, with $\lambda_0$ as the primary loading value. Besides, everything is the same as detailed in DGM1. DGM2 is displayed in @fig-5.
+```{r schematic 5, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 4: Data-generating model 2 (DGM2)."}
+#| label: fig-5
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim5.pdf"), auto_pdf = TRUE)
 ```
 
-The structural model is identical to DGM1 as detailed in Equation~\ref{4}.
+The structural model is identical to DGM1 as detailed in @eq-4.
 
 
 
 **DGM3**
-In the third DGM, 20 residual correlations are present, whose values are detailed in the github repository of the original paper provided in DGM1. Besides, everything is the same as detailed in DGM1. DGM3 is displayed in Figure~\ref{fig:simulation4DGM3}
+In the third DGM, 20 residual correlations are present, whose values are detailed in the github repository of the original paper provided in DGM1. Besides, everything is the same as detailed in DGM1. DGM3 is displayed in @fig-6.
 
-```{r schematic 6, eval = TRUE, echo = FALSE, fig.cap="Figure 6"}
+```{r schematic 6, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 4: Data-generating model 3 (DGM3)."}
+#| label: fig-6
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim6.pdf"), auto_pdf = TRUE)
 ```
 
@@ -253,9 +251,11 @@ knitr::include_graphics(here::here("LK/images/FigSim6.pdf"), auto_pdf = TRUE)
 **Study 5**
 In study 5, we specify a three factor Confirmatory Factor Analysis (CFA) model with cross-loadings, with each factor being measured by three items. The parameters of interest are again the correlations between the factors.
 We generate data parametrically, with all observed variables being multivariate normally distributed.
-We will choose the same data-generating parameters as in the original paper: All factor loadings with regards to the same factor will be identical and set to $\lambda_1$ = 0.6, $\lambda_2$ = 0.65, \text{and} $\lambda_3$ = 0.55. The cross-loading $\delta_1$ will be fixed to 0.4. The analysis will be conducted on the population level, using the true covariance matrix as input. Figure~\ref{fig:simulation5} contains the data-generating model for Study 5.
+We will choose the same data-generating parameters as in the original paper: All factor loadings with regards to the same factor will be identical and set to $\lambda_1$ = 0.6, $\lambda_2$ = 0.65, \text{and} $\lambda_3$ = 0.55. The cross-loading $\delta_1$ will be fixed to 0.4. The analysis will be conducted on the population level, using the true covariance matrix as input. @fig-7 contains the data-generating model for Study 5.
 
-```{r schematic 7, eval = TRUE, echo = FALSE, fig.cap="Figure 7"}
+```{r schematic 7, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 5: Data-generating model with three factors. Factor correlations and cross-loadings are shown."}
+#| label: fig-7
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim7.pdf"), auto_pdf = TRUE)
 ```
 
@@ -267,9 +267,11 @@ The other values are subject to manipulation and will be detailed in section 4.2
 **Study 6**
 In study 6, we specify a three factor Confirmatory Factor Analysis (CFA) model with residual correlations, with each factor being measured by three items. The parameters of interest are again the correlations between the factors.
 We generate data parametrically, with all observed variables being multivariate normally distributed.
-We will choose the same data-generating parameters as in the original paper: The factor loading specification is identical to Study 5. The residual correlations $\psi$ will be fixed to either 0.2 or 0.4 and has the same value for all correlations. The analysis will be conducted on the population level, using the true covariance matrix as input. Figure~\ref{fig:simulation6} contains the data-generating model for Study 6.
+We will choose the same data-generating parameters as in the original paper: The factor loading specification is identical to Study 5. The residual correlations $\psi$ will be fixed to either 0.2 or 0.4 and has the same value for all correlations. The analysis will be conducted on the population level, using the true covariance matrix as input.  @fig-8 contains the data-generating model for Study 6.
 
-```{r schematic 8, eval = TRUE, echo = FALSE, fig.cap="Figure 8"}
+```{r schematic 8, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 6: Data-generating model with three factors. Factor correlations and residual correlations are shown."}
+#| label: fig-8
+#| warning: false
 knitr::include_graphics(here::here("LK/images/FigSim8.pdf"), auto_pdf = TRUE)
 ```
 
