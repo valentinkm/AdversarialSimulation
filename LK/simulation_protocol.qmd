@@ -10,9 +10,6 @@ format:
         classoption: twoside
         papersize: a4
 fontsize: 11pt
-# https://practicaltypography.com/page-margins.html
-# 3.81 to 5.08cm or 45-90 characters or 2-3 alphabets
-# asymetric geometry is set after/in frontmatter.md
 bibliography: ../bibliography.bib
 engine: knitr
 ---
