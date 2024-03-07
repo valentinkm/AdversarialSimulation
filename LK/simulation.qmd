@@ -1,8 +1,65 @@
-# First script
+# First script for Simulation Study 1
 
 Used for writing or coding?
 
 relevant components:
+
+# Packages
+
+Copied and pasted from original paper.
+
+```{r}
+library(GPArotation)
+library(CDM)
+library(miceadds)
+library(TAM)
+library(sirt)
+library(lavaan)
+```
+
+# Set up file structure
 ```{r}
 1+1
+
+
 ```
+
+# Source relevant R Functions
+
+# Specify population model
+```{r}
+
+```
+
+# Set estimators
+```{r}
+
+```
+
+
+# DGM (simulate_data function)
+```{r}
+
+```
+
+# Experimental design/ simulation procedure (planned_analysis)
+```{r}
+
+```
+
+# Run Simulation (simulation_study)
+```{r}
+
+
+```
+
+# Report? (report_analysis)
+```{r}
+
+```
+
+
+
+
+
+
