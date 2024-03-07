@@ -1,0 +1,8 @@
+# First script
+
+Used for writing or coding?
+
+relevant components:
+```{r}
+1+1
+```
