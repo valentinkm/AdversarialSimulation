@@ -469,5 +469,6 @@ For all studies, we will upload the reproducible simulation script and a data se
 
 We omitted the subsections referring to Monte Carlo Uncertainty, as they are not of interest for our research.
 
+\newpage
 # Bibliography
 
