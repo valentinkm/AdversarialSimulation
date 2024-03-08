@@ -80,7 +80,12 @@ mod0a <- mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="
                         local.options = list(M.method = "ULS" ) )
 
 #GSAM
-mod1a <- lavaan::sam(lavmodel, sample.cov=S, sample.nobs=1e5, sam.method="global", std.lv= TRUE)
+mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="global", std.lv= TRUE)
+
+
+######TRYY
+mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="global", std.lv= TRUE,
+                     global.options = list(M.method = "ML" ))
 
 
 
