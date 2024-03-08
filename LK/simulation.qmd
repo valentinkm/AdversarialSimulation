@@ -39,17 +39,89 @@ library(lavaan)
 
 # DGM (simulate_data function)
 ```{r}
+design <- tidyr::expand_grid(
+  N = c(100,250, 500, 1000, 2500, 100000), 
+ rc = c(1,2))
+
+
 
 ```
 
-# Experimental design/ simulation procedure (planned_analysis)
+# Simulation procedure (planned_analysis)
 ```{r}
+simulate_data <- function() {
+  # Define constants and matrices as outlined previously
+  lam1 <- 0.55
+  lam2 <- 0.45
+  phi <- 0.60
+  
+  # Sample sizes
+  N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
+  
+  # Misspecification conditions: (0, 1, 2) correlated residuals, and psi values
+  rc_conditions <- c(0, 1, 2)
+  psi_values <- c(0.12, -0.12)
+  
+  results <- list()
+  
+  # Simulation loop
+  simulation_id <- 1
+  for (N in N_sizes) {
+    for (rc in rc_conditions) {
+      # When rc is 0, skip iterating over psi_values
+      if (rc == 0) {
+        psi_values_rc0 <- 0  # Use a placeholder psi_value since it's irrelevant
+      } else {
+        psi_values_rc0 <- psi_values
+      }
+      
+      for (psi_value in psi_values_rc0) {
+        # Setup matrices for this simulation
+        LAM <- matrix(0, nrow=6, ncol=2)
+        LAM[1:3, 1] <- lam1
+        LAM[4:6, 2] <- lam2
+        
+        PHI <- matrix(0, nrow=2, ncol=2)
+        diag(PHI) <- 1
+        PHI[1, 2] <- PHI[2, 1] <- phi
+        
+        THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
+        
+        # Adjust THETA for misspecification
+        if (rc >= 1) {
+          THETA[1, 4] <- THETA[4, 1] <- psi_value
+        }
+        if (rc == 2) {
+          THETA[2, 5] <- THETA[5, 2] <- psi_value
+        }
+        
+        S <- LAM %*% PHI %*% t(LAM) + THETA
+        
+        # Generate data
+        dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
+        
+        # Save the result
+        results[[paste0("Simulation_", simulation_id)]] <- list(
+          SampleSize = N,
+          RC = rc,
+          PsiValue = psi_value,
+          Data = dat
+        )
+        simulation_id <- simulation_id + 1
+      }
+    }
+  }
+  
+  return(results)
+}
+
 
 ```
 
 # Run Simulation (simulation_study)
 ```{r}
 
+simulated_datasets <- simulate_data()
 
 ```
 
