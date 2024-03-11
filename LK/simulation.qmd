@@ -146,13 +146,15 @@ simulate_data <- function() {
 
         # Generate data
         dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
+        df_dat <- as.data.frame(dat)
+        names(df_dat) <- c("X1", "X2", "X3", "Y1", "Y2", "Y3")
         
         # Save the result
         results[[paste0("Simulation_", simulation_id)]] <- list(
           SampleSize = N,
           RC = rc,
           PsiValue = psi_value,
-          Data = dat
+          Data = df_dat
         )
         simulation_id <- simulation_id + 1
       }
@@ -172,8 +174,20 @@ simulated_datasets <- simulate_data()
 
 ```
 
+## Fitting a first model onto the first dataset generated
+```{r}
+fit <- sem(model, data=simulated_datasets[[1]]$Data, std.lv= TRUE)
+summary(fit)
+```
+
+
 # planned_analysis
-Open question: How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
+Open questions: 
+
+- How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
+
+- What data argument to use? 'data=simulated_datasets[[1]]$Data' vs. 'sample.cov=S, sample.nobs=1e5' ?
+
 ```{r}
 #Performance measures need to be extracted for each condition
 
