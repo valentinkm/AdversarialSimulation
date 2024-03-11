@@ -62,30 +62,32 @@ model <- "
 ```
 
 # Set estimators
-Dont know how to do gsam for ML and ULS seperately
+
 ```{r}
 
 # SEM ML
-mod1a <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv= TRUE)
+mod00 <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv= TRUE)
 
 # SEM ULS
-mod1a <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ULS", std.lv= TRUE)
+mod01 <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ULS", std.lv= TRUE)
 
 # LSAM ML
-mod0a <- mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="local", std.lv= TRUE,
-                        local.options = list(M.method = "ML" ) )
+mod0a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="local", estimator = "ML", std.lv= TRUE)
 
 #LSAM ULS
-mod0a <- mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="local", std.lv= TRUE,
-                        local.options = list(M.method = "ULS" ) )
+mod0b <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="local", estimator = "ULS", std.lv= TRUE)
 
 #GSAM
-mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="global", std.lv= TRUE)
+
+mod1a <- sam(model, sample.cov=S, sample.nobs=1e5, sam.method = "global", estimator = "ML", std.lv= TRUE )
+
+mod1b <- sam(model, sample.cov=S, sample.nobs=1e5, sam.method = "global", estimator = "ULS", std.lv = TRUE )
 
 
-######TRYY
-mod1a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="global", std.lv= TRUE,
-                     global.options = list(M.method = "ML" ))
+parameterEstimates(mod0a)
+
+summary(mod1b)
+
 
 
 
@@ -163,12 +165,47 @@ simulate_data <- function() {
 
 ```
 
-# Run Simulation (simulation_study)
+# Run Simulation (simulate_data)
 ```{r}
 
 simulated_datasets <- simulate_data()
 
 ```
+
+# planned_analysis
+Open question: How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
+```{r}
+#Performance measures need to be extracted for each condition
+
+# From Robitzsch
+# Here, we extract the parameter values of interest (phi) from the model
+mod00 <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv= TRUE)
+summary(mod00)
+pars <- scan.vec("phi")
+cp <- coef(mod00)
+cp[pars]
+
+# He uses this function as basis to concatenate data frames iteratively for all estimators. These are then scored as a data frame in the final results.
+define_dfr1 <- function()
+{
+    cp <- coef(mod1a)
+    dfr1 <- data.frame( design_dd, model=model_name , par=pars, true=c(phi), delta=delta,
+                        est=cp[pars] )
+    return(dfr1)
+}
+
+```
+
+# report_analysis
+```{r}
+#Display of results so that it matches original paper
+
+
+```
+
+
+
+
 
 # Report? (report_analysis)
 ```{r}
