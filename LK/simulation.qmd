@@ -86,7 +86,7 @@ mod1b <- sam(model, sample.cov=S, sample.nobs=1e5, sam.method = "global", estima
 
 parameterEstimates(mod0a)
 
-summary(mod1b)
+summary(mod00)
 
 
 
@@ -185,11 +185,19 @@ summary(fit)
 Open questions: 
 
 - How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
+Absolute vs. relative vs. mean bias in first studies?
+
+
 
 - What data argument to use? 'data=simulated_datasets[[1]]$Data' vs. 'sample.cov=S, sample.nobs=1e5' ?
+Looks like the use of the 2nd is wrong, as it does not vary the number of observation in the original script. I need to do it in a way that it can be varied within a function.
 
 ```{r}
 #Performance measures need to be extracted for each condition
+#Below, just mathematical computation, does not work so commented out
+
+#average_absolute_bias <- mean(abs(estimates - true_values))
+#average_relative_bias <- mean((estimates - true_values) / true_values) 
 
 # From Robitzsch
 # Here, we extract the parameter values of interest (phi) from the model
@@ -197,14 +205,31 @@ mod00 <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ML", std.l
 summary(mod00)
 pars <- scan.vec("phi")
 cp <- coef(mod00)
-cp[pars]
+est_values <- cp[pars]
+true_values <- c(phi)
+
+#Compute biases, only one value here always, as no 1500 replications yet
+absolute_bias <- abs(est_values - true_values)
+relative_bias <- (est_values - true_values) / true_values 
+
+#Mean bias after all replications are done
+#df$PhiDiff = df$EstimatedPhi - df$TruePhi
+#mean_bias = mean(df$PhiDiff)
+
+# Standard Deviation (SD) of the estimated phi after all replications
+#sd_estimated_phi = sd(df$EstimatedPhi)
+
+# Compute Root Mean Square Error (RMSE) after all replications
+#rmse = sqrt(mean(df$PhiDiff^2))
+
+
 
 # He uses this function as basis to concatenate data frames iteratively for all estimators. These are then scored as a data frame in the final results.
 define_dfr1 <- function()
 {
     cp <- coef(mod1a)
-    dfr1 <- data.frame( design_dd, model=model_name , par=pars, true=c(phi), delta=delta,
-                        est=cp[pars] )
+    dfr1 <- data.frame( design_dd, model=model_name , par=pars, true=true_values, delta=delta,
+                        est=est_values,  AbsoluteBias=absolute_bias,RelativeBias=relative_bias )
     return(dfr1)
 }
 
@@ -214,15 +239,6 @@ define_dfr1 <- function()
 ```{r}
 #Display of results so that it matches original paper
 
-
-```
-
-
-
-
-
-# Report? (report_analysis)
-```{r}
 
 ```
 
