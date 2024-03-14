@@ -182,38 +182,46 @@ planned_analysis <- function(N, rc, psi_value, model) {
 
 ```
 
-
-# Simulation study
+#  Simulation Study
 ```{r}
-simulation_study <- function(design, model) {
-  # Optionally, set up parallel processing
-  # plan(multisession)
+simulation_study <- function(design, sem_model, num_repetitions = 10, true_phi) {
+  results <- list()
   
-  results <- future.apply::future_lapply(1:nrow(design), function(i) {
+  for(i in 1:nrow(design)) {
     row <- design[i, ]
-    phi_estimate <- planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model)
-    return(c(N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, PhiEstimate = phi_estimate))
-  }, future.seed = TRUE)
+    phi_estimates <- numeric(num_repetitions) # Initialize a vector to store phi estimates for repetitions
+    
+    for(rep in 1:num_repetitions) {
+      phi_estimates[rep] <- planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, sem_model)
+    }
+    
+    # Compute intermediate summaries for each condition
+    mean_phi <- mean(phi_estimates)
+    sd_phi <- sd(phi_estimates)
+    rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
+    
+    results[[length(results) + 1]] <- c(N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, MeanPhi = mean_phi, SDPhi = sd_phi, RMSEPhi = rmse_phi)
+  }
   
-  # Convert results to a dataframe
   results_df <- do.call(rbind, results) %>% as.data.frame(stringsAsFactors = FALSE)
   return(results_df)
 }
 
 ```
 
-# RUN
+## RUN
 ```{r}
+true_phi <- 0.6  # Example true value
+num_repetitions <- 10  # Specify the number of repetitions for each condition
 
-design <- setup_design()
+# Execute the simulation study
+results_df <- simulation_study(design, model, num_repetitions, true_phi)
 
-results_df <- simulation_study(design, model)
-
+# View the results
 print(results_df)
 
+
 ```
-
-
 
 
 
