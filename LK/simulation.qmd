@@ -21,13 +21,6 @@ library(future.apply)
 library(dplyr)
 ```
 
-# Set up file structure
-```{r}
-1+1
-
-
-```
-
 # Source relevant R Functions
 
 # Specify 2-factor-Model
@@ -171,20 +164,6 @@ simulate_data <- function(N, rc, psi_value) {
 
 ```
 
-#Implementing test
-```{r}
-# Generate the setup
-design <- setup_design()
-
-# Example: Apply simulate_data function for the first row of the design
-# This is where you would loop or apply across all rows in 'design'
-simulated_dataset <- simulate_data(N = design$N_sizes[1], rc = design$rc_conditions[1], psi_value = design$psi_values[1])
-
-# Complete simualtion does not work yet
-simulated_datasets <- simulate_data()
-
-```
-
 # Planned Analysis
 ```{r}
 planned_analysis <- function(N, rc, psi_value, model) {
@@ -225,6 +204,9 @@ simulation_study <- function(design, model) {
 
 # RUN
 ```{r}
+
+design <- setup_design()
+
 results_df <- simulation_study(design, model)
 
 print(results_df)
