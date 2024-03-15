@@ -18,6 +18,7 @@ library(lavaan)
 
 #new packages
 library(dplyr)
+library(tidyr)
 ```
 
 # Source relevant R Functions
@@ -237,17 +238,22 @@ print(results_df)
 report_analysis <- function(results_df, models) {
   # Define the list to store the tables
   tables_list <- list()
-  
+
   # Define the different RC conditions and the corresponding labels
   unique_rc <- unique(results_df$RC)
   unique_psi <- unique(results_df$PsiValue)
-  
+
   # Define metric names to iterate over
   metrics <- c("Bias", "SD", "RMSE")
 
   # Loop through each RC condition and PsiValue to create separate tables for each metric
   for (rc in unique_rc) {
     for (psi in unique_psi) {
+      # Skip creation for non-existing conditions (RC == 0 and PsiValue is negative)
+      if (rc == 0 && psi < 0) {
+        next
+      }
+      
       # Filter for the current RC and PsiValue
       subset_df <- results_df %>%
         filter(RC == rc, PsiValue == psi) %>%
@@ -280,8 +286,6 @@ report_analysis <- function(results_df, models) {
   return(tables_list)
 }
 
-
-
 list_of_tables <- report_analysis(results_df, models)
 
 # Access a specific table
@@ -290,8 +294,6 @@ bias_no_res_table <- list_of_tables[["Bias_0_pos_res"]] # Example for Bias with 
 #display all tables
 report_analysis(results_df, models)
 ```
-
-
 
 
 # Questions
