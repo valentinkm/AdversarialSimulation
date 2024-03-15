@@ -57,38 +57,6 @@ model <- "
     "
 ```
 
-# Set estimators
-
-```{r}
-
-# SEM ML
-mod00 <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv= TRUE)
-
-# SEM ULS
-mod01 <- lavaan::sem(model, sample.cov=S, sample.nobs=1e5, estimator="ULS", std.lv= TRUE)
-
-# LSAM ML
-mod0a <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="local", estimator = "ML", std.lv= TRUE)
-
-#LSAM ULS
-mod0b <- lavaan::sam(model, sample.cov=S, sample.nobs=1e5, sam.method="local", estimator = "ULS", std.lv= TRUE)
-
-#GSAM
-
-mod1a <- sam(model, sample.cov=S, sample.nobs=1e5, sam.method = "global", estimator = "ML", std.lv= TRUE )
-
-mod1b <- sam(model, sample.cov=S, sample.nobs=1e5, sam.method = "global", estimator = "ULS", std.lv = TRUE )
-
-
-parameterEstimates(mod0a)
-
-summary(mod00)
-
-
-
-
-```
-
 # Setup and Design
 
 ```{r}
@@ -165,59 +133,77 @@ simulate_data <- function(N, rc, psi_value) {
 
 # Planned Analysis
 ```{r}
-planned_analysis <- function(N, rc, psi_value, model) {
-  # Simulate data for the given condition
+#Specify estimation methods of interest
+models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")
+
+# Planned analysis
+
+planned_analysis <- function(N, rc, psi_value, model, model_type) {
   dataset <- simulate_data(N, rc, psi_value)$Data
   
-  # Fit the model using the lavaan package
-  fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
+  if (model_type == "SEM_ML") {
+    fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
+  } else if (model_type == "SEM_ULS") {
+    fit <- lavaan::sem(model, data=dataset, estimator="ULS", std.lv= TRUE)
+  } else if (model_type == "LSAM_ML") {
+    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
+  } else if (model_type == "LSAM_ULS") {
+    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ULS", std.lv= TRUE)
+  } else if (model_type == "GSAM_ML") {
+    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
+  } else if (model_type == "GSAM_ULS") {
+    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ULS", std.lv= TRUE)
+  } else {
+    stop("Unknown model type specified")
+  }
   
-  # Extract the estimated phi parameter
-  estimates <- lavaan::parameterEstimates(fit)
+  estimates <- parameterEstimates(fit)
   phi_estimate <- subset(estimates, label == "phi")$est
-  
   return(phi_estimate)
 }
+
 
 ```
 
 #  Simulation Study
 ```{r}
-simulation_study <- function(design, sem_model, num_repetitions = 10, true_phi) {
+simulation_study <- function(design, model, num_repetitions = num_repetitions, true_phi, models) {
   results <- list()
   
-  for(i in 1:nrow(design)) {
-    row <- design[i, ]
-    phi_estimates <- numeric(num_repetitions) # Vector to store phi estimates for repetitions
-    
-    for(rep in 1:num_repetitions) {
-      phi_estimates[rep] <- planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, sem_model)
+  for(model_type in models) {
+    for(i in 1:nrow(design)) {
+      row <- design[i, ]
+      phi_estimates <- numeric(num_repetitions)
+      
+      for(rep in 1:num_repetitions) {
+        phi_estimates[rep] <- planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model, model_type)
+      }
+      
+      average_absolute_bias <- mean(abs(phi_estimates - true_phi))
+      sd_phi <- sd(phi_estimates)
+      rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
+      
+      results[[length(results) + 1]] <- c(ModelType = model_type, N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, AvgAbsBias = average_absolute_bias, SDPhi = sd_phi, RMSEPhi = rmse_phi)
     }
-    
-    # Compute intermediate summaries for each condition, including the average absolute bias
-    average_absolute_bias <- mean(abs(phi_estimates - true_phi))
-    sd_phi <- sd(phi_estimates)
-    rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
-    
-    results[[length(results) + 1]] <- c(N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, AvgAbsBias = average_absolute_bias, SDPhi = sd_phi, RMSEPhi = rmse_phi)
   }
   
-  # Convert the list of results to a dataframe
   results_df <- do.call(rbind, results) %>% as.data.frame(stringsAsFactors = FALSE)
-  colnames(results_df) <- c("N", "RC", "PsiValue", "AverageAbsoluteBias", "SDPhi", "RMSEPhi")
   return(results_df)
 }
+
 
 
 ```
 
 ## RUN
 ```{r}
-true_phi <- 0.6  # Example true value
-num_repetitions <- 10  # Specify the number of repetitions for each condition
+design <- setup_design()
+true_phi <- 0.6  # True value of phi
+models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")  # Models to test
+num_repetitions <- 2
 
 # Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, true_phi)
+results_df <- simulation_study(design, model, num_repetitions, true_phi, models)
 
 # View the results
 print(results_df)
@@ -225,6 +211,10 @@ print(results_df)
 
 ```
 
+# Report analysis
+```{r}
+
+```
 
 
 
