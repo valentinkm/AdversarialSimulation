@@ -167,29 +167,50 @@ planned_analysis <- function(N, rc, psi_value, model, model_type) {
 
 #  Simulation Study
 ```{r}
-simulation_study <- function(design, model, num_repetitions = num_repetitions, true_phi, models) {
-  results <- list()
+simulation_study <- function(design, model, num_repetitions , true_phi, models) {
+  # Initialize an empty dataframe to store the results
+  results_df <- data.frame(
+    ModelType = character(),
+    N = integer(),
+    RC = integer(),
+    PsiValue = numeric(),
+    AvgAbsBias = numeric(),
+    SDPhi = numeric(),
+    RMSEPhi = numeric(),
+    stringsAsFactors = FALSE
+  )
   
   for(model_type in models) {
     for(i in 1:nrow(design)) {
       row <- design[i, ]
-      phi_estimates <- numeric(num_repetitions)
+      phi_estimates <- replicate(num_repetitions, {
+        planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model, model_type)
+      })
       
-      for(rep in 1:num_repetitions) {
-        phi_estimates[rep] <- planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model, model_type)
-      }
-      
-      average_absolute_bias <- mean(abs(phi_estimates - true_phi))
+      # Compute the metrics directly
+      avg_abs_bias <- mean(abs(phi_estimates - true_phi))
       sd_phi <- sd(phi_estimates)
       rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
       
-      results[[length(results) + 1]] <- c(ModelType = model_type, N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, AvgAbsBias = average_absolute_bias, SDPhi = sd_phi, RMSEPhi = rmse_phi)
+      # Combine the results into a single row
+      results_row <- data.frame(
+        ModelType = model_type,
+        N = row$N_sizes,
+        RC = row$rc_conditions,
+        PsiValue = row$psi_values,
+        AvgAbsBias = avg_abs_bias,
+        SDPhi = sd_phi,
+        RMSEPhi = rmse_phi
+      )
+      
+      # Bind the row to the results dataframe
+      results_df <- rbind(results_df, results_row)
     }
   }
   
-  results_df <- do.call(rbind, results) %>% as.data.frame(stringsAsFactors = FALSE)
   return(results_df)
 }
+
 
 
 
