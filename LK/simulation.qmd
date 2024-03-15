@@ -188,23 +188,26 @@ simulation_study <- function(design, sem_model, num_repetitions = 10, true_phi) 
   
   for(i in 1:nrow(design)) {
     row <- design[i, ]
-    phi_estimates <- numeric(num_repetitions) # Initialize a vector to store phi estimates for repetitions
+    phi_estimates <- numeric(num_repetitions) # Vector to store phi estimates for repetitions
     
     for(rep in 1:num_repetitions) {
       phi_estimates[rep] <- planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, sem_model)
     }
     
-    # Compute intermediate summaries for each condition
-    mean_phi <- mean(phi_estimates)
+    # Compute intermediate summaries for each condition, including the average absolute bias
+    average_absolute_bias <- mean(abs(phi_estimates - true_phi))
     sd_phi <- sd(phi_estimates)
     rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
     
-    results[[length(results) + 1]] <- c(N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, MeanPhi = mean_phi, SDPhi = sd_phi, RMSEPhi = rmse_phi)
+    results[[length(results) + 1]] <- c(N = row$N_sizes, RC = row$rc_conditions, PsiValue = row$psi_values, AvgAbsBias = average_absolute_bias, SDPhi = sd_phi, RMSEPhi = rmse_phi)
   }
   
+  # Convert the list of results to a dataframe
   results_df <- do.call(rbind, results) %>% as.data.frame(stringsAsFactors = FALSE)
+  colnames(results_df) <- c("N", "RC", "PsiValue", "AverageAbsoluteBias", "SDPhi", "RMSEPhi")
   return(results_df)
 }
+
 
 ```
 
