@@ -310,7 +310,7 @@ report_analysis(results_df, models)
 # Questions
 Open questions: 
 
-Am I sure
+Am I sure that my results are correct? Different set of findings than simulation 1 (for 2 repetitions though).
 
 
 
