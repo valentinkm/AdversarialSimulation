@@ -1,0 +1,322 @@
+# First script for Simulation Study 1b
+
+Used for writing or coding?
+
+
+```{r}
+set.seed(1)
+```
+
+
+
+# Packages
+
+Copied and pasted from original paper.
+
+```{r}
+library(GPArotation)
+library(CDM)
+library(miceadds)
+library(TAM)
+library(sirt)
+library(lavaan)
+
+#new packages
+library(dplyr)
+library(tidyr)
+```
+
+# Source relevant R Functions
+
+# Specify 2-factor-Model
+```{r}
+model <- "
+
+#Structural part
+    FX =~ l1*X1 + l2*X2 + l3*X3
+    FY =~ l4*Y1 + l5*Y2 + l6*Y3
+    FX ~~ 1*FX    #Fixed latent variance
+    FY ~~ 1*FY    #Fixed latent variance
+    FX ~~ phi*FY
+    phi < 0.99    #Phi between -1 and 1
+    phi > -0.99
+
+#Measurement part    
+    X1 ~~ vX1*X1
+    X2 ~~ vX2*X2    
+    X3 ~~ vX3*X3
+    Y1 ~~ vY1*Y1
+    Y2 ~~ vY2*Y2    
+    Y3 ~~ vY3*Y3
+    l1 > 0.01     #only positive loadings
+    l2 > 0.01    
+    l3 > 0.01
+    l4 > 0.01
+    l5 > 0.01
+    l6 > 0.01       
+    vX1 > 0.01    #only positive variances
+    vX2 > 0.01    
+    vX3 > 0.01
+    vY1 > 0.01
+    vY2 > 0.01    
+    vY3 > 0.01   
+    "
+```
+
+# Setup and Design
+
+```{r}
+setup_design <- function() {
+  # Sample sizes
+  N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
+  
+  # Misspecification conditions: (0, 1, 2) correlated residuals, and psi values
+  rc_conditions <- c(0, 1, 2)
+  psi_values <- c(0.12, -0.12)
+  
+  # Expand grid to create a data frame of all combinations
+  design <- expand.grid(N_sizes = N_sizes, rc_conditions = rc_conditions, psi_values = psi_values)
+  
+  # Adjust for the condition where rc is 0 (correlated residuals are not considered)
+  design <- design[!(design$rc_conditions == 0 & design$psi_values != 0.12), ]
+  
+  return(design)
+}
+
+```
+
+# Data generating Mechanism
+```{r}
+get_dgm <- function(rc, psi_value) {
+  lam1 <- 0.55
+  lam2 <- 0.45
+  phi <- 0.60
+  
+  LAM <- matrix(0, nrow=6, ncol=2)
+  LAM[1:3, 1] <- lam1
+  LAM[4:6, 2] <- lam2
+  
+  PHI <- matrix(0, nrow=2, ncol=2)
+  diag(PHI) <- 1
+  PHI[1, 2] <- PHI[2, 1] <- phi
+  
+  THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
+  
+  # Adjust THETA for misspecification
+  if (rc >= 1) {
+    THETA[1, 4] <- THETA[4, 1] <- psi_value
+  }
+  if (rc == 2) {
+    THETA[2, 5] <- THETA[5, 2] <- psi_value
+  }
+  
+  return(list(LAM = LAM, PHI = PHI, THETA = THETA))
+}
+
+```
+
+# Simulate data
+```{r}
+simulate_data <- function(N, rc, psi_value) {
+  # Get DGM parameters
+  dgm_params <- get_dgm(rc, psi_value)
+  LAM <- dgm_params$LAM
+  PHI <- dgm_params$PHI
+  THETA <- dgm_params$THETA
+  
+  S <- LAM %*% PHI %*% t(LAM) + THETA
+  rownames(S) <- colnames(S) <- c(paste0("X", 1:3), paste0("Y", 1:3))
+  
+  # Generate data
+  dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
+  df_dat <- as.data.frame(dat)
+  names(df_dat) <- c("X1", "X2", "X3", "Y1", "Y2", "Y3")
+  
+  return(list(SampleSize = N, RC = rc, PsiValue = psi_value, Data = df_dat))
+}
+
+```
+
+# Planned Analysis
+```{r}
+#Specify estimation methods of interest
+models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")
+
+# Planned analysis
+
+planned_analysis <- function(N, rc, psi_value, model, model_type) {
+  dataset <- simulate_data(N, rc, psi_value)$Data
+  
+  if (model_type == "SEM_ML") {
+    fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
+  } else if (model_type == "SEM_ULS") {
+    fit <- lavaan::sem(model, data=dataset, estimator="ULS", std.lv= TRUE)
+  } else if (model_type == "LSAM_ML") {
+    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
+  } else if (model_type == "LSAM_ULS") {
+    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ULS", std.lv= TRUE)
+  } else if (model_type == "GSAM_ML") {
+    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
+  } else if (model_type == "GSAM_ULS") {
+    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ULS", std.lv= TRUE)
+  } else {
+    stop("Unknown model type specified")
+  }
+  
+  estimates <- parameterEstimates(fit)
+  phi_estimate <- subset(estimates, label == "phi")$est
+  return(phi_estimate)
+}
+
+
+```
+
+#  Simulation Study
+```{r}
+simulation_study <- function(design, model, num_repetitions , true_phi, models) {
+  # Initialize an empty dataframe to store the results
+  results_df <- data.frame(
+    ModelType = character(),
+    N = integer(),
+    RC = integer(),
+    PsiValue = numeric(),
+    AvgAbsBias = numeric(),
+    SDPhi = numeric(),
+    RMSEPhi = numeric(),
+    stringsAsFactors = FALSE
+  )
+  
+  for(model_type in models) {
+    for(i in 1:nrow(design)) {
+      row <- design[i, ]
+      phi_estimates <- replicate(num_repetitions, {
+        planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model, model_type)
+      })
+      
+      # Compute the metrics directly
+      avg_abs_bias <- mean(abs(phi_estimates - true_phi))
+      sd_phi <- sd(phi_estimates)
+      rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
+      
+      # Combine the results into a single row
+      results_row <- data.frame(
+        ModelType = model_type,
+        N = row$N_sizes,
+        RC = row$rc_conditions,
+        PsiValue = row$psi_values,
+        AvgAbsBias = avg_abs_bias,
+        SDPhi = sd_phi,
+        RMSEPhi = rmse_phi
+      )
+      
+      # Bind the row to the results dataframe
+      results_df <- rbind(results_df, results_row)
+    }
+  }
+  
+  return(results_df)
+}
+
+
+
+
+```
+
+## RUN
+```{r}
+design <- setup_design()
+true_phi <- 0.6  # True value of phi
+models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")  # Models to test
+num_repetitions <- 2
+
+# Execute the simulation study
+results_df <- simulation_study(design, model, num_repetitions, true_phi, models)
+
+# View the results
+print(results_df)
+
+
+```
+
+# Report analysis
+```{r}
+report_analysis <- function(results_df, models) {
+  # Define the list to store the tables
+  tables_list <- list()
+
+  # Define the different RC conditions and the corresponding labels
+  unique_rc <- unique(results_df$RC)
+  unique_psi <- unique(results_df$PsiValue)
+
+  # Define metric names to iterate over
+  metrics <- c("Bias", "SD", "RMSE")
+
+  # Loop through each RC condition and PsiValue to create separate tables for each metric
+  for (rc in unique_rc) {
+    for (psi in unique_psi) {
+      # Skip creation for non-existing conditions (RC == 0 and PsiValue is negative)
+      if (rc == 0 && psi < 0) {
+        next
+      }
+      
+      # Filter for the current RC and PsiValue
+      subset_df <- results_df %>%
+        filter(RC == rc, PsiValue == psi) %>%
+        mutate(ModelType = factor(ModelType, levels = models)) # Use the models object here
+
+      # Loop through each metric to pivot and create tables
+      for (metric in metrics) {
+        metric_colnames <- grep(metric, names(subset_df), value = TRUE)
+        
+        # Pivot the dataframe to a wide format for the current metric and reorder rows
+        wide_df <- subset_df %>%
+          select(ModelType, N, all_of(metric_colnames)) %>%
+          arrange(ModelType) %>% # Arrange rows by ModelType
+          pivot_longer(cols = all_of(metric_colnames), names_to = "Metric", values_to = "Value") %>%
+          mutate(Value = round(Value, 2)) %>% # Round the values
+          pivot_wider(names_from = N, values_from = Value) %>%
+          select(-Metric)
+        
+        # Generate the table name based on the condition and metric
+        psi_label <- ifelse(psi == 0, "0", ifelse(psi > 0, "pos", "neg"))
+        condition_label <- paste(rc, psi_label, "res", sep = "_")
+        table_name <- paste(metric, condition_label, sep = "_")
+        
+        # Store the table in the list with the corrected naming
+        tables_list[[table_name]] <- wide_df
+      }
+    }
+  }
+  
+  return(tables_list)
+}
+
+list_of_tables <- report_analysis(results_df, models)
+
+# Access a specific table
+bias_no_res_table <- list_of_tables[["Bias_0_pos_res"]] # Example for Bias with no residual correlations
+
+#display all tables
+report_analysis(results_df, models)
+```
+
+
+# Questions
+Open questions: 
+
+- How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
+Absolute vs. relative vs. mean bias in first studies?
+```{r}
+#Performance measures need to be extracted for each condition
+#Below, just mathematical computation, does not work so commented out
+
+#average_absolute_bias <- mean(abs(estimates - true_values))
+#average_relative_bias <- mean((estimates - true_values) / true_values) 
+```
+
+
+
+
+
+
+
