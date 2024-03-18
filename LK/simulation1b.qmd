@@ -279,6 +279,8 @@ Open questions:
 Paper contradiction handling: 2 correctly specified rc, or none?
 As of now, 2 as the paper says/ hints so multiple times, whereas only table 4 says otherwise.
 
+Again question of what bias to compute? Here pos. bias, unlike paper where negative. Due to Absolute Bias usage.
+
 
 
 
