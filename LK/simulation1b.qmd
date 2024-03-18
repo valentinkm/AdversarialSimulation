@@ -230,35 +230,39 @@ print(results_df)
 # Report analysis
 ```{r}
 report_analysis <- function(results_df) {
+  # List to store the final tables
   tables_list <- list()
+  
+  # Extract unique model types and N values
   model_types <- unique(results_df$ModelType)
   N_values <- unique(results_df$N)
-
+  
+  # Create a table for each combination of ModelType and N
   for (model in model_types) {
-    for (N in N_values) {
-      # Filter results for the current model and sample size
+    for (N_size in N_values) {
+      # Filter the dataframe for the current ModelType and N
       subset_df <- results_df %>%
-        filter(ModelType == model, N == N)
-
-      # Pivot the data to wide format to show Bias as a function of Lambda and Phi
+        filter(ModelType == model, N == N_size)%>%
+        mutate(AvgAbsBias = round(AvgAbsBias, 2))
+      
+      # Pivot the dataframe to wide format with Lambda as rows and Phi as columns
       wide_df <- subset_df %>%
-        pivot_wider(names_from = Phi, values_from = AvgAbsBias, names_prefix = "Phi_")
+        select(Lambda, Phi, AvgAbsBias) %>%
+        pivot_wider(names_from = Phi, values_from = AvgAbsBias, names_prefix = "Phi_") %>%
+        arrange(Lambda)
 
-      # Order columns if necessary (Lambda, then Phi values)
-      ordered_cols <- c("Lambda", sort(setdiff(names(wide_df), "Lambda")))
-      wide_df <- wide_df[ordered_cols]
-
-      # Generate a table name and store the table in the list
-      table_name <- paste(model, "N", N, sep = "_")
+      # Create a name for each table based on ModelType and N
+      table_name <- paste0(model, "_N_", N_size)
       tables_list[[table_name]] <- wide_df
     }
   }
-
+  
   return(tables_list)
 }
 
-
+# Run the function with your results dataframe
 list_of_tables <- report_analysis(results_df)
+
 
 
 # Access a specific table
