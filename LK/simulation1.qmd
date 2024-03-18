@@ -2,7 +2,12 @@
 
 Used for writing or coding?
 
-relevant components:
+
+```{r}
+set.seed(1)
+```
+
+
 
 # Packages
 
