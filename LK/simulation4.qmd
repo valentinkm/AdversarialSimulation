@@ -71,7 +71,7 @@ setup_design <- function() {
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
   # DGM conditions
-  DGM_types <- c("DGM1", "DGM2", "DGM3")
+  DGM_types <- c(1,2,3)
   
   # Expand grid to create a data frame of all combinations
   design <- expand.grid(N_sizes = N_sizes, DGM_types = DGM_types)
@@ -83,33 +83,28 @@ setup_design <- function() {
 
 # Get Data generating Mechanisms
 ```{r}
-
+#Set up DGM's 1-3 as list
 covmat_list <- list()
-covmat_list[[1]] <- read.table("LK/rl_simulation_true_model1__COVMAT.txt", header=TRUE)
-covmat_list[[2]] <- read.table("LK/rl_simulation_true_model2__COVMAT.txt", header=TRUE)
-covmat_list[[3]] <- read.table("LK/rl_simulation_true_model3__COVMAT.txt", header=TRUE)
-
+covmat_list[[1]] <- read.table("rl_simulation_true_model1__COVMAT.txt", header=TRUE)
+covmat_list[[2]] <- read.table("rl_simulation_true_model2__COVMAT.txt", header=TRUE)
+covmat_list[[3]] <- read.table("rl_simulation_true_model3__COVMAT.txt", header=TRUE)
 
 ```
 
 # Simulate data
 ```{r}
-simulate_data <- function(N, rc, psi_value) {
-  # Get DGM parameters
-  dgm_params <- get_dgm(rc, psi_value)
-  LAM <- dgm_params$LAM
-  PHI <- dgm_params$PHI
-  THETA <- dgm_params$THETA
+simulate_data <- function(N, DGM) {
   
-  S <- LAM %*% PHI %*% t(LAM) + THETA
-  rownames(S) <- colnames(S) <- c(paste0("X", 1:3), paste0("Y", 1:3))
+  S <- covmat_list[[DGM]]
+  
+  # Number of variables is the number of columns in the covariance matrix
+  NV <- ncol(S)
   
   # Generate data
-  dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
+  dat <- MASS::mvrnorm(n = N, mu = rep(0, NV), Sigma = S)
   df_dat <- as.data.frame(dat)
-  names(df_dat) <- c("X1", "X2", "X3", "Y1", "Y2", "Y3")
   
-  return(list(SampleSize = N, RC = rc, PsiValue = psi_value, Data = df_dat))
+  return(df_dat)
 }
 
 ```
@@ -126,16 +121,10 @@ planned_analysis <- function(N, rc, psi_value, model, model_type) {
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
-  } else if (model_type == "SEM_ULS") {
-    fit <- lavaan::sem(model, data=dataset, estimator="ULS", std.lv= TRUE)
   } else if (model_type == "LSAM_ML") {
     fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "LSAM_ULS") {
-    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ULS", std.lv= TRUE)
   } else if (model_type == "GSAM_ML") {
     fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "GSAM_ULS") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ULS", std.lv= TRUE)
   } else {
     stop("Unknown model type specified")
   }
