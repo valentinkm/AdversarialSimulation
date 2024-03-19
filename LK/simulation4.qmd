@@ -29,37 +29,53 @@ library(tidyr)
 # Source relevant R Functions
 
 # Specify 2-factor-Model
+label is missing for "phi", but not relevant anyway, as multiple factor correlations?
 ```{r}
 model <- "
 
-#Structural part
-    FX =~ l1*X1 + l2*X2 + l3*X3
-    FY =~ l4*Y1 + l5*Y2 + l6*Y3
-    FX ~~ 1*FX    #Fixed latent variance
-    FY ~~ 1*FY    #Fixed latent variance
-    FX ~~ phi*FY
-    phi < 0.99    #Phi between -1 and 1
-    phi > -0.99
-
-#Measurement part    
-    X1 ~~ vX1*X1
-    X2 ~~ vX2*X2    
-    X3 ~~ vX3*X3
-    Y1 ~~ vY1*Y1
-    Y2 ~~ vY2*Y2    
-    Y3 ~~ vY3*Y3
-    l1 > 0.01     #only positive loadings
-    l2 > 0.01    
-    l3 > 0.01
-    l4 > 0.01
-    l5 > 0.01
-    l6 > 0.01       
-    vX1 > 0.01    #only positive variances
-    vX2 > 0.01    
-    vX3 > 0.01
-    vY1 > 0.01
-    vY2 > 0.01    
-    vY3 > 0.01   
+f1 =~ 1*y1
+f1 =~ 0.7*y2
+f1 =~ 0.7*y3
+f2 =~ 1*y4
+f2 =~ 0.7*y5
+f2 =~ 0.7*y6
+f3 =~ 1*y7
+f3 =~ 0.7*y8
+f3 =~ 0.7*y9
+f4 =~ 1*y10
+f4 =~ 0.7*y11
+f4 =~ 0.7*y12
+f5 =~ 1*y13
+f5 =~ 0.7*y14
+f5 =~ 0.7*y15
+y1 ~~ 1.283*y1
+y2 ~~ 0.629*y2
+y3 ~~ 0.629*y3
+y4 ~~ 1.283*y4
+y5 ~~ 0.629*y5
+y6 ~~ 0.629*y6
+y7 ~~ 1.314*y7
+y8 ~~ 0.644*y8
+y9 ~~ 0.644*y9
+y10 ~~ 1.296*y10
+y11 ~~ 0.635*y11
+y12 ~~ 0.635*y12
+y13 ~~ 1.318*y13
+y14 ~~ 0.646*y14
+y15 ~~ 0.646*y15
+f1 ~~ 1*f1
+f2 ~~ 1*f2
+f3 ~~ 0.99*f3
+f4 ~~ 0.99*f4
+f5 ~~ 0.99*f5
+f3 ~ 0.1*f1
+f4 ~ 0.1*f1
+f5 ~ 0.1*f1
+f3 ~ 0.1*f2
+f4 ~ 0.1*f2
+f5 ~ 0.1*f3
+f3 ~ 0.1*f4
+f5 ~ 0.1*f4
     "
 ```
 
@@ -110,14 +126,16 @@ simulate_data <- function(N, DGM) {
 ```
 
 # Planned Analysis
+Here, I need to include the model variation for the 3 DGM
+
 ```{r}
 #Specify estimation methods of interest
 models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 
 # Planned analysis
 
-planned_analysis <- function(N, rc, psi_value, model, model_type) {
-  dataset <- simulate_data(N, rc, psi_value)$Data
+planned_analysis <- function(N, DGM, model, model_type) {
+  dataset <- simulate_data(N, DGM)$Data
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
@@ -144,10 +162,8 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
   results_df <- data.frame(
     ModelType = character(),
     N = integer(),
-    RC = integer(),
-    PsiValue = numeric(),
+    DGM = integer(),
     AvgAbsBias = numeric(),
-    SDPhi = numeric(),
     RMSEPhi = numeric(),
     stringsAsFactors = FALSE
   )
@@ -156,22 +172,19 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
     for(i in 1:nrow(design)) {
       row <- design[i, ]
       phi_estimates <- replicate(num_repetitions, {
-        planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model, model_type)
+        planned_analysis(row$N_sizes, row$DGM_types, model, model_type)
       })
       
       # Compute the metrics directly
       avg_abs_bias <- mean(abs(phi_estimates - true_phi))
-      sd_phi <- sd(phi_estimates)
       rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
       
       # Combine the results into a single row
       results_row <- data.frame(
         ModelType = model_type,
         N = row$N_sizes,
-        RC = row$rc_conditions,
-        PsiValue = row$psi_values,
+        DGM = row$DGM_types,
         AvgAbsBias = avg_abs_bias,
-        SDPhi = sd_phi,
         RMSEPhi = rmse_phi
       )
       
@@ -192,7 +205,7 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
 ```{r}
 design <- setup_design()
 true_phi <- 0.6  # True value of phi
-models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")  # Models to test
+models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 num_repetitions <- 2
 
 # Execute the simulation study
