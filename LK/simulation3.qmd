@@ -1,4 +1,4 @@
-# First script for Simulation Study 1
+# Script for Simulation Study 3
 
 Used for writing or coding?
 
@@ -70,70 +70,69 @@ setup_design <- function() {
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
-  # Misspecification conditions: (0, 1, 2) correlated residuals, and psi values
-  rc_conditions <- c(0, 1, 2)
-  psi_values <- c(0.12, -0.12)
-  
-  # Expand grid to create a data frame of all combinations
-  design <- expand.grid(N_sizes = N_sizes, rc_conditions = rc_conditions, psi_values = psi_values)
-  
-  # Adjust for the condition where rc is 0 (correlated residuals are not considered)
-  design <- design[!(design$rc_conditions == 0 & design$psi_values != 0.12), ]
+  # Create a data frame of sample sizes
+  design <- data.frame(N_sizes = N_sizes)
   
   return(design)
 }
+
 
 ```
 
 # Data generating Mechanism
 ```{r}
-get_dgm <- function(rc, psi_value) {
+get_dgm <- function() {
+
   lam1 <- 0.55
   lam2 <- 0.45
-  phi <- 0.60
+  phi <- 0.60 
   
+  # Base loading matrix for two factors
   LAM <- matrix(0, nrow=6, ncol=2)
-  LAM[1:3, 1] <- lam1
-  LAM[4:6, 2] <- lam2
+  LAM[1:3, 1] <- lam1  # Loadings for X1 to X3 on Factor FX
+  LAM[4:6, 2] <- lam2  # Loadings for Y1 to Y3 on Factor FY
   
+  LAM[1, 2] <- 0.3  # Cross-loading deltax1
+  
+  # Base correlation matrix for factors
   PHI <- matrix(0, nrow=2, ncol=2)
   diag(PHI) <- 1
   PHI[1, 2] <- PHI[2, 1] <- phi
   
-  THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
+  # Base unique variances for observed variables
+  THETA <- diag(c(rep(1 - lam1^2, 3), rep(1 - lam2^2, 3)))
+
+  THETA[2, 5] <- THETA[5, 2] <- 0.12  # Correlated residuals for X2 and Y2
   
-  # Adjust THETA for misspecification
-  if (rc >= 1) {
-    THETA[1, 4] <- THETA[4, 1] <- psi_value
-  }
-  if (rc == 2) {
-    THETA[2, 5] <- THETA[5, 2] <- psi_value
-  }
-  
+  # Return a list of model parameters
   return(list(LAM = LAM, PHI = PHI, THETA = THETA))
 }
+
 
 ```
 
 # Simulate data
 ```{r}
-simulate_data <- function(N, rc, psi_value) {
-  # Get DGM parameters
-  dgm_params <- get_dgm(rc, psi_value)
+simulate_data <- function(N) {
+  # Use the get_dgm function to get the model parameters
+  dgm_params <- get_dgm()
   LAM <- dgm_params$LAM
   PHI <- dgm_params$PHI
   THETA <- dgm_params$THETA
   
+  # Compute the covariance matrix S based on the model parameters
   S <- LAM %*% PHI %*% t(LAM) + THETA
   rownames(S) <- colnames(S) <- c(paste0("X", 1:3), paste0("Y", 1:3))
   
-  # Generate data
+  # Generate multivariate normal data with the MASS package
   dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
   df_dat <- as.data.frame(dat)
   names(df_dat) <- c("X1", "X2", "X3", "Y1", "Y2", "Y3")
   
-  return(list(SampleSize = N, RC = rc, PsiValue = psi_value, Data = df_dat))
+  # Return a list containing the sample size, simulated data, and misspecification parameters
+  return(list(SampleSize = N, Data = df_dat))
 }
+
 
 ```
 
@@ -144,8 +143,8 @@ models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")
 
 # Planned analysis
 
-planned_analysis <- function(N, rc, psi_value, model, model_type) {
-  dataset <- simulate_data(N, rc, psi_value)$Data
+planned_analysis <- function(N, model, model_type) {
+  dataset <- simulate_data(N)$Data
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
@@ -178,8 +177,6 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
   results_df <- data.frame(
     ModelType = character(),
     N = integer(),
-    RC = integer(),
-    PsiValue = numeric(),
     AvgAbsBias = numeric(),
     SDPhi = numeric(),
     RMSEPhi = numeric(),
@@ -188,9 +185,9 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
   
   for(model_type in models) {
     for(i in 1:nrow(design)) {
-      row <- design[i, ]
+      N_size <- design$N_sizes[i]
       phi_estimates <- replicate(num_repetitions, {
-        planned_analysis(row$N_sizes, row$rc_conditions, row$psi_values, model, model_type)
+        planned_analysis(N_size, model, model_type)
       })
       
       # Compute the metrics directly
@@ -201,9 +198,7 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
       # Combine the results into a single row
       results_row <- data.frame(
         ModelType = model_type,
-        N = row$N_sizes,
-        RC = row$rc_conditions,
-        PsiValue = row$psi_values,
+        N = N_size,
         AvgAbsBias = avg_abs_bias,
         SDPhi = sd_phi,
         RMSEPhi = rmse_phi
@@ -303,13 +298,8 @@ report_analysis(results_df, models)
 
 # Questions
 Open questions: 
-- What with this?
 
-if (N<inf_val){
-    dat <- MASS::mvrnorm(n=N, mu=rep(0,6), Sigma=S)
-    S <- cov(dat) * (N-1) / N
-}
-
+- Warnung: no non-missing arguments to min; returning Inf after simulation conduction?
 - How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
 Absolute vs. relative vs. mean bias in first studies?
 ```{r}
