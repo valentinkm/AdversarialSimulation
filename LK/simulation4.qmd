@@ -30,6 +30,8 @@ library(tidyr)
 
 # Specify 2-factor-Model
 label is missing for "phi", but not relevant anyway, as multiple factor correlations?
+Have to look into define_fr1() function to see which parameters exactly are extracted how
+
 ```{r}
 model <- "
 
