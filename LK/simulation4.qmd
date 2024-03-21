@@ -190,8 +190,17 @@ planned_analysis <- function(N, DGM, model, model_type) {
   }
   
   estimates <- parameterEstimates(fit)
-  phi_estimates <- subset(estimates, label == "phi")$est
-  return(phi_estimate)
+
+  phi_patterns <- c("phi21", "phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi52", "phi53", "phi54")
+  phi_estimates <- sapply(phi_patterns, function(phi) {
+    if (any(estimates$label == phi)) {
+      return(estimates$est[estimates$label == phi])
+    } else {
+      return(NA)  # Return NA if the parameter wasn't found
+    }
+  }, simplify = FALSE, USE.NAMES = TRUE)
+  
+  return(phi_estimates)
 }
 
 
