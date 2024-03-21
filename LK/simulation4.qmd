@@ -208,46 +208,55 @@ planned_analysis <- function(N, DGM, model, model_type) {
 
 #  Simulation Study
 ```{r}
-simulation_study <- function(design, model, num_repetitions , true_phi, models) {
-  # Initialize an empty dataframe to store the results
-  results_df <- data.frame(
-    ModelType = character(),
-    N = integer(),
-    DGM = integer(),
-    AvgAbsBias = numeric(),
-    RMSEPhi = numeric(),
-    stringsAsFactors = FALSE
-  )
+simulation_study <- function(design, model, num_repetitions, true_phis, models) {
+  # Initialize an empty list to store the results for each phi parameter
+  results_list <- list()
   
   for(model_type in models) {
     for(i in 1:nrow(design)) {
       row <- design[i, ]
-      phi_estimates <- replicate(num_repetitions, {
-        planned_analysis(row$N_sizes, row$DGM_types, model, model_type)
-      })
       
-      # Compute the metrics directly
-      avg_abs_bias <- mean(abs(phi_estimates - true_phi))
-      rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
+      # Initialize matrices to store estimates across repetitions for each phi
+      phi_estimates_matrix <- matrix(NA, nrow = num_repetitions, ncol = length(true_phis))
+      names(phi_estimates_matrix) <- names(true_phis)
       
-      # Combine the results into a single row
+      for(rep in 1:num_repetitions) {
+        estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, model, model_type)
+        
+        # Assuming estimates_list is a named list of phi estimates from planned_analysis
+        phi_estimates_matrix[rep, ] <- sapply(names(true_phis), function(phi_name) {
+          if(!is.null(estimates_list[[phi_name]])) {
+            return(as.numeric(estimates_list[[phi_name]]))
+          } else {
+            return(NA) # In case some phi estimates are missing
+          }
+        })
+      }
+      
+      # Compute metrics for each phi
+      avg_abs_bias <- colMeans(abs(phi_estimates_matrix - true_phis), na.rm = TRUE)
+      rmse_phi <- sqrt(colMeans((phi_estimates_matrix - true_phis)^2, na.rm = TRUE))
+      
+      # Combine the results for this design row and model type
       results_row <- data.frame(
         ModelType = model_type,
         N = row$N_sizes,
         DGM = row$DGM_types,
         AvgAbsBias = avg_abs_bias,
-        RMSEPhi = rmse_phi
+        RMSEPhi = rmse_phi,
+        stringsAsFactors = FALSE
       )
       
-      # Bind the row to the results dataframe
-      results_df <- rbind(results_df, results_row)
+      # Bind the row to the results list (now handling multiple metrics)
+      results_list[[length(results_list) + 1]] <- results_row
     }
   }
   
+  # Combine all results into a single data frame
+  results_df <- do.call(rbind, results_list)
+  
   return(results_df)
 }
-
-
 
 
 ```
@@ -255,12 +264,12 @@ simulation_study <- function(design, model, num_repetitions , true_phi, models) 
 ## RUN
 ```{r}
 design <- setup_design()
-true_phi <- 0.6  # True value of phi
+true_phis <- c(phi21 = 0.00, phi31 = 0.11, phi32 = 0.11, phi41 = 0.10, phi42 = 0.10, phi43 = 0.12, phi51 = 0.12, phi52 = 0.02, phi53 = 0.12, phi54 = 0.12)
 models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 num_repetitions <- 2
 
 # Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, true_phi, models)
+results_df <- simulation_study(design, model, num_repetitions, true_phis, models)
 
 # View the results
 print(results_df)
