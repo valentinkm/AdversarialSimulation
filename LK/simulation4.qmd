@@ -52,18 +52,18 @@ model <- "
     F5 ~~ 1*F5
     
 #Covariances
-    F1~~F2
-    F2~~F5
+    F1 ~~ phi21*F2
+    F2 ~~ phi52*F5
     
 #Regressions
-    F3 ~ F1
-    F4 ~ F1
-    F5 ~ F1
-    F3 ~ F2
-    F4 ~ F2
-    F5 ~ F3
-    F3 ~ F4
-    F5 ~ F4
+    F3 ~ phi31*F1
+    F4 ~ phi41*F1
+    F5 ~ phi51*F1
+    F3 ~ phi32*F2
+    F4 ~ phi42*F2
+    F5 ~ phi53*F3
+    F3 ~ phi43*F4
+    F5 ~ phi54*F4
 
 #Measurement part    
     y1 ~~ vY1*y1
@@ -190,7 +190,7 @@ planned_analysis <- function(N, DGM, model, model_type) {
   }
   
   estimates <- parameterEstimates(fit)
-  phi_estimate <- subset(estimates, label == "phi")$est
+  phi_estimates <- subset(estimates, label == "phi")$est
   return(phi_estimate)
 }
 
