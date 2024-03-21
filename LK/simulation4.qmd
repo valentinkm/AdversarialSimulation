@@ -153,7 +153,7 @@ covmat_list[[3]] <- read.table("rl_simulation_true_model3__COVMAT.txt", header=T
 ```{r}
 simulate_data <- function(N, DGM) {
   
-  S <- covmat_list[[DGM]]
+  S <- covmat_list[[ DGM ]]
   
   # Number of variables is the number of columns in the covariance matrix
   NV <- ncol(S)
@@ -172,7 +172,7 @@ Here, I need to include the model variation for the 3 DGM
 
 ```{r}
 #Specify estimation methods of interest
-models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
+models <- c("SEM_ML")
 
 # Planned analysis
 
@@ -181,10 +181,6 @@ planned_analysis <- function(N, DGM, model, model_type) {
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
-  } else if (model_type == "LSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "GSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
   } else {
     stop("Unknown model type specified")
   }
@@ -209,54 +205,63 @@ planned_analysis <- function(N, DGM, model, model_type) {
 #  Simulation Study
 ```{r}
 simulation_study <- function(design, model, num_repetitions, true_phis, models) {
-  # Initialize an empty list to store the results for each phi parameter
   results_list <- list()
-  
+
   for(model_type in models) {
     for(i in 1:nrow(design)) {
       row <- design[i, ]
-      
-      # Initialize matrices to store estimates across repetitions for each phi
-      phi_estimates_matrix <- matrix(NA, nrow = num_repetitions, ncol = length(true_phis))
-      names(phi_estimates_matrix) <- names(true_phis)
-      
+      biases_list <- vector("list", length = num_repetitions)
+      rmse_list <- vector("list", length = num_repetitions)
+
       for(rep in 1:num_repetitions) {
         estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, model, model_type)
         
-        # Assuming estimates_list is a named list of phi estimates from planned_analysis
-        phi_estimates_matrix[rep, ] <- sapply(names(true_phis), function(phi_name) {
-          if(!is.null(estimates_list[[phi_name]])) {
-            return(as.numeric(estimates_list[[phi_name]]))
+        # Calculate biases and RMSE for each phi and store them
+        biases <- sapply(names(true_phis), function(phi) {
+          if (!is.null(estimates_list[[phi]])) {
+            abs(estimates_list[[phi]] - true_phis[phi])
           } else {
-            return(NA) # In case some phi estimates are missing
+            NA  # Handle missing estimates
           }
         })
+        biases_list[[rep]] <- biases
+        
+        rmse <- sapply(names(true_phis), function(phi) {
+          if (!is.null(estimates_list[[phi]])) {
+            sqrt(mean((estimates_list[[phi]] - true_phis[phi])^2))
+          } else {
+            NA  # Handle missing estimates
+          }
+        })
+        rmse_list[[rep]] <- rmse
       }
       
-      # Compute metrics for each phi
-      avg_abs_bias <- colMeans(abs(phi_estimates_matrix - true_phis), na.rm = TRUE)
-      rmse_phi <- sqrt(colMeans((phi_estimates_matrix - true_phis)^2, na.rm = TRUE))
+      # Flatten the lists to vectors and calculate AvgAbsBias and RMSE for the current condition
+      all_biases <- unlist(biases_list, use.names = FALSE)
+      avg_abs_bias <- mean(all_biases, na.rm = TRUE)
       
-      # Combine the results for this design row and model type
-      results_row <- data.frame(
+      all_rmse <- unlist(rmse_list, use.names = FALSE)
+      avg_rmse <- mean(all_rmse, na.rm = TRUE)
+      
+      # Store the results for the current combination of N, DGM, and ModelType
+      results_list[[length(results_list) + 1]] <- data.frame(
         ModelType = model_type,
         N = row$N_sizes,
         DGM = row$DGM_types,
         AvgAbsBias = avg_abs_bias,
-        RMSEPhi = rmse_phi,
+        RMSEPhi = avg_rmse,
         stringsAsFactors = FALSE
       )
-      
-      # Bind the row to the results list (now handling multiple metrics)
-      results_list[[length(results_list) + 1]] <- results_row
     }
   }
   
   # Combine all results into a single data frame
   results_df <- do.call(rbind, results_list)
-  
   return(results_df)
 }
+
+
+
 
 
 ```
@@ -265,7 +270,7 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
 ```{r}
 design <- setup_design()
 true_phis <- c(phi21 = 0.00, phi31 = 0.11, phi32 = 0.11, phi41 = 0.10, phi42 = 0.10, phi43 = 0.12, phi51 = 0.12, phi52 = 0.02, phi53 = 0.12, phi54 = 0.12)
-models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
+models <- c("SEM_ML")
 num_repetitions <- 2
 
 # Execute the simulation study
