@@ -172,15 +172,17 @@ Here, I need to include the model variation for the 3 DGM
 
 ```{r}
 #Specify estimation methods of interest
-models <- c("SEM_ML")
-
-# Planned analysis
+models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 
 planned_analysis <- function(N, DGM, model, model_type) {
   dataset <- simulate_data(N, DGM)
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
+  } else if (model_type == "LSAM_ML") {
+    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
+  } else if (model_type == "GSAM_ML") {
+    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
   } else {
     stop("Unknown model type specified")
   }
@@ -274,7 +276,7 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
 ```{r}
 design <- setup_design()
 true_phis <- c(phi21 = 0.00, phi31 = 0.11, phi32 = 0.11, phi41 = 0.10, phi42 = 0.10, phi43 = 0.12, phi51 = 0.12, phi52 = 0.02, phi53 = 0.12, phi54 = 0.12)
-models <- c("SEM_ML")
+models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 num_repetitions <- 2
 
 # Execute the simulation study
@@ -289,61 +291,42 @@ print(results_df)
 # Report analysis
 ```{r}
 report_analysis <- function(results_df, models) {
-  # Define the list to store the tables
+  # Initialize a list to store tables
   tables_list <- list()
 
-  # Define the different RC conditions and the corresponding labels
-  unique_rc <- unique(results_df$RC)
-  unique_psi <- unique(results_df$PsiValue)
+  # Unique DGM values from the results
+  unique_dgms <- unique(results_df$DGM)
 
-  # Define metric names to iterate over
-  metrics <- c("Bias", "SD", "RMSE")
-
-  # Loop through each RC condition and PsiValue to create separate tables for each metric
-  for (rc in unique_rc) {
-    for (psi in unique_psi) {
-      # Skip creation for non-existing conditions (RC == 0 and PsiValue is negative)
-      if (rc == 0 && psi < 0) {
-        next
-      }
-      
-      # Filter for the current RC and PsiValue
-      subset_df <- results_df %>%
-        filter(RC == rc, PsiValue == psi) %>%
-        mutate(ModelType = factor(ModelType, levels = models)) # Use the models object here
-
-      # Loop through each metric to pivot and create tables
-      for (metric in metrics) {
-        metric_colnames <- grep(metric, names(subset_df), value = TRUE)
-        
-        # Pivot the dataframe to a wide format for the current metric and reorder rows
-        wide_df <- subset_df %>%
-          select(ModelType, N, all_of(metric_colnames)) %>%
-          arrange(ModelType) %>% # Arrange rows by ModelType
-          pivot_longer(cols = all_of(metric_colnames), names_to = "Metric", values_to = "Value") %>%
-          mutate(Value = round(Value, 2)) %>% # Round the values
-          pivot_wider(names_from = N, values_from = Value) %>%
-          select(-Metric)
-        
-        # Generate the table name based on the condition and metric
-        psi_label <- ifelse(psi == 0, "0", ifelse(psi > 0, "pos", "neg"))
-        condition_label <- paste(rc, psi_label, "res", sep = "_")
-        table_name <- paste(metric, condition_label, sep = "_")
-        
-        # Store the table in the list with the corrected naming
-        tables_list[[table_name]] <- wide_df
-      }
-    }
+  # Create Bias and RMSE tables for each DGM
+  for(dgm in unique_dgms) {
+    # Filter results for the current DGM
+    results_dgm <- filter(results_df, DGM == dgm)
+    
+    # Bias table for the current DGM
+    bias_table <- results_dgm %>%
+      select(ModelType, N, AvgAbsBias) %>%
+      pivot_wider(names_from = N, values_from = AvgAbsBias) %>%
+      arrange(ModelType)
+    
+    # RMSE table for the current DGM
+    rmse_table <- results_dgm %>%
+      select(ModelType, N, AvgRMSE) %>%
+      pivot_wider(names_from = N, values_from = AvgRMSE) %>%
+      arrange(ModelType)
+    
+    # Store tables in the list with names indicating the DGM
+    tables_list[[paste("Bias_DGM", dgm)]] <- bias_table
+    tables_list[[paste("RMSE_DGM", dgm)]] <- rmse_table
   }
   
   return(tables_list)
 }
 
+
 list_of_tables <- report_analysis(results_df, models)
 
 # Access a specific table
-bias_no_res_table <- list_of_tables[["Bias_0_pos_res"]] # Example for Bias with no residual correlations
-
+bias_dgm1 <- list_of_tables[["Bias_DGM 1"]]
 #display all tables
 report_analysis(results_df, models)
 ```
