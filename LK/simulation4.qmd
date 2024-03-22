@@ -302,6 +302,9 @@ report_analysis <- function(results_df, models) {
     # Filter results for the current DGM
     results_dgm <- filter(results_df, DGM == dgm)
     
+    #As factor to be able to arrange later
+    results_dgm$ModelType <- factor(results_dgm$ModelType, levels = models)
+    
     # Bias table for the current DGM
     bias_table <- results_dgm %>%
       select(ModelType, N, AvgAbsBias) %>%
@@ -327,6 +330,7 @@ list_of_tables <- report_analysis(results_df, models)
 
 # Access a specific table
 bias_dgm1 <- list_of_tables[["Bias_DGM 1"]]
+
 #display all tables
 report_analysis(results_df, models)
 ```
