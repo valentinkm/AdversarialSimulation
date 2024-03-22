@@ -177,7 +177,7 @@ models <- c("SEM_ML")
 # Planned analysis
 
 planned_analysis <- function(N, DGM, model, model_type) {
-  dataset <- simulate_data(N, DGM)$Data
+  dataset <- simulate_data(N, DGM)
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
