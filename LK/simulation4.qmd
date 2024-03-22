@@ -206,17 +206,17 @@ planned_analysis <- function(N, DGM, model, model_type) {
 ```{r}
 simulation_study <- function(design, model, num_repetitions, true_phis, models) {
   results_list <- list()
-
+  
   for(model_type in models) {
     for(i in 1:nrow(design)) {
       row <- design[i, ]
       biases_list <- vector("list", length = num_repetitions)
-      rmse_list <- vector("list", length = num_repetitions)
+      squared_errors_list <- vector("list", length = num_repetitions)
 
       for(rep in 1:num_repetitions) {
         estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, model, model_type)
         
-        # Calculate biases and RMSE for each phi and store them
+        # Calculate biases for each phi and store them
         biases <- sapply(names(true_phis), function(phi) {
           if (!is.null(estimates_list[[phi]])) {
             abs(estimates_list[[phi]] - true_phis[phi])
@@ -226,22 +226,25 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
         })
         biases_list[[rep]] <- biases
         
-        rmse <- sapply(names(true_phis), function(phi) {
+        # Store squared errors for each phi
+        squared_errors <- sapply(names(true_phis), function(phi) {
           if (!is.null(estimates_list[[phi]])) {
-            sqrt(mean((estimates_list[[phi]] - true_phis[phi])^2))
+            (estimates_list[[phi]] - true_phis[phi])^2
           } else {
             NA  # Handle missing estimates
           }
         })
-        rmse_list[[rep]] <- rmse
+        squared_errors_list[[rep]] <- squared_errors
       }
       
-      # Flatten the lists to vectors and calculate AvgAbsBias and RMSE for the current condition
+      # Flatten the lists to vectors and calculate AvgAbsBias for the current condition
       all_biases <- unlist(biases_list, use.names = FALSE)
       avg_abs_bias <- mean(all_biases, na.rm = TRUE)
       
-      all_rmse <- unlist(rmse_list, use.names = FALSE)
-      avg_rmse <- mean(all_rmse, na.rm = TRUE)
+      # Aggregate the squared errors across all repetitions for each phi, then calculate RMSE
+      all_squared_errors <- do.call(rbind, squared_errors_list)
+      mean_squared_error <- colMeans(all_squared_errors, na.rm = TRUE)
+      avg_rmse <- sqrt(mean(mean_squared_error, na.rm = TRUE))
       
       # Store the results for the current combination of N, DGM, and ModelType
       results_list[[length(results_list) + 1]] <- data.frame(
@@ -249,7 +252,7 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
         N = row$N_sizes,
         DGM = row$DGM_types,
         AvgAbsBias = avg_abs_bias,
-        RMSEPhi = avg_rmse,
+        AvgRMSE = avg_rmse,
         stringsAsFactors = FALSE
       )
     }
@@ -259,6 +262,7 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
   results_df <- do.call(rbind, results_list)
   return(results_df)
 }
+
 
 
 
