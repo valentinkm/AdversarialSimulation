@@ -286,19 +286,19 @@ report_analysis <- function(results_df, models) {
   tables_list <- list()
   
   # Get unique cl conditions from the results dataframe
-  cl_conditions <- unique(results_df$CL)
+  PsiValues <- unique(results_df$PsiValues)
   
   # Loop through each model type to create tables
   for (model_type in models) {
-    for (cl in cl_conditions) {
-      # Filter and pivot data for the current model and cl condition
+    for (psi_value in PsiValues) {
+      # Filter and pivot data for the current model and psi_value condition
       pivot_table <- results_df %>%
-        filter(ModelType == model_type, CL == cl) %>%
-        select(-ModelType, -CL) %>%
+        filter(ModelType == model_type, PsiValues == psi_value) %>%
+        select(-ModelType, -PsiValues) %>%
         spread(key = N, value = AvgAbsBias)
       
-      # Set table name based on model type and cl condition
-      table_name <- paste(model_type, "CL", cl, sep = "_")
+      # Set table name based on model type and psi_value condition
+      table_name <- paste(model_type, "PsiValues", psi_value, sep = "_")
       tables_list[[table_name]] <- pivot_table
     }
   }
@@ -311,7 +311,7 @@ list_of_tables <- report_analysis(results_df, models)
 
 
 # Access a specific table
-SEM_CL1 <- list_of_tables[["SEM_ULS_CL_1"]] # Example for Bias as a function of N and Phi with 1 cross-loading
+SEM_Psis_0.2 <- list_of_tables[["SEM_ULS_PsiValues_0.2"]] 
 
 #display all tables
 report_analysis(results_df, models)
@@ -321,8 +321,8 @@ report_analysis(results_df, models)
 ```{r}
 library(purrr)
 
-lsam_table <- list_of_tables[["LSAM_ULS_CL_3"]]
-sem_table <- list_of_tables[["SEM_ULS_CL_3"]]
+lsam_table <- list_of_tables[["LSAM_ULS_PsiValues_0.4"]]
+sem_table <- list_of_tables[["SEM_ULS_PsiValues_0.4"]]
 
 # Use map2_df from purrr to subtract the SEM table from the LSAM table
 diff_table <- map2_df(lsam_table[-1], sem_table[-1], `-`)
