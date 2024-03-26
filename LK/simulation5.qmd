@@ -274,6 +274,9 @@ print(results_df)
 
 
 ```
+Weirdly, the values differ with respect to N, but only very slightly. There does not seem to be a problem with the dataset generation.
+
+Model fit indices look very good. GPT suggestion: Consider adding more variability in the data generating mechanism, perhaps by reducing factor loadings or introducing more measurement error. --> Wont do that but potential cause?
 
 # Report analysis
 ```{r}
