@@ -453,8 +453,8 @@ planned_analysis <- function(N, DGM, beta, model, model_type) {
 
 
 
-#########Not altered yet##############
 #  Simulation Study
+when calculating the bias, we are missing the true phi values to be substracted from the estimation!
 ```{r}
 simulation_study <- function(design, model, num_repetitions, models) {
   results_list <- list()
