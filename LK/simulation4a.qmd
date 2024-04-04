@@ -534,15 +534,15 @@ report_analysis <- function(results_df, models) {
   
   # Loop through each model type to create tables
   for (model_type in models) {
-    for (DGM in DGM_conditions) {
+    for (current_DGM in DGM_conditions) {
       # Filter and pivot data for the current model and cl condition
       pivot_table <- results_df %>%
-        filter(ModelType == model_type, DGM == DGM) %>%
+        filter(ModelType == model_type, DGM == current_DGM) %>%
         select(-ModelType, -DGM) %>%
-        pivot_wider(names_from = N, values_from = AvgAbsBias,id_cols = beta)
+        spread(key = N, value = AvgAbsBias)
       
       # Set table name based on model type and cl condition
-      table_name <- paste(model_type, "DGM", DGM, sep = "_")
+      table_name <- paste(model_type, "DGM", current_DGM, sep = "_")
       tables_list[[table_name]] <- pivot_table
     }
   }
