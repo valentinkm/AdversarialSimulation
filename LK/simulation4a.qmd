@@ -136,7 +136,7 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
-This time, we will define the DGM the same way RL did:
+This time, we will define the DGM the same way RL did here: https://osf.io/96zhs
 ```{r}
 get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
                               lambda = 0.70, PSI = NULL, BETA = NULL,
@@ -217,17 +217,8 @@ get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
 ```
 
 # Generate Syntax for Data simulation
-Also like in RL
+Function taken from RL: https://osf.io/4we3h
 ```{r}
-# generate lavaan model syntax from a list of model matrices
-#
-# YR -- 4 Dec 2021
-#
-# - currently for a single group/level only
-# - continuous setting only; the model matrices are LAMBDA, PSI, THETA and
-#   optionally BETA
-#
-# we return a single string
 
 lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
                              include.values = TRUE) {
