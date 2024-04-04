@@ -467,16 +467,16 @@ simulation_study <- function(design, model, num_repetitions, models) {
       for (rep in 1:num_repetitions) {
         estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, row$beta_sizes, model, model_type)
         
-        # Directly use row$beta_Sizes as the single true value for bias calculation
-        biases <- sapply(estimates_list, function(estimated_values) {
-          if (!is.null(estimated_values)) {
-            # Compare estimated values to the single true phi value
-            abs_est_diff <- abs(estimated_values - row$phis)
-            return(abs_est_diff)  # Return all biases
+        true_phis <- c(phi21 = 0.00, phi31 = row$beta_sizes, phi32 = row$beta_sizes, phi41 = row$beta_sizes, phi42 = row$beta_sizes, phi43 = row$beta_sizes, phi51 = row$beta_sizes, phi52 = 0.00, phi53 = row$beta_sizes, phi54 = row$beta_sizes)
+        
+        # Calculate biases for each phi and store them
+        biases <- sapply(names(true_phis), function(phi) {
+          if (!is.null(estimates_list[[phi]])) {
+            abs(estimates_list[[phi]] - true_phis[phi])
           } else {
-            return(NA)  # Handle missing estimates
+            NA  # Handle missing estimates
           }
-        }, simplify = FALSE)
+        })
         biases_list[[rep]] <- biases
       }
       
