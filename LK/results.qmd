@@ -1,0 +1,26 @@
+---
+title: "Adversarial Simulation"
+subtitle: "A case study"
+author: "Leonard Kosanke"
+format:
+    pdf:
+        include-in-header: ../preamble.tex
+        fontsize: 11pt
+        linestretch: 1.2
+        geometry: "left=4cm, right=4cm, top=3cm, bottom=5cm, bindingoffset=7mm"
+        classoption: twoside
+        papersize: a4
+fontsize: 11pt
+# https://practicaltypography.com/page-margins.html
+# 3.81 to 5.08cm or 45-90 characters or 2-3 alphabets
+# asymetric geometry is set after/in frontmatter.md
+bibliography: ../bibliography.bib
+engine: knitr
+---
+
+The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
+
+
+# Study 1
+
+
