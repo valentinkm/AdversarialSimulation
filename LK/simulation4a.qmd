@@ -360,9 +360,8 @@ Analogously to RL, we will simulate the data with the lavaan function, for each 
 Here, the matrices_and_simulateData.r should be inserted in a way that allows it to be varied for each condition later on.
 
 
-
 ```{r}
-# Assuming dgm_params is obtained from get_dgm()
+
 simulate_data <- function(N, DGM, beta) {
  NFAC   <- 5L    # number of factors
   FVAR   <- 3L    # number of indicators per factor
@@ -403,8 +402,7 @@ simulate_data <- function(N, DGM, beta) {
   # Specify population model
   
   pop.model <- lav_syntax_mlist(MLIST, include.values = TRUE)
-  cat(pop.model)
-  
+
   #Simulate Data
   df_dat <- simulateData(pop.model, sample.nobs = N)
 
@@ -424,7 +422,7 @@ simulate_data <- function(N, DGM, beta) {
 models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 
 planned_analysis <- function(N, DGM, beta, model, model_type) {
-  dataset <- simulate_data(N, DGM, beta)
+  dataset <- simulate_data(N, DGM, beta)$Data
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
@@ -467,9 +465,9 @@ simulation_study <- function(design, model, num_repetitions, models) {
       biases_list <- vector("list", length = num_repetitions)
 
       for (rep in 1:num_repetitions) {
-        estimates_list <- planned_analysis(row$N_sizes, row$cl, row$phis, model, model_type)
+        estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, row$beta_sizes, model, model_type)
         
-        # Directly use row$phis as the single true value for bias calculation
+        # Directly use row$beta_Sizes as the single true value for bias calculation
         biases <- sapply(estimates_list, function(estimated_values) {
           if (!is.null(estimated_values)) {
             # Compare estimated values to the single true phi value
@@ -490,8 +488,8 @@ simulation_study <- function(design, model, num_repetitions, models) {
       results_list[[length(results_list) + 1]] <- list(
         ModelType = model_type,
         N = row$N_sizes,
-        CL = row$cl,
-        PhiCondition = row$phis,  # Storing as PhiCondition for clarity
+        DGM = row$DGM_types,
+        beta = row$beta_sizes,  
         AvgAbsBias = avg_abs_bias
       )
     }
@@ -511,7 +509,7 @@ simulation_study <- function(design, model, num_repetitions, models) {
 ## RUN
 ```{r}
 design <- setup_design()
-models <- c("SEM_ULS", "LSAM_ULS")  # Models to test
+models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 num_repetitions <- 2
 
 # Execute the simulation study
@@ -522,9 +520,8 @@ print(results_df)
 
 
 ```
-Weirdly, the values differ with respect to N, but only very slightly. There does not seem to be a problem with the dataset generation.
 
-Model fit indices look very good. GPT suggestion: Consider adding more variability in the data generating mechanism, perhaps by reducing factor loadings or introducing more measurement error. --> Wont do that but potential cause?
+
 
 # Report analysis
 ```{r}
