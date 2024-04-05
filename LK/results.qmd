@@ -20,7 +20,39 @@ engine: knitr
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
+# Deviations from the simulation protocol
 
-# Study 1
+## Studies 1,2,3
+
+For all these studies, 3 deviations are present.
+Firstly, the total number of conditions turned out to be higher, as the calculation in the protocol forgot the addition of N=50 to be added to the factor sample size.
+Secondly, It was not detailed what type of LSAM estimation will be implemented. For completeness sake, we included ML- as well as ULS-LSAM estimation.
+Lastly, instead of calculating the relative bias as originally planned, we calculated the absolute bias to mitigate biases of opposite directions canceling each other out, as rightly pointed out in study 4 of @robitzsch_comparing_2022.
+
+## Study 1b
+
+In Study 1b, contrary to the simulation protocol, we added another sample size with N=50 to get a more nuanced understanding of the small-sample bias of LSAM. 
+For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM estimation and calculated the absolute bias again.
+
+## Study 4
+
+Again, I forgot the addition of N=50 in the original condition calculation.
+
+## Study 4a
+
+I decided to include a variation of study 4a after all, as the relation between beta/phi values and N is interesting: 
+The original paper showed that results differed between estimators, depending on the size of the factor correlation in Studies 5, 6 and 1b, as well as differential effects due to N in Study 1b.
+We deemed it interesting to investigate these results in a model with a different number of factors.
+These findings, combined with our goal to investigate realistic data conditions, rather than just the population level, left us to include Study 4a, with the addition of an additional factor sample size.
+As DGM1 neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study 4, it was omitted.
+Similarly, as no substantial conclusions were drawn with regards to RMSE in the original papers study 1 and 2, we omitted its calculation as well.
+
+## Studies 5,6
+
+Similar to the reasoning in study 4a, we again included N as a factor to more closely align to our research interest in realistic data conditions. 
+Thus, we also reverted to the previous analysis of results, not implementing the “SAM vs. SEM better” approach that was preregistered. 
+Hence, the number of conditions deviated in the analyses as well.
+Additionally, we doubled the interval length between the phi/beta-conditions to reduce the high number of results that would be present. As there were no interesting findings in the original differentiation, we deemed this to be a fair, pragmatic deviation to reduce complexity.
+
 
 
