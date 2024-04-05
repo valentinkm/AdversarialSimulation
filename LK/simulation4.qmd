@@ -172,17 +172,17 @@ Here, I need to include the model variation for the 3 DGM
 
 ```{r}
 #Specify estimation methods of interest
-models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
+models <- c("SEM_ML", "SEM_ULS", "LSAM_ML")
 
 planned_analysis <- function(N, DGM, model, model_type) {
   dataset <- simulate_data(N, DGM)
   
   if (model_type == "SEM_ML") {
     fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
+  } else if (model_type == "SEM_ULS") {
+    fit <- lavaan::sem(model, data=dataset, estimator="ULS", std.lv= TRUE)
   } else if (model_type == "LSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "GSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
+    fit <- lavaan::sam(model, data=dataset, sam.method = "local", estimator = "ML", std.lv= TRUE)
   } else {
     stop("Unknown model type specified")
   }
@@ -275,8 +275,11 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
 ## RUN
 ```{r}
 design <- setup_design()
+
 true_phis <- c(phi21 = 0.00, phi31 = 0.11, phi32 = 0.11, phi41 = 0.10, phi42 = 0.10, phi43 = 0.12, phi51 = 0.12, phi52 = 0.02, phi53 = 0.12, phi54 = 0.12)
-models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
+
+models <- c("SEM_ML", "SEM_ULS", "LSAM_ML")
+
 num_repetitions <- 2
 
 # Execute the simulation study
