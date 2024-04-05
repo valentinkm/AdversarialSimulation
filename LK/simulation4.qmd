@@ -290,6 +290,7 @@ print(results_df)
 
 
 ```
+Warnings can be ignored, as we are not interested in fit indices.
 
 # Report analysis
 ```{r}
