@@ -54,5 +54,15 @@ Thus, we also reverted to the previous analysis of results, not implementing the
 Hence, the number of conditions deviated in the analyses as well.
 Additionally, we doubled the interval length between the phi/beta-conditions to reduce the high number of results that would be present. As there were no interesting findings in the original differentiation, we deemed this to be a fair, pragmatic deviation to reduce complexity.
 
+# Results setup
 
+Running all the scipts in the final markdown with source() is not feasible, as it would repeat the simulation.
+
+The GPT suggestion to split up report_analysis() functions in seperate scripts would lead to double the amount of scripts and is also inadvisable. 
+
+Addtionally, executing quarto render would lead to running all simulations again, as of now.
+
+As of now, it fails anyway due to titlesec problems (error-prone part in the preamble).
+
+My idea: we would run the simulation on the cluster, and export all tables from report_analysis(). These can be indexed in the results.qmd for analysis. This way, the simulation only needs to be run once and is not part of quarto render.
 
