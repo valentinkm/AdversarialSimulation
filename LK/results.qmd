@@ -56,7 +56,7 @@ Additionally, we doubled the interval length between the phi/beta-conditions to 
 
 # Results setup
 
-Running all the scipts in the final markdown with source() is not feasible, as it would repeat the simulation.
+Running all the scripts in the final markdown with source() is not feasible, as it would repeat the simulation.
 
 The GPT suggestion to split up report_analysis() functions in seperate scripts would lead to double the amount of scripts and is also inadvisable. 
 
@@ -65,4 +65,51 @@ Addtionally, executing quarto render would lead to running all simulations again
 As of now, it fails anyway due to titlesec problems (error-prone part in the preamble).
 
 My idea: we would run the simulation on the cluster, and export all tables from report_analysis(). These can be indexed in the results.qmd for analysis. This way, the simulation only needs to be run once and is not part of quarto render.
+
+# Result analysis
+
+## Original paper
+
+### Bias
+In the original paper, @robitzsch_comparing_2022 had some inconsistencies when it came to the interpretation of the results of their simulation studies. 
+They did not thoroughly define an a prior criteria for when an estimator outperformed another. 
+Only in their Studies 5 and 6, they defined an absolute bias equal to or larger than 0.05 as relevant. 
+Additionally, when an estimator had a minimum percentage error of 20% higher than another, they defined it as being better than the other, in these studies.
+Across the other studies, interpretation varied somewhat randomly. 
+In some studies (e.g. Study 1), they seemed to orient on the same value of 0.05, but this time as an absolute difference value, without the addition of a certain percentage cut-off. 
+In other studies (e.g. Study 2), they seemed to deviate from this value to define relevant difference in absolute bias.
+Importantly, this deviation was present in both directions, and therefore not consciously biased towards one direction of possible outcomes.
+In consequence, it appears that interpretations aren't coherent across the studies.
+
+Another important aspect to highlight in the original papers results refers to the general presence of a negative bias in LSAM estimation. 
+Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in the misspecifications, namely studies 3-6. 
+This is done without a general note of some sorts, that this bias should apply in these data-generating scenarios the same as in Studies 1 and 2.
+In consequence, the interpretations @robitzsch_comparing_2022 make, are somewhat misleading on first sight, if one does not account for this bias.
+This does not, however, explain why they did not include more studies or conditions with negatively valenced residual correlations or cross-loadings. We hypothesize, that the goal of the paper was to show that even in these favorable constellations, SAM does not perform better.
+
+To be fair, it should be stated that most of the final conclusions drawn in the paper are correct, anyway. 
+With the use of the term "generally", @robitzsch_comparing_2022 are right in that there are many data constellations, were SAM does not outperform traditional SEM.
+They also acknowledge, that for non-saturated structural models, SAM seems to be the better choice.
+
+Anyway, in order to have a more coherent interpretation of results, we will define an estimator to outperform another, based on the cut-off of 0.05 for bias.
+
+### SD and RMSE
+
+Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE, they rarely explicitly mention them in the results sections or give cut-offs for substantial relevance.
+
+SD is only reported and mentioned in Study 1, even though also seemingly calculated in studies 2 and 3. 
+In this study, they mentioned a 6.6% reduction of SD for LSAM in comparison to ML. 
+This calculation, however, is wrong as the reduction amounts to 8%.
+For our interpretation, we will report percentage reductions larger than 5% as well and compare it with the original study, without drawing a substantive conclusion.
+
+RMSE (and average RMSE) is reported in Studies 1-4, but only in study 2 and 4 explicitly interpreted for our estimators of interest.
+In study 2, differences of up to 0.03 are present and interpreted as not being substantial differences.
+In study 4, differences of up to 0.04 are present and interpreted as not being substantial differences.
+We infer that this lack of mentioning can be interpreted as there being no differences of interest. 
+Thus, we expect our studies to yield similar results. 
+If, however, there are differences large than 0.03, we will report them, without drawing a substantive conclusion.
+
+
+
+
 
