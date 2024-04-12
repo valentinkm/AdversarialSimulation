@@ -1,8 +1,5 @@
 # First script for Simulation Study 2
 
-Used for writing or coding?
-
-
 ```{r}
 set.seed(1)
 ```
@@ -26,9 +23,8 @@ library(dplyr)
 library(tidyr)
 ```
 
-# Source relevant R Functions
-
 # Specify 2-factor-Model
+
 ```{r}
 model <- "
 
@@ -67,16 +63,16 @@ model <- "
 
 ```{r}
 setup_design <- function() {
+  
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
   # Cross-loading conditions
-  cl_conditions <- c(1, 2)  # 0: no cross-loading, 1: one cross-loading, 2: two cross-loadings
+  cl_conditions <- c(1, 2)
   
   # Delta values for cross-loadings, if present, take values of either 0.3 or -0.3
   delta_values <- c(0.3, -0.3)
   
-  # Expand grid to create a data frame of all combinations
   design <- expand.grid(N_sizes = N_sizes, 
                         cl_conditions = cl_conditions, 
                         delta_value = delta_values)
@@ -117,7 +113,7 @@ get_dgm <- function(cl, delta_value) {
     LAM[4, 1] <- delta_value
   }
   
-  # Return a list of model parameters
+  # Return list of model parameters
   return(list(LAM = LAM, PHI = PHI, THETA = THETA))
 }
 
@@ -152,8 +148,6 @@ simulate_data <- function(N, cl, delta_value) {
 #Specify estimation methods of interest
 models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")
 
-# Planned analysis
-
 planned_analysis <- function(N, cl, delta_value, model, model_type) {
 
   dataset <- simulate_data(N, cl, delta_value)$Data
@@ -185,7 +179,7 @@ planned_analysis <- function(N, cl, delta_value, model, model_type) {
 #  Simulation Study
 ```{r}
 simulation_study <- function(design, model, num_repetitions, true_phi, models) {
-  # Initialize an empty dataframe to store the results
+  # Initialize empty dataframe
   results_df <- data.frame(
     ModelType = character(),
     N = integer(),
@@ -295,9 +289,7 @@ report_analysis <- function(results_df, models) {
   return(tables_list)
 }
 
-# Assuming results_df and models are already defined
 list_of_tables <- report_analysis(results_df, models)
-
 
 # Access a specific table
 bias_no_res_table <- list_of_tables[["Bias_CL_1_Delta_0.3"]] # Example for Bias with 1 cross-loading of value 0.3
@@ -311,8 +303,4 @@ report_analysis(results_df, models)
 Open questions: 
 
 Am I sure that my results are correct? Different set of findings than simulation 1 (for 2 repetitions though).
-
-
-
-
 

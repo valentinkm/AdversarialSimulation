@@ -1,8 +1,5 @@
 # First script for Simulation Study 1
 
-Used for writing or coding?
-
-
 ```{r}
 set.seed(1)
 ```
@@ -26,9 +23,8 @@ library(dplyr)
 library(tidyr)
 ```
 
-# Source relevant R Functions
-
 # Specify 2-factor-Model
+
 ```{r}
 model <- "
 
@@ -74,10 +70,9 @@ setup_design <- function() {
   rc_conditions <- c(0, 1, 2)
   psi_values <- c(0.12, -0.12)
   
-  # Expand grid to create a data frame of all combinations
   design <- expand.grid(N_sizes = N_sizes, rc_conditions = rc_conditions, psi_values = psi_values)
   
-  # Adjust for the condition where rc is 0 (correlated residuals are not considered)
+  # Adjust so only one condition where rc is 0 (correlated residuals are not considered)
   design <- design[!(design$rc_conditions == 0 & design$psi_values != 0.12), ]
   
   return(design)
@@ -142,8 +137,6 @@ simulate_data <- function(N, rc, psi_value) {
 #Specify estimation methods of interest
 models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")
 
-# Planned analysis
-
 planned_analysis <- function(N, rc, psi_value, model, model_type) {
   dataset <- simulate_data(N, rc, psi_value)$Data
   
@@ -174,7 +167,7 @@ planned_analysis <- function(N, rc, psi_value, model, model_type) {
 #  Simulation Study
 ```{r}
 simulation_study <- function(design, model, num_repetitions , true_phi, models) {
-  # Initialize an empty dataframe to store the results
+  # Initialize dataframe 
   results_df <- data.frame(
     ModelType = character(),
     N = integer(),

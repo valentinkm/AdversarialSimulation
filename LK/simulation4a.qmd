@@ -4,8 +4,6 @@
 set.seed(1)
 ```
 
-
-
 # Packages
 
 Copied and pasted from original paper.
@@ -23,7 +21,6 @@ library(dplyr)
 library(tidyr)
 ```
 
-# Source relevant R Functions
 
 # Specify 5-factor-Model
 ```{r}
@@ -115,6 +112,7 @@ model <- "
 
 ```{r}
 setup_design <- function() {
+  
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
@@ -209,10 +207,6 @@ get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
 
     MLIST
 }
-
-
-
-
 
 ```
 
@@ -350,7 +344,6 @@ lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
 Analogously to RL, we will simulate the data with the lavaan function, for each condition.
 Here, the matrices_and_simulateData.r should be inserted in a way that allows it to be varied for each condition later on.
 
-
 ```{r}
 
 simulate_data <- function(N, DGM, beta) {
@@ -406,7 +399,6 @@ simulate_data <- function(N, DGM, beta) {
 
 
 # Planned Analysis
-
 
 ```{r}
 #Specify estimation methods of interest
@@ -492,9 +484,6 @@ simulation_study <- function(design, model, num_repetitions, models) {
 }
 
 
-
-
-
 ```
 
 ## RUN
@@ -541,7 +530,6 @@ report_analysis <- function(results_df, models) {
   return(tables_list)
 }
 
-# Assuming results_df and models are already defined
 list_of_tables <- report_analysis(results_df, models)
 
 
@@ -569,15 +557,5 @@ diff_table <- bind_cols(lsam_table[1], diff_table)
 print(diff_table)
 ```
 Negative values = LSAM better ; Positive values = SEM better
-
-
-# Questions
-Open questions: 
-
-Why exactly this kind of estimation methods??
-
-How to compute phi as done in Robitzsch (2022)
-
-
 
 

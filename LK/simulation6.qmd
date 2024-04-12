@@ -23,9 +23,8 @@ library(dplyr)
 library(tidyr)
 ```
 
-# Source relevant R Functions
 
-# Specify 2-factor-Model
+# Specify 3-factor-Model
 ```{r}
 model <- "
 
@@ -105,12 +104,12 @@ setup_design <- function() {
 # Data generating Mechanism
 ```{r}
 get_dgm <- function(psi_value, phis) {
-  # Factor loadings as specified in your study
+
   lambda1 <- 0.6
   lambda2 <- 0.65
   lambda3 <- 0.55
   
-  # Loading matrix for three factors
+  # Loading matrix
   LAM <- matrix(0, nrow=9, ncol=3)
   LAM[1:3, 1] <- lambda1
   LAM[4:6, 2] <- lambda2
@@ -127,16 +126,11 @@ get_dgm <- function(psi_value, phis) {
   
   # Initialize PSI with unique variances
   PSI <- matrix(0, nrow=9, ncol=9)
-  diag(PSI) <- 1 - diag(TR)  # Adjust for unique variances, assuming total variance of 1 for each item
+  diag(PSI) <- 1 - diag(TR)  
   
-  # Directly set the specified residual correlations for the interested pairs
-  # Pair (X1, X4)
+  # Set the specified residual correlations
   PSI[1, 4] <- PSI[4, 1] <- psi_value
-  
-  # Pair (X2, X5)
   PSI[2, 5] <- PSI[5, 2] <- psi_value
-  
-  # Pair (X3, X8)
   PSI[3, 8] <- PSI[8, 3] <- psi_value
   
   return(list(LAM = LAM, PHI = PHI, PSI = PSI))
@@ -149,7 +143,6 @@ get_dgm <- function(psi_value, phis) {
 
 # Simulate data
 ```{r}
-# Assuming dgm_params is obtained from get_dgm()
 simulate_data <- function(N, psi_value, phis) {
   # Obtain the data generating model parameters
   dgm_params <- get_dgm(psi_value, phis)
@@ -157,8 +150,7 @@ simulate_data <- function(N, psi_value, phis) {
   PHI <- dgm_params$PHI
   PSI <- dgm_params$PSI
   
-  # Calculate the total covariance matrix (S) as the sum of trait (factor) and unique variances
-  # Trait covariance matrix (TR) is LAM %*% PHI %*% t(LAM)
+  # Calculate covariance matrix (S) 
   TR <- LAM %*% PHI %*% t(LAM)
   S <- TR + PSI
   
@@ -176,8 +168,6 @@ simulate_data <- function(N, psi_value, phis) {
 ```{r}
 #Specify estimation methods of interest
 models <- c("SEM_ULS", "LSAM_ULS")
-
-# Planned analysis
 
 planned_analysis <- function(N, psi_value, phis, model, model_type) {
 
@@ -330,7 +320,6 @@ diff_table <- map2_df(lsam_table[-1], sem_table[-1], `-`)
 # Add the PhiCondition column back
 diff_table <- bind_cols(lsam_table[1], diff_table)
 
-# Print the new table with differences
 print(diff_table)
 ```
 Negative values = LSAM better ; Positive values = SEM better
@@ -340,8 +329,4 @@ Negative values = LSAM better ; Positive values = SEM better
 Open questions: 
 
 Am I sure that my results are correct? Different set of findings than simulation 1 (for 2 repetitions though).
-
-
-
-
 
