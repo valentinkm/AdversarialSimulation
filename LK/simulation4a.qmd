@@ -134,7 +134,7 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
-This time, we will define the DGM the same way RL did here: https://osf.io/96zhs
+This time, we will define the DGM the same way Rosseel and Loh did here: https://osf.io/96zhs
 ```{r}
 get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
                               lambda = 0.70, PSI = NULL, BETA = NULL,
@@ -341,8 +341,7 @@ lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
 
 
 # Simulate data
-Analogously to RL, we will simulate the data with the lavaan function, for each condition.
-Here, the matrices_and_simulateData.r should be inserted in a way that allows it to be varied for each condition later on.
+Analogously to Rosseel and Loh, we will simulate the data with the lavaan function, for each condition.
 
 ```{r}
 
