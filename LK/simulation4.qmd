@@ -324,21 +324,3 @@ report_analysis(results_df, models)
 ```
 
 
-# Questions
-Open questions: 
-- What with this from original paper?
-
-if (N<inf_val){
-    dat <- MASS::mvrnorm(n=N, mu=rep(0,6), Sigma=S)
-    S <- cov(dat) * (N-1) / N
-}
-
-- How exactly do we compute Bias, SD and RMSE for the estimated factor correlation?
-Absolute vs. relative vs. mean bias in first studies?
-```{r}
-#Performance measures need to be extracted for each condition
-#Below, just mathematical computation, does not work so commented out
-
-#average_absolute_bias <- mean(abs(estimates - true_values))
-#average_relative_bias <- mean((estimates - true_values) / true_values) 
-```

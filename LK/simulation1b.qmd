@@ -264,7 +264,3 @@ report_analysis(results_df)
 ```
 
 
-# Questions
-Open questions: 
-
-Again question of what bias to compute? Here pos. bias, unlike paper where negative. Due to Absolute Bias usage.
