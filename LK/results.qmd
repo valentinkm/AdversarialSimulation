@@ -54,18 +54,6 @@ Thus, we also reverted to the previous analysis of results, not implementing the
 Hence, the number of conditions deviated in the analyses as well.
 Additionally, we doubled the interval length between the phi/beta-conditions to reduce the high number of results that would be present. As there were no interesting findings in the original differentiation, we deemed this to be a fair, pragmatic deviation to reduce complexity.
 
-# Results setup
-
-Running all the scripts in the final markdown with source() is not feasible, as it would repeat the simulation.
-
-The GPT suggestion to split up report_analysis() functions in seperate scripts would lead to double the amount of scripts and is also inadvisable. 
-
-Addtionally, executing quarto render would lead to running all simulations again, as of now.
-
-As of now, it fails anyway due to titlesec problems (error-prone part in the preamble).
-
-My idea: we would run the simulation on the cluster, and export all tables from report_analysis(). These can be indexed in the results.qmd for analysis. This way, the simulation only needs to be run once and is not part of quarto render.
-
 # Result analysis
 
 ## Original paper
@@ -110,6 +98,125 @@ Thus, we expect our studies to yield similar results.
 If, however, there are differences large than 0.03, we will report them, without drawing a substantive conclusion.
 
 
+# Open questions
 
+## 1. Bias and RMSE calculation
+How to compute Bias and RMSE, especially if more than one phi is present (3- and 5-factor models from Studies 4-6)? 
+
+The Paper says it is preferrable to use Average absolute bias (AvgAbsBias) over average relative bias, but they do not use it up until study 4. Following their reasoning, I have calculated the AvgAbsBias starting from Study 1
+
+**Calculation Study 1-3:**
+
+AvgAbsBias: mean(abs(phi_estimates - true_phi)) 
+
+RMSE: sqrt(mean((phi_estimates - true_phi)^2))
+
+Alternatively, relative bias could be: mean((estimates - true_values) / true_values) ?
+
+**Calculation Study 4-6:**
+
+AvgAbsBias:
+
+1. Created list of absolute biases with abs(estimates_list[[phi]] - true_phis[phi]) for all phis within one condition.
+2. Took mean of all these across repetitions
+
+AvgRMSE:
+
+1. Calculated squared error within each condition and repetition
+2. Took mean across repetitions
+
+*But: Unclear what exactly AvgAbsBias is for multiple phis (=more than 2 factors in the model)*
+
+- Do we Either:
+    1. calculate a sum of AbsBias for each estimated model (so within each condition and repetition)
+    2. Take the average across repetitions for each conditions
+    
+- Or:
+    Simply calculate the Avg of ALL AbsBiases, across repetitions for each condition (so without calculating a sum for each estimated model)
+    
+Bottom line question: How should I calculate them?
+
+
+
+## 2. How to calculate the phi values like in the paper? (Simulations 4 & 4a): 
+
+In the paper, they say they want to improve upon Rosseel and Loh by investigating “marginal factor correlations” instead of “condition associations”.
+They then calculate the phi values based on the size of the regression coefficient beta = 0.1. 
+But it is unclear how they calculate them, and why they come up with 10 instead of 8 phi values (In the original paper, Rosseel and Loh only compute 8, corresponding to the number of regressions).
+
+For study 4, I took his 10 values and used them, but need to calculate them for study 4a (for now in study 4a, I have only taken the unstandardized regression weights, as in the original Rosseel and Loh paper). I specified covariance for the 2 of the 10 values that are not regressions (phi21 and phi52) —> Should they also be regressions?
+
+
+
+
+## 3. How to do the matrix algebra? I don’t get it
+
+What I did at the moment: 
+
+Studies 1-3 like in Robitzsch:
+
+```{r}
+#| eval: false
+
+S <- LAM %*% PHI %*% t(LAM) + THETA
+dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
+```
+
+Study 4: imported  true model cov matrix from Robitzsch and used them as Sigma
+
+Study 4a: like in Rosseel and Loh paper (with functions taken from OSF), as now info was provided by Robitzsch
+
+Study 5-6: Like Robitzsch but probably wrong matrix setup as calculation was done on population level only in Robitzsch, unlike me:
+
+```{r}
+#| eval: false
+  
+TR <- LAM %*% PHI %*% t(LAM)
+PSI <- matrix(0, nrow=9, ncol=9)
+diag(PSI) <- 1 - diag(TR)
+S <- TR + PSI  
+dat <- MASS::mvrnorm(n = N, mu = rep(0, nrow(LAM)), Sigma = S, empirical = TRUE)
+```
+
+Robitzsch does: 
+
+```{r}
+#| eval: false
+
+S0 <- S <- LAM %*% PHI %*% t(LAM) + THETA
+rownames(S) <- colnames(S) <- c( paste0("X",1:3), paste0("Y",1:3) )
+
+if (N<inf_val){
+    dat <- MASS::mvrnorm(n=N, mu=rep(0,6), Sigma=S)
+    S <- cov(dat) * (N-1) / N
+}
+
+# save example datasets
+save.data( S , paste0("DATA_DES",dd ) , type="csv2" , path= pf1, row.names=TRUE)
+```
+
+And then later on estimates the models as below:
+
+
+```{r}
+#| eval: false
+
+mod1a <- lavaan::sem(lavmodel, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv=std.lv)
+```
+
+## 4. How to handle warnings in studies 3 & 4
+
+Visible in the console after running the simulation. I commented my opinion below the respective code chunks.
+
+
+
+## 5. Results setup
+
+How should I index into the single simulation results in this document?
+Running all the scripts in the final markdown with source() is not feasible, as it would repeat the simulation.
+The GPT suggestion to split up report_analysis() functions in seperate scripts would lead to double the amount of scripts and is also inadvisable. 
+Addtionally, executing quarto render would lead to running all simulations again, as of now.
+As of now, it fails anyway due to titlesec problems (error-prone part in the preamble).
+My idea: we would run the simulation on the cluster, and export all tables from report_analysis(). These can be indexed in the results.qmd for analysis. This way, the simulation only needs to be run once and is not part of quarto render.
 
 
