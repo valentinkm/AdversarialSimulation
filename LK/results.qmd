@@ -63,10 +63,10 @@ In the original paper, @robitzsch_comparing_2022 had some inconsistencies when i
 They did not thoroughly define an a prior criteria for when an estimator outperformed another. 
 Only in their Studies 5 and 6, they defined an absolute bias equal to or larger than 0.05 as relevant. 
 Additionally, when an estimator had a minimum percentage error of 20% higher than another, they defined it as being better than the other, in these studies.
-Across the other studies, interpretation varied somewhat randomly. 
+Across the other studies, interpretations sometimes varied. 
 In some studies (e.g. Study 1), they seemed to orient on the same value of 0.05, but this time as an absolute difference value, without the addition of a certain percentage cut-off. 
 In other studies (e.g. Study 2), they seemed to deviate from this value to define relevant difference in absolute bias.
-Importantly, this deviation was present in both directions, and therefore not consciously biased towards one direction of possible outcomes.
+Importantly, this deviation was present in both directions, and therefore did not appear to be consciously biased towards one direction of possible outcomes.
 In consequence, it appears that interpretations aren't coherent across the studies.
 
 Another important aspect to highlight in the original papers results refers to the general presence of a negative bias in LSAM estimation. 
@@ -79,13 +79,13 @@ To be fair, it should be stated that most of the final conclusions drawn in the 
 With the use of the term "generally", @robitzsch_comparing_2022 are right in that there are many data constellations, were SAM does not outperform traditional SEM.
 They also acknowledge, that for non-saturated structural models, SAM seems to be the better choice.
 
-Anyway, in order to have a more coherent interpretation of results, we will define an estimator to outperform another, based on the cut-off of 0.05 for bias.
+For our studies, in order to have a more coherent interpretation of results, we will define an estimator to outperform another, based on the cut-off of 0.05 for bias.
 
 ### SD and RMSE
 
-Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE, they rarely explicitly mention them in the results sections or give cut-offs for substantial relevance.
+Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE, they rarely explicitly mentioned them in the results sections or give cut-offs for substantial relevance.
 
-SD is only reported and mentioned in Study 1, even though also seemingly calculated in studies 2 and 3. 
+SD is only reported and mentioned in Study 1, even though also claimed to be calculated in studies 2 and 3. 
 In this study, they mentioned a 6.6% reduction of SD for LSAM in comparison to ML. 
 This calculation, however, is wrong as the reduction amounts to 8%.
 For our interpretation, we will report percentage reductions larger than 5% as well and compare it with the original study, without drawing a substantive conclusion.
@@ -132,7 +132,7 @@ AvgRMSE:
     2. Take the average across repetitions for each conditions
     
 - Or:
-    Simply calculate the Avg of ALL AbsBiases, across repetitions for each condition (so without calculating a sum for each estimated model)
+    Simply calculate the Avg of ALL AbsBiases, across repetitions for each condition (so without calculating a sum for each estimated model, as I did up to now).
     
 Bottom line question: How should I calculate them?
 
@@ -151,7 +151,7 @@ For study 4, I took his 10 values and used them, but need to calculate them for 
 
 ## 3. How to do the matrix algebra? I don’t get it
 
-How do I ideally calculate the covariance matrix? This is done differently for different studies in the original paper. I used what I had without really understanding why. For example, why S is calculated differently in Studies 1-3 vs. 5-6.
+How do I ideally calculate the covariance matrix? This is done differently for different studies in the original paper. I used what I had without really understanding why. For example, why S is calculated differently in Studies 1-3 vs. 5-6. Might it be because the analyses in Robitzsch studies 5 and 6 were only conducted on the population level?
 
 What I did at the moment: 
 
