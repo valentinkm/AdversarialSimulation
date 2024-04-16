@@ -151,6 +151,8 @@ For study 4, I took his 10 values and used them, but need to calculate them for 
 
 ## 3. How to do the matrix algebra? I don’t get it
 
+How do I ideally calculate the covariance matrix? This is done differently for different studies in the original paper. I used what I had without really understanding why. For example, why S is calculated differently in Studies 1-3 vs. 5-6.
+
 What I did at the moment: 
 
 Studies 1-3 like in Robitzsch:
@@ -162,9 +164,9 @@ S <- LAM %*% PHI %*% t(LAM) + THETA
 dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
 ```
 
-Study 4: imported  true model cov matrix from Robitzsch and used them as Sigma
+Study 4: imported true model cov matrix from Robitzsch and used them as Sigma
 
-Study 4a: like in Rosseel and Loh paper (with functions taken from OSF), as now info was provided by Robitzsch
+Study 4a: like in Rosseel and Loh paper (with functions taken from OSF), as no info was provided by Robitzsch
 
 Study 5-6: Like Robitzsch but probably wrong matrix setup as calculation was done on population level only in Robitzsch, unlike me:
 
@@ -178,7 +180,7 @@ S <- TR + PSI
 dat <- MASS::mvrnorm(n = N, mu = rep(0, nrow(LAM)), Sigma = S, empirical = TRUE)
 ```
 
-Robitzsch does: 
+For context, Robitzsch does the following within his simulation loop: 
 
 ```{r}
 #| eval: false
@@ -197,12 +199,13 @@ save.data( S , paste0("DATA_DES",dd ) , type="csv2" , path= pf1, row.names=TRUE)
 
 And then later on estimates the models as below:
 
-
 ```{r}
 #| eval: false
 
 mod1a <- lavaan::sem(lavmodel, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv=std.lv)
 ```
+
+
 
 ## 4. How to handle warnings in studies 3 & 4
 
