@@ -157,10 +157,6 @@ models <- modify(models, ~compose(\(e)filter(e, label == "phi")$est, parameterEs
 # apply all estimators to the same dataset
 apply_models <- \(d) map(estimators, exec, d)
 
-d <- map(1:6, ~rnorm(100)) 
-names(d) <- c(str_c("X", 1:3), str_c("Y", 1:3))
-d <- as.data.frame(d)
-
 planned_analysis <- compose(apply_models, simulate_data)
 
 planned_analysis(100, 0, -.16)
