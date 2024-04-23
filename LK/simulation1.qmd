@@ -160,11 +160,11 @@ models <- list(
 # postprocess each model output
 models <- modify(models, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
 # apply all estimators to the same dataset
-apply_models <- \(d) map(estimators, exec, d)
+apply_models <- \(d) map(models, exec, d)
 
 planned_analysis <- compose(apply_models, simulate_data)
 
-planned_analysis(100, 0, -.16)
+planned_analysis(100, 0, -.12)
 ```
 
 #  Simulation Study
