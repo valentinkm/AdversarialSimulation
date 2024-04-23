@@ -15,7 +15,7 @@ Copied and pasted from original paper.
 
 ```{r}
 # Specify the libraries to load
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse")
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -174,7 +174,19 @@ planned_analysis(100, 0, -.12)
 # ideally each repetition should be treated just like other design variables but with a random number seed
 # take a look at withr (with_seed)
 design <- setup_design()
-results_df <- mutate(design, !!!pmap_dfr(design, planned_analysis))
+
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
+}
+
+simulation_study <- function(design, k, seed = NULL) {
+  future_map_dfr(seq_len(k), ~simulation_study_(design), .options = furrr_options(seed = seed))
+}
+
+results_df <- simulation_study(design,2,1235)
+results_df
+
 ```
 
 # Report analysis
