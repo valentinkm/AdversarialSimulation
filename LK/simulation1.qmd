@@ -168,13 +168,10 @@ planned_analysis(100, 0, -.12)
 ```
 # Extract results
 ```{r}
-#Computing Bias
-results_bias <- results_df %>%
-  group_by(N, rc, psi_value) %>%
-  summarize(across(everything(), ~mean(abs(.x - phi))), .groups = 'drop')
 
-
-extract_results <- results_df %>%
+extract_results <- function(results_df){
+#Compute performance measures
+results_metrics <- results_df %>%
   group_by(N, rc, psi_value) %>%
   summarize(across(everything(),
                    list(
@@ -182,15 +179,28 @@ extract_results <- results_df %>%
                      sd = ~sd(.x),                          # SD
                      rmse = ~sqrt(mean((.x - phi) ^ 2))  # Root mean square error
                    )), .groups = 'drop')
+  split_metrics <- results_metrics %>%
+    group_by(rc, psi_value) %>%
+    group_split()
 
-list_results <-list(
-  bias = extract_results %>% select(N, rc, psi_value, matches("_bias$")),
-  sd = extract_results %>% select(N, rc, psi_value, matches("_sd$")),
-  rmse = extract_results %>% select(N, rc, psi_value, matches("_rmse$"))
-)
+  # Define a function to transform each group into the desired format
+  transform_group <- function(df_group) {
+    df_group <- df_group %>%
+                  select(-rc, -psi_value) %>%
+                  pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value") 
+        bias <- df_group %>% filter(str_detect(method_metric, "bias"))
+        sd <- df_group %>% filter(str_detect(method_metric, "sd"))
+        rmse <- df_group %>% filter(str_detect(method_metric, "rmse"))
+        
+  }
 
-list_results[["bias"]]
+  # Apply the transformation to each group and store the results
+  tables_list <- map(split_metrics, transform_group)
 
+  return(tables_list)
+}
+
+tables_list <- extract_results(results_df)
 
 ```
 
