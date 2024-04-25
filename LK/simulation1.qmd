@@ -200,7 +200,6 @@ results_metrics <- results_df %>%
   return(tables_list)
 }
 
-tables_list <- extract_results(results_df)
 
 ```
 
@@ -226,7 +225,13 @@ simulation_study <- function(design, k, seed = NULL) {
 results_df <- simulation_study(design,2,1235)
 results_df
 
+tables_list <- extract_results(results_df)
+
+
 ```
+
+
+
 
 # Report analysis
 ```{r}
