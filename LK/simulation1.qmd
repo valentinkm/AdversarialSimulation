@@ -195,6 +195,7 @@ results_metrics <- results_df %>%
         rmse <- df_group %>% filter(str_detect(method_metric, "rmse")) %>%
             pivot_wider(names_from = N, values_from = value)
         
+          return(list(bias = bias, sd = sd, rmse = rmse))  
   }
 
   # Apply the transformation to each group and store the results
