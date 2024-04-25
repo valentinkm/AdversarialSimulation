@@ -166,6 +166,17 @@ planned_analysis <- compose(apply_models, simulate_data)
 
 planned_analysis(100, 0, -.12)
 ```
+# Extract results
+```{r}
+#Computing Bias
+results_bias <- results_df %>%
+  group_by(N, rc, psi_value) %>%
+  summarize(across(everything(), ~mean(abs(.x - phi))), .groups = 'drop')
+
+
+```
+
+
 
 #  Simulation Study
 
