@@ -188,9 +188,12 @@ results_metrics <- results_df %>%
     df_group <- df_group %>%
                   select(-rc, -psi_value) %>%
                   pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value") 
-        bias <- df_group %>% filter(str_detect(method_metric, "bias"))
-        sd <- df_group %>% filter(str_detect(method_metric, "sd"))
-        rmse <- df_group %>% filter(str_detect(method_metric, "rmse"))
+        bias <- df_group %>% filter(str_detect(method_metric, "bias")) %>%
+            pivot_wider(names_from = N, values_from = value)
+        sd <- df_group %>% filter(str_detect(method_metric, "sd")) %>%
+            pivot_wider(names_from = N, values_from = value)
+        rmse <- df_group %>% filter(str_detect(method_metric, "rmse")) %>%
+            pivot_wider(names_from = N, values_from = value)
         
   }
 
