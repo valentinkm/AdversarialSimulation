@@ -15,7 +15,7 @@ Copied and pasted from original paper.
 
 ```{r}
 # Specify the libraries to load
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse")
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -88,21 +88,28 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
+
+## Fixed values
+```{r}
+lam1 <- 0.55
+lam2 <- 0.45
+phi <- 0.60
+
+LAM <- matrix(0, nrow=6, ncol=2)
+LAM[1:3, 1] <- lam1
+LAM[4:6, 2] <- lam2
+
+PHI <- matrix(0, nrow=2, ncol=2)
+diag(PHI) <- 1
+PHI[1, 2] <- PHI[2, 1] <- phi
+
+THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
+
+```
+
+## Varying values
 ```{r}
 get_dgm <- function(rc, psi_value) {
-  lam1 <- 0.55
-  lam2 <- 0.45
-  phi <- 0.60
-  
-  LAM <- matrix(0, nrow=6, ncol=2)
-  LAM[1:3, 1] <- lam1
-  LAM[4:6, 2] <- lam2
-  
-  PHI <- matrix(0, nrow=2, ncol=2)
-  diag(PHI) <- 1
-  PHI[1, 2] <- PHI[2, 1] <- phi
-  
-  THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
   
   # Adjust THETA for misspecification
   if (rc >= 1) {
@@ -122,8 +129,6 @@ get_dgm <- function(rc, psi_value) {
 simulate_data <- function(N, rc, psi_value) {
   # Get DGM parameters
   dgm_params <- get_dgm(rc, psi_value)
-  LAM <- dgm_params$LAM
-  PHI <- dgm_params$PHI
   THETA <- dgm_params$THETA
   
   S <- LAM %*% PHI %*% t(LAM) + THETA
@@ -155,12 +160,57 @@ models <- list(
 # postprocess each model output
 models <- modify(models, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
 # apply all estimators to the same dataset
-apply_models <- \(d) map(estimators, exec, d)
+apply_models <- \(d) map(models, exec, d)
 
 planned_analysis <- compose(apply_models, simulate_data)
 
-planned_analysis(100, 0, -.16)
+planned_analysis(100, 0, -.12)
 ```
+# Extract results
+```{r}
+
+extract_results <- function(results_df){
+#Compute performance measures
+results_metrics <- results_df %>%
+  group_by(N, rc, psi_value) %>%
+  summarize(across(everything(),
+                   list(
+                     bias = ~mean(abs(.x - phi)),          # Average absolute bias
+                     sd = ~sd(.x),                          # SD
+                     rmse = ~sqrt(mean((.x - phi) ^ 2))  # Root mean square error
+                   )), .groups = 'drop')
+
+  split_metrics <- results_metrics %>%
+    group_by(rc, psi_value) %>%
+    group_split() %>%
+     set_names(map(., ~ paste(unique(.x$rc), unique(.x$psi_value), sep = "_")))
+
+  # Define a function to transform each group into the desired format
+  transform_group <- function(df_group) {
+    df_group <- df_group %>%
+                  select(-rc, -psi_value) %>%
+                  pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value") 
+        
+        bias <- df_group %>% filter(str_detect(method_metric, "bias")) %>%
+                pivot_wider(names_from = N, values_from = value)
+          sd <- df_group %>% filter(str_detect(method_metric, "sd")) %>%
+              pivot_wider(names_from = N, values_from = value)
+        rmse <- df_group %>% filter(str_detect(method_metric, "rmse")) %>%
+            pivot_wider(names_from = N, values_from = value)
+      
+        return(list(bias = bias, sd = sd, rmse = rmse))  
+  }
+
+  # Apply the transformation to each group and store the results
+  tables_list <- map(split_metrics, transform_group)
+
+  return(tables_list)
+}
+
+
+```
+
+
 
 #  Simulation Study
 
@@ -169,70 +219,33 @@ planned_analysis(100, 0, -.16)
 # ideally each repetition should be treated just like other design variables but with a random number seed
 # take a look at withr (with_seed)
 design <- setup_design()
-results_df <- mutate(design, !!!pmap_dfr(design, planned_analysis))
-```
 
-# Report analysis
-```{r}
-report_analysis <- function(results_df, models) {
-  # Define the list to store the tables
-  tables_list <- list()
-
-  # Define the different RC conditions and the corresponding labels
-  unique_rc <- unique(results_df$RC)
-  unique_psi <- unique(results_df$PsiValue)
-
-  # Define metric names to iterate over
-  metrics <- c("Bias", "SD", "RMSE")
-
-  # Loop through each RC condition and PsiValue to create separate tables for each metric
-  for (rc in unique_rc) {
-    for (psi in unique_psi) {
-      # Skip creation for non-existing conditions (RC == 0 and PsiValue is negative)
-      if (rc == 0 && psi < 0) {
-        next
-      }
-      
-      # Filter for the current RC and PsiValue
-      subset_df <- results_df %>%
-        filter(RC == rc, PsiValue == psi) %>%
-        mutate(ModelType = factor(ModelType, levels = models)) # Use the models object here
-
-      # Loop through each metric to pivot and create tables
-      for (metric in metrics) {
-        metric_colnames <- grep(metric, names(subset_df), value = TRUE)
-        
-        # Pivot the dataframe to a wide format for the current metric and reorder rows
-        wide_df <- subset_df %>%
-          select(ModelType, N, all_of(metric_colnames)) %>%
-          arrange(ModelType) %>% # Arrange rows by ModelType
-          pivot_longer(cols = all_of(metric_colnames), names_to = "Metric", values_to = "Value") %>%
-          mutate(Value = round(Value, 2)) %>% # Round the values
-          pivot_wider(names_from = N, values_from = Value) %>%
-          select(-Metric)
-        
-        # Generate the table name based on the condition and metric
-        psi_label <- ifelse(psi == 0, "0", ifelse(psi > 0, "pos", "neg"))
-        condition_label <- paste(rc, psi_label, "res", sep = "_")
-        table_name <- paste(metric, condition_label, sep = "_")
-        
-        # Store the table in the list with the corrected naming
-        tables_list[[table_name]] <- wide_df
-      }
-    }
-  }
-  
-  return(tables_list)
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
 }
 
-list_of_tables <- report_analysis(results_df, models)
+simulation_study <- function(design, k, seed = NULL) {
+  future_map_dfr(seq_len(k), ~simulation_study_(design), .options = furrr_options(seed = seed))
+}
 
-# Access a specific table
-bias_no_res_table <- list_of_tables[["Bias_0_pos_res"]] # Example for Bias with no residual correlations
+results_df <- simulation_study(design,2,1235)
+results_df
 
-#display all tables
-report_analysis(results_df, models)
+tables_list <- extract_results(results_df)
+
+
 ```
+
+
+
+
+
+
+
+
+
+
 
 
 # Questions
