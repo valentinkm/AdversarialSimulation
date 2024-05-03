@@ -224,6 +224,7 @@ print(results_df)
 ```
 Might there be NA's somewhere that result in the warning? Nothing visible in the results.
 
+
 # Report analysis
 ```{r}
 report_analysis <- function(results_df, models) {

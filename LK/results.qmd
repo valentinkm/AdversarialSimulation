@@ -111,7 +111,9 @@ AvgAbsBias: mean(abs(phi_estimates - true_phi))
 
 RMSE: sqrt(mean((phi_estimates - true_phi)^2))
 
-Alternatively, relative bias could be: mean((estimates - true_values) / true_values) ?
+Alternatively, relative bias could be: mean(estimates - true_values) / true_value
+
+true value nur innerhalb eines phi, wenn die phis alle den gleichen Wert haben, dann müssen sie getrennt sein
 
 **Calculation Study 4-6:**
 
@@ -137,6 +139,12 @@ AvgRMSE:
 Bottom line question: How should I calculate them?
 
 
+Answer: both is valid: If we want 0, then absolute bias is preferrable, if true value is not 0 (which it)
+Ideally, beides reporten, eines interpretieren
+AvgAbsBias: Mein weg ist korrekt
+
+Reporting: STandardfehler/ KI für Bias berichten
+
 
 ## 2. How to calculate the phi values like in the paper? (Simulations 4 & 4a): 
 
@@ -146,6 +154,8 @@ But it is unclear how they calculate them, and why they come up with 10 instead 
 
 For study 4, I took his 10 values and used them, but need to calculate them for study 4a (for now in study 4a, I have only taken the unstandardized regression weights, as in the original Rosseel and Loh paper). I specified covariance for the 2 of the 10 values that are not regressions (phi21 and phi52) —> Should they also be regressions?
 
+Answer:
+take lavaan: implicit cov. matrix berechnen lassen, wie in RL
 
 
 
@@ -177,8 +187,9 @@ TR <- LAM %*% PHI %*% t(LAM)
 PSI <- matrix(0, nrow=9, ncol=9)
 diag(PSI) <- 1 - diag(TR)
 S <- TR + PSI  
-dat <- MASS::mvrnorm(n = N, mu = rep(0, nrow(LAM)), Sigma = S, empirical = TRUE)
+dat <- MASS::mvrnorm(n = N, mu = rep(0, nrow(LAM)), Sigma = S, empirical = TRUE) ####empirical=true ist wichtiger unterschied, daten = exact covariance, kein sampling fehler
 ```
+###### Alles in lavaan spezifizieren und cov-matrix bekommen
 
 For context, Robitzsch does the following within his simulation loop in Study 1: 
 
@@ -212,6 +223,14 @@ mod1a <- lavaan::sem(lavmodel, sample.cov=S, sample.nobs=1e5, estimator="ML", st
 Visible in the console after running the simulation. I commented my opinion below the respective code chunks.
 
 
+For study 3, relevant error!
+
+In purr: insistently() = versuchs nochmal, wenn es einen Fehler gibt oder possibly()quietly()safely() zusammen = alle warnings/messages werden gespeichert (safely) und wird ausgegeben wenn es etwas gibt, statt dem eigentlich value, ohne die simulation abzubrechen
+safely() auf jeden fall anwenden auf simulation() function
+wenn geht in kombination mit quietly()
+possibly() ohne abzubrechen Fehler speichern, am Ende
+--> Alle angucken und kombinieren, eventuell safely und quietly damit man ergebnisse, warnings, fehler alles gemeinsam ausgegeben bekommen
+Immer die gleiche Funktion nutzen
 
 ## 5. Results setup
 
@@ -223,3 +242,10 @@ As of now, it fails anyway due to titlesec problems (error-prone part in the pre
 My idea: we would run the simulation on the cluster, and export all tables from report_analysis(). These can be indexed in the results.qmd for analysis. This way, the simulation only needs to be run once and is not part of quarto render.
 
 
+Möglichst auf einzelne Simulation beziehen interpretation
+
+Durchführung: caching von rmarkdown (wenn sich nichts geändert hat, rechne nichts neu),
+
+Wenn downloaden der Ergebnisse: Dann in einem Mechanismus, idealerweise ausführen mit Makefile!
+
+Noch einmal das Repo: https://github.com/aaronpeikert/varynfit/blob/master/varynfit.Rmd angucken, er lädt
