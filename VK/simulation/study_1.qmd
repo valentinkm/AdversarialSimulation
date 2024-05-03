@@ -1,0 +1,233 @@
+
+---
+title: "Study 1"
+author: "Valentin Kriegmair"
+date: '2024-04-21'
+output: html_document
+---
+
+Remarks:
+- This is yet in a combined markdown format but will be split into separate files.
+- The study does not include all methods and performance metrics.
+- At the moment this only runs locally.
+- Once this basic structure of the script is confirmed the remaining methods and metrics will be added as well as the second study and the script will be set up to run on a cluster.
+
+Questions:
+- Is the general approach sound?
+- Am I correctly using the `future` and `furrr` packages for parallel processing?
+- Does this need major alterations to run on the cluster?
+
+# Libraries
+will be handled by docker or renv
+```{r}
+library(MASS)  
+library(dplyr) 
+library(tidyr) 
+library(future) 
+library(furrr)
+library(lavaan)
+```
+
+# Data Generating Mechanism:
+```{r}
+generate_dgm <- function(model_type, N, reliability) {
+    n_factors <- 5
+    n_indicators <- 15
+    
+    # Define matrices
+    B <- matrix(0, nrow = n_factors, ncol = n_factors)
+    Psi <- diag(c(1, 1, 0.97, 0.98, 0.98), n_factors)
+    Lambda <- matrix(0, nrow = n_indicators, ncol = n_factors)
+    
+    # Set up Lambda matrix for factor loadings
+    for (i in 1:n_factors) {
+        Lambda[(i - 1) * 3 + (1:3), i] <- c(1, 0.7, 0.7)
+    }
+    
+    # Set B matrix according to the model type
+    if (model_type %in% c("1.1", "1.2", "1.4")) {
+        B[3, c(1, 2, 4)] <- 0.1  # f3 influenced by f1, f2, and f4
+        B[4, c(1, 2)] <- 0.1      # f4 influenced by f1 and f2
+        B[5, c(3, 4)] <- 0.1      # f5 influenced by f3 and f4
+    } else if (model_type == "1.3") {
+        B[3, c(1, 2)] <- 0.1      # f3 influenced by f1 and f2
+        B[4, c(1, 2, 3)] <- 0.1   # f4 influenced by f1, f2, and f3
+        B[5, c(3, 4)] <- 0.1      # f5 influenced by f3 and f4
+    }
+    
+    # Calculate Theta (unique variances) inversely proportional to reliability
+    sigma_yy <- Lambda %*% Psi %*% t(Lambda)  # Variance explained by latent factors
+    theta_diag <- diag(sigma_yy) * (1 - reliability)  # Unique variances based on reliability
+    Theta <- diag(theta_diag)  # Start with a diagonal matrix
+
+    # Adjust Theta for specific residual correlations in Model 1.3
+    if (model_type == "1.3") {
+        pairs <- cbind(c(2, 5, 8, 11, 14), c(3, 6, 9, 12, 15))
+        for (pair in 1:ncol(pairs)) {
+            i <- pairs[1, pair]
+            j <- pairs[2, pair]
+            Theta[i, j] <- Theta[j, i] <- 0.6 * min(theta_diag[c(i, j)])
+        }
+    }
+
+    # Ensure all matrices are valid for Sigma calculation
+    Sigma_eta <- solve(diag(1, n_factors, n_factors) - B) %*% Psi %*% t(solve(diag(1, n_factors, n_factors) - B))
+    Sigma <- Lambda %*% Sigma_eta %*% t(Lambda) + Theta
+    
+    # Generate data
+    data <- mvrnorm(n = N, mu = rep(0, n_indicators), Sigma = Sigma)
+    colnames(data) <- paste0("y", 1:n_indicators)
+    
+
+    
+        return(list(data = data, 
+                true_values = list(B = B, Lambda = Lambda, Psi = Psi, Theta = Theta),
+                B = B, Psi = Psi, Lambda = Lambda, Theta = Theta))
+}
+```
+
+# Simulation Study 1
+```{r}
+# Define the number of repetitions
+n_reps <- 10  
+
+# Paramter Grid:
+params <- expand.grid(
+  model_type = c("1.1", "1.2", "1.3", "1.4"),
+  N = c(100, 400, 6400),
+  reliability = c(0.3, 0.5, 0.7),
+  method = c("SEM", "SAM"),  # Include methods as part of the grid
+  rep = 1:n_reps
+) %>%
+  mutate(id = row_number())
+ 
+# Set population values:
+B_true <- c(
+    'f3~f1' = 0.1, 'f3~f2' = 0.1, 'f3~f4' = 0.1,
+    'f4~f1' = 0.1, 'f4~f2' = 0.1,
+    'f5~f3' = 0.1, 'f5~f4' = 0.1
+)
+true_values <- list(
+    B = B_true
+)
+
+run_complete_simulation_study <- function(params, true_values) {
+  # Set RNG and parallel execution
+  RNGkind("L'Ecuyer-CMRG")
+  plan(multisession, workers = detectCores() - 1)
+
+  # Model syntax
+  model_syntax <- "
+            f1 =~ y1 + y2 + y3
+            f2 =~ y4 + y5 + y6
+            f3 =~ y7 + y8 + y9
+            f4 =~ y10 + y11 + y12
+            f5 =~ y13 + y14 + y15
+
+            f3 ~ f1 + f2 + f4
+            f4 ~ f1 + f2
+            f5 ~ f3 + f4"
+
+  run_analysis <- function(data, model_syntax, method = "SEM") {
+  if (method == "SEM") {
+    tryCatch({
+      fit <- sem(model_syntax, data = as.data.frame(data))
+      if (lavInspect(fit, "converged")) {
+        return(list(fit = fit, error = NULL, converged = TRUE))
+      } else {
+        return(list(fit = NULL, error = "Model did not converge", converged = FALSE))
+      }
+    }, error = function(e) {
+      return(list(fit = NULL, error = e$message, converged = FALSE))
+    })
+  } else if (method == "SAM") {
+    tryCatch({
+      fit <- sam(model_syntax, data = as.data.frame(data), mm.list = list(f1 = "f1", f2 = "f2", f3 = "f3", f4 = "f4", f5 = "f5"))
+      if (lavInspect(fit, "converged")) {
+        return(list(fit = fit, error = NULL, converged = TRUE))
+      } else {
+        return(list(fit = NULL, error = "Model did not converge", converged = FALSE))
+      }
+    }, error = function(e) {
+      return(list(fit = NULL, error = e$message, converged = FALSE))
+    })
+  } else {
+    stop("Unknown method specified")
+  }
+  }
+
+  # Internal function to evaluate model performance
+  evaluate_performance <- function(fit, true_values) {
+    if (is.null(fit) || !lavInspect(fit, "converged")) {
+      return(list(Error = "Model did not converge or fit object is null"))
+    }
+    estimates = coef(fit)
+    estimated_paths = estimates[names(estimates) %in% names(true_values$B)]
+    calculate_metrics(estimated_paths, unlist(true_values$B))
+  }
+
+  # Performance Metrics calculation
+  calculate_metrics <- function(estimated, true) {
+    biases = 100 * (estimated - true) / true  # Percentage bias
+    rmse = sqrt(mean((estimated - true)^2, na.rm = TRUE))
+    list(Bias = mean(biases, na.rm = TRUE), RMSE = rmse)
+  }
+
+  # Run the simulations and analysis in parallel
+  results <- future_pmap(params, function(model_type, N, reliability, method, rep, id) {
+    set.seed(12345 + id)
+    data <- generate_dgm(model_type, N, reliability)$data
+    fit_result = run_analysis(data, model_syntax, method)
+    if (!is.null(fit_result$fit) && fit_result$converged) {
+      performance_metrics = evaluate_performance(fit_result$fit, true_values)
+      c(performance_metrics, Converged = 1)  # Use numeric for easy mean calculation
+    } else {
+      c(Bias = NA, RMSE = NA, Converged = 0)
+    }
+  }, .options = furrr_options(seed = TRUE))
+
+
+  convergence_rate <- mean(sapply(results, function(x) x$Converged))
+
+  # Extract performance metrics from results
+  biases <- sapply(results, function(x) x$Bias)
+  rmses <- sapply(results, function(x) x$RMSE)
+
+
+  # Create a dataframe for results
+    results_df <- data.frame(
+    ModelType = params$model_type,
+    N = params$N,
+    Reliability = params$reliability,
+    Method = params$method,
+    Bias = sapply(results, `[[`, "Bias"),
+    RMSE = sapply(results, `[[`, "RMSE"),
+    Converged = sapply(results, `[[`, "Converged")
+  )
+
+
+  # Calculate summary statistics
+  summary_stats <- results_df %>%
+    group_by(ModelType, N, Reliability, Method) %>%
+    summarise(
+      AverageBias = mean(Bias, na.rm = TRUE),
+      AverageRMSE = mean(RMSE, na.rm = TRUE),
+      ConvergenceRate = mean(Converged)
+    ) %>%
+    arrange(ModelType, N, Reliability, Method)  
+
+  
+  # Return the summary statistics, detailed results, and convergence rate
+  list(Summary = summary_stats, DetailedResults = results_df, ConvergenceRate = convergence_rate)
+}
+
+# Run the complete simulation study
+simulation_results <- run_complete_simulation_study(params, true_values)
+```
+
+# Results
+```{r}
+# Run the complete simulation study
+simulation_results <- run_complete_simulation_study(params, true_values)
+simulation_results$Summary
+```
