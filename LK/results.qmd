@@ -247,5 +247,9 @@ Möglichst auf einzelne Simulation beziehen interpretation
 Durchführung: caching von rmarkdown (wenn sich nichts geändert hat, rechne nichts neu),
 
 Wenn downloaden der Ergebnisse: Dann in einem Mechanismus, idealerweise ausführen mit Makefile!
+Sind die einzelnen Skripte komplett unabhängig? Alle in eigenem environment laufen lassen dann gut! source(environment), dieses argument für jede sim anlegen, eigene envrironments
+rmarkdown: spin
+
+knitr:: purl sollte gehen in quarto: konvertiert markdown in script https://quarto.org/docs/reference/cells/cells-knitr.html
 
 Noch einmal das Repo: https://github.com/aaronpeikert/varynfit/blob/master/varynfit.Rmd angucken, er lädt
