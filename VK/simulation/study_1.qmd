@@ -111,7 +111,7 @@ true_values <- list(
     B = B_true
 )
 
-run_complete_simulation_study <- function(params, true_values) {
+run_study_1 <- function(params, true_values) {
   # Set RNG and parallel execution
   RNGkind("L'Ecuyer-CMRG")
   plan(multisession, workers = detectCores() - 1)
@@ -221,12 +221,12 @@ run_complete_simulation_study <- function(params, true_values) {
 }
 
 # Run the complete simulation study
-simulation_results <- run_complete_simulation_study(params, true_values)
+simulation_results <- run_study_1(params, true_values)
 ```
 
 # Results
 ```{r}
 # Run the complete simulation study
-simulation_results <- run_complete_simulation_study(params, true_values)
+simulation_results <- run_study_1(params, true_values)
 simulation_results$Summary
 ```
