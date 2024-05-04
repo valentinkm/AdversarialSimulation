@@ -197,7 +197,7 @@ apply_models <- \(d) map(models, exec, d)
 
 planned_analysis <- compose(apply_models, simulate_data)
 
-planned_analysis(100, 0, -.12)
+planned_analysis(100, 0, -.12, model)
 ```
 
 # Extract results

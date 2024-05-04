@@ -206,39 +206,30 @@ simulate_data <- function(N, cl, delta_value, model) {
   return(df_dat)
 }
 
-
 ```
 
 # Planned Analysis
 ```{r}
 #Specify estimation methods of interest
-models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")
 
-planned_analysis <- function(N, cl, delta_value, model, model_type) {
+models <- list(
+  SEM_ML = \(d) lavaan::sem(model, data=d, estimator="ML", std.lv= TRUE),
+  SEM_ULS = \(d) lavaan::sem(model, data=d, estimator="ULS", std.lv= TRUE),
+  LSAM_ML = \(d)
+  lavaan::sam(model, data=d, sam.method="local", estimator = "ML", std.lv= TRUE),
+  LSAM_ULS = \(d)lavaan::sam(model, data=d, sam.method="local", estimator = "ULS", std.lv= TRUE),
+  GSAM_ML = \(d) lavaan::sam(model, data=d, sam.method = "global", estimator = "ML", std.lv= TRUE),
+  GSAM_ULS = \(d) lavaan::sam(model, data=d, sam.method = "global", estimator = "ULS", std.lv= TRUE)
+)
+# postprocess each model output
+models <- modify(models, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
+# apply all estimators to the same dataset
+apply_models <- \(d) map(models, exec, d)
 
-  dataset <- simulate_data(N, cl, delta_value)$Data
-  
-  if (model_type == "SEM_ML") {
-    fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
-  } else if (model_type == "SEM_ULS") {
-    fit <- lavaan::sem(model, data=dataset, estimator="ULS", std.lv= TRUE)
-  } else if (model_type == "LSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "LSAM_ULS") {
-    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ULS", std.lv= TRUE)
-  } else if (model_type == "GSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "GSAM_ULS") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ULS", std.lv= TRUE)
-  } else {
-    stop("Unknown model type specified")
-  }
-  
-  estimates <- parameterEstimates(fit)
-  phi_estimate <- subset(estimates, label == "phi")$est
-  return(phi_estimate)
-}
+planned_analysis <- compose(apply_models, simulate_data)
 
+#The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
+planned_analysis(100, 0, 0.3, model)
 
 ```
 
