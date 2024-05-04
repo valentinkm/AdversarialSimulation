@@ -144,6 +144,14 @@ apply_syntax <- function(model, MLIST) {
     paste("Y3 ~~", THETA[6,6], "*Y3"),
     sep = "\n"
   ) 
+
+  # Conditionally add correlated residuals if rc > 0
+  if (THETA[1, 4] != 0) {
+        pop.model <- paste(pop.model, paste("X1 ~~", THETA[1,4], "*Y1"), sep = "\n")
+    }
+    if (THETA[2, 5] != 0) {
+        pop.model <- paste(pop.model, paste("X2 ~~", THETA[2,5], "*Y2"), sep = "\n")
+    }
   
   return(pop.model)
 }
