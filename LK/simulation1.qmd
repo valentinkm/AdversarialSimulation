@@ -156,11 +156,11 @@ cat(model_syntax)
 
 # Simulate data
 ```{r}
-simulate_data <- function(N, rc, psi_value) {
+simulate_data <- function(N, rc, psi_value, model) {
   # Get DGM parameters
   dgm_params <- get_dgm(rc, psi_value)
-  THETA <- dgm_params$THETA
-  
+
+  pop.model <- apply_syntax(model, dgm_params)
   
   df_dat <- simulateData(pop.model, sample.nobs = N)
 
