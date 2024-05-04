@@ -11,16 +11,18 @@ set.seed(1)
 Copied and pasted from original paper.
 
 ```{r}
-library(GPArotation)
-library(CDM)
-library(miceadds)
-library(TAM)
-library(sirt)
-library(lavaan)
+# Specify the libraries to load
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+# Set the R mirror to the cloud mirror of RStudio
+options(repos = "https://cloud.r-project.org/")
 
-#new packages
-library(dplyr)
-library(tidyr)
+# Load the libraries
+for (library_name in libraries) {
+  if (!require(library_name, character.only = TRUE)) {
+    install.packages(library_name)
+    library(library_name, character.only = TRUE)
+  }
+}
 ```
 
 # Specify 2-factor-Model
@@ -73,9 +75,7 @@ setup_design <- function() {
   # Delta values for cross-loadings, if present, take values of either 0.3 or -0.3
   delta_values <- c(0.3, -0.3)
   
-  design <- expand.grid(N_sizes = N_sizes, 
-                        cl_conditions = cl_conditions, 
-                        delta_value = delta_values)
+  design <- expand.grid(N = N_sizes, cl = cl_conditions, delta_value = delta_values)
 
 
   return(design)
@@ -232,126 +232,68 @@ planned_analysis <- compose(apply_models, simulate_data)
 planned_analysis(100, 0, 0.3, model)
 
 ```
+# Extract results
 
-#  Simulation Study
 ```{r}
-simulation_study <- function(design, model, num_repetitions, models) {
-  # Initialize empty dataframe
-  results_df <- data.frame(
-    ModelType = character(),
-    N = integer(),
-    CL = integer(),
-    DeltaValue = numeric(),
-    AvgAbsBias = numeric(),
-    SDPhi = numeric(),
-    RMSEPhi = numeric(),
-    stringsAsFactors = FALSE
-  )
-  
-  for(model_type in models) {
-    for(i in 1:nrow(design)) {
-      row <- design[i, ]
-      phi_estimates <- replicate(num_repetitions, {
-        planned_analysis(row$N_sizes, row$cl_conditions, row$delta_value, model, model_type)
-      })
-      
-      # Compute metrics directly
-      avg_abs_bias <- mean(abs(phi_estimates - phi))
-      sd_phi <- sd(phi_estimates)
-      rmse_phi <- sqrt(mean((phi_estimates - phi)^2))
-      
-      # Combine the results into a single row
-      results_row <- data.frame(
-        ModelType = model_type,
-        N = row$N_sizes,
-        CL = row$cl_conditions,
-        DeltaValue = row$delta_value,
-        AvgAbsBias = avg_abs_bias,
-        SDPhi = sd_phi,
-        RMSEPhi = rmse_phi
-      )
-      
-      # Bind the row to the results dataframe
-      results_df <- rbind(results_df, results_row)
-    }
-  }
-  
-  return(results_df)
-}
 
+extract_results <- function(results_df){
+#Compute performance measures
+results_metrics <- results_df %>%
+  group_by(N, cl, delta_value) %>%
+  summarize(across(everything(),
+                   list(
+                     bias = ~mean(abs(.x - phi)),          # Average absolute bias
+                     sd = ~sd(.x),                          # SD
+                     rmse = ~sqrt(mean((.x - phi) ^ 2))  # Root mean square error
+                   )), .groups = 'drop')
 
-```
+  split_metrics <- results_metrics %>%
+    group_by(cl, delta_value) %>%
+    group_split() %>%
+     set_names(map(., ~ paste(unique(.x$cl), unique(.x$delta_value), sep = "_")))
 
-## RUN
-```{r}
-design <- setup_design()
-models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")  # Models to test
-num_repetitions <- 2
-
-# Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, models)
-
-# View the results
-print(results_df)
-
-
-```
-
-# Report analysis
-```{r}
-report_analysis <- function(results_df, models) {
-  # Define the list to store the tables
-  tables_list <- list()
-
-  # Define the unique CL conditions and delta values
-  unique_cl <- unique(results_df$CL)
-  unique_delta <- unique(results_df$DeltaValue)
-
-  # Define metric names to iterate over
-  metrics <- c("Bias", "SD", "RMSE")
-
-  # Loop through each CL condition and deltaValue to create separate tables for each metric
-  for (cl in unique_cl) {
-    for (delta in unique_delta) {
-      # Filter for the current CL and deltaValue
-      subset_df <- results_df %>%
-        filter(CL == cl, DeltaValue == delta) %>%
-        mutate(ModelType = factor(ModelType, levels = models)) # Ensure ModelType order
-
-      # Loop through each metric to pivot and create tables
-      for (metric in metrics) {
-        # Identify columns related to the current metric
-        metric_colnames <- grep(metric, names(subset_df), value = TRUE)
+  # Define a function to transform each group into the desired format
+  transform_group <- function(df_group) {
+    df_group <- df_group %>%
+                  select(-cl, -delta_value) %>%
+                  pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value") 
         
-        # Pivot the dataframe to a wide format for the current metric and reorder rows
-        wide_df <- subset_df %>%
-          select(ModelType, N, all_of(metric_colnames)) %>%
-          arrange(ModelType) %>% # Arrange rows by ModelType
-          pivot_longer(cols = all_of(metric_colnames), names_to = "Metric", values_to = "Value") %>%
-          mutate(Value = round(Value, 2)) %>% # Round the values
-          pivot_wider(names_from = N, values_from = Value) %>%
-          select(-Metric)
-
-        # Generate the table name based on the condition and metric
-        condition_label <- paste("CL", cl, "Delta", delta, sep = "_")
-        table_name <- paste(metric, condition_label, sep = "_")
-        
-        # Store the table in the list with the corrected naming
-        tables_list[[table_name]] <- wide_df
-      }
-    }
+        bias <- df_group %>% filter(str_detect(method_metric, "bias")) %>%
+                pivot_wider(names_from = N, values_from = value)
+          sd <- df_group %>% filter(str_detect(method_metric, "sd")) %>%
+              pivot_wider(names_from = N, values_from = value)
+        rmse <- df_group %>% filter(str_detect(method_metric, "rmse")) %>%
+            pivot_wider(names_from = N, values_from = value)
+      
+        return(list(bias = bias, sd = sd, rmse = rmse))  
   }
-  
+
+  # Apply the transformation to each group and store the results
+  tables_list <- map(split_metrics, transform_group)
+
   return(tables_list)
 }
 
-list_of_tables <- report_analysis(results_df, models)
 
-# Access a specific table
-bias_no_res_table <- list_of_tables[["Bias_CL_1_Delta_0.3"]] # Example for Bias with 1 cross-loading of value 0.3
-
-#display all tables
-report_analysis(results_df, models)
 ```
 
 
+#  Simulation Study
+Same as Study1
+```{r}
+design <- setup_design()
+
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
+}
+
+simulation_study <- function(design, k, seed = NULL) {
+  future_map_dfr(seq_len(k), ~simulation_study_(design), .options = furrr_options(seed = seed))
+}
+
+results_df <- simulation_study(design,2,1235)
+results_df
+
+tables_list <- extract_results(results_df)
+```
