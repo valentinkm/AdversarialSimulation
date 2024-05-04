@@ -101,7 +101,7 @@ PHI[1, 2] <- PHI[2, 1] <- phi
 
 THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
 
-#Dont need Beta in this study
+#Don't need Beta in this study
 ```
 
 ## Varying values
