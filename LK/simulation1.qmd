@@ -304,5 +304,19 @@ report_analysis <- function(abs_bias, ci_lower, ci_upper) {
 # Apply the function
 bias_ci <- report_analysis(tables_list$"0_0.12"$abs_bias,tables_list$"0_0.12"$ci_lower, tables_list$"0_0.12"$ci_upper)
 
+########################################################
+# Define a list to store results
+bias_ci_list <- list()
+
+# Iterate over each condition in tables_list
+for (condition in names(tables_list)) {
+  # Apply the function and store the result
+  bias_ci_list[[condition]] <- report_analysis(tables_list[[condition]]$abs_bias,
+                                               tables_list[[condition]]$ci_lower,
+                                               tables_list[[condition]]$ci_upper)
+}
+
+# View the results
+bias_ci_list
 ```
 
