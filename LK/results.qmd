@@ -140,7 +140,7 @@ Bottom line question: How should I calculate them?
 
 
 Answer: both is valid: If we want 0, then absolute bias is preferrable, if true value is not 0 (which it)
-Ideally, beides reporten, eines interpretieren
+Ideally, beides reporten, eines interpretieren, bei mir dann rel_bias wo möglich
 AvgAbsBias: Mein weg ist korrekt
 
 Reporting: STandardfehler/ KI für Bias berichten
@@ -252,4 +252,4 @@ rmarkdown: spin
 
 knitr:: purl sollte gehen in quarto: konvertiert markdown in script https://quarto.org/docs/reference/cells/cells-knitr.html
 
-Noch einmal das Repo: https://github.com/aaronpeikert/varynfit/blob/master/varynfit.Rmd angucken, er lädt
+Noch einmal das Repo: https://github.com/aaronpeikert/varynfit/blob/master/varynfit.Rmd angucken
