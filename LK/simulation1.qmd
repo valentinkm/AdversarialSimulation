@@ -209,7 +209,7 @@ results_metrics <- results_df %>%
     group_by(N, rc, psi_value) %>%
     summarize(across(everything(),
                    list(
-                      bias = ~mean(abs(.x - phi)),                  # Average absolute bias
+                      abs_bias = ~mean(abs(.x - phi)),                  # Average absolute bias
                       rel_bias = ~mean(.x - phi) / phi,             # Relative bias
                       sd = ~sd(.x),                                 # Standard deviation of estimates
                       rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
@@ -232,7 +232,7 @@ results_metrics <- results_df %>%
 
     # Creating nested lists for each metric
     list(
-      bias = df_group %>% filter(str_detect(method_metric, "bias")) %>%
+      abs_bias = df_group %>% filter(str_detect(method_metric, "abs_bias")) %>%
               pivot_wider(names_from = N, values_from = value),
       rel_bias = df_group %>% filter(str_detect(method_metric, "rel_bias")) %>%
                  pivot_wider(names_from = N, values_from = value),
