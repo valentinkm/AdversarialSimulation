@@ -296,6 +296,7 @@ report_analysis <- function(abs_bias, ci_lower, ci_upper) {
 
   # Bind the method metric for reference
   final_result <- bind_cols(abs_bias %>% select(method_metric), formatted_columns)
+    names(final_result) <- sub("_formatted$", "", names(final_result))
 
   return(final_result)
 }
