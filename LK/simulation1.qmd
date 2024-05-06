@@ -206,33 +206,47 @@ planned_analysis(100, 0, -.12, model)
 extract_results <- function(results_df){
 #Compute performance measures
 results_metrics <- results_df %>%
-  group_by(N, rc, psi_value) %>%
-  summarize(across(everything(),
+    group_by(N, rc, psi_value) %>%
+    summarize(across(everything(),
                    list(
-                     bias = ~mean(abs(.x - phi)),          # Average absolute bias
-                     sd = ~sd(.x),                          # SD
-                     rmse = ~sqrt(mean((.x - phi) ^ 2))  # Root mean square error
-                   )), .groups = 'drop')
+                      bias = ~mean(abs(.x - phi)),                  # Average absolute bias
+                      rel_bias = ~mean(.x - phi) / phi,             # Relative bias
+                      sd = ~sd(.x),                                 # Standard deviation of estimates
+                      rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
+                      se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
+                      ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
+                      ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
+                    )),  .groups = 'drop')
 
+  # Split metrics by rc and psi_value into separate lists
   split_metrics <- results_metrics %>%
     group_by(rc, psi_value) %>%
     group_split() %>%
-     set_names(map(., ~ paste(unique(.x$rc), unique(.x$psi_value), sep = "_")))
+    set_names(map(., ~paste(unique(.x$rc), unique(.x$psi_value), sep="_")))
 
   # Define a function to transform each group into the desired format
   transform_group <- function(df_group) {
     df_group <- df_group %>%
-                  select(-rc, -psi_value) %>%
-                  pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value") 
-        
-        bias <- df_group %>% filter(str_detect(method_metric, "bias")) %>%
+      select(-rc, -psi_value) %>%
+      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value")
+
+    # Creating nested lists for each metric
+    list(
+      bias = df_group %>% filter(str_detect(method_metric, "bias")) %>%
+              pivot_wider(names_from = N, values_from = value),
+      rel_bias = df_group %>% filter(str_detect(method_metric, "rel_bias")) %>%
+                 pivot_wider(names_from = N, values_from = value),
+      sd = df_group %>% filter(str_detect(method_metric, "sd")) %>%
+              pivot_wider(names_from = N, values_from = value),
+      rmse = df_group %>% filter(str_detect(method_metric, "rmse")) %>%
+              pivot_wider(names_from = N, values_from = value),
+      se_bias = df_group %>% filter(str_detect(method_metric, "se_bias")) %>%
+                pivot_wider(names_from = N, values_from = value),
+      ci_lower = df_group %>% filter(str_detect(method_metric, "ci_lower")) %>%
+                pivot_wider(names_from = N, values_from = value),
+      ci_upper = df_group %>% filter(str_detect(method_metric, "ci_upper")) %>%
                 pivot_wider(names_from = N, values_from = value)
-          sd <- df_group %>% filter(str_detect(method_metric, "sd")) %>%
-              pivot_wider(names_from = N, values_from = value)
-        rmse <- df_group %>% filter(str_detect(method_metric, "rmse")) %>%
-            pivot_wider(names_from = N, values_from = value)
-      
-        return(list(bias = bias, sd = sd, rmse = rmse))  
+    )
   }
 
   # Apply the transformation to each group and store the results
@@ -243,7 +257,6 @@ results_metrics <- results_df %>%
 
 
 ```
-
 
 #  Simulation Study
 
@@ -266,6 +279,5 @@ results_df <- simulation_study(design,2,1235)
 results_df
 
 tables_list <- extract_results(results_df)
-
 
 ```
