@@ -283,40 +283,34 @@ tables_list <- extract_results(results_df)
 
 # Report analysis
 ```{r}
-report_analysis <- function(abs_bias, ci_lower, ci_upper) {
-  # Create a new tibble with formatted strings for each sample size column
-  combined_df <- abs_bias %>%
-    mutate(across(`50`:`1e+05`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                          ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-           .names = "{.col}_formatted"))
-
-  # Select only the formatted columns for a cleaner output
-  formatted_columns <- combined_df %>%
-    select(ends_with("formatted"))
-
-  # Bind the method metric for reference
-  final_result <- bind_cols(abs_bias %>% select(method_metric), formatted_columns)
-    names(final_result) <- sub("_formatted$", "", names(final_result))
-
-  return(final_result)
+report_analysis <- function(tables_list) {
+  # Define a list to store results
+  bias_ci_list <- list()
+  
+  # Iterate over each condition in tables_list
+  for (condition in names(tables_list)) {
+    # Extract abs_bias, ci_lower, and ci_upper for the current condition
+    abs_bias <- tables_list[[condition]]$abs_bias
+    ci_lower <- tables_list[[condition]]$ci_lower
+    ci_upper <- tables_list[[condition]]$ci_upper
+    
+    # Create the bias_ci table for the current condition and store it in the list
+    bias_ci_list[[condition]] <- abs_bias %>%
+      mutate(across(`50`:`1e+05`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
+                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+             .names = "{.col}_formatted")) %>%
+      select(method_metric, ends_with("formatted")) %>%
+      rename_all(~sub("_formatted$", "", .))
+  }
+  
+  return(bias_ci_list)
 }
 
 # Apply the function
-bias_ci <- report_analysis(tables_list$"0_0.12"$abs_bias,tables_list$"0_0.12"$ci_lower, tables_list$"0_0.12"$ci_upper)
-
-########################################################
-# Define a list to store results
-bias_ci_list <- list()
-
-# Iterate over each condition in tables_list
-for (condition in names(tables_list)) {
-  # Apply the function and store the result
-  bias_ci_list[[condition]] <- report_analysis(tables_list[[condition]]$abs_bias,
-                                               tables_list[[condition]]$ci_lower,
-                                               tables_list[[condition]]$ci_upper)
-}
+bias_ci_list <- report_analysis(tables_list)
 
 # View the results
 bias_ci_list
+
 ```
 
