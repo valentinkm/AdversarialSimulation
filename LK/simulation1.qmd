@@ -271,7 +271,32 @@ simulation_study_ <- function(design){
 }
 
 simulation_study <- function(design, k, seed = NULL) {
-  future_map_dfr(seq_len(k), ~simulation_study_(design), .options = furrr_options(seed = seed))
+  # Define a function to run simulation_study_() safely
+  safe_simulation <- function(design) {
+    # Run the simulation function safely
+    result <- safely(simulation_study_)(design)
+    
+    # Extract the output, errors, and warnings
+    output <- pluck(result, "result")
+    errors <- pluck(result, "error")
+    warnings <- pluck(result, "warning")
+    
+    # Determine the maximum length among result, errors, and warnings
+    max_length <- max(length(output), length(errors), length(warnings))
+    
+    # Pad the shorter lists with NA values to match the length of the longest list
+    output <- c(output, rep(NA, max_length - length(output)))
+    errors <- c(errors, rep(NA, max_length - length(errors)))
+    warnings <- c(warnings, rep(NA, max_length - length(warnings)))
+    
+    # Return a list with the output, errors, and warnings
+    list(result = output, errors = errors, warnings = warnings)
+  }
+  
+  # Run simulation_study_() k times, capturing errors and warnings
+  results <- future_map_dfr(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  
+  return(results)
 }
 
 results_df <- simulation_study(design,2,1235)
