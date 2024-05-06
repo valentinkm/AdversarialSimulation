@@ -255,7 +255,6 @@ results_metrics <- results_df %>%
   return(tables_list)
 }
 
-
 ```
 
 #  Simulation Study
@@ -281,3 +280,28 @@ results_df
 tables_list <- extract_results(results_df)
 
 ```
+
+# Report analysis
+```{r}
+report_analysis <- function(abs_bias, ci_lower, ci_upper) {
+  # Create a new tibble with formatted strings for each sample size column
+  combined_df <- abs_bias %>%
+    mutate(across(`50`:`1e+05`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
+                                          ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+           .names = "{.col}_formatted"))
+
+  # Select only the formatted columns for a cleaner output
+  formatted_columns <- combined_df %>%
+    select(ends_with("formatted"))
+
+  # Bind the method metric for reference
+  final_result <- bind_cols(abs_bias %>% select(method_metric), formatted_columns)
+
+  return(final_result)
+}
+
+# Apply the function
+bias_ci <- report_analysis(tables_list$"0_0.12"$abs_bias,tables_list$"0_0.12"$ci_lower, tables_list$"0_0.12"$ci_upper)
+
+```
+
