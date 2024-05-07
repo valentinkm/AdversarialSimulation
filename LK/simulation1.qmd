@@ -290,8 +290,14 @@ simulation_study <- function(design, k, seed = NULL) {
   return(list(results = results, errors = errors, warnings = warnings))
 }
 
-results_df <- simulation_study(design, 2, seed = TRUE)
+results <- simulation_study(design, 2, seed = TRUE)
 
+#Output Errors& warnings
+errors <- results$errors
+warnings <- results$warnings
+
+#Output and extract results
+results_df <- results$results
 tables_list <- extract_results(results_df)
 
 ```
