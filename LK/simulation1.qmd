@@ -260,15 +260,7 @@ results_metrics <- results_df %>%
 #  Simulation Study
 
 ```{r}
-# here a mechanism for the repetitions is missing
-# ideally each repetition should be treated just like other design variables but with a random number seed
-# take a look at withr (with_seed)
 design <- setup_design()
-
-simulation_study_ <- function(design){
-  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
-  all_steps
-}
 
 simulation_study <- function(design, k, seed = NULL) {
   # Define a function to run simulation_study_() safely
@@ -277,30 +269,28 @@ simulation_study <- function(design, k, seed = NULL) {
     result <- safely(simulation_study_)(design)
     
     # Extract the output, errors, and warnings
-    output <- pluck(result, "result")
-    errors <- pluck(result, "error")
-    warnings <- pluck(result, "warning")
-    
-    # Determine the maximum length among result, errors, and warnings
-    max_length <- max(length(output), length(errors), length(warnings))
-    
-    # Pad the shorter lists with NA values to match the length of the longest list
-    output <- c(output, rep(NA, max_length - length(output)))
-    errors <- c(errors, rep(NA, max_length - length(errors)))
-    warnings <- c(warnings, rep(NA, max_length - length(warnings)))
+    output <- if (!is.null(result$error)) NULL else result$result
+    errors <- if (!is.null(result$error)) result$error else NULL
+    warnings <- if (!is.null(result$warning)) result$warning else NULL
     
     # Return a list with the output, errors, and warnings
     list(result = output, errors = errors, warnings = warnings)
   }
   
   # Run simulation_study_() k times, capturing errors and warnings
-  results <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  results_list <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
   
-  return(results)
+  # Extract result, errors, and warnings from the list
+  results <- map_df(results_list, pluck, "result")
+  errors <- map(results_list, pluck, "errors")
+  warnings <- map(results_list, pluck, "warnings")
+  
+  # Combine results, errors, and warnings into a single data frame
+
+  return(list(results = results, errors = errors, warnings = warnings))
 }
 
-results_df <- simulation_study(design,2,1235)
-results_df
+results_df <- simulation_study(design, 2, seed = TRUE)
 
 tables_list <- extract_results(results_df)
 
