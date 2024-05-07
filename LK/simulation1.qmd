@@ -271,15 +271,16 @@ simulation_study <- function(design, k, seed = NULL) {
   # Define a function to run simulation_study_() safely
   safe_simulation <- function(design) {
     # Run the simulation function safely
-    result <- safely(simulation_study_)(design)
+    result <- quietly(safely(simulation_study_))(design)
     
     # Extract the output, errors, and warnings
     output <- if (!is.null(result$error)) NULL else result$result
     errors <- if (!is.null(result$error)) result$error else NULL
     warnings <- if (!is.null(result$warning)) result$warning else NULL
+    messages <- result$message
     
     # Return a list with the output, errors, and warnings
-    list(result = output, errors = errors, warnings = warnings)
+    list(result = output, errors = errors, warnings = warnings, messages = messages)
   }
   
   # Run simulation_study_() k times, capturing errors and warnings
@@ -289,10 +290,11 @@ simulation_study <- function(design, k, seed = NULL) {
   results <- map_df(results_list, pluck, "result")
   errors <- map(results_list, pluck, "errors")
   warnings <- map(results_list, pluck, "warnings")
+  messages <- map(results_list, pluck, "messages")
   
   # Combine results, errors, and warnings into a single data frame
 
-  return(list(results = results, errors = errors, warnings = warnings))
+  return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
 
 results <- simulation_study(design, 2, seed = TRUE)
