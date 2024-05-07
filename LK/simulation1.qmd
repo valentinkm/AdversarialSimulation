@@ -262,6 +262,11 @@ results_metrics <- results_df %>%
 ```{r}
 design <- setup_design()
 
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
+}
+
 simulation_study <- function(design, k, seed = NULL) {
   # Define a function to run simulation_study_() safely
   safe_simulation <- function(design) {
