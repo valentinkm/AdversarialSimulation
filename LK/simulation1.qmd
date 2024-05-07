@@ -181,41 +181,41 @@ simulate_data <- function(N, rc, psi_value, model) {
 ```{r}
 #Specify estimation methods of interest
 
-models <- list(
+estimators <- list(
   SEM_ML = \(d) lavaan::sem(model, data=d, estimator="ML", std.lv= TRUE),
   SEM_ULS = \(d) lavaan::sem(model, data=d, estimator="ULS", std.lv= TRUE),
-  LSAM_ML = \(d)
-  lavaan::sam(model, data=d, sam.method="local", estimator = "ML", std.lv= TRUE),
+  LSAM_ML = \(d) lavaan::sam(model, data=d, sam.method="local", estimator = "ML", std.lv= TRUE),
   LSAM_ULS = \(d)lavaan::sam(model, data=d, sam.method="local", estimator = "ULS", std.lv= TRUE),
   GSAM_ML = \(d) lavaan::sam(model, data=d, sam.method = "global", estimator = "ML", std.lv= TRUE),
   GSAM_ULS = \(d) lavaan::sam(model, data=d, sam.method = "global", estimator = "ULS", std.lv= TRUE)
 )
 # postprocess each model output
-models <- modify(models, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
+estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
 # apply all estimators to the same dataset
-apply_models <- \(d) map(models, exec, d)
+apply_estimators <- \(d) map(estimators, exec, d)
 
-planned_analysis <- compose(apply_models, simulate_data)
+planned_analysis <- compose(apply_estimators, simulate_data)
 
 planned_analysis(100, 0, -.12, model)
 ```
 
 # Extract results
+
 ```{r}
 
-extract_results <- function(results_df){
+extract_results <- function(results_df_raw){
 #Compute performance measures
-results_metrics <- results_df %>%
+results_metrics <- results_df_raw %>%
     group_by(N, rc, psi_value) %>%
     summarize(across(everything(),
-                   list(
-                      abs_bias = ~mean(abs(.x - phi)),                  # Average absolute bias
-                      rel_bias = ~mean(.x - phi) / phi,             # Relative bias
-                      sd = ~sd(.x),                                 # Standard deviation of estimates
-                      rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
-                      se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
-                      ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
-                      ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
+       list(
+          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
+          rel_bias = ~mean(.x - phi) / phi,             # Relative bias
+          sd = ~sd(.x),                                 # Standard deviation of estimates
+          rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
+          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
+          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
+          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
                     )),  .groups = 'drop')
 
   # Split metrics by rc and psi_value into separate lists
@@ -250,52 +250,30 @@ results_metrics <- results_df %>%
   }
 
   # Apply the transformation to each group and store the results
-  tables_list <- map(split_metrics, transform_group)
+  metrics_list <- map(split_metrics, transform_group)
 
-  return(tables_list)
+  return(metrics_list)
 }
 
 ```
 
-#  Simulation Study
+
+# Report Bias
 
 ```{r}
-# here a mechanism for the repetitions is missing
-# ideally each repetition should be treated just like other design variables but with a random number seed
-# take a look at withr (with_seed)
-design <- setup_design()
-
-simulation_study_ <- function(design){
-  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
-  all_steps
-}
-
-simulation_study <- function(design, k, seed = NULL) {
-  future_map_dfr(seq_len(k), ~simulation_study_(design), .options = furrr_options(seed = seed))
-}
-
-results_df <- simulation_study(design,2,1235)
-results_df
-
-tables_list <- extract_results(results_df)
-
-```
-
-# Report analysis
-```{r}
-report_analysis <- function(tables_list) {
+report_bias <- function(metrics_list) {
   # Define a list to store results
-  bias_ci_list <- list()
+  bias_ci <- list()
   
-  # Iterate over each condition in tables_list
-  for (condition in names(tables_list)) {
+  # Iterate over each condition in metrics_list
+  for (condition in names(metrics_list)) {
     # Extract abs_bias, ci_lower, and ci_upper for the current condition
-    abs_bias <- tables_list[[condition]]$abs_bias
-    ci_lower <- tables_list[[condition]]$ci_lower
-    ci_upper <- tables_list[[condition]]$ci_upper
+    abs_bias <- metrics_list[[condition]]$abs_bias
+    ci_lower <- metrics_list[[condition]]$ci_lower
+    ci_upper <- metrics_list[[condition]]$ci_upper
     
     # Create the bias_ci table for the current condition and store it in the list
-    bias_ci_list[[condition]] <- abs_bias %>%
+    bias_ci[[condition]] <- abs_bias %>%
       mutate(across(`50`:`1e+05`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
                                             ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
              .names = "{.col}_formatted")) %>%
@@ -303,14 +281,72 @@ report_analysis <- function(tables_list) {
       rename_all(~sub("_formatted$", "", .))
   }
   
-  return(bias_ci_list)
+  return(bias_ci)
 }
 
-# Apply the function
-bias_ci_list <- report_analysis(tables_list)
 
-# View the results
-bias_ci_list
+```
 
+#  Simulation Study
+
+```{r}
+
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
+}
+
+simulation_study <- function(design, k, seed = NULL) {
+  # Define a function to run simulation_study_() safely
+  safe_simulation <- function(design) {
+    # Run the simulation function safely
+    result <- quietly(safely(simulation_study_))(design)
+    
+    # Extract the output, errors, and warnings: Question: On which level do we want this? Do obtain the correct DF, triple indexing into safely() is  necessary.
+    output <- if (!is.null(result$error)) NULL else result$result$result
+    errors <- if (!is.null(result$error)) result$error else NULL
+    warnings <- if (!is.null(result$warning)) result$warning else NULL
+    messages <- result$message
+    
+    # Return a list with the output, errors, and warnings
+    list(result = output, errors = errors, warnings = warnings, messages = messages)
+  }
+  
+  # Run simulation_study_() k times, capturing errors and warnings
+  results_list <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  
+  # Extract result, errors, and warnings from the list
+  results <- map_df(results_list, pluck, "result")
+  errors <- map(results_list, pluck, "errors")
+  warnings <- map(results_list, pluck, "warnings")
+  messages <- map(results_list, pluck, "messages")
+  
+  # Combine results, errors, and warnings into a single data frame
+
+  return(list(results = results, errors = errors, warnings = warnings, messages = messages))
+}
+```
+
+# Run simulation
+```{r}
+
+#Set up design
+design <- setup_design()
+
+#Run simulation
+results_sim <- simulation_study(design, 2, seed = TRUE)
+
+#Errors, warnings and messages?
+errors <- results_sim$errors
+warnings <- results_sim$warnings
+messages <- results_sim$messages
+
+#Output and extract results
+results_df_raw <- results_sim$results
+metrics_list <- extract_results(results_df_raw)
+
+#Report Bias
+bias_ci <- report_bias(metrics_list)
+bias_ci
 ```
 
