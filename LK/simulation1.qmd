@@ -274,7 +274,7 @@ simulation_study <- function(design, k, seed = NULL) {
     result <- quietly(safely(simulation_study_))(design)
     
     # Extract the output, errors, and warnings
-    output <- if (!is.null(result$error)) NULL else result$result
+    output <- if (!is.null(result$error)) NULL else result$result$result
     errors <- if (!is.null(result$error)) result$error else NULL
     warnings <- if (!is.null(result$warning)) result$warning else NULL
     messages <- result$message
