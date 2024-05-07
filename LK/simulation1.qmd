@@ -294,7 +294,7 @@ simulation_study <- function(design, k, seed = NULL) {
   }
   
   # Run simulation_study_() k times, capturing errors and warnings
-  results <- future_map_dfr(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  results <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
   
   return(results)
 }
