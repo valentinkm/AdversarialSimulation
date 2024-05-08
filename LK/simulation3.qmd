@@ -66,7 +66,7 @@ setup_design <- function() {
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
-  design <- data.frame(N_sizes = N_sizes)
+  design <- data.frame(N = N_sizes)
   
   return(design)
 }
@@ -186,39 +186,28 @@ results_metrics <- results_df_raw %>%
           ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
                     )),  .groups = 'drop')
 
-  # Split metrics by rc and psi_value into separate lists
-  split_metrics <- results_metrics %>%
-    group_by(rc, psi_value) %>%
-    group_split() %>%
-    set_names(map(., ~paste(unique(.x$rc), unique(.x$psi_value), sep="_")))
 
-  # Define a function to transform each group into the desired format
-  transform_group <- function(df_group) {
-    df_group <- df_group %>%
-      select(-rc, -psi_value) %>%
-      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value")
+  # transform each group into the desired format
+  transform_group <- results_metrics %>%
+      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), values_to = "value")
 
     # Creating nested lists for each metric
-    list(
-      abs_bias = df_group %>% filter(str_detect(method_metric, "abs_bias")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      rel_bias = df_group %>% filter(str_detect(method_metric, "rel_bias")) %>%
-                 pivot_wider(names_from = N, values_from = value),
-      sd = df_group %>% filter(str_detect(method_metric, "sd")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      rmse = df_group %>% filter(str_detect(method_metric, "rmse")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      se_bias = df_group %>% filter(str_detect(method_metric, "se_bias")) %>%
-                pivot_wider(names_from = N, values_from = value),
-      ci_lower = df_group %>% filter(str_detect(method_metric, "ci_lower")) %>%
-                pivot_wider(names_from = N, values_from = value),
-      ci_upper = df_group %>% filter(str_detect(method_metric, "ci_upper")) %>%
-                pivot_wider(names_from = N, values_from = value)
-    )
-  }
-
-  # Apply the transformation to each group and store the results
-  metrics_list <- map(split_metrics, transform_group)
+  metrics_list <-  list(
+                          abs_bias = transform_group %>% filter(str_detect(name, "abs_bias")) %>%
+                                     pivot_wider(names_from = N, values_from = value),
+                          rel_bias = transform_group %>% filter(str_detect(name, "rel_bias")) %>%
+                                     pivot_wider(names_from = N, values_from = value),
+                          sd = transform_group %>% filter(str_detect(name, "sd")) %>%
+                                  pivot_wider(names_from = N, values_from = value),
+                          rmse = transform_group %>% filter(str_detect(name, "rmse")) %>%
+                                  pivot_wider(names_from = N, values_from = value),
+                          se_bias = transform_group %>% filter(str_detect(name, "se_bias")) %>%
+                                    pivot_wider(names_from = N, values_from = value),
+                          ci_lower = transform_group %>% filter(str_detect(name, "ci_lower")) %>%
+                                    pivot_wider(names_from = N, values_from = value),
+                          ci_upper = transform_group %>% filter(str_detect(name, "ci_upper")) %>%
+                                    pivot_wider(names_from = N, values_from = value)
+                        )
 
   return(metrics_list)
 }
@@ -231,20 +220,16 @@ report_bias <- function(metrics_list) {
   bias_ci <- list()
   
   # Iterate over each condition in metrics_list
-  for (condition in names(metrics_list)) {
     # Extract rel_bias, ci_lower, and ci_upper for the current condition
-    rel_bias <- metrics_list[[condition]]$rel_bias
-    ci_lower <- metrics_list[[condition]]$ci_lower
-    ci_upper <- metrics_list[[condition]]$ci_upper
+    rel_bias <- metrics_list$rel_bias
+    ci_lower <- metrics_list$ci_lower
+    ci_upper <- metrics_list$ci_upper
     
     # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- rel_bias %>%
+    bias_ci <- rel_bias %>%
       mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
                                             ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-             .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_formatted$", "", .))
-  }
+             .names = "{.col}"))
   
   return(bias_ci)
 }

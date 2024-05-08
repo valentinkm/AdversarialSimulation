@@ -27,7 +27,7 @@ The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5"
 For all these studies, 3 deviations are present.
 Firstly, the total number of conditions turned out to be higher, as the calculation in the protocol forgot the addition of N=50 to be added to the factor sample size.
 Secondly, It was not detailed what type of LSAM estimation will be implemented. For completeness sake, we included ML- as well as ULS-LSAM estimation.
-Lastly, instead of calculating the relative bias as originally planned, we calculated the absolute bias to mitigate biases of opposite directions canceling each other out, as rightly pointed out in study 4 of @robitzsch_comparing_2022.
+Lastly, instead of just calculating the relative bias as originally planned, we also calculated the absolute bias to mitigate biases of opposite directions canceling each other out, as rightly pointed out in study 4 of @robitzsch_comparing_2022.
 
 ## Study 1b
 
@@ -140,7 +140,7 @@ Bottom line question: How should I calculate them?
 
 
 Answer: both is valid: If we want 0, then absolute bias is preferrable, if true value is not 0 (which it)
-Ideally, beides reporten, eines interpretieren, bei mir dann rel_bias wo möglich
+Ideally, beides reporten, eines interpretieren, bei mir dann rel_bias wo möglich/ nötig
 AvgAbsBias: Mein weg ist korrekt
 
 Reporting: STandardfehler/ KI für Bias berichten
