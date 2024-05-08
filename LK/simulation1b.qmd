@@ -209,7 +209,10 @@ process_each_N <- function(data) {
     estimator_splits <- data %>%
       group_by(method_metric) %>%
       group_split() %>%
-      set_names(map(., ~paste(unique(.x$method_metric))))
+      set_names(map(., ~paste(unique(.x$method_metric)))) %>%
+      map(~ .x %>%
+           select(-method_metric) %>%
+           pivot_wider(names_from = lambda, values_from = value, names_prefix = "lambda_"))
 
     # Calculate metrics for each estimator
     results_metric <- map(estimator_splits, function(df) {
