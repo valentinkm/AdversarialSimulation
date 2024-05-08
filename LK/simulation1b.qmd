@@ -192,49 +192,49 @@ planned_analysis(100, 0.4, 0.2)
 ```{r}
 
 extract_results <- function(results_df_raw){
-#Compute performance measures
-results_metrics <- results_df_raw %>%
-    group_by(N, lambda, phi) %>%
-    summarize(across(everything(),
-       list(
-          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
-          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
-          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
-          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
-                    )),  .groups = 'drop')
 
-  # Split metrics by rc and psi_value into separate lists
-  split_metrics <- results_metrics %>%
-    group_by(N) %>%
-    group_split() %>%
-    set_names(map(., ~paste(unique(.x$N))))
+# New coloumn for methods
+results_long <- results_df_raw %>%
+     pivot_longer(cols = starts_with("LSAM"), 
+                  names_to = c("method", "metric"), 
+                  names_sep = "_",
+                  values_to = "value") %>%
+     unite("method_metric", method, metric, sep = "_")
   
-  split_metrics2 <- split_metrics[["50"]] %>%
-    select(starts_with("LSAM_")) %>%
-    group_split() %>%
-    set_names(map(., ~paste(unique(.x$N))))
+# Split metrics by N into separate lists
+  split_metrics <- split(results_long, results_long$N)
 
-  # Define a function to transform each group into the desired format
-  transform_group <- function(df_group) {
-    df_group <- df_group %>%
-      select(-N) %>%
-      pivot_longer(cols = starts_with("LSAM_"), names_to = "method_metric", values_to = "value")
-
-    # Creating nested lists for each metric
-    list(
-      abs_bias = df_group %>% filter(str_detect(method_metric, "abs_bias")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      se_bias = df_group %>% filter(str_detect(method_metric, "se_bias")) %>%
-                pivot_wider(names_from = N, values_from = value),
-      ci_lower = df_group %>% filter(str_detect(method_metric, "ci_lower")) %>%
-                pivot_wider(names_from = N, values_from = value),
-      ci_upper = df_group %>% filter(str_detect(method_metric, "ci_upper")) %>%
-                pivot_wider(names_from = N, values_from = value)
-    )
+# Split metrics by Estimators
+ split_metrics2 <- split_metrics[["50"]] %>%
+  group_by(method_metric) %>%
+  group_split() %>%
+  set_names(map(., ~paste(unique(.x$method_metric))))
+    
+process_each_N <- function(data) {
+    data %>%
+      group_by(method_metric) %>%
+      group_split() %>%
+      set_names(map(., ~paste(unique(.x$method_metric)))) %>%
+      map(~ .x %>%
+           select(-method_metric) %>%
+           pivot_wider(names_from = lambda, values_from = value, names_prefix = "lambda_"))
   }
+  
+ # Split further by each estimator and transform
+  metrics_list <- map(split_metrics, process_each_N)
 
-  # Apply the transformation to each group and store the results
-  metrics_list <- map(split_metrics, transform_group)
+  
+  ##############################################
+  #Compute performance measures
+#results_metrics <- results_df_raw %>%
+#    group_by(N, lambda, phi) %>%
+#    summarize(across(everything(),
+#       list(
+#          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
+#          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
+#          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
+#          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
+#                    )),  .groups = 'drop')
 
   return(metrics_list)
 }
