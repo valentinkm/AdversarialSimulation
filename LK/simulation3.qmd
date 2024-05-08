@@ -224,115 +224,93 @@ results_metrics <- results_df_raw %>%
 }
 ```
 
+# Report bias
+```{r}
+report_bias <- function(metrics_list) {
+  # Define a list to store results
+  bias_ci <- list()
+  
+  # Iterate over each condition in metrics_list
+  for (condition in names(metrics_list)) {
+    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    rel_bias <- metrics_list[[condition]]$rel_bias
+    ci_lower <- metrics_list[[condition]]$ci_lower
+    ci_upper <- metrics_list[[condition]]$ci_upper
+    
+    # Create the bias_ci table for the current condition and store it in the list
+    bias_ci[[condition]] <- rel_bias %>%
+      mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
+                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+             .names = "{.col}_formatted")) %>%
+      select(method_metric, ends_with("formatted")) %>%
+      rename_all(~sub("_formatted$", "", .))
+  }
+  
+  return(bias_ci)
+}
+```
+
 
 #  Simulation Study
 ```{r}
-simulation_study <- function(design, model, num_repetitions , true_phi, models) {
-  # Initialize dataframe
-  results_df <- data.frame(
-    ModelType = character(),
-    N = integer(),
-    AvgAbsBias = numeric(),
-    SDPhi = numeric(),
-    RMSEPhi = numeric(),
-    stringsAsFactors = FALSE
-  )
-  
-  for(model_type in models) {
-    for(i in 1:nrow(design)) {
-      N_size <- design$N_sizes[i]
-      phi_estimates <- replicate(num_repetitions, {
-        planned_analysis(N_size, model, model_type)
-      })
-      
-      # Compute the metrics directly
-      avg_abs_bias <- mean(abs(phi_estimates - true_phi))
-      sd_phi <- sd(phi_estimates)
-      rmse_phi <- sqrt(mean((phi_estimates - true_phi)^2))
-      
-      # Combine the results into a single row
-      results_row <- data.frame(
-        ModelType = model_type,
-        N = N_size,
-        AvgAbsBias = avg_abs_bias,
-        SDPhi = sd_phi,
-        RMSEPhi = rmse_phi
-      )
-      
-      # Bind the row to the results dataframe
-      results_df <- rbind(results_df, results_row)
-    }
-  }
-  
-  return(results_df)
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
 }
 
+simulation_study <- function(design, k, seed = NULL) {
+  # Define a function to run simulation_study_() safely
+  safe_simulation <- function(design) {
+    # Run the simulation function safely
+    result <- quietly(safely(simulation_study_))(design)
+    
+    # Extract the output, errors, and warnings: Question: On which level do we want this? Do obtain the correct DF, triple indexing into safely() is  necessary.
+    output <- if (!is.null(result$error)) NULL else result$result$result
+    errors <- if (!is.null(result$error)) result$error else NULL
+    warnings <- if (!is.null(result$warning)) result$warning else NULL
+    messages <- result$message
+    
+    # Return a list with the output, errors, and warnings
+    list(result = output, errors = errors, warnings = warnings, messages = messages)
+  }
+  
+  # Run simulation_study_() k times, capturing errors and warnings
+  results_list <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  
+  # Extract result, errors, and warnings from the list
+  results <- map_df(results_list, pluck, "result")
+  errors <- map(results_list, pluck, "errors")
+  warnings <- map(results_list, pluck, "warnings")
+  messages <- map(results_list, pluck, "messages")
+  
+  # Combine results, errors, and warnings into a single data frame
 
-
+  return(list(results = results, errors = errors, warnings = warnings, messages = messages))
+}
 
 ```
 
-## RUN
+# Run simulation
 ```{r}
+#Set up design
 design <- setup_design()
-true_phi <- 0.6  # True value of phi
-models <- c("SEM_ML", "SEM_ULS", "LSAM_ML", "LSAM_ULS", "GSAM_ML", "GSAM_ULS")  # Models to test
-num_repetitions <- 2
 
-# Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, true_phi, models)
+#Run simulation
+results_sim <- simulation_study(design, 2, seed = TRUE)
 
-# View the results
-print(results_df)
+#Errors, warnings and messages?
+errors <- results_sim$errors
+warnings <- results_sim$warnings
+messages <- results_sim$messages
 
+#Output and extract results
+results_df_raw <- results_sim$results
+metrics_list <- extract_results(results_df_raw)
 
+#Report Bias
+bias_ci <- report_bias(metrics_list)
+bias_ci
 ```
 Might there be NA's somewhere that result in the warning? Nothing visible in the results.
-
-
-# Report analysis
-```{r}
-report_analysis <- function(results_df, models) {
-  # Define the list to store the tables
-  tables_list <- list()
-
-  # Define metric names to iterate over
-  metrics <- c("Bias", "SD", "RMSE")
-  
-  subset_df <- results_df %>%
-        mutate(ModelType = factor(ModelType, levels = models)) # Ensure ModelType order
-
-  # Loop through each metric to pivot and create tables
-  for (metric in metrics) {
-    metric_colnames <- grep(metric, names(subset_df), value = TRUE)
-    
-    # Pivot the dataframe to a wide format for the current metric and reorder rows
-    wide_df <- subset_df %>%
-      select(ModelType, N, all_of(metric_colnames)) %>%
-      arrange(ModelType) %>% # Arrange rows by ModelType
-      pivot_longer(cols = all_of(metric_colnames), names_to = "Metric", values_to = "Value") %>%
-      mutate(Value = round(Value, 2)) %>% # Round the values
-      pivot_wider(names_from = N, values_from = Value) %>%
-      select(-Metric)
-    
-    # Generate the table name based on the metric
-    table_name <- paste(metric)
-    
-    # Store the table in the list with the corrected naming
-    tables_list[[table_name]] <- wide_df
-  }
-
-  
-  return(tables_list)
-}
-
-list_of_tables <- report_analysis(results_df, models)
-
-# Access a specific table
-bias_table <- list_of_tables[["Bias"]] # Example for Bias
-
-#display all tables
-report_analysis(results_df, models)
-```
 
 
