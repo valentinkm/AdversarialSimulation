@@ -124,7 +124,7 @@ get_dgm <- function(rc, psi_value) {
 
 # Apply Syntax
 ```{r}
-apply_syntax <- function(model, MLIST) {
+apply_syntax <- function(MLIST) {
   
   THETA <- MLIST$THETA
   
@@ -156,7 +156,7 @@ apply_syntax <- function(model, MLIST) {
   return(pop.model)
 }
 
-model_syntax <-apply_syntax(model,get_dgm(1,0.12))
+model_syntax <-apply_syntax(get_dgm(1,0.12))
 cat(model_syntax)
 
 ```
@@ -164,11 +164,11 @@ cat(model_syntax)
 
 # Simulate data
 ```{r}
-simulate_data <- function(N, rc, psi_value, model) {
+simulate_data <- function(N, rc, psi_value) {
   # Get DGM parameters
   dgm_params <- get_dgm(rc, psi_value)
 
-  pop.model <- apply_syntax(model, dgm_params)
+  pop.model <- apply_syntax(dgm_params)
   
   df_dat <- simulateData(pop.model, sample.nobs = N)
 
@@ -196,7 +196,7 @@ apply_estimators <- \(d) map(estimators, exec, d)
 
 planned_analysis <- compose(apply_estimators, simulate_data)
 
-planned_analysis(100, 0, -.12, model)
+planned_analysis(100, 0, -.12)
 ```
 
 # Extract results

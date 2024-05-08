@@ -126,7 +126,7 @@ get_dgm <- function(cl, delta_value) {
 
 # Apply Syntax
 ```{r}
-apply_syntax <- function(model, MLIST) {
+apply_syntax <- function(MLIST) {
   
   LAM <- MLIST$LAM
   
@@ -188,18 +188,18 @@ apply_syntax <- function(model, MLIST) {
   return(pop.model)
 }
 
-model_syntax <-apply_syntax(model,get_dgm(1,-0.3))
+model_syntax <-apply_syntax(get_dgm(1,-0.3))
 cat(model_syntax)
 
 ```
 
 # Simulate data
 ```{r}
-simulate_data <- function(N, cl, delta_value, model) {
+simulate_data <- function(N, cl, delta_value) {
   # Get DGM parameters
   dgm_params <- get_dgm(cl, delta_value)
 
-  pop.model <- apply_syntax(model, dgm_params)
+  pop.model <- apply_syntax(dgm_params)
   
   df_dat <- simulateData(pop.model, sample.nobs = N)
   
@@ -228,7 +228,7 @@ apply_estimators <- \(d) map(estimators, exec, d)
 planned_analysis <- compose(apply_estimators, simulate_data)
 
 #The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
-planned_analysis(100, 0, 0.3, model)
+planned_analysis(100, 0, 0.3)
 
 ```
 # Extract results
