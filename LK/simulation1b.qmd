@@ -204,12 +204,6 @@ results_long <- results_df_raw %>%
 # Split metrics by N into separate lists
   split_metrics <- split(results_long, results_long$N)
 
-# Split metrics by Estimators
- split_metrics2 <- split_metrics[["50"]] %>%
-  group_by(method_metric) %>%
-  group_split() %>%
-  set_names(map(., ~paste(unique(.x$method_metric))))
-    
 process_each_N <- function(data) {
     data %>%
       group_by(method_metric) %>%
