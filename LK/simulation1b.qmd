@@ -205,30 +205,30 @@ results_long <- results_df_raw %>%
   split_metrics <- split(results_long, results_long$N)
 
 process_each_N <- function(data) {
-    data %>%
+    # Split metrics by Estimators
+    estimator_splits <- data %>%
       group_by(method_metric) %>%
       group_split() %>%
-      set_names(map(., ~paste(unique(.x$method_metric)))) %>%
-      map(~ .x %>%
-           select(-method_metric) %>%
-           pivot_wider(names_from = lambda, values_from = value, names_prefix = "lambda_"))
+      set_names(map(., ~paste(unique(.x$method_metric))))
+
+    # Calculate metrics for each estimator
+    results_metric <- map(estimator_splits, function(df) {
+        df %>%
+          group_by(N, lambda, phi, method_metric) %>%
+    summarize(across(everything(),
+       list(
+          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
+          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
+          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
+          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
+                    )),  .groups = 'drop')
+    })
+    
+    return(results_metrics)
   }
   
  # Split further by each estimator and transform
   metrics_list <- map(split_metrics, process_each_N)
-
-  
-  ##############################################
-  #Compute performance measures
-#results_metrics <- results_df_raw %>%
-#    group_by(N, lambda, phi) %>%
-#    summarize(across(everything(),
-#       list(
-#          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
-#          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
-#          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
-#          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
-#                    )),  .groups = 'drop')
 
   return(metrics_list)
 }
