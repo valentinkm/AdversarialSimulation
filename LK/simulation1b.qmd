@@ -217,12 +217,12 @@ process_each_N <- function(data) {
     # Calculate metrics for each estimator
     results_metric <- map(estimator_splits, function(df) {
       df %>%
-        mutate(across(starts_with("lambda"), ~list(
+        mutate(across(starts_with("lambda"), ~list( 
           abs_bias = mean(abs(unlist(.x) - phi)),  # Calculate absolute bias
           se_bias = sd(unlist(.x)) / sqrt(length(unlist(.x))),  # Calculate SE of bias
           ci_lower = mean(unlist(.x)) - qt(0.975, df = length(unlist(.x)) - 1) * sd(unlist(.x)) / sqrt(length(unlist(.x))),  # Calculate lower CI
           ci_upper = mean(unlist(.x)) + qt(0.975, df = length(unlist(.x)) - 1) * sd(unlist(.x)) / sqrt(length(unlist(.x)))   # Calculate upper CI
-        )), .names = "{.col}_metrics") %>%
+        )), .names = "{.col}_metrics")
     })
     
     return(results_metrics)
