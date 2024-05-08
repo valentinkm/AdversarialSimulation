@@ -208,14 +208,14 @@ results_metrics <- results_df_raw %>%
 
   # Split metrics by rc and psi_value into separate lists
   split_metrics <- results_metrics %>%
-    group_by(rc, psi_value) %>%
+    group_by(lambda, phi) %>%
     group_split() %>%
-    set_names(map(., ~paste(unique(.x$rc), unique(.x$psi_value), sep="_")))
+    set_names(map(., ~paste(unique(.x$lambda), unique(.x$phi), sep="_")))
 
   # Define a function to transform each group into the desired format
   transform_group <- function(df_group) {
     df_group <- df_group %>%
-      select(-rc, -psi_value) %>%
+      select(-lambda, -phi) %>%
       pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value")
 
     # Creating nested lists for each metric
@@ -245,111 +245,94 @@ results_metrics <- results_df_raw %>%
 
 ```
 
+# Report Bias
+
+```{r}
+report_bias <- function(metrics_list) {
+  # Define a list to store results
+  bias_ci <- list()
+  
+  # Iterate over each condition in metrics_list
+  for (condition in names(metrics_list)) {
+    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    rel_bias <- metrics_list[[condition]]$rel_bias
+    ci_lower <- metrics_list[[condition]]$ci_lower
+    ci_upper <- metrics_list[[condition]]$ci_upper
+    
+    # Create the bias_ci table for the current condition and store it in the list
+    bias_ci[[condition]] <- rel_bias %>%
+      mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
+                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+             .names = "{.col}_formatted")) %>%
+      select(method_metric, ends_with("formatted")) %>%
+      rename_all(~sub("_formatted$", "", .))
+  }
+  
+  return(bias_ci)
+}
+
+
+```
 
 #  Simulation Study
 ```{r}
-simulation_study <- function(design, model, num_repetitions, models) {
-  # Initialize an empty dataframe to store the results
-  results_df <- data.frame(
-    ModelType = character(),
-    N = integer(),
-    Lambda = numeric(),
-    Phi = numeric(),
-    AvgAbsBias = numeric(),
-    stringsAsFactors = FALSE
-  )
-  
-  for(model_type in models) {
-    for(i in 1:nrow(design)) {
-      row <- design[i, ]
-      N <- row$N
-      lambda <- row$lambda
-      phi_true <- row$phi  # Use phi from the design matrix as the true value
-      
-      phi_estimates <- replicate(num_repetitions, {
-        planned_analysis(N, lambda, phi_true, model, model_type)
-      }, simplify = "array")
-      
-      # Calculate the average absolute bias of the estimated phi
-      avg_abs_bias <- mean(abs(phi_estimates - phi_true))
-      
-      # Append the results to the results dataframe
-      results_row <- data.frame(
-        ModelType = model_type,
-        N = N,
-        Lambda = lambda,
-        Phi = phi_true,
-        AvgAbsBias = avg_abs_bias
-      )
-      
-      results_df <- rbind(results_df, results_row)
-    }
-  }
-  
-  return(results_df)
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
 }
 
+simulation_study <- function(design, k, seed = NULL) {
+  # Define a function to run simulation_study_() safely
+  safe_simulation <- function(design) {
+    # Run the simulation function safely
+    result <- quietly(safely(simulation_study_))(design)
+    
+    # Extract the output, errors, and warnings: Question: On which level do we want this? Do obtain the correct DF, triple indexing into safely() is  necessary.
+    output <- if (!is.null(result$error)) NULL else result$result$result
+    errors <- if (!is.null(result$error)) result$error else NULL
+    warnings <- if (!is.null(result$warning)) result$warning else NULL
+    messages <- result$message
+    
+    # Return a list with the output, errors, and warnings
+    list(result = output, errors = errors, warnings = warnings, messages = messages)
+  }
+  
+  # Run simulation_study_() k times, capturing errors and warnings
+  results_list <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  
+  # Extract result, errors, and warnings from the list
+  results <- map_df(results_list, pluck, "result")
+  errors <- map(results_list, pluck, "errors")
+  warnings <- map(results_list, pluck, "warnings")
+  messages <- map(results_list, pluck, "messages")
+  
+  # Combine results, errors, and warnings into a single data frame
 
+  return(list(results = results, errors = errors, warnings = warnings, messages = messages))
+}
 
 ```
 
-## RUN
+## Run simulation
 ```{r}
+
+#Set up design
 design <- setup_design()
-models <- c("LSAM_ML", "LSAM_ULS")  # Models to test
-num_repetitions <- 2
 
-# Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, models)
+#Run simulation
+results_sim <- simulation_study(design, 2, seed = TRUE)
 
-# View the results
-print(results_df)
+#Errors, warnings and messages?
+errors <- results_sim$errors
+warnings <- results_sim$warnings
+messages <- results_sim$messages
 
+#Output and extract results
+results_df_raw <- results_sim$results
+metrics_list <- extract_results(results_df_raw)
+
+#Report Bias
+bias_ci <- report_bias(metrics_list)
+bias_ci
 
 ```
-
-# Report analysis
-```{r}
-report_analysis <- function(results_df) {
-  # List to store the final tables
-  tables_list <- list()
-  
-  # Extract unique model types and N values
-  model_types <- unique(results_df$ModelType)
-  N_values <- unique(results_df$N)
-  
-  # Create a table for each combination of ModelType and N
-  for (model in model_types) {
-    for (N_size in N_values) {
-      
-      # Filter the dataframe for the current ModelType and N
-      subset_df <- results_df %>%
-        filter(ModelType == model, N == N_size)%>%
-        mutate(AvgAbsBias = round(AvgAbsBias, 2))
-      
-      # Pivot the dataframe to wide format with Lambda as rows and Phi as columns
-      wide_df <- subset_df %>%
-        select(Lambda, Phi, AvgAbsBias) %>%
-        pivot_wider(names_from = Phi, values_from = AvgAbsBias, names_prefix = "Phi_") %>%
-        arrange(Lambda)
-
-      # Create a name for each table based on ModelType and N
-      table_name <- paste0(model, "_N_", N_size)
-      tables_list[[table_name]] <- wide_df
-    }
-  }
-  
-  return(tables_list)
-}
-
-# Run the function with results
-list_of_tables <- report_analysis(results_df)
-
-# Access a specific table
-LSAM_ML_N_50 <- list_of_tables[["LSAM_ML_N_50"]] 
-
-#display all tables
-report_analysis(results_df)
-```
-
-
