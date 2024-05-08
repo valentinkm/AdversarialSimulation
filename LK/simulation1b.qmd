@@ -216,15 +216,13 @@ process_each_N <- function(data) {
 
     # Calculate metrics for each estimator
     results_metric <- map(estimator_splits, function(df) {
-        df %>%
-          group_by(N, lambda, phi, method_metric) %>%
-    summarize(across(everything(),
-       list(
-          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
-          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
-          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
-          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
-                    )),  .groups = 'drop')
+      df %>%
+        mutate(across(starts_with("lambda"), ~list(
+          abs_bias = mean(abs(unlist(.x) - phi)),  # Calculate absolute bias
+          se_bias = sd(unlist(.x)) / sqrt(length(unlist(.x))),  # Calculate SE of bias
+          ci_lower = mean(unlist(.x)) - qt(0.975, df = length(unlist(.x)) - 1) * sd(unlist(.x)) / sqrt(length(unlist(.x))),  # Calculate lower CI
+          ci_upper = mean(unlist(.x)) + qt(0.975, df = length(unlist(.x)) - 1) * sd(unlist(.x)) / sqrt(length(unlist(.x)))   # Calculate upper CI
+        )), .names = "{.col}_metrics") %>%
     })
     
     return(results_metrics)
