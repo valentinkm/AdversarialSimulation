@@ -260,13 +260,17 @@ The aim is a conceptual replication of the results obtained by @dhaene_evaluatio
 
 ### If there is more than one factor: How will the factor levels be combined and how many simulation conditions will this create?
 
-**Answer:**
+- **Study 1:**
+
 - Study 1:
-    - Fully factorial design with 4 models x 3 sample sizes x 3 reliabilities = 36 conditions
+    - 4 population models x 2 model specifications x 3 sample sizes x 3 reliabilities = 72 conditions
+      - Note: For each of the 4 population models (1.1, 1.2, 1.3, 1.4), two scenarios are considered:
+        - Correctly specified analysis model matching the population model.
+        - Incorrectly specified analysis model, corresponding to model 1.1, with specific misspecifications for models 1.2 (omitted cross-loadings), 1.3 (correlated item residuals), and 1.4 (structural misspecification).
 - Study 2.1:
-    - Fully factorial design with 2 models x 3 sample sizes x 3 reliabilities x 2 distributions = 36 conditions
+    - 2 population models (2.1, 2.2) x 3 sample sizes x 3 reliabilities x 2 distributions = 36 conditions
 - Study 2.2:    
-    - Fully factorial design with 2 models x 3 sample sizes x 5 misspecifications = 30 conditions
+    - 2 population models x 3 sample sizes x 5 misspecifications = 30 conditions
 
 ## 4. Estimands and Targets
 
