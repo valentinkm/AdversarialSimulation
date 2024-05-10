@@ -28,6 +28,12 @@ library(furrr)
 library(lavaan)
 ```
 
+# Setup
+```{r}
+RNGkind("L'Ecuyer-CMRG")
+plan(multisession, workers = detectCores() - 1)
+```
+
 # Data Generating Mechanism:
 ```{r}
 generate_dgm <- function(model_type, N, reliability) {
@@ -112,9 +118,6 @@ true_values <- list(
 )
 
 run_study_1 <- function(params, true_values) {
-  # Set RNG and parallel execution
-  RNGkind("L'Ecuyer-CMRG")
-  plan(multisession, workers = detectCores() - 1)
 
   # Model syntax
   model_syntax <- "
