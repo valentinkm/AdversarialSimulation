@@ -372,7 +372,14 @@ a <- planned_analysis(100, 1)
 # Extract results
 ```{r}
 extract_results <- function(results_df_raw){
-#Compute performance measures
+
+results_raw_combined <- results_df_raw %>%
+  group_by(N, DGM) %>%
+  summarise(across(c(SEM_ML, SEM_ULS, LSAM_ML), 
+                   ~list(unlist(.))), 
+            .groups = "drop")
+
+  #Compute performance measures
 results_metrics <- function(values) {
   list(
         abs_bias = mean(abs(values - phi)),
@@ -383,13 +390,12 @@ results_metrics <- function(values) {
       )
 }
 
-metrics_list <- results_df_raw %>%
+metrics_list <- results_raw_combined %>%
   mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), ~future_map(.x, results_metrics), .names = "{.col}_metrics")) %>%
     select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
 
   return(metrics_list)
 }
-
 
 ```
 
@@ -460,51 +466,31 @@ bias_ci
 ```
 Warnings can be ignored, as we are not interested in fit indices.
 
-# Report analysis
+# Report Bias
 ```{r}
-report_analysis <- function(results_df, models) {
-  # Initialize a list to store tables
-  tables_list <- list()
-
-  # Unique DGM values from the results
-  unique_dgms <- unique(results_df$DGM)
-
-  # Create Bias and RMSE tables for each DGM
-  for(dgm in unique_dgms) {
-    # Filter results for the current DGM
-    results_dgm <- filter(results_df, DGM == dgm)
+report_bias <- function(metrics_list) {
+  # Define a list to store results
+  bias_ci <- list()
+  
+  # Iterate over each condition in metrics_list
+  
+  for (condition in names(metrics_list)) {
+    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    abs_bias <- metrics_list$SEM_ML_metrics[[condition]]$abs_bias
+    ci_lower <- metrics_list$SEM_ML_metrics[[condition]]$ci_lower
+    ci_upper <- metrics_list$SEM_ML_metrics[[condition]]$ci_upper
     
-    #As factor to be able to arrange later
-    results_dgm$ModelType <- factor(results_dgm$ModelType, levels = models)
-    
-    # Bias table for the current DGM
-    bias_table <- results_dgm %>%
-      select(ModelType, N, AvgAbsBias) %>%
-      pivot_wider(names_from = N, values_from = AvgAbsBias) %>%
-      arrange(ModelType)
-    
-    # RMSE table for the current DGM
-    rmse_table <- results_dgm %>%
-      select(ModelType, N, AvgRMSE) %>%
-      pivot_wider(names_from = N, values_from = AvgRMSE) %>%
-      arrange(ModelType)
-    
-    # Store tables in the list with names indicating the DGM
-    tables_list[[paste("Bias_DGM", dgm)]] <- bias_table
-    tables_list[[paste("RMSE_DGM", dgm)]] <- rmse_table
+    # Create the bias_ci table for the current condition and store it in the list
+    bias_ci[[condition]] <- abs_bias %>%
+      mutate(across(`50`:`1e+05`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
+                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+             .names = "{.col}_formatted")) %>%
+      select(method_metric, ends_with("formatted")) %>%
+      rename_all(~sub("_formatted$", "", .))
   }
   
-  return(tables_list)
+  return(bias_ci)
 }
-
-
-list_of_tables <- report_analysis(results_df, models)
-
-# Access a specific table
-bias_dgm1 <- list_of_tables[["Bias_DGM 1"]]
-
-#display all tables
-report_analysis(results_df, models)
 ```
 
 
