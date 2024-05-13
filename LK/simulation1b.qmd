@@ -289,6 +289,14 @@ messages <- results_sim$messages
 #Output and extract results
 results_df_raw <- results_sim$results
 metrics_list <- extract_results(results_df_raw)
+ML_50 <- metrics_list$"50"$LSAM_ML
+ULS_50 <- metrics_list$"50"$LSAM_ULS
+ML_100 <- metrics_list$"100"$LSAM_ML
+ULS_100 <- metrics_list$"100"$LSAM_ULS
 
+ML_50
+ULS_50
+ML_100
+ULS_100
 
 ```
