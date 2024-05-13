@@ -474,19 +474,21 @@ report_bias <- function(metrics_list) {
   
   # Iterate over each condition in metrics_list
   
-  for (condition in names(metrics_list)) {
-    # Extract rel_bias, ci_lower, and ci_upper for the current condition
-    abs_bias <- metrics_list$SEM_ML_metrics[[condition]]$abs_bias
-    ci_lower <- metrics_list$SEM_ML_metrics[[condition]]$ci_lower
-    ci_upper <- metrics_list$SEM_ML_metrics[[condition]]$ci_upper
+  for (i in seq_len(nrow(metrics_list))) {
+    # Extract the metrics for SEM_ML from the current row
+    sem_ml_metrics <- metrics_list$SEM_ML_metrics[[i]]
     
-    # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- abs_bias %>%
-      mutate(across(`50`:`1e+05`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-             .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_formatted$", "", .))
+    # Extract abs_bias, ci_lower, and ci_upper
+    abs_bias <- sem_ml_metrics$abs_bias
+    ci_lower <- sem_ml_metrics$ci_lower
+    ci_upper <- sem_ml_metrics$ci_upper
+    
+    # Format these values into a human-readable string
+    bias_formatted <- sprintf("%.3f [%.3f, %.3f]", abs_bias, ci_lower, ci_upper)
+    
+    # Store this formatted string in a list with an appropriate name
+    condition_name <- paste("N", metrics_list$N[i], "DGM", metrics_list$DGM[i], sep = "_")
+    bias_ci[[condition_name]] <- bias_formatted
   }
   
   return(bias_ci)
