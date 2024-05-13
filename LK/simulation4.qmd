@@ -127,6 +127,10 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
+## Fixed Values
+```{r}
+phi <- 0.1
+```
 
 ## Apply Syntax
 ```{r}
@@ -351,14 +355,41 @@ estimators <- map(estimators, ~compose(
 # apply all estimators to the same dataset
 apply_estimators <- \(d) map(estimators, exec, d)
 
-planned_analysis <- compose(apply_estimators, simulate_data)
-
+planned_analysis <- function(N,DGM){
+  d <- simulate_data(N,DGM)
+  results <- apply_estimators(d)
+  
+  return(tibble(
+    SEM_ML = list(results$SEM_ML),
+    SEM_ULS = list(results$SEM_ULS),
+    LSAM_ML = list(results$LSAM_ML)
+  ))
+}
 #The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
-planned_analysis(100, 1)
+a <- planned_analysis(100, 1)
 
 ```
 # Extract results
 ```{r}
+extract_results <- function(results_df_raw){
+#Compute performance measures
+results_metrics <- function(values) {
+  list(
+        abs_bias = mean(abs(values - phi)),
+        rmse = sqrt(mean((values - phi)^2)),
+        se_bias = sd(values - phi) / sqrt(length(values)),
+        ci_lower = mean(values - phi) - qt(0.975, df = length(values) - 1) * sd(values - phi) / sqrt(length(values)),
+        ci_upper = mean(values - phi) + qt(0.975, df = length(values) - 1) * sd(values - phi) / sqrt(length(values))
+      )
+}
+
+metrics_list <- results_df_raw %>%
+  mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), ~future_map(.x, results_metrics), .names = "{.col}_metrics")) %>%
+    select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
+
+  return(metrics_list)
+}
+
 
 ```
 
