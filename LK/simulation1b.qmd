@@ -200,9 +200,17 @@ results_long <- results_df_raw %>%
                   names_sep = "_",
                   values_to = "value") %>%
      unite("method_metric", method, metric, sep = "_")
-  
+
+#Calculate Bias
+results_with_metrics <- results_long %>%
+  group_by(N, lambda, phi, method_metric) %>%
+  summarise(
+    abs_bias = mean(abs(value - phi)),  # Calculate the mean of absolute bias
+    .groups = "drop"  # Drop grouping after summarise
+  )
+
 # Split metrics by N into separate lists
-  split_metrics <- split(results_long, results_long$N)
+split_metrics <- split(results_with_metrics, results_with_metrics$N)
 
 process_each_N <- function(data) {
     # Split metrics by Estimators
@@ -211,21 +219,10 @@ process_each_N <- function(data) {
       group_split() %>%
       set_names(map(., ~paste(unique(.x$method_metric)))) %>%
       map(~ .x %>%
-           select(-method_metric) %>%
-           pivot_wider(names_from = lambda, values_from = value, names_prefix = "lambda_"))
-
-    # Calculate metrics for each estimator
-    results_metric <- map(estimator_splits, function(df) {
-      df %>%
-        mutate(across(starts_with("lambda"), ~list( 
-          abs_bias = mean(abs(unlist(.x) - phi)),  # Calculate absolute bias
-          se_bias = sd(unlist(.x)) / sqrt(length(unlist(.x))),  # Calculate SE of bias
-          ci_lower = mean(unlist(.x)) - qt(0.975, df = length(unlist(.x)) - 1) * sd(unlist(.x)) / sqrt(length(unlist(.x))),  # Calculate lower CI
-          ci_upper = mean(unlist(.x)) + qt(0.975, df = length(unlist(.x)) - 1) * sd(unlist(.x)) / sqrt(length(unlist(.x)))   # Calculate upper CI
-        )), .names = "{.col}_metrics")
-    })
+           select(-method_metric,-N) %>%
+           pivot_wider(names_from = phi, values_from = abs_bias, names_prefix = "phi_"))
     
-    return(results_metrics)
+    return(estimator_splits)
   }
   
  # Split further by each estimator and transform
@@ -233,35 +230,6 @@ process_each_N <- function(data) {
 
   return(metrics_list)
 }
-
-```
-
-# Report Bias
-
-```{r}
-report_bias <- function(metrics_list) {
-  # Define a list to store results
-  bias_ci <- list()
-  
-  # Iterate over each condition in metrics_list
-  for (condition in names(metrics_list)) {
-    # Extract abs_bias, ci_lower, and ci_upper for the current condition
-    abs_bias <- metrics_list[[condition]]$abs_bias
-    ci_lower <- metrics_list[[condition]]$ci_lower
-    ci_upper <- metrics_list[[condition]]$ci_upper
-    
-    # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- abs_bias %>%
-      mutate(across(`50`:`100`, ~pmap_chr(list(abs_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-             .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_formatted$", "", .))
-  }
-  
-  return(bias_ci)
-}
-
 
 ```
 
@@ -322,8 +290,5 @@ messages <- results_sim$messages
 results_df_raw <- results_sim$results
 metrics_list <- extract_results(results_df_raw)
 
-#Report Bias
-bias_ci <- report_bias(metrics_list)
-bias_ci
 
 ```
