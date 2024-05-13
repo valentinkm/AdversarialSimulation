@@ -9,16 +9,18 @@ set.seed(1)
 Copied and pasted from original paper.
 
 ```{r}
-library(GPArotation) 
-library(CDM)
-library(miceadds)
-library(TAM)
-library(sirt)
-library(lavaan)
+# Specify the libraries to load
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+# Set the R mirror to the cloud mirror of RStudio
+options(repos = "https://cloud.r-project.org/")
 
-#new packages
-library(dplyr)
-library(tidyr)
+# Load the libraries
+for (library_name in libraries) {
+  if (!require(library_name, character.only = TRUE)) {
+    install.packages(library_name)
+    library(library_name, character.only = TRUE)
+  }
+}
 ```
 
 # Specify 5-factor-Model
@@ -121,15 +123,21 @@ setup_design <- function() {
   DGM_types <- c(1,2,3)
   
   # Expand grid to create a data frame of all combinations
-  design <- expand.grid(N_sizes = N_sizes, DGM_types = DGM_types)
+  design <- expand.grid(N = N_sizes, DGM_types = DGM_types)
   
   return(design)
 }
 
 ```
 
-# Get Data generating Mechanisms
+# Data generating Mechanism
 
+##Fixed Values
+```{r}
+
+```
+
+## Varying values
 ```{r}
 #Set up DGM's 1-3 as list from original paper
 covmat_list <- list()
@@ -205,7 +213,7 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
       squared_errors_list <- vector("list", length = num_repetitions)
 
       for(rep in 1:num_repetitions) {
-        estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, model, model_type)
+        estimates_list <- planned_analysis(row$N, row$DGM_types, model, model_type)
         
         # Calculate biases for each phi and store them
         biases <- sapply(names(true_phis), function(phi) {
@@ -240,7 +248,7 @@ simulation_study <- function(design, model, num_repetitions, true_phis, models) 
       # Store the results for the current combination of N, DGM, and ModelType
       results_list[[length(results_list) + 1]] <- data.frame(
         ModelType = model_type,
-        N = row$N_sizes,
+        N = row$N,
         DGM = row$DGM_types,
         AvgAbsBias = avg_abs_bias,
         AvgRMSE = avg_rmse,
