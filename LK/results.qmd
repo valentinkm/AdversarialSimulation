@@ -36,7 +36,7 @@ For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM est
 
 ## Study 4
 
-Again, I forgot the addition of N=50 in the original condition calculation.
+Again, I forgot the addition of N=50 in the original condition calculation. We also investigated LSAM-ML as well as LSAM-ULS estimation.
 
 ## Study 4a
 
