@@ -42,10 +42,6 @@ model <- "
     F4 ~~ 1*F4
     F5 ~~ 1*F5
     
-#Covariances
-    F1 ~~ phi21*F2
-    F2 ~~ phi52*F5
-    
 #Regressions
     F3 ~ phi31*F1
     F4 ~ phi41*F1
@@ -346,7 +342,7 @@ estimators <- list(
   LSAM_ULS = \(d)lavaan::sam(model, data=d, sam.method="local", estimator = "ULS", std.lv= TRUE)
 )
 # postprocess each model output
-phi_patterns <- c("phi21", "phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi52", "phi53", "phi54")
+phi_patterns <- c("phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi53", "phi54")
 
 estimators <- map(estimators, ~compose(
   \(e) parameterEstimates(e) %>% filter(label %in% phi_patterns) %>% pull(est), 
@@ -362,120 +358,74 @@ planned_analysis <- compose(apply_estimators, simulate_data)
 planned_analysis(100, 1)
 
 ```
-
+# Extract results
 ```{r}
-#Specify estimation methods of interest
-models <- c("SEM_ML", "SEM_ULS", "LSAM_ML")
-
-planned_analysis <- function(N, DGM, model, model_type) {
-  dataset <- simulate_data(N, DGM)
-  
-  if (model_type == "SEM_ML") {
-    fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
-  } else if (model_type == "SEM_ULS") {
-    fit <- lavaan::sem(model, data=dataset, estimator="ULS", std.lv= TRUE)
-  } else if (model_type == "LSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "local", estimator = "ML", std.lv= TRUE)
-  } else {
-    stop("Unknown model type specified")
-  }
-  
-  estimates <- parameterEstimates(fit)
-
-  phi_patterns <- c("phi21", "phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi52", "phi53", "phi54")
-  phi_estimates <- sapply(phi_patterns, function(phi) {
-    if (any(estimates$label == phi)) {
-      return(estimates$est[estimates$label == phi])
-    } else {
-      return(NA)  # Return NA if the parameter wasn't found
-    }
-  }, simplify = FALSE, USE.NAMES = TRUE)
-  
-  return(phi_estimates)
-}
-
 
 ```
 
 #  Simulation Study
 ```{r}
-simulation_study <- function(design, model, num_repetitions, true_phis, models) {
-  results_list <- list()
-  
-  for(model_type in models) {
-    for(i in 1:nrow(design)) {
-      row <- design[i, ]
-      biases_list <- vector("list", length = num_repetitions)
-      squared_errors_list <- vector("list", length = num_repetitions)
 
-      for(rep in 1:num_repetitions) {
-        estimates_list <- planned_analysis(row$N, row$DGM_types, model, model_type)
-        
-        # Calculate biases for each phi and store them
-        biases <- sapply(names(true_phis), function(phi) {
-          if (!is.null(estimates_list[[phi]])) {
-            abs(estimates_list[[phi]] - true_phis[phi])
-          } else {
-            NA  # Handle missing estimates
-          }
-        })
-        biases_list[[rep]] <- biases
-        
-        # Store squared errors for each phi
-        squared_errors <- sapply(names(true_phis), function(phi) {
-          if (!is.null(estimates_list[[phi]])) {
-            (estimates_list[[phi]] - true_phis[phi])^2
-          } else {
-            NA  # Handle missing estimates
-          }
-        })
-        squared_errors_list[[rep]] <- squared_errors
-      }
-      
-      # Flatten the lists to vectors and calculate AvgAbsBias for the current condition
-      all_biases <- unlist(biases_list, use.names = FALSE)
-      avg_abs_bias <- mean(all_biases, na.rm = TRUE)
-      
-      # Aggregate the squared errors across all repetitions for each phi, then calculate RMSE
-      all_squared_errors <- do.call(rbind, squared_errors_list)
-      mean_squared_error <- colMeans(all_squared_errors, na.rm = TRUE)
-      avg_rmse <- sqrt(mean(mean_squared_error, na.rm = TRUE))
-      
-      # Store the results for the current combination of N, DGM, and ModelType
-      results_list[[length(results_list) + 1]] <- data.frame(
-        ModelType = model_type,
-        N = row$N,
-        DGM = row$DGM_types,
-        AvgAbsBias = avg_abs_bias,
-        AvgRMSE = avg_rmse,
-        stringsAsFactors = FALSE
-      )
-    }
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
+}
+
+simulation_study <- function(design, k, seed = NULL) {
+  # Define a function to run simulation_study_() safely
+  safe_simulation <- function(design) {
+    # Run the simulation function safely
+    result <- quietly(safely(simulation_study_))(design)
+    
+    # Extract the output, errors, and warnings: Question: On which level do we want this? Do obtain the correct DF, triple indexing into safely() is  necessary.
+    output <- if (!is.null(result$error)) NULL else result$result$result
+    errors <- if (!is.null(result$error)) result$error else NULL
+    warnings <- if (!is.null(result$warning)) result$warning else NULL
+    messages <- result$message
+    
+    # Return a list with the output, errors, and warnings
+    list(result = output, errors = errors, warnings = warnings, messages = messages)
   }
   
-  # Combine all results into a single data frame
-  results_df <- do.call(rbind, results_list)
-  return(results_df)
+  # Run simulation_study_() k times, capturing errors and warnings
+  results_list <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  
+  # Extract result, errors, and warnings from the list
+  results <- map_df(results_list, pluck, "result")
+  errors <- map(results_list, pluck, "errors")
+  warnings <- map(results_list, pluck, "warnings")
+  messages <- map(results_list, pluck, "messages")
+  
+  # Combine results, errors, and warnings into a single data frame
+
+  return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
 
 ```
 
 ## RUN
 ```{r}
+
+#true_phis <- c(phi31 = 0.11, phi32 = 0.11, phi41 = 0.10, phi42 = 0.10, phi43 = 0.12, phi51 = 0.12, phi53 = 0.12, phi54 = 0.12)
+
+#Set up design
 design <- setup_design()
 
-true_phis <- c(phi21 = 0.00, phi31 = 0.11, phi32 = 0.11, phi41 = 0.10, phi42 = 0.10, phi43 = 0.12, phi51 = 0.12, phi52 = 0.02, phi53 = 0.12, phi54 = 0.12)
+#Run simulation
+results_sim <- simulation_study(design, 2, seed = TRUE)
 
-models <- c("SEM_ML", "SEM_ULS", "LSAM_ML")
+#Errors, warnings and messages?
+errors <- results_sim$errors
+warnings <- results_sim$warnings
+messages <- results_sim$messages
 
-num_repetitions <- 2
+#Output and extract results
+results_df_raw <- results_sim$results
+metrics_list <- extract_results(results_df_raw)
 
-# Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, true_phis, models)
-
-# View the results
-print(results_df)
-
+#Report Bias
+bias_ci <- report_bias(metrics_list)
+bias_ci
 
 ```
 Warnings can be ignored, as we are not interested in fit indices.
