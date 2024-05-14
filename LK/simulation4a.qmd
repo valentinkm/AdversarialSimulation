@@ -126,7 +126,7 @@ setup_design <- function() {
   beta_sizes <- c(0.1,0.2,0.3,0.4)
   
   # Expand grid to create a data frame of all combinations
-  design <- expand.grid(N_sizes = N_sizes, DGM_types = DGM_types, beta_sizes = beta_sizes)
+  design <- expand.grid(N = N_sizes, DGM = DGM_types, beta = beta_sizes)
 
 
   return(design)
@@ -435,75 +435,101 @@ a <- planned_analysis(100, 1, 0.1)
 
 # Extract results
 ```{r}
+extract_results <- function(results_df_raw) {
+  
+  # Combine all raw results and add 'beta' to the grouping
+  results_raw_combined <- results_df_raw %>%
+    group_by(N, DGM, beta) %>%
+    summarise(across(c(SEM_ML, SEM_ULS, LSAM_ML), 
+                     ~list(unlist(.))), 
+              .groups = "drop")
+
+  # Compute performance measures for each estimator
+  results_metrics <- function(values) {
+    list(
+      abs_bias = mean(abs(values - phi)),  # phi needs to be predefined or passed as parameter
+      rmse = sqrt(mean((values - phi)^2)),
+      se_bias = sd(values - phi) / sqrt(length(values)),
+      ci_lower = mean(values - phi) - qt(0.975, df = length(values) - 1) * sd(values - phi) / sqrt(length(values)),
+      ci_upper = mean(values - phi) + qt(0.975, df = length(values) - 1) * sd(values - phi) / sqrt(length(values))
+    )
+  }
+
+  # Apply the performance metrics function to each estimator and create metrics columns
+  metrics_list <- results_raw_combined %>%
+    mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), ~future_map(.x, results_metrics), .names = "{.col}_metrics")) %>%
+    select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
+
+  return(metrics_list)
+}
 
 ```
 
 
 #  Simulation Study
-when calculating the bias, we are missing the true phi values to be substracted from the estimation!
-```{r}
-simulation_study <- function(design, model, num_repetitions, models) {
-  results_list <- list()
-  
-  for (model_type in models) {
-    for (i in 1:nrow(design)) {
-      row <- design[i, ]
-      biases_list <- vector("list", length = num_repetitions)
 
-      for (rep in 1:num_repetitions) {
-        estimates_list <- planned_analysis(row$N_sizes, row$DGM_types, row$beta_sizes, model, model_type)
-        
-        true_phis <- c(phi21 = 0.00, phi31 = row$beta_sizes, phi32 = row$beta_sizes, phi41 = row$beta_sizes, phi42 = row$beta_sizes, phi43 = row$beta_sizes, phi51 = row$beta_sizes, phi52 = 0.00, phi53 = row$beta_sizes, phi54 = row$beta_sizes)
-        
-        # Calculate biases for each phi and store them
-        biases <- sapply(names(true_phis), function(phi) {
-          if (!is.null(estimates_list[[phi]])) {
-            abs(estimates_list[[phi]] - true_phis[phi])
-          } else {
-            NA  # Handle missing estimates
-          }
-        })
-        biases_list[[rep]] <- biases
-      }
-      
-      # Aggregate and average biases across all repetitions
-      all_biases <- unlist(biases_list)
-      avg_abs_bias <- mean(all_biases, na.rm = TRUE)
-      
-      # Store the results for this condition
-      results_list[[length(results_list) + 1]] <- list(
-        ModelType = model_type,
-        N = row$N_sizes,
-        DGM = row$DGM_types,
-        beta = row$beta_sizes,  
-        AvgAbsBias = avg_abs_bias
-      )
-    }
+```{r}
+simulation_study_ <- function(design){
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps
+}
+
+simulation_study <- function(design, k, seed = NULL) {
+  # Define a function to run simulation_study_() safely
+  safe_simulation <- function(design) {
+    # Run the simulation function safely
+    result <- quietly(safely(simulation_study_))(design)
+    
+    # Extract the output, errors, and warnings: Question: On which level do we want this? Do obtain the correct DF, triple indexing into safely() is  necessary.
+    output <- if (!is.null(result$error)) NULL else result$result$result
+    errors <- if (!is.null(result$error)) result$error else NULL
+    warnings <- if (!is.null(result$warning)) result$warning else NULL
+    messages <- result$message
+    
+    # Return a list with the output, errors, and warnings
+    list(result = output, errors = errors, warnings = warnings, messages = messages)
   }
   
-  # Combine results into a single data frame
-  results_df <- do.call(rbind, lapply(results_list, data.frame, stringsAsFactors = FALSE))
-  return(results_df)
+  # Run simulation_study_() k times, capturing errors and warnings
+  results_list <- future_map(seq_len(k), ~safe_simulation(design), .options = furrr_options(seed = seed))
+  
+  # Extract result, errors, and warnings from the list
+  results <- map_df(results_list, pluck, "result")
+  errors <- map(results_list, pluck, "errors")
+  warnings <- map(results_list, pluck, "warnings")
+  messages <- map(results_list, pluck, "messages")
+  
+  # Combine results, errors, and warnings into a single data frame
+
+  return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
 
 
 ```
 
-## RUN
+# Run simulation
 ```{r}
+
+#Set up design
 design <- setup_design()
-models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
-num_repetitions <- 2
 
-# Execute the simulation study
-results_df <- simulation_study(design, model, num_repetitions, models)
+#Run simulation
+results_sim <- simulation_study(design, 2, seed = TRUE)
 
-# View the results
-print(results_df)
+#Errors, warnings and messages?
+errors <- results_sim$errors
+warnings <- results_sim$warnings
+messages <- results_sim$messages
 
+#Output and extract results
+results_df_raw <- results_sim$results
+metrics_list <- extract_results(results_df_raw)
+
+#Report Bias
+bias_ci <- report_bias(metrics_list)
+bias_ci
 
 ```
-
 
 
 # Report analysis
