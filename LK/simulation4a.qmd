@@ -436,32 +436,35 @@ a <- planned_analysis(100, 1, 0.1)
 # Extract results
 ```{r}
 extract_results <- function(results_df_raw) {
-  
-  # Combine all raw results and add 'beta' to the grouping
+    
   results_raw_combined <- results_df_raw %>%
     group_by(N, DGM, beta) %>%
     summarise(across(c(SEM_ML, SEM_ULS, LSAM_ML), 
                      ~list(unlist(.))), 
               .groups = "drop")
-
+  
   # Compute performance measures for each estimator
-  results_metrics <- function(values) {
+  results_metrics <- function(values, beta) {
+    adjusted_values <- values - beta  # Adjusting values by subtracting the scalar beta
     list(
-      abs_bias = mean(abs(values - beta)),  
-      rmse = sqrt(mean((values - beta)^2)),
-      se_bias = sd(values - beta) / sqrt(length(values)),
-      ci_lower = mean(values - beta) - qt(0.975, df = length(values) - 1) * sd(values - beta) / sqrt(length(values)),
-      ci_upper = mean(values - beta) + qt(0.975, df = length(values) - 1) * sd(values - beta) / sqrt(length(values))
+      abs_bias = mean(abs(adjusted_values)),  
+      rmse = sqrt(mean(adjusted_values^2)),
+      se_bias = sd(adjusted_values) / sqrt(length(values)),
+      ci_lower = mean(adjusted_values) - qt(0.975, df = length(values) - 1) * sd(adjusted_values) / sqrt(length(values)),
+      ci_upper = mean(adjusted_values) + qt(0.975, df = length(values) - 1) * sd(adjusted_values) / sqrt(length(values))
     )
   }
 
   # Apply the performance metrics function to each estimator and create metrics columns
   metrics_list <- results_raw_combined %>%
-    mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), ~future_map(.x, results_metrics), .names = "{.col}_metrics")) %>%
+    mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), 
+                  ~future_map2(.x, beta, results_metrics), .names = "{.col}_metrics")) %>%
     select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
 
   return(metrics_list)
 }
+
+
 
 ```
 
@@ -587,43 +590,6 @@ bias_ci
 
 ```
 
-
-# Report analysis
-```{r}
-report_analysis <- function(results_df, models) {
-  # Create a list to store the tables
-  tables_list <- list()
-  
-  # Get unique cl conditions from the results dataframe
-  DGM_conditions <- unique(results_df$DGM)
-  
-  # Loop through each model type to create tables
-  for (model_type in models) {
-    for (current_DGM in DGM_conditions) {
-      # Filter and pivot data for the current model and cl condition
-      pivot_table <- results_df %>%
-        filter(ModelType == model_type, DGM == current_DGM) %>%
-        select(-ModelType, -DGM) %>%
-        spread(key = N, value = AvgAbsBias)
-      
-      # Set table name based on model type and cl condition
-      table_name <- paste(model_type, "DGM", current_DGM, sep = "_")
-      tables_list[[table_name]] <- pivot_table
-    }
-  }
-  
-  return(tables_list)
-}
-
-list_of_tables <- report_analysis(results_df, models)
-
-
-# Access a specific table
-SEM_DGM_1 <- list_of_tables[["SEM_ML_DGM_1"]] # Example for Bias as a function of N and Phi with 1 cross-loading
-
-#display all tables
-report_analysis(results_df, models)
-```
 
 # Substract tables?
 ```{r}
