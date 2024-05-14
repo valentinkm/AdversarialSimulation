@@ -469,30 +469,46 @@ Warnings can be ignored, as we are not interested in fit indices.
 # Report Bias
 ```{r}
 report_bias <- function(metrics_list) {
-  # Define a list to store results
-  bias_ci <- list()
+  # List of estimators to process
+  estimators <- c("SEM_ML_metrics", "SEM_ULS_metrics", "LSAM_ML_metrics")
   
-  # Iterate over each condition in metrics_list
+  # Initialize an empty list to store the results for each estimator
+  all_bias_results <- list()
   
-  for (i in seq_len(nrow(metrics_list))) {
-    # Extract the metrics for SEM_ML from the current row
-    sem_ml_metrics <- metrics_list$SEM_ML_metrics[[i]]
+  # Loop through each estimator
+  for (estimator in estimators) {
+    # Initialize an empty data frame to store results for the current estimator
+    bias_results <- data.frame(N = integer(),
+                               DGM = integer(),
+                               Bias_CI = character(),
+                               stringsAsFactors = FALSE)
     
-    # Extract abs_bias, ci_lower, and ci_upper
-    abs_bias <- sem_ml_metrics$abs_bias
-    ci_lower <- sem_ml_metrics$ci_lower
-    ci_upper <- sem_ml_metrics$ci_upper
+    # Iterate over each row of the metrics_list dataframe
+    for (i in seq_len(nrow(metrics_list))) {
+      # Extract the metrics for the current estimator from the current row
+      current_metrics <- metrics_list[[estimator]][[i]]
+      
+      # Extract abs_bias, ci_lower, and ci_upper
+      abs_bias <- current_metrics$abs_bias
+      ci_lower <- current_metrics$ci_lower
+      ci_upper <- current_metrics$ci_upper
+      
+      # Format these values into a human-readable string
+      bias_formatted <- sprintf("%.3f [%.3f, %.3f]", abs_bias, ci_lower, ci_upper)
+      
+      # Append the results to the data frame
+      bias_results <- rbind(bias_results, data.frame(N = metrics_list$N[i],
+                                                     DGM = metrics_list$DGM[i],
+                                                     Bias_CI = bias_formatted))
+    }
     
-    # Format these values into a human-readable string
-    bias_formatted <- sprintf("%.3f [%.3f, %.3f]", abs_bias, ci_lower, ci_upper)
-    
-    # Store this formatted string in a list with an appropriate name
-    condition_name <- paste("N", metrics_list$N[i], "DGM", metrics_list$DGM[i], sep = "_")
-    bias_ci[[condition_name]] <- bias_formatted
+    # Store the data frame in the list with a name corresponding to the estimator
+    all_bias_results[[estimator]] <- bias_results
   }
   
-  return(bias_ci)
+  return(all_bias_results)
 }
+
 ```
 
 
