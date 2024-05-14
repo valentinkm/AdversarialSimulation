@@ -9,16 +9,18 @@ set.seed(1)
 Copied and pasted from original paper.
 
 ```{r}
-library(GPArotation)
-library(CDM)
-library(miceadds)
-library(TAM)
-library(sirt)
-library(lavaan)
+# Specify the libraries to load
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+# Set the R mirror to the cloud mirror of RStudio
+options(repos = "https://cloud.r-project.org/")
 
-#new packages
-library(dplyr)
-library(tidyr)
+# Load the libraries
+for (library_name in libraries) {
+  if (!require(library_name, character.only = TRUE)) {
+    install.packages(library_name)
+    library(library_name, character.only = TRUE)
+  }
+}
 ```
 
 
@@ -389,7 +391,7 @@ simulate_data <- function(N, DGM, beta) {
   #Simulate Data
   df_dat <- simulateData(pop.model, sample.nobs = N)
 
-  return(list(SampleSize = N, DGM = DGM, beta = beta, Data = df_dat))
+  return(df_dat)
 }
 
 
@@ -398,41 +400,43 @@ simulate_data <- function(N, DGM, beta) {
 
 
 # Planned Analysis
-
 ```{r}
 #Specify estimation methods of interest
-models <- c("SEM_ML", "LSAM_ML", "GSAM_ML")
 
-planned_analysis <- function(N, DGM, beta, model, model_type) {
-  dataset <- simulate_data(N, DGM, beta)$Data
-  
-  if (model_type == "SEM_ML") {
-    fit <- lavaan::sem(model, data=dataset, estimator="ML", std.lv= TRUE)
-  } else if (model_type == "LSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method="local", estimator = "ML", std.lv= TRUE)
-  } else if (model_type == "GSAM_ML") {
-    fit <- lavaan::sam(model, data=dataset, sam.method = "global", estimator = "ML", std.lv= TRUE)
-  } else {
-    stop("Unknown model type specified")
-  }
-  
-  estimates <- parameterEstimates(fit)
+estimators <- list(
+  SEM_ML = \(d) lavaan::sem(model, data=d, estimator="ML", std.lv= TRUE),
+  SEM_ULS = \(d) lavaan::sem(model, data=d, estimator="ULS", std.lv= TRUE),
+  LSAM_ML = \(d) lavaan::sam(model, data=d, sam.method="local", estimator = "ML", std.lv= TRUE)
+)
+# postprocess each model output
+phi_patterns <- c("phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi53", "phi54")
 
-  phi_patterns <- c("phi21", "phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi52", "phi53", "phi54")
-  phi_estimates <- sapply(phi_patterns, function(phi) {
-    if (any(estimates$label == phi)) {
-      return(estimates$est[estimates$label == phi])
-    } else {
-      return(NA)  # Return NA if the parameter wasn't found
-    }
-  }, simplify = FALSE, USE.NAMES = TRUE)
+estimators <- map(estimators, ~compose(
+  \(e) parameterEstimates(e) %>% filter(label %in% phi_patterns) %>% pull(est), 
+  .
+))
+
+# apply all estimators to the same dataset
+apply_estimators <- \(d) map(estimators, exec, d)
+
+planned_analysis <- function(N, DGM, beta){
+  d <- simulate_data(N,DGM, beta)
+  results <- apply_estimators(d)
   
-  return(phi_estimates)
+  return(tibble(
+    SEM_ML = list(results$SEM_ML),
+    SEM_ULS = list(results$SEM_ULS),
+    LSAM_ML = list(results$LSAM_ML)
+  ))
 }
-
-
+#The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
+a <- planned_analysis(100, 1, 0.1)
 ```
 
+# Extract results
+```{r}
+
+```
 
 
 #  Simulation Study
