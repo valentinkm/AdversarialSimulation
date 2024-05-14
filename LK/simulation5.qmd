@@ -9,19 +9,19 @@ set.seed(1)
 Copied and pasted from original paper.
 
 ```{r}
-library(GPArotation)
-library(CDM)
-library(miceadds)
-library(TAM)
-library(sirt)
-library(lavaan)
+# Specify the libraries to load
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+# Set the R mirror to the cloud mirror of RStudio
+options(repos = "https://cloud.r-project.org/")
 
-#new packages
-library(dplyr)
-library(tidyr)
+# Load the libraries
+for (library_name in libraries) {
+  if (!require(library_name, character.only = TRUE)) {
+    install.packages(library_name)
+    library(library_name, character.only = TRUE)
+  }
+}
 ```
-
-# Source relevant R Functions
 
 # Specify 3-factor-Model
 ```{r}
@@ -87,7 +87,6 @@ setup_design <- function() {
   # Cross-loading conditions
   cl_conditions <- c(1, 2, 3)  
   
-  
   # Factor correlations
   factor_correlations <- c(0,0.2,0.4,0.6)
   
@@ -104,6 +103,13 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
+
+## Fixed values
+```{r}
+
+```
+
+## Varying values
 ```{r}
 get_dgm <- function(cl, phis) {
   # Factor loadings
