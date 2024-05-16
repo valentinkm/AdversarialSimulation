@@ -466,58 +466,54 @@ extract_results <- function(results_df_raw) {
 
 # Report Bias
 ```{r}
-report_bias <- function(metrics_list) {
-    # List of estimators to process
-    estimators <- c("SEM_ML_metrics", "SEM_ULS_metrics", "LSAM_ML_metrics")
-    
-    # Create an empty list to store results by estimator and DGM
-    results_by_estimator_and_dgm <- list()
-    
-    # Unique DGM values
-    unique_dgms <- unique(metrics_list$DGM)
-    
-    # Unique beta values
-    unique_betas <- unique(metrics_list$beta)
-    
-    # Process each estimator and DGM
-    for (estimator in estimators) {
-        estimator_dgm_list <- list()
-        
-        for (dgm in unique_dgms) {
-            # Filter metrics_list for the current estimator and DGM
-            dgm_filtered_data <- subset(metrics_list, DGM == dgm)
 
-            # Get unique N values sorted
-            unique_ns <- sort(unique(dgm_filtered_data$N))
-            
-            # Prepare a data frame with beta as the first column and one column for each N value
-            df <- setNames(data.frame(matrix(ncol = length(unique_ns) + 1, nrow = length(unique_betas))), c("beta", paste("N", unique_ns, sep = "_")))
-            df$beta <- unique_betas
-            
-            # Fill the data frame
-            for (beta in unique_betas) {
-                for (n in unique_ns) {
-                    beta_filtered_data <- subset(dgm_filtered_data, N == n & beta == beta)
-                    col_name <- paste("N", n, sep = "_")
-                    
-                    if (nrow(beta_filtered_data) > 0) {
-                        metrics <- beta_filtered_data[[estimator]][[1]]
-                        df[df$beta == beta, col_name] <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
-                    } else {
-                        df[df$beta == beta, col_name] <- NA  # Placeholder if no data is available
-                    }
-                }
-            }
-            
-            # Store the data frame for this DGM
-            estimator_dgm_list[[paste("DGM", dgm, sep = "_")]] <- df
-        }
-        
-        # Store the list of DGM-specific data frames under the current estimator
-        results_by_estimator_and_dgm[[estimator]] <- estimator_dgm_list
-    }
+report_bias <- function(metrics_list) {
+  # Define the list of estimators
+  estimators <- c("SEM_ML_metrics", "SEM_ULS_metrics", "LSAM_ML_metrics")
+  
+  # Ensure DGM values are uniquely identified
+  unique_dgms <- unique(metrics_list$DGM)
+  unique_betas <- unique(metrics_list$beta)
+  unique_ns <- unique(metrics_list$N)
+  
+  # Process each DGM using future_map to leverage parallel processing
+  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+    dgm <- .x
     
-    return(results_by_estimator_and_dgm)
+    # Create a list to hold results for each estimator
+    estimator_results <- map(estimators, function(estimator) {
+      
+      # Filter data for the current DGM and estimator
+      filtered_data <- metrics_list %>% filter(DGM == dgm)
+      
+      # Create a list to hold results for each beta value
+      beta_results <- map(unique_betas, function(beta_val) {
+        filtered_beta_data <- filtered_data %>% filter(beta == beta_val)
+        
+        # Create a list to hold results for each N
+        n_results <- map_dfc(unique_ns, function(n_val) {
+          metrics <- filtered_beta_data %>% filter(N == n_val) %>% pull(estimator)
+          metrics <- metrics[[1]]
+          formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+          set_names(formatted_bias, paste("N", n_val, sep = "_"))
+        })
+        
+        tibble(beta = beta_val) %>% bind_cols(n_results)
+      })
+      
+      beta_results <- bind_rows(beta_results)
+      set_names(beta_results, c("beta", paste("N", unique_ns, sep = "_")))
+    })
+    
+    set_names(estimator_results, estimators)
+  }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
+  
+  # Combine results into separate dataframes for each estimator
+  results_by_estimator <- map(estimators, function(estimator) {
+    map_dfr(results_by_dgm, ~ .x[[estimator]])
+  })
+  
+  set_names(results_by_estimator, estimators)
 }
 
 ```
@@ -581,12 +577,12 @@ messages <- results_sim$messages
 results_df_raw <- results_sim$results
 metrics_list <- extract_results(results_df_raw)
 
-#Report Bias
+#Report Bias does not work yet
 bias_ci <- report_bias(metrics_list)
 bias_ci
 
 ```
-
+bias_ci outputs across DGM's 1 and 2, which are not part of the nesting, yet.
 
 # Substract tables?
 ```{r}
