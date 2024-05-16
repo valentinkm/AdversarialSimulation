@@ -463,48 +463,40 @@ metrics_list <- results_raw_combined %>%
 # Report Bias
 ```{r}
 report_bias <- function(metrics_list) {
-  # List of estimators to process
+  # Define the list of estimators
   estimators <- c("SEM_ML_metrics", "SEM_ULS_metrics", "LSAM_ML_metrics")
   
-  # Create an empty list to store results by DGM
-  results_by_dgm <- list()
-  
-  # Unique DGM values
+  # Ensure DGM values are uniquely identified
   unique_dgms <- unique(metrics_list$DGM)
-  
-  # Process each DGM
-  for (dgm in unique_dgms) {
-    # Filter metrics_list for the current DGM
-    filtered_data <- metrics_list[metrics_list$DGM == dgm, ]
+
+  # Process each DGM using future_map to leverage parallel processing
+  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+    # Filter data for the current DGM
+    filtered_data <- metrics_list %>% filter(DGM == .x)
     
-    # Initialize an empty data frame for storing bias results for the current DGM
-    n_values <- unique(filtered_data$N)
-    col_names <- c("Estimator", paste("N", n_values, sep = "_"))
-    dgm_df <- setNames(data.frame(matrix(ncol = length(col_names), nrow = length(estimators))), col_names)
-    dgm_df$Estimator <- sub("_metrics", "", estimators)
-    
-    # Iterate over each estimator
-    for (estimator_idx in seq_along(estimators)) {
-      estimator <- estimators[estimator_idx]
+    # Create a dataframe for each estimator and each N, using future_map_df for parallel execution
+    estimator_results <- future_map_dfr(estimators, ~{
+      estimator_data <- filtered_data[[.x]]
       
-      # Iterate over each N
-      for (n in n_values) {
-        row_data <- filtered_data[filtered_data$N == n, ]
-        metrics <- row_data[[estimator]][[1]]  # Assuming single row per N in filtered data
-        
-        # Format bias and CI
+      # Map each N to create formatted bias strings, using future_map_dfc for parallel execution
+      n_results <- future_map_dfc(set_names(unique(filtered_data$N)), ~{
+        metrics <- estimator_data[[which(filtered_data$N == .x)]]
         formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
-        col_name <- paste("N", n, sep = "_")
-        dgm_df[estimator_idx, col_name] <- formatted_bias
-      }
-    }
+        set_names(formatted_bias, paste("N", .x, sep = "_"))
+      })
+      
+      # Add estimator names as the first column
+      tibble(Estimator = sub("_metrics", "", .x)) %>% bind_cols(n_results)
+    })
     
-    # Store the data frame in the results_by_dgm list, named by the DGM value
-    results_by_dgm[[paste("DGM", dgm, sep = "_")]] <- dgm_df
-  }
+    # Name the dataframe with the current N value
+    rename(estimator_results, set_names(names(estimator_results[-1]),paste("N", unique(filtered_data$N), sep = "_")))
+  }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
   
-  return(results_by_dgm)
+  # Return a list of dataframes, one for each DGM
+  set_names(results_by_dgm, paste("DGM", unique(metrics_list$DGM), sep = "_"))
 }
+
 
 ```
 
