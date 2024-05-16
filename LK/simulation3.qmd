@@ -77,6 +77,7 @@ setup_design <- function() {
 # Data generating Mechanism
 
 ## Fixed values
+
 ```{r}
 lam1 <- 0.55
 lam2 <- 0.45
@@ -102,9 +103,11 @@ THETA[2, 5] <- THETA[5, 2] <- 0.12  # Correlated residuals for X2 and Y2
 ```
 
 ## Varying values
+
 None
 
 # Apply Syntax
+
 ```{r}
 pop.model <- paste(
   
@@ -132,8 +135,8 @@ cat(pop.model)
   
 ```
 
-
 # Simulate data
+
 ```{r}
 simulate_data <- function(N) {
   
@@ -146,6 +149,7 @@ simulate_data <- function(N) {
 ```
 
 # Planned Analysis
+
 ```{r}
 #Specify estimation methods of interest
 
@@ -214,6 +218,7 @@ results_metrics <- results_df_raw %>%
 ```
 
 # Report bias
+
 ```{r}
 report_bias <- function(metrics_list) {
   # Define a list to store results
@@ -237,6 +242,7 @@ report_bias <- function(metrics_list) {
 
 
 #  Simulation Study
+
 ```{r}
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -276,6 +282,7 @@ simulation_study <- function(design, k, seed = NULL) {
 ```
 
 # Run simulation
+
 ```{r}
 #Set up design
 design <- setup_design()
@@ -296,6 +303,3 @@ metrics_list <- extract_results(results_df_raw)
 bias_ci <- report_bias(metrics_list)
 bias_ci
 ```
-Might there be NA's somewhere that result in the warning? Nothing visible in the results.
-
-

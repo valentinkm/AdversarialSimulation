@@ -4,8 +4,6 @@
 set.seed(1)
 ```
 
-
-
 # Packages
 
 Copied and pasted from original paper.
@@ -317,8 +315,8 @@ report_bias <- function(metrics_list) {
 }
 ```
 
-
 # Simulation Study
+
 Same as Study 1
 ```{r}
 
@@ -359,6 +357,7 @@ simulation_study <- function(design, k, seed = NULL) {
 ```
 
 # Run simulation
+
 ```{r}
 
 #Set up design

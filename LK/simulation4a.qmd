@@ -135,6 +135,7 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
+
 This time, we will define the DGM the same way Rosseel and Loh did here: https://osf.io/96zhs
 ```{r}
 get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
@@ -215,7 +216,7 @@ get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
 Function taken from RL: https://osf.io/4we3h
 ```{r}
 
-lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
+apply_syntax <-lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
                              include.values = TRUE) {
     
     # model matrices
@@ -447,6 +448,7 @@ extract_results <- function(results_df_raw) {
     adjusted_values <- values - beta  # Adjusting values by subtracting the scalar beta
     list(
       abs_bias = mean(abs(adjusted_values)),  
+      rel_bias = mean(values - phi) / phi,
       rmse = sqrt(mean(adjusted_values^2)),
       se_bias = sd(adjusted_values) / sqrt(length(values)),
       ci_lower = mean(adjusted_values) - qt(0.975, df = length(values) - 1) * sd(adjusted_values) / sqrt(length(values)),

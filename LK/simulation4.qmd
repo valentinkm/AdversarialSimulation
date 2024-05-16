@@ -127,6 +127,7 @@ setup_design <- function() {
 ```
 
 # Data generating Mechanism
+
 ## Fixed Values
 ```{r}
 phi <- 0.1
@@ -383,6 +384,7 @@ results_raw_combined <- results_df_raw %>%
 results_metrics <- function(values) {
   list(
         abs_bias = mean(abs(values - phi)),
+        rel_bias = mean(values - phi) / phi,
         rmse = sqrt(mean((values - phi)^2)),
         se_bias = sd(values - phi) / sqrt(length(values)),
         ci_lower = mean(values - phi) - qt(0.975, df = length(values) - 1) * sd(values - phi) / sqrt(length(values)),

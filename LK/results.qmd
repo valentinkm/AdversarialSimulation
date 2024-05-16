@@ -32,11 +32,12 @@ Lastly, instead of just calculating the relative bias as originally planned, we 
 ## Study 1b
 
 In Study 1b, contrary to the simulation protocol, we added another sample size with N=50 to get a more nuanced understanding of the small-sample bias of LSAM. 
-For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM estimation and calculated the absolute bias again.
+For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM estimation. Calculation of the relative Bias was not feasible in this study, as for the conditions where phi is 0, dividing by 0 would lead to infinite values.
 
 ## Study 4
 
-Again, I forgot the addition of N=50 in the original condition calculation.
+Again, I forgot the addition of N=50 in the original condition calculation. 
+Importantly, the model parameters and resulting population-level covariance matrices for the different DGM's provided by @robitzsch_comparing_2022 in their github repository were not the same as in the first paper by @rosseel_structural_2022. Combined with the facts that firstly, the values at some point seemed to be off in @robitzsch_comparing_2022 (they included for example a fixed loading of 0 for y11 in DGM2, without an apparent reason), and secondly that only in @rosseel_structural_2022 the calculation of the values was replicable, we chose to use the values of @rosseel_structural_2022 by generating them with the same functions they used.
 
 ## Study 4a
 
@@ -46,13 +47,12 @@ We deemed it interesting to investigate these results in a model with a differen
 These findings, combined with our goal to investigate realistic data conditions, rather than just the population level, left us to include Study 4a, with the addition of an additional factor sample size.
 As DGM1 neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study 4, it was omitted.
 Similarly, as no substantial conclusions were drawn with regards to RMSE in the original papers study 1 and 2, we omitted its calculation as well.
+Lastly, for the same reasons as argued for Study 4, we again created the DGM's based on the functions used in @rosseel_structural_2022.
 
 ## Studies 5,6
 
-Similar to the reasoning in study 4a, we again included N as a factor to more closely align to our research interest in realistic data conditions. 
-Thus, we also reverted to the previous analysis of results, not implementing the “SAM vs. SEM better” approach that was preregistered. 
-Hence, the number of conditions deviated in the analyses as well.
-Additionally, we doubled the interval length between the phi/beta-conditions to reduce the high number of results that would be present. As there were no interesting findings in the original differentiation, we deemed this to be a fair, pragmatic deviation to reduce complexity.
+As we are not interested in the comparative performance of SAM vs. SEM at the population level for our research question, but in the performance comparison under realistic conditions, especially in small to moderate sample sizes, we decided to not replicate Studies 5 and 6 after all.
+We deemed this a fair deviation from our simulation protocol, especially because no substantial performance differences arose in the results of these studies, and the most relevant aspect for us, the differential effect due to the size of factor correlation, is already covered in two different models in studies 1b and 4a.
 
 # Result analysis
 
@@ -115,7 +115,7 @@ Alternatively, relative bias could be: mean(estimates - true_values) / true_valu
 
 true value nur innerhalb eines phi, wenn die phis alle den gleichen Wert haben, dann müssen sie getrennt sein
 
-**Calculation Study 4-6:**
+**Calculation Study 4, 4a:**
 
 AvgAbsBias:
 
@@ -146,101 +146,7 @@ AvgAbsBias: Mein weg ist korrekt
 Reporting: STandardfehler/ KI für Bias berichten
 
 
-## 2. How to calculate the phi values like in the paper? (Simulations 4 & 4a): 
-
-In the paper, they say they want to improve upon Rosseel and Loh by investigating “marginal factor correlations” instead of “condition associations”.
-They then calculate the phi values based on the size of the regression coefficient beta = 0.1. 
-But it is unclear how they calculate them, and why they come up with 10 instead of 8 phi values (In the original paper, Rosseel and Loh only compute 8, corresponding to the number of regressions).
-
-For study 4, I took his 10 values and used them, but need to calculate them for study 4a (for now in study 4a, I have only taken the unstandardized regression weights, as in the original Rosseel and Loh paper). I specified covariance for the 2 of the 10 values that are not regressions (phi21 and phi52) —> Should they also be regressions?
-
-Answer:
-take lavaan: implicit cov. matrix berechnen lassen, wie in RL
-
-
-
-## 3. How to do the matrix algebra? I don’t get it
-
-How do I ideally calculate the covariance matrix? This is done differently for different studies in the original paper. I used what I had without really understanding why. For example, why S is calculated differently in Studies 1-3 vs. 5-6. Might it be because the analyses in Robitzsch studies 5 and 6 were only conducted on the population level?
-
-What I did at the moment: 
-
-Studies 1-3 like in Robitzsch:
-
-```{r}
-#| eval: false
-
-S <- LAM %*% PHI %*% t(LAM) + THETA
-dat <- MASS::mvrnorm(n = N, mu = rep(0, 6), Sigma = S)
-```
-
-Study 4: imported true model cov matrix from Robitzsch and used them as Sigma
-
-Study 4a: like in Rosseel and Loh paper (with functions taken from OSF), as no info was provided by Robitzsch
-
-Study 5-6: Like Robitzsch but probably wrong matrix setup as calculation was done on population level only in Robitzsch, unlike me:
-
-```{r}
-#| eval: false
-  
-TR <- LAM %*% PHI %*% t(LAM)
-PSI <- matrix(0, nrow=9, ncol=9)
-diag(PSI) <- 1 - diag(TR)
-S <- TR + PSI  
-dat <- MASS::mvrnorm(n = N, mu = rep(0, nrow(LAM)), Sigma = S, empirical = TRUE) ####empirical=true ist wichtiger unterschied, daten = exact covariance, kein sampling fehler
-```
-###### Alles in lavaan spezifizieren und cov-matrix bekommen
-
-For context, Robitzsch does the following within his simulation loop in Study 1: 
-
-```{r}
-#| eval: false
-
-S0 <- S <- LAM %*% PHI %*% t(LAM) + THETA
-rownames(S) <- colnames(S) <- c( paste0("X",1:3), paste0("Y",1:3) )
-
-if (N<inf_val){
-    dat <- MASS::mvrnorm(n=N, mu=rep(0,6), Sigma=S)
-    S <- cov(dat) * (N-1) / N
-}
-
-# save example datasets
-save.data( S , paste0("DATA_DES",dd ) , type="csv2" , path= pf1, row.names=TRUE)
-```
-
-And then later on estimates the models as below:
-
-```{r}
-#| eval: false
-
-mod1a <- lavaan::sem(lavmodel, sample.cov=S, sample.nobs=1e5, estimator="ML", std.lv=std.lv)
-```
-
-
-
-## 4. How to handle warnings in studies 3 & 4
-
-Visible in the console after running the simulation. I commented my opinion below the respective code chunks.
-
-
-For study 3, relevant error!
-
-In purr: insistently() = versuchs nochmal, wenn es einen Fehler gibt oder possibly()quietly()safely() zusammen = alle warnings/messages werden gespeichert (safely) und wird ausgegeben wenn es etwas gibt, statt dem eigentlich value, ohne die simulation abzubrechen
-safely() auf jeden fall anwenden auf simulation() function
-wenn geht in kombination mit quietly()
-possibly() ohne abzubrechen Fehler speichern, am Ende
---> Alle angucken und kombinieren, eventuell safely und quietly damit man ergebnisse, warnings, fehler alles gemeinsam ausgegeben bekommen
-Immer die gleiche Funktion nutzen
-
-## 5. Results setup
-
-How should I index into the single simulation results in this document?
-Running all the scripts in the final markdown with source() is not feasible, as it would repeat the simulation.
-The GPT suggestion to split up report_analysis() functions in seperate scripts would lead to double the amount of scripts and is also inadvisable. 
-Addtionally, executing quarto render would lead to running all simulations again, as of now.
-As of now, it fails anyway due to titlesec problems (error-prone part in the preamble).
-My idea: we would run the simulation on the cluster, and export all tables from report_analysis(). These can be indexed in the results.qmd for analysis. This way, the simulation only needs to be run once and is not part of quarto render.
-
+## 2. Results setup
 
 Möglichst auf einzelne Simulation beziehen interpretation
 

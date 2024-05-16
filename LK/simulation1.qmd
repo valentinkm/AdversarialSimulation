@@ -86,6 +86,7 @@ setup_design <- function() {
 # Data generating Mechanism
 
 ## Fixed values
+
 ```{r}
 lam1 <- 0.55
 lam2 <- 0.45
@@ -105,6 +106,7 @@ THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
 ```
 
 ## Varying values
+
 ```{r}
 get_dgm <- function(rc, psi_value) {
   
@@ -123,6 +125,7 @@ get_dgm <- function(rc, psi_value) {
 ```
 
 # Apply Syntax
+
 ```{r}
 apply_syntax <- function(MLIST) {
   
@@ -163,6 +166,7 @@ cat(model_syntax)
 
 
 # Simulate data
+
 ```{r}
 simulate_data <- function(N, rc, psi_value) {
   # Get DGM parameters
@@ -178,6 +182,7 @@ simulate_data <- function(N, rc, psi_value) {
 ```
 
 # Planned Analysis
+
 ```{r}
 #Specify estimation methods of interest
 
@@ -328,6 +333,7 @@ simulation_study <- function(design, k, seed = NULL) {
 ```
 
 # Run simulation
+
 ```{r}
 
 #Set up design
