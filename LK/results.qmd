@@ -101,14 +101,7 @@ If, however, there are differences large than 0.03, we will report them, without
 
 # Open questions
 
-## 1. Bias and RMSE calculation
-
-Answer: both is valid: If we want 0, then absolute bias is preferrable, if true value is not 0 (which it)
-Ideally, beides reporten, eines interpretieren, bei mir dann rel_bias wo möglich/ nötig
-AvgAbsBias: Mein weg ist korrekt
-
-
-## 2. Results setup
+## 1. Results setup
 
 Möglichst auf einzelne Simulation beziehen interpretation
 

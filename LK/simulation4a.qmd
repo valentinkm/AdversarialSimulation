@@ -657,23 +657,3 @@ rmse <- suppressMessages(report_rmse(metrics_list))
 rmse
 
 ```
-
-# Substract tables?
-```{r}
-library(purrr)
-
-lsam_table <- list_of_tables[["LSAM_ML_DGM_1"]]
-sem_table <- list_of_tables[["SEM_ML_DGM_1"]]
-
-# Use map2_df from purrr to subtract the SEM table from the LSAM table
-diff_table <- map2_df(lsam_table[-1], sem_table[-1], `-`)
-
-# Add the column back
-diff_table <- bind_cols(lsam_table[1], diff_table)
-
-# Print the new table with differences
-print(diff_table)
-```
-Negative values = LSAM better ; Positive values = SEM better
-
-
