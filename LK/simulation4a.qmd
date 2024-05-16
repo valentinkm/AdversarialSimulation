@@ -516,7 +516,7 @@ report_bias <- function(metrics_list) {
   })
   
   # Set names for easier access
-  names(results_by_dgm_estimator) <- unique_dgms
+  names(results_by_dgm_estimator) <- paste("DGM", unique_dgms, sep = "_")
   results_by_dgm_estimator <- map(results_by_dgm_estimator, function(dgm_results) {
     set_names(dgm_results, estimators)
   })
