@@ -441,14 +441,13 @@ extract_results <- function(results_df_raw) {
   
   # Compute performance measures for each estimator
   results_metrics <- function(values, beta) {
-    adjusted_values <- values - beta  # Adjusting values by subtracting the scalar beta
     list(
-      abs_bias = mean(abs(adjusted_values)),  
-      rel_bias = mean(values - phi) / phi,
-      rmse = sqrt(mean(adjusted_values^2)),
-      se_bias = sd(adjusted_values) / sqrt(length(values)),
-      ci_lower = mean(adjusted_values) - qt(0.975, df = length(values) - 1) * sd(adjusted_values) / sqrt(length(values)),
-      ci_upper = mean(adjusted_values) + qt(0.975, df = length(values) - 1) * sd(adjusted_values) / sqrt(length(values))
+      abs_bias = mean(abs(values - beta)),  
+      rel_bias = mean(values - beta) / beta,
+      rmse = sqrt(mean(values - beta^2)),
+      se_bias = sd(values - beta) / sqrt(length(values)),
+      ci_lower = mean(values - beta) - qt(0.975, df = length(values) - 1) * sd(values - beta) / sqrt(length(values)),
+      ci_upper = mean(values - beta) + qt(0.975, df = length(values) - 1) * sd(values - beta) / sqrt(length(values))
     )
   }
 
