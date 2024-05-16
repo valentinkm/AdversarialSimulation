@@ -508,12 +508,20 @@ report_bias <- function(metrics_list) {
     set_names(estimator_results, estimators)
   }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
   
-  # Combine results into separate dataframes for each estimator
-  results_by_estimator <- map(estimators, function(estimator) {
-    map_dfr(results_by_dgm, ~ .x[[estimator]])
+  # Combine results by DGM and estimator
+  results_by_dgm_estimator <- map(unique_dgms, function(dgm) {
+    map(estimators, function(estimator) {
+      results_by_dgm[[paste(dgm)]][[estimator]]
+    })
   })
   
-  set_names(results_by_estimator, estimators)
+  # Set names for easier access
+  names(results_by_dgm_estimator) <- unique_dgms
+  results_by_dgm_estimator <- map(results_by_dgm_estimator, function(dgm_results) {
+    set_names(dgm_results, estimators)
+  })
+  
+  results_by_dgm_estimator
 }
 
 ```
@@ -577,7 +585,7 @@ messages <- results_sim$messages
 results_df_raw <- results_sim$results
 metrics_list <- extract_results(results_df_raw)
 
-#Report Bias does not work yet
+#Report Bias
 bias_ci <- report_bias(metrics_list)
 bias_ci
 
