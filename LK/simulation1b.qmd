@@ -218,6 +218,70 @@ extract_results <- function(results_df_raw) {
 
 ```
 
+# Report Bias
+```{r}
+report_bias <- function(metrics_list) {
+  # Define the list of estimators
+  estimators <- c("LSAM_ML_metrics", "LSAM_ULS_metrics")
+  clean_estimators <- sub("_metrics", "", estimators)
+  
+  # Ensure unique values for N, lambda, and phi
+  unique_ns <- unique(metrics_list$N)
+  unique_lambdas <- unique(metrics_list$lambda)
+  unique_phis <- unique(metrics_list$phi)
+  
+  # Process each N using future_map to leverage parallel processing
+  results_by_n <- future_map(set_names(unique_ns), ~{
+    n_val <- .x
+    
+    # Create a list to hold results for each estimator
+    estimator_results <- map(estimators, function(estimator) {
+      
+      # Filter data for the current N and estimator
+      filtered_data <- metrics_list %>% filter(N == n_val)
+      
+      # Create a list to hold results for each lambda value
+      lambda_results <- map(unique_lambdas, function(lambda_val) {
+        filtered_lambda_data <- filtered_data %>% filter(lambda == lambda_val)
+        
+        # Create a list to hold results for each phi value
+        phi_results <- map_dfc(unique_phis, function(phi_val) {
+          metrics <- filtered_lambda_data %>% filter(phi == phi_val) %>% pull(estimator)
+          metrics <- metrics[[1]]
+          formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+          set_names(formatted_bias, paste("phi", phi_val, sep = "_"))
+        })
+        
+        tibble(lambda = lambda_val) %>% bind_cols(phi_results)
+      })
+      
+      lambda_results <- bind_rows(lambda_results)
+      set_names(lambda_results, c("lambda", paste("phi", unique_phis, sep = "_")))
+    })
+    
+    set_names(estimator_results, clean_estimators)
+  }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
+  
+  # Combine results by N and estimator
+  results_by_n_estimator <- map(unique_ns, function(n_val) {
+    map(clean_estimators, function(estimator) {
+      results_by_n[[paste(n_val)]][[estimator]]
+    })
+  })
+  
+  # Set names for easier access
+  names(results_by_n_estimator) <- paste("N", unique_ns, sep = "_")
+  results_by_n_estimator <- map(results_by_n_estimator, function(n_results) {
+    set_names(n_results, clean_estimators)
+  })
+  
+  results_by_n_estimator
+}
+
+bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of anoying "new names" messages
+bias_ci
+```
+
 #  Simulation Study
 ```{r}
 simulation_study_ <- function(design){

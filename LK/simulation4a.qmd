@@ -526,6 +526,69 @@ report_bias <- function(metrics_list) {
 
 ```
 
+# Report RMSE
+
+```{r}
+report_rmse <- function(metrics_list) {
+  # Define the list of estimators
+  estimators <- c("SEM_ML_metrics", "SEM_ULS_metrics", "LSAM_ML_metrics")
+  
+  # Ensure DGM values are uniquely identified
+  unique_dgms <- unique(metrics_list$DGM)
+  unique_betas <- unique(metrics_list$beta)
+  unique_ns <- unique(metrics_list$N)
+  
+  # Process each DGM using future_map to leverage parallel processing
+  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+    dgm <- .x
+    
+    # Create a list to hold results for each estimator
+    estimator_results <- map(estimators, function(estimator) {
+      
+      # Filter data for the current DGM and estimator
+      filtered_data <- metrics_list %>% filter(DGM == dgm)
+      
+      # Create a list to hold results for each beta value
+      beta_results <- map(unique_betas, function(beta_val) {
+        filtered_beta_data <- filtered_data %>% filter(beta == beta_val)
+        
+        # Create a list to hold results for each N
+        n_results <- map_dfc(unique_ns, function(n_val) {
+          metrics <- filtered_beta_data %>% filter(N == n_val) %>% pull(estimator)
+          metrics <- metrics[[1]]
+          formatted_rmse <- sprintf("%.3f", metrics$rmse)
+          set_names(formatted_rmse, paste("N", n_val, sep = "_"))
+        })
+        
+        tibble(beta = beta_val) %>% bind_cols(n_results)
+      })
+      
+      beta_results <- bind_rows(beta_results)
+      set_names(beta_results, c("beta", paste("N", unique_ns, sep = "_")))
+    })
+    
+    set_names(estimator_results, estimators)
+  }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
+  
+  # Combine results by DGM and estimator
+  results_by_dgm_estimator <- map(unique_dgms, function(dgm) {
+    map(estimators, function(estimator) {
+      results_by_dgm[[paste(dgm)]][[estimator]]
+    })
+  })
+  
+  # Set names for easier access
+  names(results_by_dgm_estimator) <- paste("DGM", unique_dgms, sep = "_")
+  results_by_dgm_estimator <- map(results_by_dgm_estimator, function(dgm_results) {
+    set_names(dgm_results, estimators)
+  })
+  
+  results_by_dgm_estimator
+}
+
+```
+
+
 #  Simulation Study
 
 ```{r}
@@ -589,8 +652,11 @@ metrics_list <- extract_results(results_df_raw)
 bias_ci <- suppressMessages(report_bias(metrics_list))
 bias_ci
 
+#Report RMSE
+rmse <- suppressMessages(report_rmse(metrics_list))
+rmse
+
 ```
-bias_ci outputs across DGM's 1 and 2, which are not part of the nesting, yet.
 
 # Substract tables?
 ```{r}
