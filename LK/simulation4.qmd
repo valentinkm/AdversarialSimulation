@@ -500,6 +500,45 @@ report_bias <- function(metrics_list) {
 
 ```
 
+# Report RMSE
+```{r}
+report_rmse <- function(metrics_list) {
+  # Define the list of estimators
+  estimators <- c("SEM_ML_metrics", "SEM_ULS_metrics", "LSAM_ML_metrics")
+  
+  # Ensure DGM values are uniquely identified
+  unique_dgms <- unique(metrics_list$DGM)
+
+  # Process each DGM using future_map to leverage parallel processing
+  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+    # Filter data for the current DGM
+    filtered_data <- metrics_list %>% filter(DGM == .x)
+    
+    # Create a dataframe for each estimator and each N, using future_map_df for parallel execution
+    estimator_results <- future_map_dfr(estimators, ~{
+      estimator_data <- filtered_data[[.x]]
+      
+      # Map each N to create formatted bias strings, using future_map_dfc for parallel execution
+      n_results <- future_map_dfc(set_names(unique(filtered_data$N)), ~{
+        metrics <- estimator_data[[which(filtered_data$N == .x)]]
+        formatted_rmse <- sprintf("%.3f", metrics$rmse)
+        set_names(formatted_rmse, paste("N", .x, sep = "_"))
+      })
+      
+      # Add estimator names as the first column
+      tibble(Estimator = sub("_metrics", "", .x)) %>% bind_cols(n_results)
+    })
+    
+    # Name the dataframe with the current N value
+    rename(estimator_results, set_names(names(estimator_results[-1]),paste("N", unique(filtered_data$N), sep = "_")))
+  }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
+  
+  # Return a list of dataframes, one for each DGM
+  set_names(results_by_dgm, paste("DGM", unique(metrics_list$DGM), sep = "_"))
+}
+```
+
+
 #  Simulation Study
 ```{r}
 
@@ -564,6 +603,9 @@ metrics_list <- extract_results(results_df_raw)
 bias_ci <- report_bias(metrics_list)
 bias_ci
 
+#Report RMSE
+rmse <- report_rmse(metrics_list)
+rmse
 ```
 Warnings can be ignored, as we are not interested in fit indices.
 
