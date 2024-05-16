@@ -586,7 +586,7 @@ results_df_raw <- results_sim$results
 metrics_list <- extract_results(results_df_raw)
 
 #Report Bias
-bias_ci <- report_bias(metrics_list)
+bias_ci <- suppressMessages(report_bias(metrics_list))
 bias_ci
 
 ```
