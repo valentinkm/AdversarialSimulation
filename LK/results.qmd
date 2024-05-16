@@ -37,7 +37,8 @@ For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM est
 ## Study 4
 
 Again, I forgot the addition of N=50 in the original condition calculation. 
-Importantly, the model parameters and resulting population-level covariance matrices for the different DGM's provided by @robitzsch_comparing_2022 in their github repository were not the same as in the first paper by @rosseel_structural_2022. Combined with the facts that firstly, the values at some point seemed to be off in @robitzsch_comparing_2022 (they included for example a fixed loading of 0 for y11 in DGM2, without an apparent reason), and secondly that only in @rosseel_structural_2022 the calculation of the values was replicable, we chose to use the values of @rosseel_structural_2022 by generating them with the same functions they used.
+Importantly, the model parameters and resulting population-level covariance matrices for the different DGM's provided by @robitzsch_comparing_2022 in their github repository were not the same as in the first paper by @rosseel_structural_2022: They omitted, for example, the cross-loading of the last factor in DGM2, without an apparent reason. Additionally, they had different values for the residual variances without giving insight into why they chose to do so and how (there was no calculation in the simulation script provided). For these reasons, and because of the fact that the calculation of the values in @rosseel_structural_2022 was replicable, we chose to use the values of @rosseel_structural_2022 by generating them with the same functions they used. In consequence, a fourth cross-loading was present in DGM 2.
+The only difference in our data-simulation is that we only used the 3 out of 4 misspecification conditions that were present in @robitzsch_comparing_2022. 
 
 ## Study 4a
 

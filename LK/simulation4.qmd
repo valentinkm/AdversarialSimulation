@@ -113,8 +113,8 @@ setup_design <- function() {
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
-  # DGM conditions
-  DGM_types <- c(1,2,3)
+  # DGM conditions, numbering analogous to paper by Rosseel and Loh for later functions
+  DGM_types <- c(0,1,2)
   
   # Expand grid to create a data frame of all combinations
   design <- expand.grid(N = N_sizes, DGM = DGM_types)
@@ -361,8 +361,7 @@ simulate_data <- function(N, DGM) {
   BETA <- matrix(0, NFAC, NFAC)
   BETA[3:5,1] <- BETA[3:4,2] <- BETA[5,3] <- BETA[c(3,5),4] <- beta
   VAL <- BETA[BETA!=0] # true values
-  BETA.model <- BETA   # structural part to be fitted
-  
+
   PSI <- matrix(0, NFAC, NFAC)
   PSI[1,1] <- PSI[2,2] <- 1 # the exogenous latent variables
   RES <- (1 - beta^2)
