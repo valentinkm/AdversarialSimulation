@@ -101,49 +101,10 @@ If, however, there are differences large than 0.03, we will report them, without
 # Open questions
 
 ## 1. Bias and RMSE calculation
-How to compute Bias and RMSE, especially if more than one phi is present (3- and 5-factor models from Studies 4-6)? 
-
-The Paper says it is preferrable to use Average absolute bias (AvgAbsBias) over average relative bias, but they do not use it up until study 4. Following their reasoning, I have calculated the AvgAbsBias starting from Study 1.
-
-**Calculation Study 1-3:**
-
-AvgAbsBias: mean(abs(phi_estimates - true_phi)) 
-
-RMSE: sqrt(mean((phi_estimates - true_phi)^2))
-
-Alternatively, relative bias could be: mean(estimates - true_values) / true_value
-
-true value nur innerhalb eines phi, wenn die phis alle den gleichen Wert haben, dann müssen sie getrennt sein
-
-**Calculation Study 4, 4a:**
-
-AvgAbsBias:
-
-1. Created list of absolute biases with abs(estimates_list[[phi]] - true_phis[phi]) for all phis within one condition.
-2. Took mean of all these across repetitions
-
-AvgRMSE:
-
-1. Calculated squared error within each condition and repetition
-2. Took mean across repetitions
-
-*But: Unclear what exactly AvgAbsBias is for multiple phis (=more than 2 factors in the model)*
-
-- Do we Either:
-    1. calculate a sum of AbsBias for each estimated model (so within each condition and repetition)
-    2. Take the average across repetitions for each conditions
-    
-- Or:
-    Simply calculate the Avg of ALL AbsBiases, across repetitions for each condition (so without calculating a sum for each estimated model, as I did up to now).
-    
-Bottom line question: How should I calculate them?
-
 
 Answer: both is valid: If we want 0, then absolute bias is preferrable, if true value is not 0 (which it)
 Ideally, beides reporten, eines interpretieren, bei mir dann rel_bias wo möglich/ nötig
 AvgAbsBias: Mein weg ist korrekt
-
-Reporting: STandardfehler/ KI für Bias berichten
 
 
 ## 2. Results setup

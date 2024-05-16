@@ -315,6 +315,32 @@ report_bias <- function(metrics_list) {
 }
 ```
 
+# Report SD
+
+```{r}
+report_sd <- function(metrics_list) {
+  # Use map to extract the sd data from each element in the metrics_list
+  sd <- map(metrics_list, ~ {
+    .x$sd  # Extract and return the sd component
+  })
+
+  return(sd)  # Return the list of sd data frames
+}
+```
+
+# Report RMSE
+
+```{r}
+report_rmse <- function(metrics_list) {
+  # Use map to extract the rmse data from each element in the metrics_list
+  rmse <- map(metrics_list, ~ {
+    .x$rmse  # Extract and return the rmse component
+  })
+
+  return(rmse)  # Return the list of rmse data frames
+}
+```
+
 # Simulation Study
 
 Same as Study 1
@@ -378,5 +404,14 @@ metrics_list <- extract_results(results_df_raw)
 #Report Bias
 bias_ci <- report_bias(metrics_list)
 bias_ci
+
+#Report SD
+sd <- report_sd(metrics_list)
+sd
+
+#Report RMSE
+rmse <- report_rmse(metrics_list)
+rmse
+
 ```
 
