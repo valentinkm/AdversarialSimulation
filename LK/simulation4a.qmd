@@ -42,10 +42,6 @@ model <- "
     F4 ~~ 1*F4
     F5 ~~ 1*F5
     
-#Covariances
-    F1 ~~ phi21*F2
-    F2 ~~ phi52*F5
-    
 #Regressions
     F3 ~ phi31*F1
     F4 ~ phi41*F1
