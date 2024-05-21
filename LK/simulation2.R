@@ -10,7 +10,8 @@ set.seed(1)
 #' 
 
 # Specify the libraries to load
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "future", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -216,7 +217,7 @@ estimators <- list(
   GSAM_ULS = \(d) lavaan::sam(model, data=d, sam.method = "global", estimator = "ULS", std.lv= TRUE)
 )
 # postprocess each model output
-estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
+estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, lavaan::parameterEstimates, .))
 # apply all estimators to the same dataset
 apply_estimators <- \(d) map(estimators, exec, d)
 
