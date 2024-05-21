@@ -97,3 +97,19 @@ In study 4, differences of up to 0.04 are present and interpreted as not being s
 We infer that this lack of mentioning can be interpreted as there being no differences of interest. 
 Thus, we expect our studies to yield similar results. 
 If, however, there are differences large than 0.03, we will report them, without drawing a substantive conclusion.
+
+# Results Sim1
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci <- readRDS("simulation1_rel_bias_ci.rds")
+
+# Display the relative bias results for each condition
+for (condition in names(bias_ci)) {
+  cat("## Condition:", condition, "\n\n")
+  print(bias_ci[[condition]])
+  cat("\n\n")
+}
+```
+
