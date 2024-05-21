@@ -1,16 +1,14 @@
-# First script for Simulation Study 1
+#' # Script for Simulation Study 3
+#' 
 
-```{r}
 set.seed(1)
-```
 
+#' 
+#' # Packages
+#' 
+#' Copied and pasted from original paper.
+#' 
 
-
-# Packages
-
-Copied and pasted from original paper.
-
-```{r}
 # Specify the libraries to load
 libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
@@ -23,11 +21,11 @@ for (library_name in libraries) {
     library(library_name, character.only = TRUE)
   }
 }
-```
 
-# Specify 2-factor-Model
+#' 
+#' # Specify 2-factor-Model
+#' 
 
-```{r}
 model <- "
 
 #Structural part
@@ -59,82 +57,63 @@ model <- "
     vY2 > 0.01    
     vY3 > 0.01   
     "
-```
 
-# Setup and Design
+#' 
+#' # Setup and Design
+#' 
 
-```{r}
 setup_design <- function() {
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
-  # Misspecification conditions: (0, 1, 2) correlated residuals, and psi values
-  rc_conditions <- c(0, 1, 2)
-  psi_values <- c(0.12, -0.12)
+  design <- data.frame(N = N_sizes)
   
-  # Expand grid to create a data frame of all combinations
-  design <- expand.grid(N = N_sizes, rc = rc_conditions, psi_value = psi_values)
-  
-  # Adjust for the condition where rc is 0 (correlated residuals are not considered)
-  design <- design[!(design$rc == 0 & design$psi_value != 0.12), ]
-
   return(design)
 }
 
-```
 
-# Data generating Mechanism
 
-## Fixed values
+#' 
+#' # Data generating Mechanism
+#' 
+#' ## Fixed values
+#' 
 
-```{r}
 lam1 <- 0.55
 lam2 <- 0.45
-phi <- 0.60
+phi <- 0.60 
 
+# Base loading matrix for two factors
 LAM <- matrix(0, nrow=6, ncol=2)
-LAM[1:3, 1] <- lam1
-LAM[4:6, 2] <- lam2
+LAM[1:3, 1] <- lam1  
+LAM[4:6, 2] <- lam2 
 
+LAM[1, 2] <- 0.3  # Cross-loading deltax1
+
+# Base correlation matrix for factors
 PHI <- matrix(0, nrow=2, ncol=2)
 diag(PHI) <- 1
 PHI[1, 2] <- PHI[2, 1] <- phi
 
-THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
+# Base unique variances for observed variables
+THETA <- diag(c(rep(1 - lam1^2, 3), rep(1 - lam2^2, 3)))
 
-#Don't need Beta in this study
-```
+THETA[2, 5] <- THETA[5, 2] <- 0.12  # Correlated residuals for X2 and Y2
 
-## Varying values
 
-```{r}
-get_dgm <- function(rc, psi_value) {
+#' 
+#' ## Varying values
+#' 
+#' None
+#' 
+#' # Apply Syntax
+#' 
+
+pop.model <- paste(
   
-  # Adjust THETA for misspecification
-  if (rc >= 1) {
-    THETA[1, 4] <- THETA[4, 1] <- psi_value
-  }
-  if (rc == 2) {
-    THETA[2, 5] <- THETA[5, 2] <- psi_value
-  }
-  
-  MLIST <-list(LAM = LAM, PHI = PHI, THETA = THETA)
-  return(MLIST)
-}
-
-```
-
-# Apply Syntax
-
-```{r}
-apply_syntax <- function(MLIST) {
-  
-  THETA <- MLIST$THETA
-  
-  pop.model <- paste(
 "#Structural part",
     paste("FX =~", LAM[1,1], "*X1 +", LAM[2,1], "*X2 +", LAM[3,1], "*X3"),
-    paste("FY =~", LAM[4,2], "*Y1 +", LAM[5,2], "*Y2 +", LAM[6,2], "*Y3"),
+    paste("FY =~", LAM[4,2], "*Y1 +", LAM[5,2], "*Y2 +", LAM[6,2], "*Y3 +", LAM[1, 2], "*X1"), # Cross-loading
     "FX ~~ 1*FX",    
     "FY ~~ 1*FY",    
     paste("FX ~~", PHI[1,2], "*FY"),
@@ -145,45 +124,31 @@ apply_syntax <- function(MLIST) {
     paste("Y1 ~~", THETA[4,4], "*Y1"),
     paste("Y2 ~~", THETA[5,5], "*Y2"),
     paste("Y3 ~~", THETA[6,6], "*Y3"),
+"Correlated residual",
+    paste("X2 ~~", THETA[2,5], "*Y2"),
     sep = "\n"
   ) 
 
-  # Conditionally add correlated residuals if rc > 0
-  if (THETA[1, 4] != 0) {
-        pop.model <- paste(pop.model, paste("X1 ~~", THETA[1,4], "*Y1"), sep = "\n")
-    }
-    if (THETA[2, 5] != 0) {
-        pop.model <- paste(pop.model, paste("X2 ~~", THETA[2,5], "*Y2"), sep = "\n")
-    }
   
-  return(pop.model)
-}
+  
 
-model_syntax <-apply_syntax(get_dgm(1,0.12))
-cat(model_syntax)
+#' 
+#' # Simulate data
+#' 
 
-```
-
-
-# Simulate data
-
-```{r}
-simulate_data <- function(N, rc, psi_value) {
-  # Get DGM parameters
-  dgm_params <- get_dgm(rc, psi_value)
-
-  pop.model <- apply_syntax(dgm_params)
+simulate_data <- function(N) {
   
   df_dat <- simulateData(pop.model, sample.nobs = N)
-
+  
   return(df_dat)
 }
 
-```
 
-# Planned Analysis
 
-```{r}
+#' 
+#' # Planned Analysis
+#' 
+
 #Specify estimation methods of interest
 
 estimators <- list(
@@ -200,16 +165,17 @@ estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, par
 apply_estimators <- \(d) map(estimators, exec, d)
 
 planned_analysis <- compose(apply_estimators, simulate_data)
-```
 
-# Extract results
+#Args of planned_analysis() = Args of simulate_data()
 
-```{r}
+#' 
+#' # Extract results
+#' 
 
 extract_results <- function(results_df_raw){
 #Compute performance measures
 results_metrics <- results_df_raw %>%
-    group_by(N, rc, psi_value) %>%
+    group_by(N) %>%
     summarize(across(everything(),
        list(
           abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
@@ -221,78 +187,59 @@ results_metrics <- results_df_raw %>%
           ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
                     )),  .groups = 'drop')
 
-  # Split metrics by rc and psi_value into separate lists
-  split_metrics <- results_metrics %>%
-    group_by(rc, psi_value) %>%
-    group_split() %>%
-    set_names(map(., ~paste(unique(.x$rc), unique(.x$psi_value), sep="_")))
 
-  # Define a function to transform each group into the desired format
-  transform_group <- function(df_group) {
-    df_group <- df_group %>%
-      select(-rc, -psi_value) %>%
-      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value")
+  # transform each group into the desired format
+  transform_group <- results_metrics %>%
+      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), values_to = "value")
 
     # Creating nested lists for each metric
-    list(
-      abs_bias = df_group %>% filter(str_detect(method_metric, "abs_bias")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      rel_bias = df_group %>% filter(str_detect(method_metric, "rel_bias")) %>%
-                 pivot_wider(names_from = N, values_from = value),
-      sd = df_group %>% filter(str_detect(method_metric, "sd")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      rmse = df_group %>% filter(str_detect(method_metric, "rmse")) %>%
-              pivot_wider(names_from = N, values_from = value),
-      se_bias = df_group %>% filter(str_detect(method_metric, "se_bias")) %>%
-                pivot_wider(names_from = N, values_from = value),
-      ci_lower = df_group %>% filter(str_detect(method_metric, "ci_lower")) %>%
-                pivot_wider(names_from = N, values_from = value),
-      ci_upper = df_group %>% filter(str_detect(method_metric, "ci_upper")) %>%
-                pivot_wider(names_from = N, values_from = value)
-    )
-  }
-
-  # Apply the transformation to each group and store the results
-  metrics_list <- map(split_metrics, transform_group)
+  metrics_list <-  list(
+                          abs_bias = transform_group %>% filter(str_detect(name, "abs_bias")) %>%
+                                     pivot_wider(names_from = N, values_from = value),
+                          rel_bias = transform_group %>% filter(str_detect(name, "rel_bias")) %>%
+                                     pivot_wider(names_from = N, values_from = value),
+                          sd = transform_group %>% filter(str_detect(name, "sd")) %>%
+                                  pivot_wider(names_from = N, values_from = value),
+                          rmse = transform_group %>% filter(str_detect(name, "rmse")) %>%
+                                  pivot_wider(names_from = N, values_from = value),
+                          se_bias = transform_group %>% filter(str_detect(name, "se_bias")) %>%
+                                    pivot_wider(names_from = N, values_from = value),
+                          ci_lower = transform_group %>% filter(str_detect(name, "ci_lower")) %>%
+                                    pivot_wider(names_from = N, values_from = value),
+                          ci_upper = transform_group %>% filter(str_detect(name, "ci_upper")) %>%
+                                    pivot_wider(names_from = N, values_from = value)
+                        )
 
   return(metrics_list)
 }
 
-```
+#' 
+#' # Report bias
+#' 
 
-
-# Report Bias
-
-```{r}
 report_bias <- function(metrics_list) {
   # Define a list to store results
   bias_ci <- list()
   
   # Iterate over each condition in metrics_list
-  for (condition in names(metrics_list)) {
     # Extract rel_bias, ci_lower, and ci_upper for the current condition
-    rel_bias <- metrics_list[[condition]]$rel_bias
-    ci_lower <- metrics_list[[condition]]$ci_lower
-    ci_upper <- metrics_list[[condition]]$ci_upper
+    rel_bias <- metrics_list$rel_bias
+    ci_lower <- metrics_list$ci_lower
+    ci_upper <- metrics_list$ci_upper
     
     # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- rel_bias %>%
+    bias_ci <- rel_bias %>%
       mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
                                             ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-             .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_formatted$", "", .))
-  }
+             .names = "{.col}"))
   
   return(bias_ci)
 }
 
+#' 
+#' # Report SD
+#' 
 
-```
-
-# Report SD
-
-```{r}
 report_sd <- function(metrics_list) {
   # Use map to extract the sd data from each element in the metrics_list
   sd <- map(metrics_list, ~ {
@@ -301,11 +248,11 @@ report_sd <- function(metrics_list) {
 
   return(sd)  # Return the list of sd data frames
 }
-```
 
-# Report RMSE
+#' 
+#' # Report RMSE
+#' 
 
-```{r}
 report_rmse <- function(metrics_list) {
   # Use map to extract the rmse data from each element in the metrics_list
   rmse <- map(metrics_list, ~ {
@@ -314,11 +261,10 @@ report_rmse <- function(metrics_list) {
 
   return(rmse)  # Return the list of rmse data frames
 }
-```
 
-#  Simulation Study
-
-```{r}
+#' 
+#' #  Simulation Study
+#' 
 
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -354,11 +300,11 @@ simulation_study <- function(design, k, seed = NULL) {
 
   return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
-```
 
-# Run simulation
 
-```{r}
+#' 
+#' # Run simulation
+#' 
 
 #Set up design
 design <- setup_design()
@@ -378,14 +324,15 @@ metrics_list <- extract_results(results_df_raw)
 #Report Bias
 bias_ci <- report_bias(metrics_list)
 bias_ci
+saveRDS(bias_ci, file = "LK/simulation3_rel_bias_ci.rds")
 
 #Report SD
 sd <- report_sd(metrics_list)
 sd
+saveRDS(sd, file = "LK/simulation3_sd.rds")
 
 #Report RMSE
 rmse <- report_rmse(metrics_list)
 rmse
-
-```
+saveRDS(rmse, file = "LK/simulation3_rmse.rds")
 

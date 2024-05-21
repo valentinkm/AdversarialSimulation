@@ -1,16 +1,14 @@
-# First script for Simulation Study 1
+#' # First script for Simulation Study 2
+#' 
 
-```{r}
 set.seed(1)
-```
 
+#' 
+#' # Packages
+#' 
+#' Copied and pasted from original paper.
+#' 
 
-
-# Packages
-
-Copied and pasted from original paper.
-
-```{r}
 # Specify the libraries to load
 libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
@@ -23,11 +21,11 @@ for (library_name in libraries) {
     library(library_name, character.only = TRUE)
   }
 }
-```
 
-# Specify 2-factor-Model
+#' 
+#' # Specify 2-factor-Model
+#' 
 
-```{r}
 model <- "
 
 #Structural part
@@ -59,35 +57,35 @@ model <- "
     vY2 > 0.01    
     vY3 > 0.01   
     "
-```
 
-# Setup and Design
+#' 
+#' # Setup and Design
+#' 
 
-```{r}
 setup_design <- function() {
+  
   # Sample sizes
   N_sizes <- c(50, 100, 250, 500, 1000, 2500, 10^5)
   
-  # Misspecification conditions: (0, 1, 2) correlated residuals, and psi values
-  rc_conditions <- c(0, 1, 2)
-  psi_values <- c(0.12, -0.12)
+  # Cross-loading conditions
+  cl_conditions <- c(1, 2)
   
-  # Expand grid to create a data frame of all combinations
-  design <- expand.grid(N = N_sizes, rc = rc_conditions, psi_value = psi_values)
+  # Delta values for cross-loadings, if present, take values of either 0.3 or -0.3
+  delta_values <- c(0.3, -0.3)
   
-  # Adjust for the condition where rc is 0 (correlated residuals are not considered)
-  design <- design[!(design$rc == 0 & design$psi_value != 0.12), ]
+  design <- expand.grid(N = N_sizes, cl = cl_conditions, delta_value = delta_values)
+
 
   return(design)
 }
 
-```
 
-# Data generating Mechanism
 
-## Fixed values
+#' 
+#' # Data generating Mechanism
+#' 
+#' ## Fixed values
 
-```{r}
 lam1 <- 0.55
 lam2 <- 0.45
 phi <- 0.60
@@ -103,33 +101,32 @@ PHI[1, 2] <- PHI[2, 1] <- phi
 THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
 
 #Don't need Beta in this study
-```
 
-## Varying values
+#' 
+#' ## Varying values
 
-```{r}
-get_dgm <- function(rc, psi_value) {
+get_dgm <- function(cl, delta_value) {
   
-  # Adjust THETA for misspecification
-  if (rc >= 1) {
-    THETA[1, 4] <- THETA[4, 1] <- psi_value
-  }
-  if (rc == 2) {
-    THETA[2, 5] <- THETA[5, 2] <- psi_value
+  # Apply cross-loadings based on the condition
+  if (cl >= 1) {
+    LAM[1, 2] <- delta_value
+  } 
+  if (cl == 2) {
+    LAM[4, 1] <- delta_value
   }
   
   MLIST <-list(LAM = LAM, PHI = PHI, THETA = THETA)
   return(MLIST)
 }
 
-```
 
-# Apply Syntax
 
-```{r}
+#' 
+#' # Apply Syntax
+
 apply_syntax <- function(MLIST) {
   
-  THETA <- MLIST$THETA
+  LAM <- MLIST$LAM
   
   pop.model <- paste(
 "#Structural part",
@@ -148,42 +145,66 @@ apply_syntax <- function(MLIST) {
     sep = "\n"
   ) 
 
-  # Conditionally add correlated residuals if rc > 0
-  if (THETA[1, 4] != 0) {
-        pop.model <- paste(pop.model, paste("X1 ~~", THETA[1,4], "*Y1"), sep = "\n")
+  # Conditionally add cross-loadings if rc > 0
+  if (LAM[1, 2] != 0) {
+        pop.model <- paste(
+                            "#Structural part",
+                                paste("FX =~", LAM[1,1], "*X1 +", LAM[2,1], "*X2 +", LAM[3,1], "*X3"),
+                                paste("FY =~", LAM[4,2], "*Y1 +", LAM[5,2], "*Y2 +", LAM[6,2], "*Y3 +", LAM[1, 2], "*X1"),
+                                "FX ~~ 1*FX",    
+                                "FY ~~ 1*FY",    
+                                paste("FX ~~", PHI[1,2], "*FY"),
+                            "#Measurement part",    
+                                paste("X1 ~~", THETA[1,1], "*X1"),
+                                paste("X2 ~~", THETA[2,2], "*X2"),
+                                paste("X3 ~~", THETA[3,3], "*X3"),
+                                paste("Y1 ~~", THETA[4,4], "*Y1"),
+                                paste("Y2 ~~", THETA[5,5], "*Y2"),
+                                paste("Y3 ~~", THETA[6,6], "*Y3"),
+                                sep = "\n"
+                              )
     }
-    if (THETA[2, 5] != 0) {
-        pop.model <- paste(pop.model, paste("X2 ~~", THETA[2,5], "*Y2"), sep = "\n")
+    if (LAM[4, 1] != 0) {
+        pop.model <- paste(
+                            "#Structural part",
+                                paste("FX =~", LAM[1,1], "*X1 +", LAM[2,1], "*X2 +", LAM[3,1], "*X3 +", LAM[4, 1], "*Y1"),
+                                paste("FY =~", LAM[4,2], "*Y1 +", LAM[5,2], "*Y2 +", LAM[6,2], "*Y3 +", LAM[1, 2], "*X1"),
+                                "FX ~~ 1*FX",    
+                                "FY ~~ 1*FY",    
+                                paste("FX ~~", PHI[1,2], "*FY"),
+                            "#Measurement part",    
+                                paste("X1 ~~", THETA[1,1], "*X1"),
+                                paste("X2 ~~", THETA[2,2], "*X2"),
+                                paste("X3 ~~", THETA[3,3], "*X3"),
+                                paste("Y1 ~~", THETA[4,4], "*Y1"),
+                                paste("Y2 ~~", THETA[5,5], "*Y2"),
+                                paste("Y3 ~~", THETA[6,6], "*Y3"),
+                                sep = "\n"
+                              )
     }
   
   return(pop.model)
 }
 
-model_syntax <-apply_syntax(get_dgm(1,0.12))
-cat(model_syntax)
 
-```
+#' 
+#' # Simulate data
 
-
-# Simulate data
-
-```{r}
-simulate_data <- function(N, rc, psi_value) {
+simulate_data <- function(N, cl, delta_value) {
   # Get DGM parameters
-  dgm_params <- get_dgm(rc, psi_value)
+  dgm_params <- get_dgm(cl, delta_value)
 
   pop.model <- apply_syntax(dgm_params)
   
   df_dat <- simulateData(pop.model, sample.nobs = N)
-
+  
   return(df_dat)
 }
 
-```
 
-# Planned Analysis
+#' 
+#' # Planned Analysis
 
-```{r}
 #Specify estimation methods of interest
 
 estimators <- list(
@@ -200,40 +221,42 @@ estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, par
 apply_estimators <- \(d) map(estimators, exec, d)
 
 planned_analysis <- compose(apply_estimators, simulate_data)
-```
 
-# Extract results
+#The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
 
-```{r}
+
+#' # Extract results
+#' 
+
 
 extract_results <- function(results_df_raw){
 #Compute performance measures
 results_metrics <- results_df_raw %>%
-    group_by(N, rc, psi_value) %>%
-    summarize(across(everything(),
-       list(
-          abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
-          rel_bias = ~mean(.x - phi) / phi,             # Relative bias
-          sd = ~sd(.x),                                 # Standard deviation of estimates
-          rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
-          se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
-          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
-          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
-                    )),  .groups = 'drop')
+  group_by(N, cl, delta_value) %>%
+  summarize(across(everything(),
+     list(
+        abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
+        rel_bias = ~mean(.x - phi) / phi,             # Relative bias
+        sd = ~sd(.x),                                 # Standard deviation of estimates
+        rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
+        se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
+        ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
+        ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
+                )),  .groups = 'drop')
 
-  # Split metrics by rc and psi_value into separate lists
+  # Split metrics by cl and delta_value into seperate lists
   split_metrics <- results_metrics %>%
-    group_by(rc, psi_value) %>%
+    group_by(cl, delta_value) %>%
     group_split() %>%
-    set_names(map(., ~paste(unique(.x$rc), unique(.x$psi_value), sep="_")))
+     set_names(map(., ~ paste(unique(.x$cl), unique(.x$delta_value), sep = "_")))
 
   # Define a function to transform each group into the desired format
   transform_group <- function(df_group) {
     df_group <- df_group %>%
-      select(-rc, -psi_value) %>%
-      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value")
-
-    # Creating nested lists for each metric
+                  select(-cl, -delta_value) %>%
+                  pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value") 
+        
+       # Creating nested lists for each metric
     list(
       abs_bias = df_group %>% filter(str_detect(method_metric, "abs_bias")) %>%
               pivot_wider(names_from = N, values_from = value),
@@ -258,12 +281,12 @@ results_metrics <- results_df_raw %>%
   return(metrics_list)
 }
 
-```
 
 
-# Report Bias
+#' 
+#' # Report Bias
+#' Same as study 1
 
-```{r}
 report_bias <- function(metrics_list) {
   # Define a list to store results
   bias_ci <- list()
@@ -287,12 +310,10 @@ report_bias <- function(metrics_list) {
   return(bias_ci)
 }
 
+#' 
+#' # Report SD
+#' 
 
-```
-
-# Report SD
-
-```{r}
 report_sd <- function(metrics_list) {
   # Use map to extract the sd data from each element in the metrics_list
   sd <- map(metrics_list, ~ {
@@ -301,11 +322,11 @@ report_sd <- function(metrics_list) {
 
   return(sd)  # Return the list of sd data frames
 }
-```
 
-# Report RMSE
+#' 
+#' # Report RMSE
+#' 
 
-```{r}
 report_rmse <- function(metrics_list) {
   # Use map to extract the rmse data from each element in the metrics_list
   rmse <- map(metrics_list, ~ {
@@ -314,11 +335,12 @@ report_rmse <- function(metrics_list) {
 
   return(rmse)  # Return the list of rmse data frames
 }
-```
 
-#  Simulation Study
+#' 
+#' # Simulation Study
+#' 
+#' Same as Study 1
 
-```{r}
 
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -354,11 +376,11 @@ simulation_study <- function(design, k, seed = NULL) {
 
   return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
-```
 
-# Run simulation
+#' 
+#' # Run simulation
+#' 
 
-```{r}
 
 #Set up design
 design <- setup_design()
@@ -378,14 +400,17 @@ metrics_list <- extract_results(results_df_raw)
 #Report Bias
 bias_ci <- report_bias(metrics_list)
 bias_ci
+saveRDS(bias_ci, file = "LK/simulation2_rel_bias_ci.rds")
 
 #Report SD
 sd <- report_sd(metrics_list)
 sd
+saveRDS(sd, file = "LK/simulation2_sd.rds")
 
 #Report RMSE
 rmse <- report_rmse(metrics_list)
 rmse
+saveRDS(rmse, file = "LK/simulation2_rmse.rds")
 
-```
 
+#' 
