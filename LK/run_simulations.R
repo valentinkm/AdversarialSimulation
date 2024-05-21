@@ -2,7 +2,7 @@ library(furrr)
 library(future)
 
 # List of R scripts to run
-r_scripts <- c("simulation1.R", "simulation1b.R", "simulation2.R", "simulation3.R", "simulation4.R", "simulation4a.R")
+r_scripts <- c("LK/simulation1.R", "LK/simulation1b.R", "LK/simulation2.R", "LK/simulation3.R", "LK/simulation4.R", "LK/simulation4a.R")
 
 # Set up parallel processing
 plan(multisession, workers = parallel::detectCores())
