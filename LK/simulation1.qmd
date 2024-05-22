@@ -200,6 +200,8 @@ estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, par
 apply_estimators <- \(d) map(estimators, exec, d)
 
 planned_analysis <- compose(apply_estimators, simulate_data)
+
+
 ```
 
 # Extract results

@@ -1,4 +1,4 @@
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "future", "furrr")
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "future", "furrr","future.batchtools")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -11,20 +11,17 @@ for (library_name in libraries) {
 }
 
 # List of R scripts to run
-r_scripts <- c("simulation1.R", "simulation2.R")
+r_scripts <- c("LK/simulation1.R", "LK/simulation2.R")
 
-# Set up parallel processing
-install.packages("future.batchtools")
-library(future.batchtools)
-
-plan(tweak(batchtools_slurm, workers = parallel::detectCores()))
+# Set up processing
+plan(multisession, workers = parallel::detectCores())
 
 # Function to source a script
 run_script <- function(script) {
   source(script)
 }
 
-# Run all scripts in parallel
+# Run all scripts
 map(r_scripts, run_script)
 
 # Optionally, save results to a file or list if needed
