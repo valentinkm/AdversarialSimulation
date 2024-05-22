@@ -330,10 +330,10 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
-saveRDS(bias_ci, file = "LK/simulation1b_results_raw.rds")
+saveRDS(results_df_raw, file = "LK/simulation1b_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
-saveRDS(bias_ci, file = "LK/simulation1b_metrics_list.rds")
+saveRDS(metrics_list, file = "LK/simulation1b_metrics_list.rds")
 
 #Report Bias
 bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of anoying "new names" messages
