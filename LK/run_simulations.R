@@ -18,7 +18,7 @@ plan(multisession, workers = parallel::detectCores())
 
 # Function to source a script
 run_script <- function(script) {
-  source(script)
+  system(paste("Rscript", script))
 }
 
 # Run all scripts
