@@ -448,7 +448,7 @@ results_metrics <- function(values) {
 }
 
 metrics_list <- results_raw_combined %>%
-  mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), ~future_map(.x, results_metrics), .names = "{.col}_metrics")) %>%
+  mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), ~map(.x, results_metrics), .names = "{.col}_metrics")) %>%
     select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
 
   return(metrics_list)
@@ -466,17 +466,17 @@ report_bias <- function(metrics_list) {
   # Ensure DGM values are uniquely identified
   unique_dgms <- unique(metrics_list$DGM)
 
-  # Process each DGM using future_map to leverage parallel processing
-  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+  # Process each DGM
+  results_by_dgm <- map(set_names(unique_dgms), ~{
     # Filter data for the current DGM
     filtered_data <- metrics_list %>% filter(DGM == .x)
     
-    # Create a dataframe for each estimator and each N, using future_map_df for parallel execution
-    estimator_results <- future_map_dfr(estimators, ~{
+    # Create a dataframe for each estimator and each N
+    estimator_results <- map_dfr(estimators, ~{
       estimator_data <- filtered_data[[.x]]
       
-      # Map each N to create formatted bias strings, using future_map_dfc for parallel execution
-      n_results <- future_map_dfc(set_names(unique(filtered_data$N)), ~{
+      # Map each N to create formatted bias strings
+      n_results <- map_dfc(set_names(unique(filtered_data$N)), ~{
         metrics <- estimator_data[[which(filtered_data$N == .x)]]
         formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
         set_names(formatted_bias, paste("N", .x, sep = "_"))
@@ -506,17 +506,17 @@ report_rmse <- function(metrics_list) {
   # Ensure DGM values are uniquely identified
   unique_dgms <- unique(metrics_list$DGM)
 
-  # Process each DGM using future_map to leverage parallel processing
-  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+  # Process each DGM 
+  results_by_dgm <- map(set_names(unique_dgms), ~{
     # Filter data for the current DGM
     filtered_data <- metrics_list %>% filter(DGM == .x)
     
-    # Create a dataframe for each estimator and each N, using future_map_df for parallel execution
-    estimator_results <- future_map_dfr(estimators, ~{
+    # Create a dataframe for each estimator and each N
+    estimator_results <- map_dfr(estimators, ~{
       estimator_data <- filtered_data[[.x]]
       
-      # Map each N to create formatted bias strings, using future_map_dfc for parallel execution
-      n_results <- future_map_dfc(set_names(unique(filtered_data$N)), ~{
+      # Map each N to create formatted bias strings
+      n_results <- map_dfc(set_names(unique(filtered_data$N)), ~{
         metrics <- estimator_data[[which(filtered_data$N == .x)]]
         formatted_rmse <- sprintf("%.3f", metrics$rmse)
         set_names(formatted_rmse, paste("N", .x, sep = "_"))
@@ -592,21 +592,20 @@ errors <- results_sim$errors
 warnings <- results_sim$warnings
 messages <- results_sim$messages
 
-#' Warnings can be ignored, as we are not interested in fit indices.
-
 #Output and extract results
 results_df_raw <- results_sim$results
+saveRDS(bias_ci, file = "LK/simulation4_results_raw.rds")
+
 metrics_list <- extract_results(results_df_raw)
+saveRDS(bias_ci, file = "LK/simulation4_metrics_list.rds")
 
 #Report Bias
-bias_ci <- report_bias(metrics_list)
-bias_ci
+bias_ci <- suppressMessages(report_bias(metrics_list))
 saveRDS(bias_ci, file = "LK/simulation4_abs_bias_ci.rds")
 
-
 #Report RMSE
-rmse <- report_rmse(metrics_list)
-rmse
+rmse <- suppressMessages(report_rmse(metrics_list))
 saveRDS(rmse, file = "LK/simulation4_rmse.rds")
 
+#' Warnings can be ignored, as we are not interested in fit indices.
 #' 

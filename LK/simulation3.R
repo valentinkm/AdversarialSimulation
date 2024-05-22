@@ -130,7 +130,7 @@ pop.model <- paste(
   ) 
 
   
-  
+
 
 #' 
 #' # Simulate data
@@ -319,20 +319,21 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
+saveRDS(bias_ci, file = "LK/simulation3_results_raw.rds")
+
 metrics_list <- extract_results(results_df_raw)
+saveRDS(bias_ci, file = "LK/simulation3_metrics_list.rds")
 
 #Report Bias
 bias_ci <- report_bias(metrics_list)
-bias_ci
 saveRDS(bias_ci, file = "LK/simulation3_rel_bias_ci.rds")
 
 #Report SD
 sd <- report_sd(metrics_list)
-sd
 saveRDS(sd, file = "LK/simulation3_sd.rds")
 
 #Report RMSE
 rmse <- report_rmse(metrics_list)
-rmse
 saveRDS(rmse, file = "LK/simulation3_rmse.rds")
+
 

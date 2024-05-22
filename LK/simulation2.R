@@ -10,8 +10,7 @@ set.seed(1)
 #' 
 
 # Specify the libraries to load
-
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "future", "furrr")
+libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -188,6 +187,7 @@ apply_syntax <- function(MLIST) {
 }
 
 
+
 #' 
 #' # Simulate data
 
@@ -217,7 +217,7 @@ estimators <- list(
   GSAM_ULS = \(d) lavaan::sam(model, data=d, sam.method = "global", estimator = "ULS", std.lv= TRUE)
 )
 # postprocess each model output
-estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, lavaan::parameterEstimates, .))
+estimators <- modify(estimators, ~compose(\(e)filter(e, label == "phi")$est, parameterEstimates, .))
 # apply all estimators to the same dataset
 apply_estimators <- \(d) map(estimators, exec, d)
 
@@ -396,22 +396,19 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
+saveRDS(bias_ci, file = "LK/simulation2_results_raw.rds")
+
 metrics_list <- extract_results(results_df_raw)
+saveRDS(bias_ci, file = "LK/simulation2_metrics_list.rds")
 
 #Report Bias
 bias_ci <- report_bias(metrics_list)
-bias_ci
 saveRDS(bias_ci, file = "LK/simulation2_rel_bias_ci.rds")
 
 #Report SD
 sd <- report_sd(metrics_list)
-sd
 saveRDS(sd, file = "LK/simulation2_sd.rds")
 
 #Report RMSE
 rmse <- report_rmse(metrics_list)
-rmse
 saveRDS(rmse, file = "LK/simulation2_rmse.rds")
-
-
-#' 

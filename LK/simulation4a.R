@@ -426,6 +426,7 @@ planned_analysis <- function(N, DGM, beta){
   ))
 }
 #The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
+
 #' 
 #' # Extract results
 
@@ -452,7 +453,7 @@ extract_results <- function(results_df_raw) {
   # Apply the performance metrics function to each estimator and create metrics columns
   metrics_list <- results_raw_combined %>%
     mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), 
-                  ~future_map2(.x, beta, results_metrics), .names = "{.col}_metrics")) %>%
+                  ~map2(.x, beta, results_metrics), .names = "{.col}_metrics")) %>%
     select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
 
   return(metrics_list)
@@ -474,8 +475,8 @@ report_bias <- function(metrics_list) {
   unique_betas <- unique(metrics_list$beta)
   unique_ns <- unique(metrics_list$N)
   
-  # Process each DGM using future_map to leverage parallel processing
-  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+  # Process each DGM
+  results_by_dgm <- map(set_names(unique_dgms), ~{
     dgm <- .x
     
     # Create a list to hold results for each estimator
@@ -536,8 +537,8 @@ report_rmse <- function(metrics_list) {
   unique_betas <- unique(metrics_list$beta)
   unique_ns <- unique(metrics_list$N)
   
-  # Process each DGM using future_map to leverage parallel processing
-  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+  # Process each DGM
+  results_by_dgm <- map(set_names(unique_dgms), ~{
     dgm <- .x
     
     # Create a list to hold results for each estimator
@@ -644,15 +645,15 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
+saveRDS(bias_ci, file = "LK/simulation4a_results_raw.rds")
+
 metrics_list <- extract_results(results_df_raw)
+saveRDS(bias_ci, file = "LK/simulation4a_metrics_list.rds")
 
 #Report Bias
 bias_ci <- suppressMessages(report_bias(metrics_list))
-bias_ci
 saveRDS(bias_ci, file = "LK/simulation4a_abs_bias_ci.rds")
 
 #Report RMSE
 rmse <- suppressMessages(report_rmse(metrics_list))
-rmse
 saveRDS(rmse, file = "LK/simulation4a_rmse.rds")
-
