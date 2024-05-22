@@ -2,6 +2,10 @@
 
 ```{r}
 set.seed(1)
+reps <- 2
+seeds <-  purrr::accumulate(seq_len(reps - 1),
+                            \(s, x)parallel::nextRNGStream(s), # x is disgarded, only the prior seed is relevant.
+                            .init = .Random.seed)
 ```
 
 
@@ -321,11 +325,11 @@ report_rmse <- function(metrics_list) {
 ```{r}
 
 simulation_study_ <- function(design){
-  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
+  all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = seeds)))
   all_steps
 }
 
-simulation_study <- function(design, k, seed = NULL) {
+simulation_study <- function(design, k, seed = seeds) {
   # Define a function to run simulation_study_() safely
   safe_simulation <- function(design) {
     # Run the simulation function safely
@@ -364,7 +368,7 @@ simulation_study <- function(design, k, seed = NULL) {
 design <- setup_design()
 
 #Run simulation
-results_sim <- simulation_study(design, 2, seed = TRUE)
+results_sim <- simulation_study(design, 2, seeds)
 
 #Errors, warnings and messages?
 errors <- results_sim$errors
