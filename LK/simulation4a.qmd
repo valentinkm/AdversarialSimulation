@@ -454,7 +454,7 @@ extract_results <- function(results_df_raw) {
   # Apply the performance metrics function to each estimator and create metrics columns
   metrics_list <- results_raw_combined %>%
     mutate(across(c(SEM_ML, SEM_ULS, LSAM_ML), 
-                  ~future_map2(.x, beta, results_metrics), .names = "{.col}_metrics")) %>%
+                  ~map2(.x, beta, results_metrics), .names = "{.col}_metrics")) %>%
     select(-c(SEM_ML, SEM_ULS, LSAM_ML))  # Drop the original estimator columns
 
   return(metrics_list)
@@ -476,8 +476,8 @@ report_bias <- function(metrics_list) {
   unique_betas <- unique(metrics_list$beta)
   unique_ns <- unique(metrics_list$N)
   
-  # Process each DGM using future_map to leverage parallel processing
-  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+  # Process each DGM
+  results_by_dgm <- map(set_names(unique_dgms), ~{
     dgm <- .x
     
     # Create a list to hold results for each estimator
@@ -538,8 +538,8 @@ report_rmse <- function(metrics_list) {
   unique_betas <- unique(metrics_list$beta)
   unique_ns <- unique(metrics_list$N)
   
-  # Process each DGM using future_map to leverage parallel processing
-  results_by_dgm <- future_map(set_names(unique_dgms), ~{
+  # Process each DGM
+  results_by_dgm <- map(set_names(unique_dgms), ~{
     dgm <- .x
     
     # Create a list to hold results for each estimator

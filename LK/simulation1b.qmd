@@ -210,7 +210,7 @@ extract_results <- function(results_df_raw) {
   # Apply the performance metrics function to each estimator and create metrics columns
   metrics_list <- results_raw_combined %>%
     mutate(across(c(LSAM_ML, LSAM_ULS), 
-                  ~future_map2(.x, phi, results_metrics), .names = "{.col}_metrics")) %>%
+                  ~map2(.x, phi, results_metrics), .names = "{.col}_metrics")) %>%
     select(-c(LSAM_ML, LSAM_ULS))  # Drop the original estimator columns
 
   return(metrics_list)
@@ -230,8 +230,8 @@ report_bias <- function(metrics_list) {
   unique_lambdas <- unique(metrics_list$lambda)
   unique_phis <- unique(metrics_list$phi)
   
-  # Process each N using future_map to leverage parallel processing
-  results_by_n <- future_map(set_names(unique_ns), ~{
+  # Process each N
+  results_by_n <- map(set_names(unique_ns), ~{
     n_val <- .x
     
     # Create a list to hold results for each estimator
@@ -278,8 +278,6 @@ report_bias <- function(metrics_list) {
   results_by_n_estimator
 }
 
-bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of anoying "new names" messages
-bias_ci
 ```
 
 #  Simulation Study
@@ -339,14 +337,8 @@ messages <- results_sim$messages
 results_df_raw <- results_sim$results
 metrics_list <- extract_results(results_df_raw)
 
-ML_50 <- metrics_list$"50"$LSAM_ML
-ULS_50 <- metrics_list$"50"$LSAM_ULS
-ML_100 <- metrics_list$"100"$LSAM_ML
-ULS_100 <- metrics_list$"100"$LSAM_ULS
-
-ML_50
-ULS_50
-ML_100
-ULS_100
+#Report Bias
+bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of anoying "new names" messages
+bias_ci
 
 ```
