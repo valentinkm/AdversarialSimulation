@@ -24,7 +24,6 @@ for (library_name in libraries) {
   }
 }
 
-plan(multisession, workers = 1)
 
 #' 
 #' # Specify 2-factor-Model
