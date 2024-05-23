@@ -594,18 +594,18 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
-saveRDS(results_df_raw, file = "LK/simulation4_results_raw.rds")
+saveRDS(results_df_raw, file = "simulation4_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
-saveRDS(metrics_list, file = "LK/simulation4_metrics_list.rds")
+saveRDS(metrics_list, file = "simulation4_metrics_list.rds")
 
 #Report Bias
 bias_ci <- suppressMessages(report_bias(metrics_list))
-saveRDS(bias_ci, file = "LK/simulation4_abs_bias_ci.rds")
+saveRDS(bias_ci, file = "simulation4_abs_bias_ci.rds")
 
 #Report RMSE
 rmse <- suppressMessages(report_rmse(metrics_list))
-saveRDS(rmse, file = "LK/simulation4_rmse.rds")
+saveRDS(rmse, file = "simulation4_rmse.rds")
 
 #' Warnings can be ignored, as we are not interested in fit indices.
 #' 
