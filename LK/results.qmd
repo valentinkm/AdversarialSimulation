@@ -4,16 +4,12 @@ subtitle: "A case study"
 author: "Leonard Kosanke"
 format:
     pdf:
-        include-in-header: ../preamble.tex
         fontsize: 11pt
         linestretch: 1.2
-        geometry: "left=4cm, right=4cm, top=3cm, bottom=5cm, bindingoffset=7mm"
+        geometry: "left=15mm, right=15mm, top=30mm, bottom=30mm"
         classoption: twoside
         papersize: a4
 fontsize: 11pt
-# https://practicaltypography.com/page-margins.html
-# 3.81 to 5.08cm or 45-90 characters or 2-3 alphabets
-# asymetric geometry is set after/in frontmatter.md
 bibliography: ../bibliography.bib
 engine: knitr
 ---
