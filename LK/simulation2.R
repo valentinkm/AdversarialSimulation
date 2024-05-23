@@ -22,6 +22,8 @@ for (library_name in libraries) {
   }
 }
 
+
+
 #' 
 #' # Specify 2-factor-Model
 #' 
@@ -396,19 +398,19 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
-saveRDS(results_df_raw, file = "LK/simulation2_results_raw.rds")
+saveRDS(results_df_raw, file = "simulation2_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
-saveRDS(metrics_list, file = "LK/simulation2_metrics_list.rds")
+saveRDS(metrics_list, file = "simulation2_metrics_list.rds")
 
 #Report Bias
 bias_ci <- report_bias(metrics_list)
-saveRDS(bias_ci, file = "LK/simulation2_rel_bias_ci.rds")
+saveRDS(bias_ci, file = "simulation2_rel_bias_ci.rds")
 
 #Report SD
 sd <- report_sd(metrics_list)
-saveRDS(sd, file = "LK/simulation2_sd.rds")
+saveRDS(sd, file = "simulation2_sd.rds")
 
 #Report RMSE
 rmse <- report_rmse(metrics_list)
-saveRDS(rmse, file = "LK/simulation2_rmse.rds")
+saveRDS(rmse, file = "simulation2_rmse.rds")
