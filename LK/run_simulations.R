@@ -1,4 +1,4 @@
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "future", "furrr","future.batchtools")
+libraries <- c("purrr", "future", "furrr","future.batchtools")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -23,4 +23,3 @@ run_script <- function(script) {
 
 # Run all scripts
 future_map(r_scripts, run_script)
-
