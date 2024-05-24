@@ -378,8 +378,6 @@ run_study_1 <- function(params, true_values) {
     }
   }, .options = furrr_options(seed = params$seed))
 
-  # Print the structure of results to debug
-  print(str(results[[1]]))  # Print the structure of the first result
 
   # Create a dataframe for results
   results_df <- params %>%
@@ -407,9 +405,6 @@ run_study_1 <- function(params, true_values) {
   # Return the summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
-
-# Example usage (make sure to implement `generate_dgm`):
-# results <- run_study_1(params, true_values)
 ```
 
 # Results
