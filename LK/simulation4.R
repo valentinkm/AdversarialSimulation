@@ -10,7 +10,7 @@ set.seed(1)
 #' 
 
 # Specify the libraries to load
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 

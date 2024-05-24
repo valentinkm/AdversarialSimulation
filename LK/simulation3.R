@@ -10,7 +10,7 @@ set.seed(1)
 #' 
 
 # Specify the libraries to load
-libraries <- c("GPArotation", "CDM", "miceadds", "TAM", "sirt", "lavaan", "dplyr", "tidyr", "purrr", "tidyverse", "furrr")
+libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
 # Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
@@ -183,8 +183,8 @@ results_metrics <- results_df_raw %>%
           sd = ~sd(.x),                                 # Standard deviation of estimates
           rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
           se_bias = ~(sd(abs(.x - phi)))/ sqrt(unique(N)),      # SE of bias
-          ci_lower = ~(mean(abs(.x - phi)) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI
-          ci_upper = ~(mean(abs(.x - phi)) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI
+          ci_lower = ~((mean(.x - phi) / phi) - qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N))),  # Lower CI for relative Bias
+          ci_upper = ~((mean(.x - phi) / phi) + qt(0.975, df = unique(N) - 1) * (sd(abs(.x - phi)))/ sqrt(unique(N)))   # Upper CI for relative Bias
                     )),  .groups = 'drop')
 
 
