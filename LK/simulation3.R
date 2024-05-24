@@ -303,7 +303,7 @@ simulation_study <- function(design, k, seed = NULL) {
 
 
 #' 
-#' # Run simulation
+#' # Run & safe simulation
 #' 
 
 #Set up design
@@ -311,6 +311,7 @@ design <- setup_design()
 
 #Run simulation
 results_sim <- simulation_study(design, 2, seed = TRUE)
+saveRDS(results_sim, file = "sim3_results_error.rds")
 
 #Errors, warnings and messages?
 errors <- results_sim$errors
@@ -319,21 +320,21 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
-saveRDS(results_df_raw, file = "simulation3_results_raw.rds")
+saveRDS(results_df_raw, file = "sim3_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
-saveRDS(metrics_list, file = "simulation3_metrics_list.rds")
+saveRDS(metrics_list, file = "sim3_metrics_list.rds")
 
 #Report Bias
 bias_ci <- report_bias(metrics_list)
-saveRDS(bias_ci, file = "simulation3_rel_bias_ci.rds")
+saveRDS(bias_ci, file = "sim3_rel_bias_ci.rds")
 
 #Report SD
 sd <- report_sd(metrics_list)
-saveRDS(sd, file = "simulation3_sd.rds")
+saveRDS(sd, file = "sim3_sd.rds")
 
 #Report RMSE
 rmse <- report_rmse(metrics_list)
-saveRDS(rmse, file = "simulation3_rmse.rds")
+saveRDS(rmse, file = "sim3_rmse.rds")
 
 

@@ -314,14 +314,15 @@ simulation_study <- function(design, k, seed = NULL) {
 
 
 #' 
-#' ## Run simulation
+#' ## Run & safe simulation
 
 
 #Set up design
 design <- setup_design()
 
-#Run simulation
+#Run & safe simulation
 results_sim <- simulation_study(design, 2, seed = TRUE)
+saveRDS(results_sim, file = "sim1b_results_error.rds")
 
 #Errors, warnings and messages?
 errors <- results_sim$errors
@@ -330,12 +331,12 @@ messages <- results_sim$messages
 
 #Output and extract results
 results_df_raw <- results_sim$results
-saveRDS(results_df_raw, file = "simulation1b_results_raw.rds")
+saveRDS(results_df_raw, file = "sim1b_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
-saveRDS(metrics_list, file = "simulation1b_metrics_list.rds")
+saveRDS(metrics_list, file = "sim1b_metrics_list.rds")
 
 #Report Bias
-bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of anoying "new names" messages
-saveRDS(bias_ci, file = "simulation1b_abs_bias_ci.rds")
+bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of annoying "new names" messages
+saveRDS(bias_ci, file = "sim1b_abs_bias_ci.rds")
 
