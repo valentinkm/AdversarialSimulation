@@ -131,7 +131,7 @@ so the variance for f3 is $1-2*0.1^2 = 0.98$ and for f4 and f5 $1-2*0.1^2 = 0.97
         - $\Theta^*$ on the diagonal.
         - Correlated residuals generated between specific indicator pairs: for $i = (2, 5, 8, 11, 14)$ and $i' = (3, 6, 9, 12, 15)$, and for each $k=1,\ldots,4$ and $l=k+1,\ldots,5$, the entries $(i_k, i'_l)$ and $(i'_l, i_k)$ in $\Theta$ are set to $0.6 \times \min \Theta^*$, ensuring correlated errors among selected indicator pairs without exceeding a 0.6 correlation coefficient.
 
-- The (model implied) covariance matrix for all models will be calculated as:
+- The covariance matrix for all models will be calculated as:
 $\operatorname{Var}(\boldsymbol{\eta})=(\mathbf{I}-\mathbf{B})^{-1} \boldsymbol{\Psi}(\mathbf{I}-\mathbf{B})^{-T}$
 
 #### 3.2.2. Study 2:
@@ -327,7 +327,8 @@ $$
 
 ### How will missing values due to non-convergence or other reasons be handled?
 
-As mentioned above the convergence rates will be captured and evaluated.
+- As mentioned above the convergence rates will be captured, evaluated and interpreted as a performance measure.
+- In case of non-convergence, the data set will be excluded from the analysis.
 
 ### How do you plan on interpreting the performance measures? (optional)
 
