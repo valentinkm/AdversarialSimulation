@@ -31,7 +31,12 @@ jobs:
 
     - name: Run simulation in Docker container
       run: |
-        docker run --rm -v $(pwd)/output:/home/rstudio/simulation/output ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest
+        docker run --rm -v $(pwd)/VK/simulation/results:/home/rstudio/simulation/results ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest
+
+    - name: Check logs and results
+      run: |
+        cat VK/simulation/results/simulation.log
+        ls -lh VK/simulation/results/simulation_results.rda
 
     - name: Configure Git for pushing changes
       run: |
@@ -40,7 +45,7 @@ jobs:
 
     - name: Commit and push results
       run: |
-        cd output
+        cd VK/simulation/results
         git add simulation_results.rda
         git commit -m "Add simulation results"
         git push origin study-1

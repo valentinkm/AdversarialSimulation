@@ -150,8 +150,8 @@ simulation_results <- run_study_1(params, true_values)
 cat("Simulation study completed. Saving results...\n")
 
 # Save results
-save(simulation_results, file = "simulation_results.rda")
+save(simulation_results, file = "results/simulation_results.rda")
 
 # Print summary to console for visibility
 print(simulation_results$Summary)
-cat("Results saved to simulation_results.rda\n")
+cat("Results saved to VK/simulation/results\n")
