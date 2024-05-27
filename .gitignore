@@ -11,4 +11,5 @@ VK/.Rhistory
 VK/.Rapp.history
 .Rprofile
 simulation_results.rda
-VK/simulation/VK.Rproj
+VK.Rproj
+.RData
