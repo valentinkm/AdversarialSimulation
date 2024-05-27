@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 # renv
 RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 
-# files
+# Copy all files from VK/simulation to the working directory
 COPY . /home/rstudio/simulation
 
 # setup working directory
