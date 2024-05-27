@@ -12,10 +12,13 @@ RUN apt-get update && apt-get install -y \
 RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 
 # Copy all files from VK/simulation to the working directory
-COPY . /home/rstudio/simulation
+COPY VK/simulation /home/rstudio/simulation
 
 # setup working directory
 WORKDIR /home/rstudio/simulation
+
+# Check the contents of the working directory to ensure renv.lock is present
+RUN ls -l /home/rstudio/simulation
 
 # restore environment
 RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
