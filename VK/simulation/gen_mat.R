@@ -41,7 +41,7 @@ gen_mat <- function(model_type, nfactors = 5, nvar.factor = 3, lambda = 0.70,
   RES <- (1 - beta_value^2)
   PSI[lav_matrix_diag_idx(nfactors)[-c(1:2)]] <- RES
   
-  # Calculate VETA
+  # Calculate Sigma_eta
   IB_inv <- solve(diag(nfactors) - BETA)
   Sigma_eta <- IB_inv %*% PSI %*% t(IB_inv)
   
