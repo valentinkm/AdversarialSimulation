@@ -6,3 +6,6 @@
 *.html
 VK/preregistration_files/*
 notes.md
+VK/simulation/.Rhistory
+VK/.Rhistory
+VK/.Rapp.history
