@@ -1,20 +1,16 @@
-#' # First script for Simulation Study 4a
-#' 
+# First script for Simulation Study 4a
 
 set.seed(1)
 
-#' 
-#' # Packages
-#' 
-#' Copied and pasted from original paper.
-#' 
 
-# Specify the libraries to load
+# Packages
+
+## Specify the libraries to load
 libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
-# Set the R mirror to the cloud mirror of RStudio
+## Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
-# Load the libraries
+## Load the libraries
 for (library_name in libraries) {
   if (!require(library_name, character.only = TRUE)) {
     install.packages(library_name)
@@ -22,9 +18,9 @@ for (library_name in libraries) {
   }
 }
 
-#' 
-#' 
-#' # Specify 5-factor-Model
+
+
+# Specify 5-factor-Model
 
 model <- "
 
@@ -105,9 +101,8 @@ model <- "
     
     "
 
-#' 
-#' # Setup and Design
-#' 
+
+# Setup and Design
 
 setup_design <- function() {
   
@@ -128,11 +123,9 @@ setup_design <- function() {
 }
 
 
+# Data generating Mechanism
 
-#' 
-#' # Data generating Mechanism
-#' 
-#' This time, we will define the DGM the same way Rosseel and Loh did here: https://osf.io/96zhs
+### This time, we will define the DGM the same way Rosseel and Loh did here: https://osf.io/96zhs
 
 get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
                               lambda = 0.70, PSI = NULL, BETA = NULL,
@@ -207,10 +200,10 @@ get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
 }
 
 
-#' 
-#' # Generate Syntax for Data simulation
-#' Function taken from RL: https://osf.io/4we3h
 
+# Generate Syntax for Data simulation
+
+### Function taken from RL: https://osf.io/4we3h
 
 apply_syntax <-lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
                              include.values = TRUE) {
@@ -335,13 +328,8 @@ apply_syntax <-lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = 
 }
   
 
-
-#' 
-#' 
-#' # Simulate data
-#' Analogously to Rosseel and Loh, we will simulate the data with the lavaan function, for each condition.
-#' 
-
+# Simulate data
+### Analogously to Rosseel and Loh, we will simulate the data with the lavaan function, for each condition.
 
 simulate_data <- function(N, DGM, beta) {
  NFAC   <- 5L    # number of factors
@@ -393,18 +381,18 @@ simulate_data <- function(N, DGM, beta) {
 
 
 
-#' 
-#' 
-#' # Planned Analysis
 
-#Specify estimation methods of interest
+
+# Planned Analysis
+
+## Specify estimation methods of interest
 
 estimators <- list(
   SEM_ML = \(d) lavaan::sem(model, data=d, estimator="ML", std.lv= TRUE),
   SEM_ULS = \(d) lavaan::sem(model, data=d, estimator="ULS", std.lv= TRUE),
   LSAM_ML = \(d) lavaan::sam(model, data=d, sam.method="local", estimator = "ML", std.lv= TRUE)
 )
-# postprocess each model output
+## postprocess each model output
 phi_patterns <- c("phi31", "phi41", "phi51", "phi32", "phi42", "phi43", "phi53", "phi54")
 
 estimators <- map(estimators, ~compose(
@@ -412,7 +400,7 @@ estimators <- map(estimators, ~compose(
   .
 ))
 
-# apply all estimators to the same dataset
+## apply all estimators to the same dataset
 apply_estimators <- \(d) map(estimators, exec, d)
 
 planned_analysis <- function(N, DGM, beta){
@@ -427,8 +415,8 @@ planned_analysis <- function(N, DGM, beta){
 }
 #The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
 
-#' 
-#' # Extract results
+
+# Extract results
 
 extract_results <- function(results_df_raw) {
     
@@ -462,9 +450,8 @@ extract_results <- function(results_df_raw) {
 
 
 
-#' 
-#' # Report Bias
 
+# Report Bias
 
 report_bias <- function(metrics_list) {
   # Define the list of estimators
@@ -524,9 +511,8 @@ report_bias <- function(metrics_list) {
 }
 
 
-#' 
-#' # Report RMSE
-#' 
+
+# Report RMSE
 
 report_rmse <- function(metrics_list) {
   # Define the list of estimators
@@ -586,10 +572,9 @@ report_rmse <- function(metrics_list) {
 }
 
 
-#' 
-#' 
-#' #  Simulation Study
-#' 
+
+
+#  Simulation Study
 
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -628,9 +613,8 @@ simulation_study <- function(design, k, seed = NULL) {
 
 
 
-#' 
-#' # Run & safe simulation
 
+# Run & safe simulation
 
 #Set up design
 design <- setup_design()

@@ -1,20 +1,17 @@
-#' # First script for Simulation Study 1b
-#' 
+# First script for Simulation Study 1b
+
 
 set.seed(1)
 
-#' 
-#' # Packages
-#' 
-#' Copied and pasted from original paper.
-#' 
 
-# Specify the libraries to load
+# Packages
+
+## Specify the libraries to load
 libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
-# Set the R mirror to the cloud mirror of RStudio
+## Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
-# Load the libraries
+## Load the libraries
 for (library_name in libraries) {
   if (!require(library_name, character.only = TRUE)) {
     install.packages(library_name)
@@ -22,8 +19,8 @@ for (library_name in libraries) {
   }
 }
 
-#' 
-#' # Specify 2-factor-Model
+
+# Specify 2-factor-Model
 
 model <- "
 
@@ -60,9 +57,9 @@ model <- "
     X2 ~~ Y2
     "
 
-#' 
-#' # Setup and Design
-#' 
+
+# Setup and Design
+
 
 setup_design <- function() {
   
@@ -85,13 +82,13 @@ setup_design <- function() {
 
 
 
-#' 
-#' # Data generating Mechanism
-#' 
-#' ## Fixed values
-#' No fixed values
-#' 
-#' ## Varying values
+
+# Data generating Mechanism
+
+## Fixed values
+### None
+
+## Varying values
 
 get_dgm <- function(lambda, phi) {
   # Factor loadings for all six manifest variables set to the specified lambda
@@ -115,9 +112,7 @@ get_dgm <- function(lambda, phi) {
 }
 
 
-
-#' 
-#' # Apply Syntax
+# Apply Syntax
 
 apply_syntax <- function(MLIST) {
   
@@ -149,9 +144,9 @@ apply_syntax <- function(MLIST) {
 }
 
 
-#' 
-#' 
-#' # Simulate data
+
+
+# Simulate data
 
 simulate_data <- function(N, lambda, phi) {
 
@@ -165,8 +160,8 @@ simulate_data <- function(N, lambda, phi) {
 }
 
 
-#' 
-#' # Planned Analysis
+
+# Planned Analysis
 
 #Specify estimation methods of interest
 
@@ -182,9 +177,7 @@ apply_estimators <- \(d) map(estimators, exec, d)
 planned_analysis <- compose(apply_estimators, simulate_data)
 
 
-#' # Extract results
-#' 
-
+# Extract results
 
 extract_results <- function(results_df_raw) {
   results_raw_combined <- results_df_raw %>%
@@ -212,8 +205,8 @@ extract_results <- function(results_df_raw) {
 }
 
 
-#' 
-#' # Report Bias
+
+# Report Bias
 
 report_bias <- function(metrics_list) {
   # Define the list of estimators
@@ -274,8 +267,8 @@ report_bias <- function(metrics_list) {
 }
 
 
-#' 
-#' #  Simulation Study
+
+# Simulation Study
 
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -313,30 +306,29 @@ simulation_study <- function(design, k, seed = NULL) {
 }
 
 
-#' 
-#' ## Run & safe simulation
 
+# Run & safe simulation
 
-#Set up design
+### Set up design
 design <- setup_design()
 
-#Run & safe simulation
+### Run & safe simulation
 results_sim <- simulation_study(design, 2, seed = TRUE)
 saveRDS(results_sim, file = "sim1b_results_error.rds")
 
-#Errors, warnings and messages?
+### Errors, warnings and messages?
 errors <- results_sim$errors
 warnings <- results_sim$warnings
 messages <- results_sim$messages
 
-#Output and extract results
+### Output and extract results
 results_df_raw <- results_sim$results
 saveRDS(results_df_raw, file = "sim1b_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
 saveRDS(metrics_list, file = "sim1b_metrics_list.rds")
 
-#Report Bias
+### Report Bias
 bias_ci <- suppressMessages(report_bias(metrics_list)) #get rid of annoying "new names" messages
 saveRDS(bias_ci, file = "sim1b_abs_bias_ci.rds")
 

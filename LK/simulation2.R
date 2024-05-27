@@ -1,20 +1,16 @@
-#' # First script for Simulation Study 2
-#' 
+# First script for Simulation Study 2
 
 set.seed(1)
 
-#' 
-#' # Packages
-#' 
-#' Copied and pasted from original paper.
-#' 
 
-# Specify the libraries to load
+# Packages
+
+## Specify the libraries to load
 libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
-# Set the R mirror to the cloud mirror of RStudio
+## Set the R mirror to the cloud mirror of RStudio
 options(repos = "https://cloud.r-project.org/")
 
-# Load the libraries
+## Load the libraries
 for (library_name in libraries) {
   if (!require(library_name, character.only = TRUE)) {
     install.packages(library_name)
@@ -23,10 +19,7 @@ for (library_name in libraries) {
 }
 
 
-
-#' 
-#' # Specify 2-factor-Model
-#' 
+# Specify 2-factor-Model
 
 model <- "
 
@@ -60,9 +53,8 @@ model <- "
     vY3 > 0.01   
     "
 
-#' 
-#' # Setup and Design
-#' 
+
+# Setup and Design
 
 setup_design <- function() {
   
@@ -82,11 +74,9 @@ setup_design <- function() {
 }
 
 
+# Data generating Mechanism
 
-#' 
-#' # Data generating Mechanism
-#' 
-#' ## Fixed values
+## Fixed values
 
 lam1 <- 0.55
 lam2 <- 0.45
@@ -104,8 +94,8 @@ THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
 
 #Don't need Beta in this study
 
-#' 
-#' ## Varying values
+
+## Varying values
 
 get_dgm <- function(cl, delta_value) {
   
@@ -123,8 +113,8 @@ get_dgm <- function(cl, delta_value) {
 
 
 
-#' 
-#' # Apply Syntax
+
+# Apply Syntax
 
 apply_syntax <- function(MLIST) {
   
@@ -190,8 +180,8 @@ apply_syntax <- function(MLIST) {
 
 
 
-#' 
-#' # Simulate data
+
+# Simulate data
 
 simulate_data <- function(N, cl, delta_value) {
   # Get DGM parameters
@@ -205,10 +195,10 @@ simulate_data <- function(N, cl, delta_value) {
 }
 
 
-#' 
-#' # Planned Analysis
 
-#Specify estimation methods of interest
+# Planned Analysis
+
+## Specify estimation methods of interest
 
 estimators <- list(
   SEM_ML = \(d) lavaan::sem(model, data=d, estimator="ML", std.lv= TRUE),
@@ -228,9 +218,7 @@ planned_analysis <- compose(apply_estimators, simulate_data)
 #The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
 
 
-#' # Extract results
-#' 
-
+# Extract results
 
 extract_results <- function(results_df_raw){
 #Compute performance measures
@@ -286,9 +274,9 @@ results_metrics <- results_df_raw %>%
 
 
 
-#' 
-#' # Report Bias
-#' Same as study 1
+
+# Report Bias
+### Same as study 1
 
 report_bias <- function(metrics_list) {
   # Define a list to store results
@@ -313,9 +301,8 @@ report_bias <- function(metrics_list) {
   return(bias_ci)
 }
 
-#' 
-#' # Report SD
-#' 
+
+# Report SD
 
 report_sd <- function(metrics_list) {
   # Use map to extract the sd data from each element in the metrics_list
@@ -326,9 +313,8 @@ report_sd <- function(metrics_list) {
   return(sd)  # Return the list of sd data frames
 }
 
-#' 
-#' # Report RMSE
-#' 
+
+# Report RMSE
 
 report_rmse <- function(metrics_list) {
   # Use map to extract the rmse data from each element in the metrics_list
@@ -339,11 +325,10 @@ report_rmse <- function(metrics_list) {
   return(rmse)  # Return the list of rmse data frames
 }
 
-#' 
-#' # Simulation Study
-#' 
-#' Same as Study 1
 
+# Simulation Study
+
+### Same as Study 1
 
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -380,38 +365,36 @@ simulation_study <- function(design, k, seed = NULL) {
   return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
 
-#' 
-#' # Run & safe simulation
-#' 
 
+# Run & safe simulation
 
-#Set up design
+### Set up design
 design <- setup_design()
 
-#Run & safe simulation
+### Run & safe simulation
 results_sim <- simulation_study(design, 2, seed = TRUE)
 saveRDS(results_sim, file = "sim2_results_error.rds")
 
-#Errors, warnings and messages?
+### Errors, warnings and messages?
 errors <- results_sim$errors
 warnings <- results_sim$warnings
 messages <- results_sim$messages
 
-#Output and extract results
+### Output and extract results
 results_df_raw <- results_sim$results
 saveRDS(results_df_raw, file = "sim2_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
 saveRDS(metrics_list, file = "sim2_metrics_list.rds")
 
-#Report Bias
+### Report Bias
 bias_ci <- report_bias(metrics_list)
 saveRDS(bias_ci, file = "sim2_rel_bias_ci.rds")
 
-#Report SD
+### Report SD
 sd <- report_sd(metrics_list)
 saveRDS(sd, file = "sim2_sd.rds")
 
-#Report RMSE
+### Report RMSE
 rmse <- report_rmse(metrics_list)
 saveRDS(rmse, file = "sim2_rmse.rds")

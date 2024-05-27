@@ -1,13 +1,9 @@
-#' # First script for Simulation Study 1
-#' 
+# First script for Simulation Study 1
 
 set.seed(1)
 
-#' 
-#' # Packages
-#' 
-#' Copied and pasted from original paper.
-#' 
+
+# Packages
 
 # Specify the libraries to load
 libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
@@ -22,9 +18,8 @@ for (library_name in libraries) {
   }
 }
 
-#' 
-#' # Specify 5-factor-Model
-#' 
+
+# Specify 5-factor-Model
 
 model <- "
 
@@ -105,9 +100,8 @@ model <- "
     
     "
 
-#' 
-#' # Setup and Design
-#' 
+
+# Setup and Design
 
 setup_design <- function() {
   # Sample sizes
@@ -122,17 +116,13 @@ setup_design <- function() {
   return(design)
 }
 
+# Data generating Mechanism
 
-#' 
-#' # Data generating Mechanism
-#' 
-#' ## Fixed Values
+## Fixed Values
 
 phi <- 0.1
 
-#' 
-#' 
-#' This time, we will define the DGM the same way Rosseel and Loh did here: https://osf.io/96zhs
+### This time, we will define the DGM the same way Rosseel and Loh did here: https://osf.io/96zhs
 
 get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
                               lambda = 0.70, PSI = NULL, BETA = NULL,
@@ -207,10 +197,10 @@ get_dgm <- lav_sam_gen_model <- function(nfactors = 3L, nvar.factor = 3L,
 }
 
 
-#' 
-#' # Generate Syntax for Data simulation
-#' Function taken from RL: https://osf.io/4we3h
 
+# Generate Syntax for Data simulation
+
+### Function taken from RL: https://osf.io/4we3h
 
 apply_syntax <-lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = "f",
                              include.values = TRUE) {
@@ -336,12 +326,11 @@ apply_syntax <-lav_syntax_mlist <- function(MLIST, ov.prefix = "y", lv.prefix = 
   
 
 
-#' 
-#' 
-#' # Simulate data
-#' Analogously to Rosseel and Loh, we will simulate the data with the lavaan function, for each condition.
-#' 
 
+
+# Simulate data
+
+###Analogously to Rosseel and Loh, we will simulate the data with the lavaan function, for each condition.
 
 simulate_data <- function(N, DGM) {
  NFAC   <- 5L    # number of factors
@@ -391,9 +380,9 @@ simulate_data <- function(N, DGM) {
 }
 
 
-#' 
-#' # Planned Analysis
-#' 
+
+# Planned Analysis
+
 
 #Specify estimation methods of interest
 
@@ -425,7 +414,7 @@ planned_analysis <- function(N,DGM){
 }
 #The arguments to planned_analysis() are always equivalent to the ones from simulate_data(), within one simulation
 
-#' # Extract results
+# Extract results
 
 extract_results <- function(results_df_raw){
 
@@ -455,9 +444,9 @@ metrics_list <- results_raw_combined %>%
 }
 
 
-#' 
-#' 
-#' # Report Bias
+
+
+# Report Bias
 
 report_bias <- function(metrics_list) {
   # Define the list of estimators
@@ -496,8 +485,8 @@ report_bias <- function(metrics_list) {
 
 
 
-#' 
-#' # Report RMSE
+
+# Report RMSE
 
 report_rmse <- function(metrics_list) {
   # Define the list of estimators
@@ -534,9 +523,9 @@ report_rmse <- function(metrics_list) {
   set_names(results_by_dgm, paste("DGM", unique(metrics_list$DGM), sep = "_"))
 }
 
-#' 
-#' 
-#' #  Simulation Study
+
+
+#  Simulation Study
 
 
 simulation_study_ <- function(design){
@@ -575,38 +564,38 @@ simulation_study <- function(design, k, seed = NULL) {
 }
 
 
-#' 
-#' 
-#' 
-#' # Run & safe simulation
 
 
-#Set up design
+
+# Run & safe simulation
+
+
+### Set up design
 design <- setup_design()
 
-#Run & safe simulation
+### Run & safe simulation
 results_sim <- simulation_study(design, 2, seed = TRUE)
 saveRDS(results_sim, file = "sim4_results_error.rds")
 
 
-#Errors, warnings and messages?
+### Errors, warnings and messages?
 errors <- results_sim$errors
 warnings <- results_sim$warnings
 messages <- results_sim$messages
 
-#Output and extract results
+### Warnings can be ignored, as we are not interested in fit indices.
+
+### Output and extract results
 results_df_raw <- results_sim$results
 saveRDS(results_df_raw, file = "sim4_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
 saveRDS(metrics_list, file = "sim4_metrics_list.rds")
 
-#Report Bias
+### Report Bias
 bias_ci <- suppressMessages(report_bias(metrics_list))
 saveRDS(bias_ci, file = "sim4_abs_bias_ci.rds")
 
-#Report RMSE
+### Report RMSE
 rmse <- suppressMessages(report_rmse(metrics_list))
 saveRDS(rmse, file = "sim4_rmse.rds")
-
-#' Warnings can be ignored, as we are not interested in fit indices.

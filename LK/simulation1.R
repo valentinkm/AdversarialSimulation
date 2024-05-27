@@ -1,15 +1,9 @@
-#' # First script for Simulation Study 1
-#' 
+# First script for Simulation Study 1
 
 set.seed(1)
 
-#' 
-#' 
-#' 
-#' # Packages
-#' 
-#' Copied and pasted from original paper.
-#' 
+
+# Packages
 
 # Specify the libraries to load
 libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
@@ -25,9 +19,8 @@ for (library_name in libraries) {
 }
 
 
-#' 
-#' # Specify 2-factor-Model
-#' 
+
+# Specify 2-factor-Model
 
 model <- "
 
@@ -61,9 +54,9 @@ model <- "
     vY3 > 0.01   
     "
 
-#' 
-#' # Setup and Design
-#' 
+
+# Setup and Design
+
 
 setup_design <- function() {
   # Sample sizes
@@ -83,11 +76,11 @@ setup_design <- function() {
 }
 
 
-#' 
-#' # Data generating Mechanism
-#' 
-#' ## Fixed values
-#' 
+
+# Data generating Mechanism
+
+## Fixed values
+
 
 lam1 <- 0.55
 lam2 <- 0.45
@@ -105,9 +98,9 @@ THETA <- diag(c(rep(1-lam1^2, 3), rep(1-lam2^2, 3)))
 
 #Don't need Beta in this study
 
-#' 
-#' ## Varying values
-#' 
+
+## Varying values
+
 
 get_dgm <- function(rc, psi_value) {
   
@@ -124,9 +117,9 @@ get_dgm <- function(rc, psi_value) {
 }
 
 
-#' 
-#' # Apply Syntax
-#' 
+
+# Apply Syntax
+
 
 apply_syntax <- function(MLIST) {
   
@@ -161,10 +154,10 @@ apply_syntax <- function(MLIST) {
 }
 
 
-#' 
-#' 
-#' # Simulate data
-#' 
+
+
+# Simulate data
+
 
 simulate_data <- function(N, rc, psi_value) {
   # Get DGM parameters
@@ -178,9 +171,9 @@ simulate_data <- function(N, rc, psi_value) {
 }
 
 
-#' 
-#' # Planned Analysis
-#' 
+
+# Planned Analysis
+
 
 #Specify estimation methods of interest
 
@@ -199,10 +192,8 @@ apply_estimators <- \(d) map(estimators, exec, d)
 
 planned_analysis <- compose(apply_estimators, simulate_data)
 
-#' 
-#' # Extract results
-#' 
 
+# Extract results
 
 extract_results <- function(results_df_raw){
 #Compute performance measures
@@ -257,10 +248,9 @@ results_metrics <- results_df_raw %>%
 }
 
 
-#' 
-#' 
-#' # Report Bias
-#' 
+
+
+# Report Bias
 
 report_bias <- function(metrics_list) {
   # Define a list to store results
@@ -287,9 +277,8 @@ report_bias <- function(metrics_list) {
 
 
 
-#' 
-#' # Report SD
-#' 
+
+# Report SD
 
 report_sd <- function(metrics_list) {
   # Use map to extract the sd data from each element in the metrics_list
@@ -300,9 +289,8 @@ report_sd <- function(metrics_list) {
   return(sd)  # Return the list of sd data frames
 }
 
-#' 
-#' # Report RMSE
-#' 
+
+# Report RMSE
 
 report_rmse <- function(metrics_list) {
   # Use map to extract the rmse data from each element in the metrics_list
@@ -313,10 +301,8 @@ report_rmse <- function(metrics_list) {
   return(rmse)  # Return the list of rmse data frames
 }
 
-#' 
-#' #  Simulation Study
-#' 
 
+#  Simulation Study
 
 simulation_study_ <- function(design){
   all_steps <- mutate(design, !!!future_pmap_dfr(design, planned_analysis, .options = furrr_options(seed = TRUE)))
@@ -353,39 +339,37 @@ simulation_study <- function(design, k, seed = NULL) {
   return(list(results = results, errors = errors, warnings = warnings, messages = messages))
 }
 
-#' 
-#' # Run simulation and safe results
-#' 
 
+# Run simulation and safe results
 
-#Set up design
+### Set up design
 design <- setup_design()
 
-#Run & safe simulation
+### Run & safe simulation
 results_sim <- simulation_study(design, 2, seed=TRUE)
 saveRDS(results_sim, file = "sim1_results_error.rds")
 
-#Errors, warnings and messages?
+### Errors, warnings and messages?
 errors <- results_sim$errors
 warnings <- results_sim$warnings
 messages <- results_sim$messages
 
-#Output and extract results
+### Output and extract results
 results_df_raw <- results_sim$results
 saveRDS(results_df_raw, file = "sim1_results_raw.rds")
 
 metrics_list <- extract_results(results_df_raw)
 saveRDS(metrics_list, file = "sim1_metrics_list.rds")
 
-#Report Bias
+### Report Bias
 bias_ci <- report_bias(metrics_list)
 saveRDS(bias_ci, file = "sim1_rel_bias_ci.rds")
 
-#Report SD
+### Report SD
 sd <- report_sd(metrics_list)
 saveRDS(sd, file = "sim1_sd.rds")
 
-#Report RMSE
+### Report RMSE
 rmse <- report_rmse(metrics_list)
 saveRDS(rmse, file = "sim1_rmse.rds")
 
