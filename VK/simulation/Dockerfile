@@ -18,7 +18,7 @@ COPY . /home/rstudio/simulation
 WORKDIR /home/rstudio/simulation
 
 # restore environment
-RUN R -e "renv::restore()"
+RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make
 CMD ["make"]
