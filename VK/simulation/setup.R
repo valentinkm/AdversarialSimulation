@@ -19,10 +19,3 @@ generate_seeds <- function(n, seed) {
   set.seed(seed)
   sample.int(.Machine$integer.max, n)
 }
-
-# Save common variables
-n_reps_study_1 <- 10
-initial_seed <- 42
-seeds <- generate_seeds(n_reps_study_1, initial_seed)
-
-save(seeds, file = "seeds.RData")

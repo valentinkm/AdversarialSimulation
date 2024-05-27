@@ -108,8 +108,8 @@ run_study_1 <- function(params, true_values) {
       )
     }
   }, .options = furrr_options(seed = params$seed))
-
-  # Create a dataframe for results
+  
+  # Create dataframe for results
   results_df <- params %>%
     mutate(
       Converged = map_dbl(results, ~ .x$Converged),
@@ -132,10 +132,14 @@ run_study_1 <- function(params, true_values) {
     ) %>%
     arrange(model_type, N, reliability, method)
   
-  # Return the summary statistics and detailed results
+  # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
 
-# Run the complete simulation study
+# Run complete simulation study
 simulation_results <- run_study_1(params, true_values)
-simulation_results$Summary
+
+# Saveresults
+save(simulation_results, file = "simulation_results.rda")
+
+# print(simulation_results$Summary)
