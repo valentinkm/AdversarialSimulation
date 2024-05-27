@@ -24,6 +24,14 @@ jobs:
     - name: Log in to GitHub Container Registry
       run: echo "${{ secrets.VK_TOKEN }}" | docker login ghcr.io -u ${{ secrets.VK_USERNAME }} --password-stdin
 
+    - name: Cache renv cache directory
+      uses: actions/cache@v2
+      with:
+        path: renv_cache
+        key: ${{ runner.os }}-renv-cache-${{ hashFiles('VK/simulation/renv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-renv-cache-
+
     - name: Build and push Docker image
       run: |
         docker build -t ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest -f VK/simulation/Dockerfile .
