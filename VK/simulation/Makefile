@@ -7,4 +7,4 @@ run_simulation:
 	Rscript $(RUN_ALL_SCRIPT) > $(LOG_FILE) 2>&1
 
 clean:
-	rm -f *.Rout $(LOG_FILE) results/simulation_results.rda
+	rm -f *.Rout $(LOG_FILE) results/*.rda

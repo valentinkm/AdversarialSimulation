@@ -44,7 +44,7 @@ jobs:
     - name: Check logs and results
       run: |
         cat VK/simulation/results/simulation.log
-        ls -lh VK/simulation/results/simulation_results.rda
+        ls -lh VK/simulation/results/*.rda
 
     - name: Configure Git for pushing changes
       run: |
@@ -54,7 +54,7 @@ jobs:
     - name: Commit and push results
       run: |
         cd VK/simulation/results
-        git add simulation_results.rda
+        git add *.rda
         git commit -m "Add simulation results"
         git push origin study-1
       env:
