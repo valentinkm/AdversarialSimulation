@@ -94,18 +94,45 @@ We infer that this lack of mentioning can be interpreted as there being no diffe
 Thus, we expect our studies to yield similar results. 
 If, however, there are differences large than 0.03, we will report them, without drawing a substantive conclusion.
 
+## Packages
+```{r}
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+```
+
 # Results Sim1
 ```{r}
 #| ouput: true
 
+
 # Load the relative bias results
-bias_ci <- readRDS("simulation1_rel_bias_ci.rds")
+bias_ci <- readRDS("sim1_rel_bias_ci.rds")
 
 # Display the relative bias results for each condition
-for (condition in names(bias_ci)) {
-  cat("## Condition:", condition, "\n\n")
-  print(bias_ci[[condition]])
-  cat("\n\n")
+#for (condition in names(bias_ci)) {
+#  cat("## Condition:", condition, "\n\n")
+#  print(bias_ci[[condition]])
+#  cat("\n\n")
+#}
+
+# Function to create a styled table for each condition
+create_styled_table <- function(data, condition) {
+  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
 }
+
+# Loop through each condition and print the styled table
+for (condition in names(bias_ci)) {
+  print(create_styled_table(bias_ci[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+
+
 ```
 
