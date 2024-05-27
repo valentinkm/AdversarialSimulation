@@ -1,6 +1,6 @@
 FROM rocker/r-ver:4.4.0
 
-# system dependencies for the R packages
+# Install system dependencies for the R packages
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
@@ -8,16 +8,16 @@ RUN apt-get update && apt-get install -y \
     libgit2-dev \
     make
 
-# renv
+# Install renv
 RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 
-# files
+# Copy the project files into the Docker image
 COPY VK/simulation /home/rstudio/simulation
 
-# setup working directory
+# Set the working directory
 WORKDIR /home/rstudio/simulation
 
-# restroe environment
+# Restore the renv environment
 RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make

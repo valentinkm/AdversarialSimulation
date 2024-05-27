@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -28,7 +28,11 @@ jobs:
       run: |
         docker build -t ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest -f VK/simulation/Dockerfile .
         docker push ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest
-    
+
+    - name: Run simulation in Docker container
+      run: |
+        docker run --rm -v $(pwd)/output:/home/rstudio/simulation/output ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest
+
     - name: Configure Git for pushing changes
       run: |
         git config --global user.name 'github-actions[bot]'

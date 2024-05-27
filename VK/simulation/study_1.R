@@ -20,7 +20,7 @@ parallel_seeds <- function(n, seed = NULL) {
 }
 
 # Generate parameters grid with seeds
-n_reps <- 10
+n_reps <- 2
 params <- expand.grid(
   model_type = c("1.1", "1.2", "1.3", "1.4"),
   N = c(100, 400, 6400),
