@@ -7,6 +7,7 @@ library(furrr)
 library(parallel)
 library(dplyr)
 library(purrr)
+library(progress)
 
 # Generate seeds
 parallel_seeds <- function(n, seed = NULL) {
@@ -78,8 +79,15 @@ run_study_1 <- function(params, true_values) {
   
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   
+  # Progress bar setup
+  pb <- progress_bar$new(
+    format = "  Running [:bar] :percent in :elapsed, ETA: :eta",
+    total = nrow(params), clear = FALSE, width = 60
+  )
+  
   # Run the simulations and analysis in parallel
   results <- future_pmap(params, function(model_type, N, reliability, method, rep, seed, id) {
+    pb$tick() # Update progress bar
     set.seed(seed)
     data <- gen_pop_model_data(model_type, N, reliability)$data
     fit_result <- safe_quiet_run_analysis(data, model_syntax, method)
@@ -137,9 +145,13 @@ run_study_1 <- function(params, true_values) {
 }
 
 # Run complete simulation study
+cat("Starting simulation study 1...\n")
 simulation_results <- run_study_1(params, true_values)
+cat("Simulation study completed. Saving results...\n")
 
-# Saveresults
+# Save results
 save(simulation_results, file = "simulation_results.rda")
 
-# print(simulation_results$Summary)
+# Print summary to console for visibility
+print(simulation_results$Summary)
+cat("Results saved to simulation_results.rda\n")
