@@ -12,5 +12,5 @@ stages:
 build:
   stage: build
   script:
-    - docker build -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker build -t "$CI_REGISTRY_IMAGE:latest" -f VK/simulation/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE:latest"
