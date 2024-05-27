@@ -28,3 +28,17 @@ jobs:
       run: |
         docker build -t ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest -f VK/simulation/Dockerfile .
         docker push ghcr.io/${{ secrets.VK_USERNAME }}/my-simulation:latest
+    
+    - name: Configure Git for pushing changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit and push results
+      run: |
+        cd output
+        git add simulation_results.rda
+        git commit -m "Add simulation results"
+        git push origin study-1
+      env:
+        GITHUB_TOKEN: ${{ secrets.VK_TOKEN }}
