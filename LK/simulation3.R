@@ -305,7 +305,7 @@ simulation_study <- function(design, k, seed = NULL) {
 design <- setup_design()
 
 ### Run simulation
-results_sim <- simulation_study(design, 2, seed = TRUE)
+results_sim <- simulation_study(design, 1500, seed = TRUE)
 saveRDS(results_sim, file = "sim3_results_error.rds")
 
 ### Errors, warnings and messages?
