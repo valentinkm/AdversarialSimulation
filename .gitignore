@@ -12,3 +12,4 @@ VK/.Rapp.history
 .Rprofile
 .RData
 *.Rproj
+VK/simulation/gen_est_lavsyntax.R
