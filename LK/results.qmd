@@ -1,0 +1,138 @@
+---
+title: "Adversarial Simulation"
+subtitle: "A case study"
+author: "Leonard Kosanke"
+format:
+    pdf:
+        fontsize: 11pt
+        linestretch: 1.2
+        geometry: "left=15mm, right=15mm, top=30mm, bottom=30mm"
+        classoption: twoside
+        papersize: a4
+fontsize: 11pt
+bibliography: ../bibliography.bib
+engine: knitr
+---
+
+The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
+
+# Deviations from the simulation protocol
+
+## Studies 1,2,3
+
+For all these studies, 3 deviations are present.
+Firstly, the total number of conditions turned out to be higher, as the calculation in the protocol forgot the addition of N=50 to be added to the factor sample size.
+Secondly, It was not detailed what type of LSAM estimation will be implemented. For completeness sake, we included ML- as well as ULS-LSAM estimation.
+Lastly, instead of just calculating the relative bias as originally planned, we also calculated the absolute bias to mitigate biases of opposite directions canceling each other out, as rightly pointed out in study 4 of @robitzsch_comparing_2022.
+
+## Study 1b
+
+In Study 1b, contrary to the simulation protocol, we added another sample size with N=50 to get a more nuanced understanding of the small-sample bias of LSAM. 
+For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM estimation. Calculation of the relative Bias was not feasible in this study, as for the conditions where phi is 0, dividing by 0 would lead to infinite values.
+
+## Study 4
+
+Again, I forgot the addition of N=50 in the original condition calculation. 
+Importantly, the model parameters and resulting population-level covariance matrices for the different DGM's provided by @robitzsch_comparing_2022 in their github repository were not the same as in the first paper by @rosseel_structural_2022: They omitted, for example, the cross-loading of the last factor in DGM2, without an apparent reason. Additionally, they had different values for the residual variances without giving insight into why they chose to do so and how (there was no calculation in the simulation script provided). For these reasons, and because of the fact that the calculation of the values in @rosseel_structural_2022 was replicable, we chose to use the values of @rosseel_structural_2022 by generating them with the same functions they used. In consequence, a fourth cross-loading was present in DGM 2.
+The only difference in our data-simulation is that we only used the 3 out of 4 misspecification conditions that were present in @robitzsch_comparing_2022. 
+
+## Study 4a
+
+I decided to include a variation of study 4a after all, as the relation between beta/phi values and N is interesting: 
+The original paper showed that results differed between estimators, depending on the size of the factor correlation in Studies 5, 6 and 1b, as well as differential effects due to N in Study 1b.
+We deemed it interesting to investigate these results in a model with a different number of factors.
+These findings, combined with our goal to investigate realistic data conditions, rather than just the population level, left us to include Study 4a, with the addition of an additional factor sample size.
+As DGM1 neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study 4, it was omitted.
+Similarly, as no substantial conclusions were drawn with regards to RMSE in the original papers study 1 and 2, we omitted its calculation as well.
+Lastly, for the same reasons as argued for Study 4, we again created the DGM's based on the functions used in @rosseel_structural_2022.
+
+## Studies 5,6
+
+As we are not interested in the comparative performance of SAM vs. SEM at the population level for our research question, but in the performance comparison under realistic conditions, especially in small to moderate sample sizes, we decided to not replicate Studies 5 and 6 after all.
+We deemed this a fair deviation from our simulation protocol, especially because no substantial performance differences arose in the results of these studies, and the most relevant aspect for us, the differential effect due to the size of factor correlation, is already covered in two different models in studies 1b and 4a.
+
+# Result analysis
+
+## Original paper
+
+### Bias
+In the original paper, @robitzsch_comparing_2022 had some inconsistencies when it came to the interpretation of the results of their simulation studies. 
+They did not thoroughly define an a prior criteria for when an estimator outperformed another. 
+Only in their Studies 5 and 6, they defined an absolute bias equal to or larger than 0.05 as relevant. 
+Additionally, when an estimator had a minimum percentage error of 20% higher than another, they defined it as being better than the other, in these studies.
+Across the other studies, interpretations sometimes varied. 
+In some studies (e.g. Study 1), they seemed to orient on the same value of 0.05, but this time as an absolute difference value, without the addition of a certain percentage cut-off. 
+In other studies (e.g. Study 2), they seemed to deviate from this value to define relevant difference in absolute bias.
+Importantly, this deviation was present in both directions, and therefore did not appear to be consciously biased towards one direction of possible outcomes.
+In consequence, it appears that interpretations aren't coherent across the studies.
+
+Another important aspect to highlight in the original papers results refers to the general presence of a negative bias in LSAM estimation. 
+Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in the misspecifications, namely studies 3-6. 
+This is done without a general note of some sorts, that this bias should apply in these data-generating scenarios the same as in Studies 1 and 2.
+In consequence, the interpretations @robitzsch_comparing_2022 make, are somewhat misleading on first sight, if one does not account for this bias.
+This does not, however, explain why they did not include more studies or conditions with negatively valenced residual correlations or cross-loadings. We hypothesize, that the goal of the paper was to show that even in these favorable constellations, SAM does not perform better than SEM.
+
+To be fair, it should be stated that most of the final conclusions drawn in the paper are correct, anyway. 
+With the use of the term "generally", @robitzsch_comparing_2022 are right in that there are many data constellations, were SAM does not outperform traditional SEM.
+They also acknowledge, that for non-saturated structural models, SAM seems to be the better choice.
+
+For our studies, in order to have a more coherent interpretation of results, we will define an estimator to outperform another, based on the cut-off of 0.05 for bias.
+
+### SD and RMSE
+
+Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE, they rarely explicitly mentioned them in the results sections or give cut-offs for substantial relevance.
+
+SD is only reported and mentioned in Study 1, even though also claimed to be calculated in studies 2 and 3. 
+In this study, they mentioned a 6.6% reduction of SD for LSAM in comparison to ML. 
+This calculation, however, is wrong as the reduction amounts to 8%.
+For our interpretation, we will report percentage reductions larger than 5% as well and compare it with the original study, without drawing a substantive conclusion.
+
+RMSE (and average RMSE) is reported in Studies 1-4, but only in study 2 and 4 explicitly interpreted for our estimators of interest.
+In study 2, differences of up to 0.03 are present and interpreted as not being substantial differences.
+In study 4, differences of up to 0.04 are present and interpreted as not being substantial differences.
+We infer that this lack of mentioning can be interpreted as there being no differences of interest. 
+Thus, we expect our studies to yield similar results. 
+If, however, there are differences large than 0.03, we will report them, without drawing a substantive conclusion.
+
+## Packages
+```{r}
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+```
+
+# Results Sim1
+```{r}
+#| ouput: true
+
+
+# Load the relative bias results
+bias_ci <- readRDS("sim1_rel_bias_ci.rds")
+
+# Display the relative bias results for each condition
+#for (condition in names(bias_ci)) {
+#  cat("## Condition:", condition, "\n\n")
+#  print(bias_ci[[condition]])
+#  cat("\n\n")
+#}
+
+# Function to create a styled table for each condition
+create_styled_table <- function(data, condition) {
+  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
+}
+
+# Loop through each condition and print the styled table
+for (condition in names(bias_ci)) {
+  print(create_styled_table(bias_ci[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+
+
+```
+
