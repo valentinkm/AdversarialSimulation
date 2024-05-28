@@ -1,5 +1,5 @@
-FROM rocker/verse:4.1.3
-ARG BUILD_DATE=2022-12-13
+FROM rocker/verse:4.2.2
+ARG BUILD_DATE=2024-05-28
 WORKDIR /home/rstudio
 RUN apt-get update -y && apt-get install -y rsync
 RUN tlmgr install collection-latexrecommended libertine pdfpages lualatex-math luatexbase titling pdfx luatex85 colorprofiles
@@ -11,6 +11,17 @@ RUN install2.r --error --skipinstalled \
   qrcode \ 
   showtext \ 
   svglite \ 
-  xaringanthemer
+  xaringanthemer \
+  furrr \ 
+  future \
+  future.batchtools \ 
+  future.apply \
+  remotes \
+  lavaan \
+  purrr \
+  tidyverse \
+  knitr \
+  kableExtra \
+  sessioninfo
 RUN installGithub.r \ 
   aaronpeikert/repro@5075336
