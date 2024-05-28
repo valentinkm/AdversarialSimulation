@@ -150,11 +150,12 @@ simulation_results <- run_study_1(params, true_values)
 cat("Simulation study completed. Saving results...\n")
 
 
-# save with timestamp
+# Save with timestamp
 timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
-filename <- paste0("results/simulation_results_", timestamp, ".rda")
-save(simulation_results, file = filename)
+filename <- paste0("simulation_results_", timestamp, ".rda")
+save_results(simulation_results, filename)
 
-# Print summary to console for visibility
+cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
-cat("Results saved to VK/simulation/results\n")
+
+print(simulation_results$Summary)
