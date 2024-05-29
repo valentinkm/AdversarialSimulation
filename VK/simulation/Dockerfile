@@ -25,3 +25,11 @@ RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make
 CMD ["make"]
+
+
+# 1) put slurm template in the docker.
+
+# 2) pull the container from github published container as apptainer
+
+# 3) sbatch -c 1 --mem 16gb --time 7-0:0:0 --partition= long --wrap "apptainer run foo.sif"
+# this is the command to run the container on the cluster

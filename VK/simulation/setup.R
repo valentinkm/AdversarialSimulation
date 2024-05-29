@@ -11,7 +11,7 @@ library(purrr)
 library(parallel)
 library(Matrix)
 
-# Function to detect if running on Tardis cluster
+# check if running on Tardis cluster
 is_on_tardis <- function() {
   grepl("tardis", Sys.info()["nodename"])
 }
@@ -22,11 +22,11 @@ RNGkind("L'Ecuyer-CMRG")
 if (is_on_tardis()) {
   library(future.batchtools)
   plan(list(
-    tweak(cluster, workers="tardis.mpib-berlin.mpg.de"),
+    #tweak(cluster, workers="tardis.mpib-berlin.mpg.de"),
     tweak(batchtools_slurm,
-          workers = 1,
+          # workers = 1, # not necessary
           template = "/home/your_username/.batchtools.slurm.singularity.tmpl",
-          resources=list(ncpus=1, memory='200m', walltime=600, partition=c('quick'))
+          resources=list(ncpus=1, memory='200m', walltime=600, partition='short') # use short instead of quick
     )
   ))
 } else {
@@ -51,3 +51,5 @@ if (!dir.exists(results_dir)) {
 save_results <- function(results, filename) {
   saveRDS(results, file.path(results_dir, filename))
 }
+
+
