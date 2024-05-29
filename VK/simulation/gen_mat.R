@@ -1,3 +1,5 @@
+# gen_mat.R
+
 # Load necessary libraries
 library(lavaan)
 library(Matrix)

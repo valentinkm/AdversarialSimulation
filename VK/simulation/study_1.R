@@ -1,3 +1,5 @@
+# study_1.R
+
 # Load necessary scripts and libraries
 source("gen_pop_data.R")
 source("calc_metrics.R")  # Ensure this file contains the updated metric calculation functions
@@ -48,7 +50,8 @@ model_syntax <- "
     
     f3 ~ f1 + f2 + f4
     f4 ~ f1 + f2
-    f5 ~ f3 + f4 + f1"
+    f5 ~ f3 + f4 + f1
+                        "
 
 
 # Function to compare sanity check estimates with true values

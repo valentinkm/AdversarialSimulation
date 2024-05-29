@@ -1,3 +1,5 @@
+# run_all.R
+
 # Run all studies
 
 # setup
