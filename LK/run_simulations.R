@@ -19,7 +19,7 @@ plan(multisession, workers = parallel::detectCores())
 #tweak(batchtools_slurm)
 #plan(tweak(batchtools_slurm,
 #           workers = 100,
-#           template = missing,
+#           template = "/home/kosanke/AdversarialSimulation/LK/.batchtools.slurm.singularity.tmpl",
 #           resources=list(ncpus=1,
 #                          memore='700m',
 #                          walltime=6600,
