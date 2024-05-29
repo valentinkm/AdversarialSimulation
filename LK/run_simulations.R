@@ -11,7 +11,7 @@ for (library_name in libraries) {
 }
 
 # List of R scripts to run
-r_scripts <- c("simulation1.R", "simulation1b.R")
+r_scripts <- c("simulation1.R", "simulation1b.R", "simulation2.R", "simulation3.R", "simulation4.R", "simulation4a.R")
 
 # Set up processing with multisession
 plan(multisession, workers = parallel::detectCores())
