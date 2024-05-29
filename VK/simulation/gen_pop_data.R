@@ -1,3 +1,5 @@
+# gen_pop_data.R
+
 # Load necessary libraries
 library(lavaan)
 library(Matrix)
