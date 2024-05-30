@@ -3,6 +3,7 @@
 # Load necessary scripts and libraries
 source("gen_pop_data.R")
 source("calc_metrics.R")  # Ensure this file contains the updated metric calculation functions
+source("run_analysis.R")  # Source the helper functions
 library(furrr)
 library(parallel)
 library(dplyr)
@@ -26,10 +27,11 @@ params <- expand.grid(
   model_type = c("1.1", "1.2", "1.3", "1.4"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
-  method = c("SEM", "SAM"),
+  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS"),
   rep = 1:n_reps
 ) %>%
   mutate(seed = rep(parallel_seeds(n_reps, seed = 42), length.out = n()))
+
 
 # Set population values
 B_true <- c(
@@ -53,72 +55,8 @@ model_syntax <- "
     f5 ~ f3 + f4 + f1
                         "
 
-
-# Function to compare sanity check estimates with true values
-compare_sanity_check <- function(sanity_check_estimates, true_values, threshold = 0.1) {
-  true_values_flat <- unlist(true_values)
-  
-  # Align true values with the sanity check estimates
-  common_params <- intersect(names(sanity_check_estimates), names(true_values_flat))
-  aligned_true_values <- true_values_flat[common_params]
-  aligned_sanity_check_estimates <- sanity_check_estimates[common_params]
-  
-  differences <- abs(aligned_sanity_check_estimates - aligned_true_values)
-  differences_df <- data.frame(
-    Parameter = names(differences),
-    TrueValue = aligned_true_values,
-    SanityCheckEstimate = aligned_sanity_check_estimates,
-    Difference = differences
-  )
-  
-  # Check if any difference exceeds the threshold
-  alarm <- any(differences > threshold)
-  
-  return(list(
-    Differences = differences_df,
-    Alarm = alarm
-  ))
-}
-
-
-
 # Study function
-# Updated run_study_1 function
 run_study_1 <- function(params, true_values) {
-  
-  # Wrap the run_analysis function with safely and quietly
-  run_analysis <- function(data, model_syntax, method = "SEM") {
-    if (method == "SEM") {
-      fit <- sem(model_syntax, data = as.data.frame(data))
-    } else if (method == "SAM") {
-      fit <- sam(model_syntax, data = as.data.frame(data))
-    } else {
-      stop("Unknown method specified")
-    }
-    return(fit)
-  }
-  
-  # Function to fit model to population matrix
-  run_sanity_check <- function(model_type, model_syntax) {
-    popmodel <- gen_pop_model_syntax(MLIST = gen_mat(model_type = model_type))
-    fit0 <- sem(model = popmodel, do.fit = FALSE)
-    COV <- inspect(fit0, what = "implied")$cov[,]
-    sanity_check_fit <- sem(sample.cov = COV, model = model_syntax, sample.nobs = 10^6)
-    sanity_check_estimates <- coef(sanity_check_fit)
-    names(sanity_check_estimates) <- paste0(names(sanity_check_estimates), "_pop")
-    return(sanity_check_estimates)
-  }
-  
-  # Function to check the sanity check results
-  check_sanity <- function(sanity_check_estimates, true_values) {
-    comparison <- compare_sanity_check(sanity_check_estimates, true_values)
-    max_difference <- max(comparison$Differences$Difference, na.rm = TRUE)
-    return(list(
-      MaxDifference = max_difference,
-      Alarm = comparison$Alarm
-    ))
-  }
-  
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   
   # Progress bar setup
@@ -132,9 +70,25 @@ run_study_1 <- function(params, true_values) {
     pb$tick() # Update progress bar
     set.seed(seed)
     data <- gen_pop_model_data(model_type, N, reliability)$data
+    
+    # Debug: Print method being used
+    cat("Running analysis with method:", method, "\n")
+    
     fit_result <- safe_quiet_run_analysis(data, model_syntax, method)
+    
+    # Debug: Print fit result warnings and errors
+    if (!is.null(fit_result$result$warnings)) {
+      cat("Warnings for method", method, ":", toString(fit_result$result$warnings), "\n")
+    }
+    if (!is.null(fit_result$error)) {
+      cat("Error for method", method, ":", toString(fit_result$error$message), "\n")
+    }
+    
     sanity_check_estimates <- run_sanity_check(model_type, model_syntax)
     sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
+    
+    warnings_detected <- fit_result$result$warnings
+    improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
     
     if (!is.null(fit_result$result$result) && lavInspect(fit_result$result$result, "converged")) {
       PT <- parTable(fit_result$result$result)
@@ -157,6 +111,7 @@ run_study_1 <- function(params, true_values) {
         RelativeRMSE = relative_rmse,
         RelativeBiasList = list(relative_bias),
         RelativeRMSEList = list(relative_rmse),
+        ImproperSolution = improper_solution,
         Warnings = toString(fit_result$result$warnings), 
         Messages = toString(fit_result$result$messages),
         Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
@@ -173,6 +128,7 @@ run_study_1 <- function(params, true_values) {
         RelativeRMSE = NA,
         RelativeBiasList = list(NA),
         RelativeRMSEList = list(NA),
+        ImproperSolution = improper_solution,
         Warnings = toString(fit_result$result$warnings), 
         Messages = toString(fit_result$result$messages),
         Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
@@ -196,7 +152,8 @@ run_study_1 <- function(params, true_values) {
       RelativeBias = map_dbl(results, ~ .x$RelativeBias),
       RelativeRMSE = map_dbl(results, ~ .x$RelativeRMSE),
       RelativeBiasList = map(results, ~ .x$RelativeBiasList[[1]]),
-      RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]])
+      RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]]),
+      ImproperSolution = map_lgl(results, ~ .x$ImproperSolution)
     )
   
   # Remove NAs from the lists before calculating MCSE
@@ -214,12 +171,13 @@ run_study_1 <- function(params, true_values) {
       NonConvergenceCount = sum(NonConverged),
       n_converged = sum(Converged),
       MeanMaxSanityCheckDifference = mean(MaxSanityCheckDifference, na.rm = TRUE),
-      ProportionSanityCheckAlarm = mean(SanityCheckAlarm, na.rm = TRUE),
+      SanityCheckAlarmCount = sum(SanityCheckAlarm, na.rm = TRUE),
       MeanCoverage = mean(Coverage, na.rm = TRUE),
       MeanRelativeBias = mean(RelativeBias, na.rm = TRUE),
       MeanRelativeRMSE = mean(RelativeRMSE, na.rm = TRUE),
       MCSE_RelativeBias = calculate_mcse_bias(relative_bias_list),
       MCSE_RelativeRMSE = calculate_mcse_rmse(relative_rmse_list),
+      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),  # Update to count
       .groups = 'drop'
     ) %>%
     arrange(model_type, N, reliability, method)
@@ -227,6 +185,7 @@ run_study_1 <- function(params, true_values) {
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
+
 
 # Run complete simulation study
 cat("Starting simulation study 1...\n")
