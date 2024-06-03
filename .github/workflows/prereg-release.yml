@@ -57,7 +57,7 @@ jobs:
 
     - name: Create release artifacts
       run: |
-        mkdir release
+        mkdir -p release
         cp VK/preregistration.qmd release/
         cp VK/preregistration.pdf release/
 
@@ -76,9 +76,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: release-artifacts
+        path: ./release
 
     - name: Verify downloaded artifacts
-      run: ls -l release
+      run: ls -l ./release
 
     - name: Find existing Zenodo deposition
       id: find_deposition
