@@ -3,7 +3,7 @@ name: Test QMD to PDF Rendering
 on:
   push:
     branches:
-      - test-render # Trigger on push to the test-render branch
+      - prereg/vk # Trigger on push to the test-render branch
 
 jobs:
   build:
