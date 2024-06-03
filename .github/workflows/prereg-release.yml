@@ -76,6 +76,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: release-artifacts
+        path: release
+
+    - name: Verify downloaded artifacts
+      run: ls -l release
 
     - name: Upload to Zenodo
       env:
@@ -84,6 +88,9 @@ jobs:
         # Create a new deposition
         deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -H "Content-Type: application/json" -d '{"metadata":{"title": "Preregistration Document", "upload_type": "publication", "description": "This is the preregistration document for the VK project.", "creators": [{"name": "Valentin Kriegmair", "affiliation": "Your Affiliation"}]}}' https://zenodo.org/api/deposit/depositions | jq -r .id)
 
+        # Verify deposition_id
+        echo "Deposition ID: $deposition_id"
+        
         # Upload files
         curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.qmd" https://zenodo.org/api/deposit/depositions/$deposition_id/files
         curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.pdf" https://zenodo.org/api/deposit/depositions/$deposition_id/files
