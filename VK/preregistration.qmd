@@ -364,7 +364,9 @@ The simulation will run on a high performance computing cluster using @noauthor_
 
 ### Which other steps will you undertake to make simulation results reproducible? (optional)
 
-The code of the simulation will be made available on GitHub (https://github.com/valentinkm/AdversarialSimulation)
+The code of the simulation will be made available on GitHub
+
+(https://github.com/valentinkm/AdversarialSimulation)
 
 
 # References
