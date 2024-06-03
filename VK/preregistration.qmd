@@ -1,15 +1,20 @@
 ---
 title: "Preregistration: Comparing a Structural After Measurement (SAM) Approach to Standard Structural Equation Model (SEM) Estimation"
 author: "Valentin Kriegmair"
-date: '2024-04-21'
+date: '2024-06-04'
 bibliography: ../bibliography.bib
-output: html_document
+format:
+  pdf: default
+header-includes:
+    - \usepackage{tikz}
+    - \usetikzlibrary{arrows.meta, positioning, calc}
+    - \usepackage{geometry}
+    - \geometry{margin=1in}
 ---
 
 **Version:** 0.1.0  
 **Last updated:** 2023-10-31  
 **Preregistration template designed by:** Björn S. Siepe, František Bartoš, Tim P. Morris, Anne-Laure Boulesteix, Daniel W. Heck, and Samuel Pawel
-
 
 ## 1. General Information
 
@@ -214,9 +219,16 @@ For study 2, again, different population models will be generated parametrically
 
          are set $0.6 \times \min \Theta^*$, ensuring correlated errors among selected indicator pairs without exceeding a 0.6 correlation coefficient:
 
-- The (model implied) covariance matrix for all models will be calculated as:
-$\operatorname{Var}(\boldsymbol{\eta})=(\mathbf{I}-\mathbf{B})^{-1} \boldsymbol{\Psi}(\mathbf{I}-\mathbf{B})^{-T}$
+::: {layout="[[40,-20,40], [100]]"}
 
+![Model 2.1](figures/model2_1.tex) **Model 2.1**  Note. Error terms are not explicitly shown in the figure.
+
+![Model 2.2](figures/model2_2.tex) **Model 2.2** Note. Error terms are not explicitly shown in the figure
+Orange lines represent misspecifications in the endogenous part of the model.
+Green lines represent misspecifications in the exogenous part of the model.
+The green line indicates the structural misspecification. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
+
+:::
 
 ### 3.2. What will be the different factors of the data-generating mechanism?
 
@@ -259,8 +271,6 @@ In two sub-studies 2.1 and 2.2, the following additional factors will be modulat
 The aim is a conceptual replication of the results obtained by @dhaene_evaluation_2023 in study 1 and @rosseel_structural_2022 study 2. The values were chosen accordingly. No detailed explanation was provided by the authors.
 
 ### If there is more than one factor: How will the factor levels be combined and how many simulation conditions will this create?
-
-- **Study 1:**
 
 - Study 1:
     - 4 population models x 2 model specifications x 3 sample sizes x 3 reliabilities = 72 conditions
@@ -335,7 +345,7 @@ $$
 The results will be interpreted in comparison to the results and interpretations obtained by @dhaene_evaluation_2023 and @rosseel_structural_2022.
 
 ### Which statistical software/packages do you plan to use?
-The simulation will be set up in @r_core_team_r_2023 using the `lavaan` package (@rosseel_lavaan_2012) for SEM estimation and the `simhelpers` (@noauthor_helper_nodate) as well as the `furrr` (@noauthor_apply_nodate) package for simulation management.
+The simulation will be set up in @r_core_team_r_2023 using the `lavaan` package for generating data based on the population models as well as for applying SEM estimation methods (@rosseel_lavaan_2012) as well as the `furrr` (@davis_furrr_2022) package for parallel simulation execution.
 
 ### Which computational environment do you plan to use?
 
@@ -344,4 +354,9 @@ The simulation will run on a high performance computing cluster using @noauthor_
 
 ### Which other steps will you undertake to make simulation results reproducible? (optional)
 
-The code of the simulation will be made available on GitHub (https://github.com/valentinkm/AdversarialSimulation)
+The code of the simulation will be made available on GitHub
+
+(https://github.com/valentinkm/AdversarialSimulation)
+
+
+# References
