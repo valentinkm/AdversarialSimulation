@@ -1,0 +1,66 @@
+name: Test QMD to PDF Rendering
+
+on:
+  push:
+    branches:
+      - prereg/vk # Trigger on push to the test-render branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Quarto
+      run: |
+        case $RUNNER_OS in
+          "Linux")
+              BUNDLE_EXT="linux-amd64.deb"
+              ;;
+          "macOS")
+              BUNDLE_EXT="macos.pkg"
+              ;;
+          "Windows")
+              BUNDLE_EXT="win.msi"
+              ;;
+          *)
+              echo "$RUNNER_OS not supported"
+              exit 1
+              ;;
+        esac
+
+        if [ $RUNNER_OS != "Windows" ]; then
+          version=$(curl -s https://quarto.org/docs/download/_download.json | jq -r '.version')
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v$version/quarto-$version-$BUNDLE_EXT
+          installer=$(ls quarto*${BUNDLE_EXT})
+          echo "installer=${installer}" >> $GITHUB_ENV
+          sudo dpkg -i $installer
+        else
+          echo "Windows installation not supported in this script."
+          exit 1
+        fi
+      shell: bash
+
+    - name: Install TinyTeX
+      run: |
+        sudo apt-get install -y ghostscript
+        wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+        export PATH=$PATH:/home/runner/.TinyTeX/bin/x86_64-linux
+        sudo apt-get install -y texlive-xetex
+
+    - name: Render QMD to PDF
+      run: quarto render VK/preregistration.qmd --to pdf
+
+    - name: Create release artifacts
+      run: |
+        mkdir release
+        cp VK/preregistration.qmd release/
+        cp VK/preregistration.pdf release/
+
+    - name: Upload Release Assets
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifacts
+        path: release/
