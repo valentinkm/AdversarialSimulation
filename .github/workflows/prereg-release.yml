@@ -86,7 +86,7 @@ jobs:
       env:
         ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
       run: |
-        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/deposit/depositions?size=1000" | jq -r '.[] | select(..metadata.title == "Preregistration Document").id')
+        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/records?size=1000&q=doi:10.5281/zenodo.11458547" | jq -r '.[0].id')
         echo "::set-output name=deposition_id::$deposition_id"
 
     - name: Create or update Zenodo deposition
@@ -94,7 +94,7 @@ jobs:
         ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
       run: |
         if [ -z "${{ steps.find_deposition.outputs.deposition_id }}" ]; then
-          echo "Deposition not found, please ensure the correct title is used."
+          echo "Deposition not found, please ensure the correct DOI is used."
           exit 1
         else
           # Create a new version of the existing deposition
