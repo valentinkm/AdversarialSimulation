@@ -10,8 +10,8 @@ header-includes:
     - \usetikzlibrary{arrows.meta, positioning, calc}
     - \usepackage{geometry}
     - \geometry{margin=1in}
-
 ---
+
 **Version:** 0.1.0  
 **Last updated:** 2023-10-31  
 **Preregistration template designed by:** Björn S. Siepe, František Bartoš, Tim P. Morris, Anne-Laure Boulesteix, Daniel W. Heck, and Samuel Pawel
@@ -136,6 +136,20 @@ so the variance for f3 is $1-2*0.1^2 = 0.98$ and for f4 and f5 $1-2*0.1^2 = 0.97
         - $\Theta^*$ on the diagonal.
         - Correlated residuals generated between specific indicator pairs: for $i = (2, 5, 8, 11, 14)$ and $i' = (3, 6, 9, 12, 15)$, and for each $k=1,\ldots,4$ and $l=k+1,\ldots,5$, the entries $(i_k, i'_l)$ and $(i'_l, i_k)$ in $\Theta$ are set to $0.6 \times \min \Theta^*$, ensuring correlated errors among selected indicator pairs without exceeding a 0.6 correlation coefficient.
 
+::: {layout="[[40,-20,40],[40,-20,40]]"}
+![Model 1.1](figures/model1_1.tex){#fig-model1}
+Note. Error terms are not explicitly shown in the figure.
+
+![Model 1.2](figures/model1_2.tex){#fig-model2}
+Note. Error terms are not explicitly shown in the figure.
+
+![Model 1.3](figures/model1_3.tex){#fig-model3}
+Note. Error terms are not explicitly shown in the figure.
+
+![Model 1.4](figures/model1_4.tex){#fig-model4}
+Note. Error terms are not explicitly shown in the figure.
+:::
+
 #### 3.2.2. Study 2:
 For study 2, again, different population models will be generated parametrically. Further, the different models of study 2 will be used for different simulation settings resulting in two sub-studies 2.1 and 2.2 (see simulation settings).
 
@@ -216,6 +230,16 @@ For study 2, again, different population models will be generated parametrically
 
          are set $0.6 \times \min \Theta^*$, ensuring correlated errors among selected indicator pairs without exceeding a 0.6 correlation coefficient:
 
+::: {layout="[[40,-20,40], [100]]"}
+
+![Model 2.1](figures/model2_1.tex) **Model 2.1**  Note. Error terms are not explicitly shown in the figure.
+
+![Model 2.2](figures/model2_2.tex) **Model 2.2** Note. Error terms are not explicitly shown in the figure
+Orange lines represent misspecifications in the endogenous part of the model.
+Green lines represent misspecifications in the exogenous part of the model.
+The green line indicates the structural misspecification. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
+
+:::
 
 ### 3.2. What will be the different factors of the data-generating mechanism?
 
@@ -344,288 +368,5 @@ The simulation will run on a high performance computing cluster using @noauthor_
 
 The code of the simulation will be made available on GitHub (https://github.com/valentinkm/AdversarialSimulation)
 
-\newpage
-
-### Model Figures
-
-#### Model 1.1:
-
-\begin{tikzpicture}[>=Stealth, node distance=1.8cm]
-
-% Nodes
-\node[draw, circle] (f1) {$f_1$};
-\node[draw, circle, below=3cm of f1] (f3) {$f_3$};
-\node[draw, circle, below right=1.5cm and 3cm of f1] (f2) {$f_2$};
-\node[draw, circle, below=2.5cm of f2] (f4) {$f_4$};
-\node[draw, circle, below=3cm of f3] (f5) {$f_5$};
-
-\node[draw, rectangle, left=1cm of f1] (y1) {$y_1$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f1] (y2) {$y_2$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f1] (y3) {$y_3$};
-
-\node[draw, rectangle, left=1cm of f3] (y7) {$y_7$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f3] (y8) {$y_8$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f3] (y9) {$y_9$};
-
-\node[draw, rectangle, left=1cm of f5] (y15) {$y_{15}$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f5] (y14) {$y_{14}$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f5] (y13) {$y_{13}$};
-
-\node[draw, rectangle, right=1cm of f2] (y4) {$y_4$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f2] (y5) {$y_5$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f2] (y6) {$y_6$};
-
-\node[draw, rectangle, right=1cm of f4] (y10) {$y_{10}$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f4] (y11) {$y_{11}$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f4] (y12) {$y_{12}$};
-
-% Arrows
-\draw[<-] (y1) -- (f1);
-\draw[<-] (y2) -- (f1);
-\draw[<-] (y3) -- (f1);
-\draw[<-] (y7) -- (f3);
-\draw[<-] (y8) -- (f3);
-\draw[<-] (y9) -- (f3);
-\draw[<-] (y13) -- (f5);
-\draw[<-] (y14) -- (f5);
-\draw[<-] (y15) -- (f5);
-\draw[->] (f1) -- (f3);
-\draw[->] (f1) -- (f4);
-\draw[->] (f3) -- (f5);
-\draw[->] (f2) -- (f4);
-\draw[->] (f3) -- (f4);
-\draw[->] (f4) -- (f5);
-\draw[->] (f2) -- (f3);
-\draw[<-] (y4) -- (f2);
-\draw[<-] (y5) -- (f2);
-\draw[<-] (y6) -- (f2);
-\draw[<-] (y10) -- (f4);
-\draw[<-] (y11) -- (f4);
-\draw[<-] (y12) -- (f4);
-
-% Curved arrow from f1 to f5
-\draw[->, bend right=80] (f1) to (f5);
-
-\end{tikzpicture}
-
-\newpage
-
-#### Model 1.2
-
-\begin{tikzpicture}[>=Stealth, node distance=1.8cm]
-
-% Nodes
-\node[draw, circle] (f1) {$f_1$};
-\node[draw, circle, below=3cm of f1] (f3) {$f_3$};
-\node[draw, circle, below right=1.5cm and 3cm of f1] (f2) {$f_2$};
-\node[draw, circle, below=2.5cm of f2] (f4) {$f_4$};
-\node[draw, circle, below=3cm of f3] (f5) {$f_5$};
-
-\node[draw, rectangle, left=1cm of f1] (y2) {$y_2$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f1] (y1) {$y_1$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f1] (y3) {$y_3$};
-
-\node[draw, rectangle, left=1cm of f3] (y8) {$y_8$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f3] (y7) {$y_7$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f3] (y9) {$y_9$};
-
-\node[draw, rectangle, left=1cm of f5] (y14) {$y_{14}$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f5] (y13) {$y_{13}$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f5] (y15) {$y_{15}$};
-
-\node[draw, rectangle, right=1cm of f2] (y5) {$y_5$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f2] (y4) {$y_4$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f2] (y6) {$y_6$};
-
-\node[draw, rectangle, right=1cm of f4] (y11) {$y_{11}$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f4] (y10) {$y_{10}$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f4] (y12) {$y_{12}$};
-
-% Arrows
-\draw[<-] (y1) -- (f1);
-\draw[<-] (y2) -- (f1);
-\draw[<-] (y3) -- (f1);
-\draw[<-] (y7) -- (f3);
-\draw[<-] (y8) -- (f3);
-\draw[<-] (y9) -- (f3);
-\draw[<-] (y13) -- (f5);
-\draw[<-] (y14) -- (f5);
-\draw[<-] (y15) -- (f5);
-\draw[->] (f1) -- (f3);
-\draw[->] (f1) -- (f4);
-\draw[->] (f3) -- (f5);
-\draw[->] (f2) -- (f4);
-\draw[->] (f3) -- (f4);
-\draw[->] (f4) -- (f5);
-\draw[->] (f2) -- (f3);
-\draw[<-] (y4) -- (f2);
-\draw[<-] (y5) -- (f2);
-\draw[<-] (y6) -- (f2);
-\draw[<-] (y10) -- (f4);
-\draw[<-] (y11) -- (f4);
-\draw[<-] (y12) -- (f4);
-
-% Curved arrow from f1 to f5
-\draw[->, bend right=80] (f1) to (f5);
-
-% Dashed cross-loading arrows
-\draw[dashed, ->] (f2) -- (y2);
-\draw[dashed, ->] (f3) -- (y5);
-\draw[dashed, ->] (f4) -- (y8);
-\draw[dashed, ->] (f5) -- (y11);
-\draw[dashed, ->, bend right=70] (f1) to (y14);
-
-\end{tikzpicture}
-
-\newpage
-
-#### Model 1.3
-
-\begin{tikzpicture}[>=Stealth, node distance=1.8cm]
-
-% Nodes
-\node[draw, circle] (f1) {$f_1$};
-\node[draw, circle, below=3cm of f1] (f3) {$f_3$};
-\node[draw, circle, below right=1.5cm and 3cm of f1] (f2) {$f_2$};
-\node[draw, circle, below=2.5cm of f2] (f4) {$f_4$};
-\node[draw, circle, below=3cm of f3] (f5) {$f_5$};
-
-\node[draw, rectangle, left=1cm of f1] (y2) {$y_2$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f1] (y1) {$y_1$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f1] (y3) {$y_3$};
-
-\node[draw, rectangle, left=1cm of f3] (y8) {$y_8$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f3] (y7) {$y_7$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f3] (y9) {$y_9$};
-
-\node[draw, rectangle, left=1cm of f5] (y14) {$y_{14}$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f5] (y13) {$y_{13}$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f5] (y15) {$y_{15}$};
-
-\node[draw, rectangle, right=1cm of f2] (y5) {$y_5$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f2] (y4) {$y_4$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f2] (y6) {$y_6$};
-
-\node[draw, rectangle, right=1cm of f4] (y11) {$y_{11}$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f4] (y10) {$y_{10}$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f4] (y12) {$y_{12}$};
-
-% Arrows
-\draw[<-] (y1) -- (f1);
-\draw[<-] (y2) -- (f1);
-\draw[<-] (y3) -- (f1);
-\draw[<-] (y7) -- (f3);
-\draw[<-] (y8) -- (f3);
-\draw[<-] (y9) -- (f3);
-\draw[<-] (y13) -- (f5);
-\draw[<-] (y14) -- (f5);
-\draw[<-] (y15) -- (f5);
-\draw[->] (f1) -- (f3);
-\draw[->] (f1) -- (f4);
-\draw[->] (f3) -- (f5);
-\draw[->] (f2) -- (f4);
-\draw[->] (f3) -- (f4);
-\draw[->] (f4) -- (f5);
-\draw[->] (f2) -- (f3);
-\draw[<-] (y4) -- (f2);
-\draw[<-] (y5) -- (f2);
-\draw[<-] (y6) -- (f2);
-\draw[<-] (y10) -- (f4);
-\draw[<-] (y11) -- (f4);
-\draw[<-] (y12) -- (f4);
-
-% Curved arrow from f1 to f5
-\draw[->, bend right=80] (f1) to (f5);
-
-% Dashed double-headed arrows for correlated residuals
-\draw[dashed, <->] (y2) -- (y8);
-\draw[dashed, <->] (y2) -- (y11);
-\draw[dashed, <->] (y2) -- (y5);
-\draw[dashed, <->] (y3) -- (y6);
-\draw[dashed, <->] (y5) -- (y8);
-\draw[dashed, <->] (y5) -- (y14);
-\draw[dashed, <->] (y5) -- (y11);
-\draw[dashed, <->] (y6) -- (y9);
-\draw[dashed, <->] (y8) -- (y14);
-\draw[dashed, <->] (y8) -- (y11);
-\draw[dashed, <->] (y9) -- (y12);
-\draw[dashed, <->] (y11) -- (y14);
-\draw[dashed, <->] (y12) -- (y15);
-
-
-% Curved dashed double-headed arrows for specified pairs
-\draw[dashed, <->, bend right=60] (y2) to (y14);
-\draw[dashed, <->, bend right=60] (y3) to (y15);
-\draw[dashed, <->, bend right=60] (y3) to (y9);
-\draw[dashed, <->, bend right=60] (y9) to (y15);
-\draw[dashed, <->, bend left=40] (y15) to (y6);
-\draw[dashed, <->, bend right=60] (y12) to (y6);
-\draw[dashed, <->, bend left=40] (y3) to (y12);
-
-\end{tikzpicture}
-
-\newpage
-
-#### Model 1.4
-
-\begin{tikzpicture}[>=Stealth, node distance=1.8cm]
-
-% Nodes
-\node[draw, circle] (f1) {$f_1$};
-\node[draw, circle, below=3cm of f1] (f3) {$f_3$};
-\node[draw, circle, below right=1.5cm and 3cm of f1] (f2) {$f_2$};
-\node[draw, circle, below=2.5cm of f2] (f4) {$f_4$};
-\node[draw, circle, below=3cm of f3] (f5) {$f_5$};
-
-\node[draw, rectangle, left=1cm of f1] (y1) {$y_1$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f1] (y2) {$y_2$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f1] (y3) {$y_3$};
-
-\node[draw, rectangle, left=1cm of f3] (y7) {$y_7$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f3] (y8) {$y_8$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f3] (y9) {$y_9$};
-
-\node[draw, rectangle, left=1cm of f5] (y15) {$y_{15}$};
-\node[draw, rectangle, above left=0.7cm and 0.7cm of f5] (y14) {$y_{14}$};
-\node[draw, rectangle, below left=0.7cm and 0.7cm of f5] (y13) {$y_{13}$};
-
-\node[draw, rectangle, right=1cm of f2] (y4) {$y_4$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f2] (y5) {$y_5$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f2] (y6) {$y_6$};
-
-\node[draw, rectangle, right=1cm of f4] (y10) {$y_{10}$};
-\node[draw, rectangle, above right=0.7cm and 0.7cm of f4] (y11) {$y_{11}$};
-\node[draw, rectangle, below right=0.7cm and 0.7cm of f4] (y12) {$y_{12}$};
-
-% Arrows
-\draw[<-] (y1) -- (f1);
-\draw[<-] (y2) -- (f1);
-\draw[<-] (y3) -- (f1);
-\draw[<-] (y7) -- (f3);
-\draw[<-] (y8) -- (f3);
-\draw[<-] (y9) -- (f3);
-\draw[<-] (y13) -- (f5);
-\draw[<-] (y14) -- (f5);
-\draw[<-] (y15) -- (f5);
-\draw[->] (f1) -- (f3);
-\draw[->] (f1) -- (f4);
-\draw[->] (f3) -- (f5);
-\draw[->] (f2) -- (f4);
-\draw[dashed, <-] (f3) -- (f4);
-\draw[->] (f4) -- (f5);
-\draw[->] (f2) -- (f3);
-\draw[<-] (y4) -- (f2);
-\draw[<-] (y5) -- (f2);
-\draw[<-] (y6) -- (f2);
-\draw[<-] (y10) -- (f4);
-\draw[<-] (y11) -- (f4);
-\draw[<-] (y12) -- (f4);
-
-% Curved arrow from f1 to f5
-\draw[->, bend right=80] (f1) to (f5);
-
-\end{tikzpicture}
-
-\newpage
 
 # References
