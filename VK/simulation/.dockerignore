@@ -1,0 +1,10 @@
+# Ignore everything
+*
+
+# Except these files
+!VK/simulation/
+!VK/simulation/Dockerfile
+!VK/simulation/Makefile
+!VK/simulation/run_all.R
+!VK/simulation/renv.lock
+!VK/simulation/renv/
