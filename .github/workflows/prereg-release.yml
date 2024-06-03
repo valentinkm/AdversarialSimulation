@@ -67,7 +67,7 @@ jobs:
         name: release-artifacts
         path: release/
 
-  release:
+  create_release:
     needs: build
     runs-on: ubuntu-latest
 
@@ -76,24 +76,48 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: release-artifacts
-        path: release
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: "Simulation Protocol of my individual project"
+        body: "This release includes the preregistration document and related PDF for the VK project."
+        draft: false
+        prerelease: false
 
     - name: Verify downloaded artifacts
       run: ls -l release
 
-    - name: Upload to Zenodo
+    - name: Find existing Zenodo deposition
+      id: find_deposition
       env:
         ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
       run: |
-        # Create a new deposition
-        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -H "Content-Type: application/json" -d '{"metadata":{"title": "Preregistration Document", "upload_type": "publication", "description": "This is the preregistration document for the VK project.", "creators": [{"name": "Valentin Kriegmair", "affiliation": "Your Affiliation"}]}}' https://zenodo.org/api/deposit/depositions | jq -r .id)
+        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/deposit/depositions?size=1000" | jq -r '.[] | select(.metadata.title == "Preregistration Document").id')
+        echo "::set-output name=deposition_id::$deposition_id"
 
-        # Verify deposition_id
+    - name: Create or update Zenodo deposition
+      env:
+        ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
+      run: |
+        if [ -z "${{ steps.find_deposition.outputs.deposition_id }}" ]; then
+          # Create a new deposition
+          deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -H "Content-Type: application/json" -d '{"metadata":{"title": "Preregistration Document", "upload_type": "publication", "description": "This is the preregistration document for the VK project.", "creators": [{"name": "Valentin Kriegmair", "affiliation": "Your Affiliation"}]}}' https://zenodo.org/api/deposit/depositions | jq -r .id)
+        else
+          # Use the existing deposition
+          deposition_id=${{ steps.find_deposition.outputs.deposition_id }}
+        fi
         echo "Deposition ID: $deposition_id"
         
         # Upload files
         curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.qmd" https://zenodo.org/api/deposit/depositions/$deposition_id/files
         curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.pdf" https://zenodo.org/api/deposit/depositions/$deposition_id/files
 
-        # Publish the deposition
-        curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/$deposition_id/actions/publish
+        # Publish the deposition if it is new
+        if [ -z "${{ steps.find_deposition.outputs.deposition_id }}" ]; then
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/$deposition_id/actions/publish
+        fi
