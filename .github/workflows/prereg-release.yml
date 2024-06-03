@@ -86,7 +86,7 @@ jobs:
       env:
         ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
       run: |
-        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/records?size=1000&q=doi:10.5281/zenodo.11458547" | jq -r '.[0].id')
+        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/records?doi=10.5281/zenodo.11458547" | jq -r '.id')
         echo "::set-output name=deposition_id::$deposition_id"
 
     - name: Create or update Zenodo deposition
