@@ -3,7 +3,7 @@ name: Test QMD to PDF Rendering
 on:
   push:
     branches:
-      - prereg/vk # test render here
+      - prereg/vk # Trigger on push to the test-render branch
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
     - name: Set up Quarto
       uses: quarto-dev/quarto-actions/setup@v2
       with:
-        version: 'latest'
+        version: latest
 
     - name: Render QMD to PDF
       run: quarto render VK/preregistration.qmd --to pdf
