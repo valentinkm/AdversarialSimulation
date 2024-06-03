@@ -86,7 +86,7 @@ jobs:
       env:
         ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
       run: |
-        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/deposit/depositions?size=1000" | jq -r '.[] | select(.metadata.title == "Preregistration Document").id')
+        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/deposit/depositions?size=1000" | jq -r '.[] | select(..metadata.title == "Preregistration Document").id')
         echo "::set-output name=deposition_id::$deposition_id"
 
     - name: Create or update Zenodo deposition
@@ -94,19 +94,18 @@ jobs:
         ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
       run: |
         if [ -z "${{ steps.find_deposition.outputs.deposition_id }}" ]; then
-          # Create a new deposition
-          deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -H "Content-Type: application/json" -d '{"metadata":{"title": "Preregistration Document", "upload_type": "publication", "description": "This is the preregistration document for the VK project.", "creators": [{"name": "Valentin Kriegmair", "affiliation": "Your Affiliation"}]}}' https://zenodo.org/api/deposit/depositions | jq -r .id)
+          echo "Deposition not found, please ensure the correct title is used."
+          exit 1
         else
-          # Use the existing deposition
-          deposition_id=${{ steps.find_deposition.outputs.deposition_id }}
-        fi
-        echo "Deposition ID: $deposition_id"
-        
-        # Upload files
-        curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.qmd" https://zenodo.org/api/deposit/depositions/$deposition_id/files
-        curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.pdf" https://zenodo.org/api/deposit/depositions/$deposition_id/files
+          # Create a new version of the existing deposition
+          new_version_url=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/${{ steps.find_deposition.outputs.deposition_id }}/actions/newversion | jq -r .links.latest_draft)
+          new_version_id=$(basename $new_version_url)
+          echo "New version ID: $new_version_id"
+          
+          # Upload files to the new version
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.qmd" https://zenodo.org/api/deposit/depositions/$new_version_id/files
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.pdf" https://zenodo.org/api/deposit/depositions/$new_version_id/files
 
-        # Publish the deposition if it is new
-        if [ -z "${{ steps.find_deposition.outputs.deposition_id }}" ]; then
-          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/$deposition_id/actions/publish
+          # Publish the new version
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/$new_version_id/actions/publish
         fi
