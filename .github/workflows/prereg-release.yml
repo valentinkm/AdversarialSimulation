@@ -1,9 +1,9 @@
-name: Test QMD to PDF Rendering
+name: Release QMD and PDF to Zenodo
 
 on:
   push:
-    branches:
-      - prereg/vk # Trigger on push to the test-render branch
+    tags:
+      - 'v*.*.*' # Trigger on version tags
 
 jobs:
   build:
@@ -14,34 +14,9 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Quarto
-      run: |
-        case $RUNNER_OS in
-          "Linux")
-              BUNDLE_EXT="linux-amd64.deb"
-              ;;
-          "macOS")
-              BUNDLE_EXT="macos.pkg"
-              ;;
-          "Windows")
-              BUNDLE_EXT="win.msi"
-              ;;
-          *)
-              echo "$RUNNER_OS not supported"
-              exit 1
-              ;;
-        esac
-
-        if [ $RUNNER_OS != "Windows" ]; then
-          version=$(curl -s https://quarto.org/docs/download/_download.json | jq -r '.version')
-          wget https://github.com/quarto-dev/quarto-cli/releases/download/v$version/quarto-$version-$BUNDLE_EXT
-          installer=$(ls quarto*${BUNDLE_EXT})
-          echo "installer=${installer}" >> $GITHUB_ENV
-          sudo dpkg -i $installer
-        else
-          echo "Windows installation not supported in this script."
-          exit 1
-        fi
-      shell: bash
+      uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        version: latest
 
     - name: Install TinyTeX
       run: |
@@ -51,7 +26,9 @@ jobs:
         sudo apt-get install -y texlive-xetex
 
     - name: Render QMD to PDF
-      run: quarto render VK/preregistration.qmd --to pdf
+      run: |
+        export PATH=$PATH:/home/runner/.TinyTeX/bin/x86_64-linux
+        quarto render VK/preregistration.qmd --to pdf
 
     - name: Create release artifacts
       run: |
@@ -64,3 +41,27 @@ jobs:
       with:
         name: release-artifacts
         path: release/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download release artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: release-artifacts
+
+    - name: Upload to Zenodo
+      env:
+        ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODOTOKEN }}
+      run: |
+        # Create a new deposition
+        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODOTOKEN" -H "Content-Type: application/json" -d '{"metadata":{"title": "Preregistration Document", "upload_type": "publication", "description": "This is the preregistration document for the VK project.", "creators": [{"name": "Valentin Kriegmair", "affiliation": "Your Affiliation"}]}}' https://zenodo.org/api/deposit/depositions | jq -r .id)
+
+        # Upload files
+        curl -H "Authorization: Bearer $ZENODOTOKEN" -F "file=@release/preregistration.qmd" https://zenodo.org/api/deposit/depositions/$deposition_id/files
+        curl -H "Authorization: Bearer $ZENODOTOKEN" -F "file=@release/preregistration.pdf" https://zenodo.org/api/deposit/depositions/$deposition_id/files
+
+        # Publish the deposition
+        curl -H "Authorization: Bearer $ZENODOTOKEN" -X POST https://zenodo.org/api/deposit/depositions/$deposition_id/actions/publish
