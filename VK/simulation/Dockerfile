@@ -14,8 +14,6 @@ RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 # Copy all files from VK/simulation to the working directory
 COPY VK/simulation /home/rstudio/simulation
 
-# Create results directory
-RUN mkdir -p /home/rstudio/simulation/results
 
 # Setup working directory
 WORKDIR /home/rstudio/simulation
