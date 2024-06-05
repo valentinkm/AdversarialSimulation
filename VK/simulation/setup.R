@@ -1,10 +1,10 @@
 # setup.R
 
 # Load necessary libraries
-library(MASS)  
-library(dplyr) 
-library(tidyr) 
-library(future) 
+library(MASS)
+library(dplyr)
+library(tidyr)
+library(future)
 library(furrr)
 library(lavaan)
 library(purrr)
@@ -15,13 +15,11 @@ library(future.batchtools)
 # Set up the environment
 RNGkind("L'Ecuyer-CMRG")
 
-
 # Always use Tardis plan
-
 plan(list(
   tweak(batchtools_slurm,
         template = "/home/rstudio/simulation/.batchtools.slurm.singularity.tmpl",
-        resources=list(ncpus=1, memory='200m', walltime=600, partition='short') # use short instead of quick
+        resources = list(ncpus = 1, memory = '200m', walltime = 600, partition = 'short')
   )
 ))
 
@@ -34,7 +32,7 @@ generate_seeds <- function(n, seed) {
 # Directory to save results
 results_dir <- "results"
 
-# Ensure the results  directory exists
+# Ensure the results directory exists
 if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
