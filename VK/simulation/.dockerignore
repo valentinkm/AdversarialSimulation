@@ -8,3 +8,4 @@
 !VK/simulation/run_all.R
 !VK/simulation/renv.lock
 !VK/simulation/renv/
+!.batchtools.slurm.singularity.tmpl

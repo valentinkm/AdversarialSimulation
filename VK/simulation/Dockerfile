@@ -14,6 +14,9 @@ RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 # Copy all files from VK/simulation to the working directory
 COPY VK/simulation /home/rstudio/simulation
 
+# Copy the batchtools SLURM template explicitly
+COPY VK/simulation/.batchtools.slurm.singularity.tmpl /home/rstudio/.batchtools.slurm.singularity.tmpl
+
 
 # Setup working directory
 WORKDIR /home/rstudio/simulation

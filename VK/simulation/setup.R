@@ -30,7 +30,7 @@ generate_seeds <- function(n, seed) {
 }
 
 # Directory to save results
-results_dir <- "/path/to/cluster/results"
+results_dir <- ""
 
 # Ensure the results directory exists
 if (!dir.exists(results_dir)) {
