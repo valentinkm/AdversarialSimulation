@@ -1,12 +1,20 @@
-FROM rocker/r-ver:4.4.0
+FROM ubuntu:22.04
 
-# system dependencies for the R packages
+# Install R and dependencies
 RUN apt-get update && apt-get install -y \
+    r-base \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
     libgit2-dev \
-    make
+    make \
+    wget
+
+# Install R from CRAN to get the latest version
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'E298A3A825C0D65DFD57CBB651716619E084DAB9' && \
+    add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/' && \
+    apt-get update && \
+    apt-get install -y r-base
 
 # renv
 RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
@@ -26,16 +34,8 @@ RUN ls -l /home/rstudio/simulation
 # restore environment
 RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
-# Create necessary directories
-RUN mkdir -p /home/rstudio/simulation/results /home/rstudio/simulation/.future
-
-# Set environment variable for future cache path
-ENV R_FUTURE_CACHE_PATH=/home/rstudio/simulation/.future
-
 # Default command to run all simulations using make
 CMD ["make"]
-
-
 
 # 1) put slurm template in the docker.
 
