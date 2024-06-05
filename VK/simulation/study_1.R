@@ -71,18 +71,7 @@ run_study_1 <- function(params, true_values) {
     set.seed(seed)
     data <- gen_pop_model_data(model_type, N, reliability)$data
     
-    # Debug: Print method being used
-    cat("Running analysis with method:", method, "\n")
-    
     fit_result <- safe_quiet_run_analysis(data, model_syntax_study1, method)
-    
-    # Debug: Print fit result warnings and errors
-    if (!is.null(fit_result$result$warnings)) {
-      cat("Warnings for method", method, ":", toString(fit_result$result$warnings), "\n")
-    }
-    if (!is.null(fit_result$error)) {
-      cat("Error for method", method, ":", toString(fit_result$error$message), "\n")
-    }
     
     sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study1)
     sanity_check_results <- check_sanity(sanity_check_estimates, true_values)

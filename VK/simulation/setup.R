@@ -10,18 +10,26 @@ library(lavaan)
 library(purrr)
 library(parallel)
 library(Matrix)
-library(future.batchtools)
+
+# check if running on Tardis cluster
+is_on_tardis <- function() {
+  grepl("tardis", Sys.info()["nodename"])
+}
 
 # Set up the environment
 RNGkind("L'Ecuyer-CMRG")
 
-# Always use Tardis plan
-plan(list(
-  tweak(batchtools_slurm,
-        template = "/home/rstudio/simulation/.batchtools.slurm.singularity.tmpl",
-        resources = list(ncpus = 1, memory = '200m', walltime = 600, partition = 'short')
-  )
-))
+if (is_on_tardis()) {
+  library(future.batchtools)
+  plan(list(
+    tweak(batchtools_slurm,
+          template = "/home/rstudio/simulation/.batchtools.slurm.singularity.tmpl",
+          resources = list(ncpus = 1, memory = '200m', walltime = 600, partition = 'short')
+    )
+  ))
+} else {
+  plan(multisession, workers = parallel::detectCores() - 1)
+}
 
 # Generate seeds
 generate_seeds <- function(n, seed) {
@@ -36,8 +44,6 @@ results_dir <- "results"
 if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
-
-options(future.cache.path = "/home/rstudio/simulation/.future")
 
 # Function to save results
 save_results <- function(results, filename) {

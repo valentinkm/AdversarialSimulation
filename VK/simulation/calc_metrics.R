@@ -5,13 +5,10 @@ library(purrr)
 
 # Function to run analysis using SEM or SAM
 run_analysis <- function(data, model_syntax, method = "SEM") {
-  cat("Running analysis with method:", method, "\n")
   
   # Ensure no hidden characters or spaces
   method <- trimws(method)
   
-  # Print the exact method being used
-  cat("Exact method being used:", method, "\n")
   
   if (method == "SEM") {
     cat("Using SEM method\n")
