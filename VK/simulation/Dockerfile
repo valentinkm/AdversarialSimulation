@@ -1,24 +1,20 @@
 FROM ubuntu:22.04
 
-# Install R and dependencies
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    r-base \
+# Install necessary dependencies and R
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    dirmngr \
+    gnupg \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
     libgit2-dev \
     make \
     wget \
-    tzdata \
     slurm-client
-  
 
-# Set timezone to avoid interactive prompt during installation
-ENV TZ=Etc/UTC
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Install R from CRAN to get the latest version
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'E298A3A825C0D65DFD57CBB651716619E084DAB9' && \
+# Add CRAN repository and key
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/cran-ubuntu.gpg && \
     add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/' && \
     apt-get update && \
     apt-get install -y r-base
@@ -32,22 +28,14 @@ COPY VK/simulation /home/rstudio/simulation
 # Copy the batchtools SLURM template
 COPY VK/simulation/.batchtools.slurm.singularity.tmpl /home/rstudio/simulation/.batchtools.slurm.singularity.tmpl
 
-# setup working directory
+# Set up working directory
 WORKDIR /home/rstudio/simulation
 
 # Check the contents of the working directory to ensure renv.lock is present
 RUN ls -l /home/rstudio/simulation
 
-# restore environment
+# Restore environment
 RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make
 CMD ["make"]
-
-
-# 1) put slurm template in the docker.
-
-# 2) pull the container from github published container as apptainer
-
-# 3) sbatch -c 1 --mem 16gb --time 7-0:0:0 --partition= long --wrap "apptainer run foo.sif"
-# this is the command to run the container on the cluster
