@@ -10,15 +10,8 @@ library(lavaan)
 library(purrr)
 library(parallel)
 library(Matrix)
-library(pryr)  # For monitoring memory usage
 
-# Function to log memory usage
-log_memory_usage <- function() {
-  mem <- mem_used()
-  cat("Current memory usage:", mem, "\n")
-}
-
-# Check if running on Tardis cluster
+# check if running on Tardis cluster
 is_on_tardis <- function() {
   grepl("tardis", Sys.info()["nodename"])
 }
@@ -26,17 +19,7 @@ is_on_tardis <- function() {
 # Set up the environment
 RNGkind("L'Ecuyer-CMRG")
 
-if (is_on_tardis()) {
-  library(future.batchtools)
-  plan(list(
-    tweak(batchtools_slurm,
-          template = "/home/rstudio/simulation/.batchtools.slurm.singularity.tmpl",
-          resources = list(ncpus = 1, memory = '2000M', walltime = 600, partition = 'short')
-    )
-  ))
-} else {
-  plan(multisession, workers = parallel::detectCores() - 1)
-}
+plan(multisession, workers = parallel::detectCores() - 1)
 
 # Generate seeds
 generate_seeds <- function(n, seed) {
@@ -56,6 +39,3 @@ if (!dir.exists(results_dir)) {
 save_results <- function(results, filename) {
   saveRDS(results, file.path(results_dir, filename))
 }
-
-# Log initial memory usage
-log_memory_usage()
