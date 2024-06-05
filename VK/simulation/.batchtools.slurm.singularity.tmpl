@@ -13,15 +13,11 @@
 ## memory   [integer(1)]:     Memory in megabytes for each cpu.
 ##                            Must be at least 100 (when I tried lower values my
 ##                            jobs did not start at all).
-##
-## Default resources can be set in your .batchtools.conf.R by defining the variable
-## 'default.resources' as a named list.
 
 <%
 # relative paths are not handled well by Slurm
 log.file = fs::path_expand(log.file)
 -%>
-
 
 #SBATCH --job-name=<%= job.name %>
 #SBATCH --output=<%= log.file %>
@@ -29,7 +25,7 @@ log.file = fs::path_expand(log.file)
 #SBATCH --time=<%= ceiling(resources$walltime / 60) %>
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=<%= resources$ncpus %>
-#SBATCH --mem-per-cpu=<%= resources$memory %>
+#SBATCH --mem-per-cpu=2000M  # Increase memory per CPU to 2GB
 <%= if (!is.null(resources$partition)) sprintf(paste0("#SBATCH --partition='", paste(resources$partition, collapse = ","), "'")) %>
 <%= if (array.jobs) sprintf("#SBATCH --array=1-%i", nrow(jobs)) else "" %>
 
@@ -37,7 +33,7 @@ log.file = fs::path_expand(log.file)
 ## source /etc/profile
 ## module add ...
 
-## Export value of DEBUGME environemnt var to slave
+## Export value of DEBUGME environment var to slave
 export DEBUGME=<%= Sys.getenv("DEBUGME") %>
 
 <%= sprintf("export OMP_NUM_THREADS=%i", resources$omp.threads) -%>
@@ -46,4 +42,4 @@ export DEBUGME=<%= Sys.getenv("DEBUGME") %>
 
 ## Run R:
 ## we merge R output with stdout from SLURM, which gets then logged via --output option
-apptainer exec --contain --cleanenv /home/mpib/kriegmair/adversarialsimulation_latest.sif  Rscript -e 'batchtools::doJobCollection("<%= uri %>")'
+apptainer exec --contain --cleanenv /home/mpib/kriegmair/adversarialsimulation_latest.sif Rscript -e 'batchtools::doJobCollection("<%= uri %>")'
