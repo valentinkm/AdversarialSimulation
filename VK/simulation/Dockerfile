@@ -1,17 +1,13 @@
 FROM ubuntu:22.04
 
 # Install necessary dependencies and R
-RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    dirmngr \
-    gnupg \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    libxml2-dev \
-    libgit2-dev \
-    make \
-    wget \
-    slurm-client
+RUN apt-get update && \
+    apt-get install -y software-properties-common dirmngr gnupg \
+    libcurl4-openssl-dev libssl-dev libxml2-dev libgit2-dev make wget slurm-client && \
+    apt-get clean
+
+# Set non-interactive frontend to avoid tzdata prompt
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Add CRAN repository and key
 RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/cran-ubuntu.gpg && \
