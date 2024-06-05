@@ -1,14 +1,19 @@
 FROM ubuntu:22.04
 
 # Install R and dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     r-base \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
     libgit2-dev \
     make \
-    wget
+    wget \
+    tzdata
+
+# Set timezone to avoid interactive prompt during installation
+ENV TZ=Etc/UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install R from CRAN to get the latest version
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 'E298A3A825C0D65DFD57CBB651716619E084DAB9' && \
@@ -36,6 +41,7 @@ RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make
 CMD ["make"]
+
 
 # 1) put slurm template in the docker.
 
