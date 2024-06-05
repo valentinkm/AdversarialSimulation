@@ -20,7 +20,7 @@ RNGkind("L'Ecuyer-CMRG")
 
 plan(list(
   tweak(batchtools_slurm,
-        template = "simulation/.batchtools.slurm.singularity.tmpl",
+        template = "home/rstudio/simulation/.batchtools.slurm.singularity.tmpl",
         resources=list(ncpus=1, memory='200m', walltime=600, partition='short') # use short instead of quick
   )
 ))
