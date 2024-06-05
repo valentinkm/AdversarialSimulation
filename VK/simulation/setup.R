@@ -37,6 +37,8 @@ if (!dir.exists(results_dir)) {
   dir.create(results_dir, recursive = TRUE)
 }
 
+options(future.cache.path = "/home/rstudio/simulation/.future")
+
 # Function to save results
 save_results <- function(results, filename) {
   saveRDS(results, file.path(results_dir, filename))
