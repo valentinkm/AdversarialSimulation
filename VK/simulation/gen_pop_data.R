@@ -7,9 +7,9 @@ source("gen_mat.R")
 source("gen_pop_lavsyntax.R")
 
 # Data generation function
-gen_pop_model_data <- function(model_type, N, reliability) {
+gen_pop_model_data <- function(model_type, N, reliability, R_squared = 0.1) {
   # Generate matrices and syntax
-  matrices <- gen_mat(model_type, reliability = reliability)
+  matrices <- gen_mat(model_type, reliability = reliability, R_squared = R_squared)
   syntax <- gen_pop_model_syntax(matrices)
   
   # Generate data using lavaan's simulateData function

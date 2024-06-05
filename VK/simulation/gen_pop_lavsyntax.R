@@ -1,5 +1,11 @@
+# gen_pop_lavsyntax.R
 library(lavaan)
 library(Matrix)
+
+# Function to round numbers to 3 digits
+round_three <- function(x) {
+  return(format(round(x, 3), nsmall = 3))
+}
 
 # Function to generate lavaan model syntax from model matrices
 gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", include.values = TRUE) {
@@ -21,19 +27,26 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     IDXV <- row(LAMBDA)[(LAMBDA != 0)]
     IDXF <- col(LAMBDA)[(LAMBDA != 0)]
     
-    IDXV <- as.integer(sapply(unique(IDXF), function(j) {
+    
+    unique_factors <- unique(IDXF)
+    IDXV <- as.integer(unlist(sapply(unique_factors, function(j) {
       ji <- IDXV[which(IDXF == j)]  # non-zero loadings for factor j
       j1 <- which(abs(LAMBDA[ji, j] - 1) < .Machine$double.eps)
-      ji[c(1, j1)] <- ji[c(j1, 1)]
+      if (length(j1) > 0) {
+        ji[c(1, j1)] <- ji[c(j1, 1)]
+      }
       return(ji)
-    }))
+    })))
+    
+    IDXF <- rep(unique_factors, times = sapply(unique_factors, function(j) length(which(IDXF == j))))
+    
     
     nel <- length(IDXF)
     lambda.txt <- character(nel)
     for (i in seq_len(nel)) {
       if (include.values) {
         lambda.txt[i] <- paste0(paste0(lv.prefix, IDXF[i]), " =~ ",
-                                LAMBDA[IDXV[i], IDXF[i]], "*",
+                                round_three(LAMBDA[IDXV[i], IDXF[i]]), "*",
                                 paste0(ov.prefix, IDXV[i]))
       } else {
         lambda.txt[i] <- paste0(paste0(lv.prefix, IDXF[i]), " =~ ",
@@ -53,7 +66,7 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     for (i in seq_len(nel)) {
       if (include.values) {
         theta.txt[i] <- paste0(paste0(ov.prefix, IDX1[i]), " ~~ ",
-                               THETA[IDX1[i], IDX2[i]], "*",
+                               round_three(THETA[IDX1[i], IDX2[i]]), "*",
                                paste0(ov.prefix, IDX2[i]))
       } else {
         theta.txt[i] <- paste0(paste0(ov.prefix, IDX1[i]), " ~~ ",
@@ -73,7 +86,7 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     for (i in seq_len(nel)) {
       if (include.values) {
         psi.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~~ ",
-                             PSI[IDX1[i], IDX2[i]], "*",
+                             round_three(PSI[IDX1[i], IDX2[i]]), "*",
                              paste0(lv.prefix, IDX2[i]))
       } else {
         psi.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~~ ",
@@ -93,11 +106,11 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     for (i in seq_len(nel)) {
       if (include.values) {
         beta.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~ ",
-                              BETA[IDX1[i], IDX2[i]], "*",
+                              round_three(BETA[IDX1[i], IDX2[i]]), "*",
                               paste0(lv.prefix, IDX2[i]))
       } else {
         beta.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~ ",
-                              paste0(lv.prefix, IDXF[i]))
+                              paste0(lv.prefix, IDX2[i]))
       }
     }
   } else {
@@ -110,3 +123,17 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
   
   return(syntax)
 }
+
+# Test the function with different models
+# test_models <- function() {
+#   models <- c("1.1", "1.2", "1.3", "1.4", "2.1", "2.2_exo", "2.2_endo", "2.2_both")
+#   for (model in models) {
+#     cat("Testing model:", model, "\n")
+#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70, 
+#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
+#                      rho = 0.80, R_squared = 0.1)
+#     syntax <- gen_pop_model_syntax(MLIST)
+#     cat(syntax, "\n\n")
+#   }
+# }
+# test_models()

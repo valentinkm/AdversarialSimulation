@@ -5,19 +5,59 @@ library(purrr)
 
 # Function to run analysis using SEM or SAM
 run_analysis <- function(data, model_syntax, method = "SEM") {
+  cat("Running analysis with method:", method, "\n")
+  
+  # Ensure no hidden characters or spaces
+  method <- trimws(method)
+  
+  # Print the exact method being used
+  cat("Exact method being used:", method, "\n")
+  
   if (method == "SEM") {
+    cat("Using SEM method\n")
     fit <- sem(model_syntax, data = as.data.frame(data))
   } else if (method == "gSAM") {
+    cat("Using gSAM method\n")
     fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "global")
-  } else if (method == "lSAM_ML") {
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", struc.args = list(estimator = "ML"))
-  } else if (method == "lSAM_ULS") { 
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", struc.args = list(estimator = "ULS"))
+  } else if (method == "lSAM_ML_5") {
+    cat("Using lSAM_ML_5 method\n")
+    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list("f1", "f2", "f3", "f4", "f5"), struc.args = list(estimator = "ML"))
+  } else if (method == "lSAM_ULS_5") {
+    cat("Using lSAM_ULS_5 method\n")
+    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list("f1", "f2", "f3", "f4", "f5"), struc.args = list(estimator = "ULS"))
+  } else if (method == "lSAM_ML_3") {
+    cat("Using lSAM_ML_3 method\n")
+    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ML"))
+  } else if (method == "lSAM_ULS_3") {
+    cat("Using lSAM_ULS_3 method\n")
+    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ULS"))
   } else {
-    stop("Unknown method specified")
+    stop("Unknown method specified: ", method)
   }
   return(fit)
 }
+
+
+# df <- gen_pop_model_data(model_type = "2.2", N = 1000, reliability = 0.8, R_squared = 0.4)$data
+# df <- as.data.frame(df)
+
+# model_syntax_study2 <- "
+#     f1 =~ y1 + y2 + y3
+#     f2 =~ y4 + y5 + y6
+#     f3 =~ y7 + y8 + y9
+#     f4 =~ y10 + y11 + y12
+#     f5 =~ y13 + y14 + y15
+    
+#     f3 ~ f1 + f2 + f4
+#     f4 ~ f1 + f2
+#     f5 ~ f3 + f4 + f2 + f3 + f4
+# "
+
+# fit1 <- sam(model_syntax_study2, data = df, sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ML"))
+# fit2 <- sam(model_syntax_study2, data = df, sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ULS"))
+
+# summary(fit2)
+# summary(fit1)
 
 # Function to fit model to population matrix
 run_sanity_check <- function(model_type, model_syntax) {
