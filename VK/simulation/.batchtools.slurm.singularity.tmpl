@@ -46,4 +46,4 @@ export DEBUGME=<%= Sys.getenv("DEBUGME") %>
 
 ## Run R:
 ## we merge R output with stdout from SLURM, which gets then logged via --output option
-singularity exec /home/mpib/kriegmair/adversarialsimulation_latest.sif Rscript -e 'batchtools::doJobCollection("<%= uri %>")'
+apptainer exec --contain --cleanenv /home/mpib/kriegmair/adversarialsimulation_latest.sif  Rscript -e 'batchtools::doJobCollection("<%= uri %>")'

@@ -15,7 +15,7 @@ library(future.batchtools)
 # Set up the environment
 RNGkind("L'Ecuyer-CMRG")
 
-# Always use the Tardis plan
+
 plan(list(
   tweak(batchtools_slurm,
         template = "/home/rstudio/.batchtools.slurm.singularity.tmpl",

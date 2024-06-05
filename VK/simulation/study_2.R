@@ -26,7 +26,8 @@ parallel_seeds <- function(n, seed = NULL) {
                     .init = .Random.seed)
 }
 
-# Generate parameters grid with seeds
+
+# Generate parameters grid with seeds for Study 2
 n_reps <- 2
 params <- expand.grid(
   model_type = c("2.1", "2.2_exo", "2.2_endo", "2.2_both"),
@@ -37,8 +38,11 @@ params <- expand.grid(
 ) %>%
   mutate(seed = rep(parallel_seeds(n_reps, seed = 42), length.out = n()))
 
-# Debug: Print first few rows of params to check method names
-print(head(params,100))
+# Ensure method is a character vector
+params$method <- as.character(params$method)
+
+
+
 
 # Set population values
 B_true <- c(
@@ -263,3 +267,4 @@ save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
+
