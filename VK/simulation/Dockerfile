@@ -9,7 +9,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libgit2-dev \
     make \
     wget \
-    tzdata
+    tzdata \
+    slurm-client
+  
 
 # Set timezone to avoid interactive prompt during installation
 ENV TZ=Etc/UTC
