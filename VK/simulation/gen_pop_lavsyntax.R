@@ -137,3 +137,16 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
 #   }
 # }
 # test_models()
+# 
+# # get model 2.1 syntax for low and medium R-squared:
+# MLIST <- gen_mat("2.1", nfactors = 5, nvar.factor = 3, lambda = 0.70, 
+#                  beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
+#                  rho = 0.80, R_squared = 0.1)
+# syntax <- gen_pop_model_syntax(MLIST)
+# cat(syntax, "\n\n")
+# 
+# MLIST <- gen_mat("2.1", nfactors = 5, nvar.factor = 3, lambda = 0.70, 
+#                  beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
+#                  rho = 0.80, R_squared = 0.4)
+# syntax <- gen_pop_model_syntax(MLIST)
+# cat(syntax, "\n\n")

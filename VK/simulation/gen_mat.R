@@ -132,14 +132,21 @@ lav_matrix_diag_idx <- function(n) {
 
 
 # Test the function with different models and return the matrices
-# test_models <- function() {
-#   models <- c("1.1", "1.2", "1.3", "1.4", "2.1", "2.2_exo", "2.2_endo", "2.2_both")
+# test_models <- function(R_squared) {
+#   models <- c("2.1", "2.2_exo", "2.2_endo", "2.2_both")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
-#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70, 
-#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
-#                      rho = 0.80, R_squared = 0.4)
-#     print(MLIST)
+#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
+#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.80,
+#                      rho = 0.80, R_squared = R_squared)
+#     print(MLIST$beta)
 #   }
 # }
-# test_models()
+# 
+# test_models(R_squared = 0.4)
+# 
+# test_models(R_squared = 0.1)
+
+
+
+

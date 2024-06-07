@@ -26,14 +26,13 @@ parallel_seeds <- function(n, seed = NULL) {
                     .init = .Random.seed)
 }
 
-
-
 # Generate parameters grid with seeds for Study 2
 n_reps <- 2
 params <- expand.grid(
   model_type = c("2.1", "2.2_exo", "2.2_endo", "2.2_both"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
+  R_squared = c(0.1, 0.4),  # Adding R_squared parameter
   method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS"),
   b = c(5, 3),  # Adding the measurement block condition
   rep = 1:n_reps
@@ -42,6 +41,28 @@ params <- expand.grid(
 
 # Ensure method is a character vector
 params$method <- as.character(params$method)
+
+# Define the function to get true values based on model type and R_squared
+get_true_values <- function(model_type, R_squared) {
+  MLIST <- gen_mat(model_type, R_squared = R_squared)
+  BETA <- MLIST$beta
+  
+  B_true <- BETA[BETA != 0]
+  param_names <- character(length(B_true))
+  
+  counter <- 1
+  for (i in 1:nrow(BETA)) {
+    for (j in 1:ncol(BETA)) {
+      if (BETA[i, j] != 0) {
+        param_names[counter] <- paste0("f", i, "~f", j)
+        counter <- counter + 1
+      }
+    }
+  }
+  
+  names(B_true) <- param_names
+  return(list(B = B_true))
+}
 
 model_syntax_study2 <- "    
     f1 =~ y1 + y2 + y3
@@ -53,16 +74,7 @@ model_syntax_study2 <- "
     f3 ~ f1 + f2
     f4 ~ f1 + f2 + f3
     f5 ~ f3 + f4 + f2
-                        "
-# Define true_values at the beginning of the script
-B_true <- c(
-  'f3~f1' = 0.1, 'f3~f2' = 0.1,
-  'f4~f1' = 0.1, 'f4~f2' = 0.1, 'f4~f3' = 0.1,
-  'f5~f3' = 0.1, 'f5~f4' = 0.1, 'f5~f2' = 0.1
-)
-true_values <- list(
-  B = B_true
-)
+"
 
 # Study function
 run_study_2 <- function(params) {
@@ -74,14 +86,14 @@ run_study_2 <- function(params) {
     total = nrow(params), clear = FALSE, width = 60
   )
   
-  print("true_values structure:")
-  print(true_values)
-  
   # Run the simulations and analysis in parallel
-  results <- future_pmap(params, function(model_type, N, reliability, method, b, rep, seed) {
+  results <- future_pmap(params, function(model_type, N, reliability, R_squared, method, b, rep, seed) {
     pb$tick() # Update progress bar
     set.seed(seed)
-    data <- gen_pop_model_data(model_type, N, reliability)$data
+    data <- gen_pop_model_data(model_type, N, reliability, R_squared = R_squared)$data
+    
+    # Get true values based on model_type and R_squared
+    true_values <- get_true_values(model_type, R_squared)
     
     # Ensure method is a character
     method <- as.character(method)
@@ -182,7 +194,7 @@ run_study_2 <- function(params) {
   
   # Calculate summary statistics
   summary_stats <- results_df %>%
-    group_by(model_type, N, reliability, method, b) %>%  # Include b in grouping
+    group_by(model_type, N, reliability, R_squared, method, b) %>%  # Include R_squared and b in grouping
     summarise(
       ConvergenceRate = mean(Converged),
       NonConvergenceCount = sum(NonConverged),
@@ -197,7 +209,7 @@ run_study_2 <- function(params) {
       ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),
       .groups = 'drop'
     ) %>%
-    arrange(model_type, N, reliability, method, b)  # Include b in arrangement
+    arrange(model_type, N, reliability, R_squared, method, b)  # Include R_squared and b in arrangement
   
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
@@ -215,5 +227,3 @@ save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
-
-

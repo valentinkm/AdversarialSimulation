@@ -117,7 +117,9 @@ calculate_mcse_bias <- function(bias_list) {
   if (length(bias_list) == 0) {
     return(NA)
   }
-  sd(bias_list) / sqrt(length(bias_list))
+  K <- length(bias_list)
+  S_T2 <- var(bias_list)  # This is already S_T^2
+  sqrt(S_T2 / K)
 }
 
 # Function to calculate Monte Carlo Standard Error for RMSE
@@ -126,5 +128,7 @@ calculate_mcse_rmse <- function(rmse_list) {
   if (length(rmse_list) == 0) {
     return(NA)
   }
-  sd(rmse_list) / sqrt(length(rmse_list))
+  K <- length(rmse_list)
+  rmse_mean <- mean(rmse_list)
+  sqrt(sum((rmse_list - rmse_mean)^2) / (K * (K - 1)))
 }
