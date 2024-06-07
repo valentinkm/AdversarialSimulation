@@ -3,28 +3,6 @@ library(dplyr)
 library(lavaan)
 library(purrr)
 
-# Function to run analysis using SEM or SAM
-
-
-# df <- gen_pop_model_data(model_type = "2.2", N = 1000, reliability = 0.8, R_squared = 0.4)$data
-# df <- as.data.frame(df)
-
-# model_syntax_study2 <- "
-#     f1 =~ y1 + y2 + y3
-#     f2 =~ y4 + y5 + y6
-#     f3 =~ y7 + y8 + y9
-#     f4 =~ y10 + y11 + y12
-#     f5 =~ y13 + y14 + y15
-    
-#     f3 ~ f1 + f2 + f4
-#     f4 ~ f1 + f2
-#     f5 ~ f3 + f4 + f2 + f3 + f4
-# "
-
-# fit1 <- sam(model_syntax_study2, data = df, sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ML"))
-# fit2 <- sam(model_syntax_study2, data = df, sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ULS"))
-
-# summary(fit2)
 # summary(fit1)
 
 # Function to fit model to population matrix
