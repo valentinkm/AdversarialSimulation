@@ -4,35 +4,6 @@ library(lavaan)
 library(purrr)
 
 # Function to run analysis using SEM or SAM
-run_analysis <- function(data, model_syntax, method = "SEM") {
-  
-  # Ensure no hidden characters or spaces
-  method <- trimws(method)
-  
-  
-  if (method == "SEM") {
-    cat("Using SEM method\n")
-    fit <- sem(model_syntax, data = as.data.frame(data))
-  } else if (method == "gSAM") {
-    cat("Using gSAM method\n")
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "global")
-  } else if (method == "lSAM_ML_5") {
-    cat("Using lSAM_ML_5 method\n")
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list("f1", "f2", "f3", "f4", "f5"), struc.args = list(estimator = "ML"))
-  } else if (method == "lSAM_ULS_5") {
-    cat("Using lSAM_ULS_5 method\n")
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list("f1", "f2", "f3", "f4", "f5"), struc.args = list(estimator = "ULS"))
-  } else if (method == "lSAM_ML_3") {
-    cat("Using lSAM_ML_3 method\n")
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ML"))
-  } else if (method == "lSAM_ULS_3") {
-    cat("Using lSAM_ULS_3 method\n")
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", mm.list = list(c("f1", "f2", "f3"), c("f4", "f5")), struc.args = list(estimator = "ULS"))
-  } else {
-    stop("Unknown method specified: ", method)
-  }
-  return(fit)
-}
 
 
 # df <- gen_pop_model_data(model_type = "2.2", N = 1000, reliability = 0.8, R_squared = 0.4)$data

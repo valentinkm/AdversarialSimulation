@@ -1,23 +1,50 @@
+#run_analysis.R
+
 # Load necessary libraries
 library(lavaan)
 library(dplyr)
 library(purrr)
 
 # Function to run analysis using SEM or SAM
-run_analysis <- function(data, model_syntax, method = "SEM") {
+run_analysis <- function(data, model_syntax, method = "SEM", b = 5) {
   if (method == "SEM") {
     fit <- sem(model_syntax, data = as.data.frame(data))
   } else if (method == "gSAM") {
     fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "global")
-  } else if (method == "lSAM_ML") {
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", struc.args = list(estimator = "ML"))
-  } else if (method == "lSAM_ULS") { 
-    fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "local", struc.args = list(estimator = "ULS"))
+  } else if (method %in% c("lSAM_ML", "lSAM_ULS")) {
+    mm.list <- NULL
+    if (b == 5) {
+      mm.list <- list(
+        "f1" = "f1",
+        "f2" = "f2",
+        "f3" = "f3",
+        "f4" = "f4",
+        "f5" = "f5"
+      )
+    } else if (b == 3) {
+      mm.list <- list(
+        "exo" = c("f1", "f2"),
+        "endo" = c("f3", "f4", "f5")
+      )
+    } else {
+      stop("Invalid number of measurement blocks specified")
+    }
+    
+    struc_args <- list(estimator = ifelse(method == "lSAM_ML", "ML", "ULS"))
+    
+    fit <- sam(
+      model_syntax, 
+      data = as.data.frame(data), 
+      sam.method = "local", 
+      mm.list = mm.list, 
+      struc.args = struc_args
+    )
   } else {
     stop("Unknown method specified")
   }
   return(fit)
 }
+
 
 
 # Function to fit model to population matrix

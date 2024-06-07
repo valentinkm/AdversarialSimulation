@@ -27,13 +27,15 @@ parallel_seeds <- function(n, seed = NULL) {
 }
 
 
+
 # Generate parameters grid with seeds for Study 2
 n_reps <- 2
 params <- expand.grid(
   model_type = c("2.1", "2.2_exo", "2.2_endo", "2.2_both"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
-  method = c("SEM", "gSAM", "lSAM_ML_5", "lSAM_ULS_5", "lSAM_ML_3", "lSAM_ULS_3"),
+  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS"),
+  b = c(5, 3),  # Adding the measurement block condition
   rep = 1:n_reps
 ) %>%
   mutate(seed = rep(parallel_seeds(n_reps, seed = 42), length.out = n()))
@@ -41,80 +43,26 @@ params <- expand.grid(
 # Ensure method is a character vector
 params$method <- as.character(params$method)
 
-
-
-
-# Set population values
-B_true <- c(
-  'f3~f1' = 0.1, 'f3~f2' = 0.1, 'f3~f4' = 0.1,
-  'f4~f1' = 0.1, 'f4~f2' = 0.1,
-  'f5~f3' = 0.1, 'f5~f4' = 0.1
-)
-true_values <- list(
-  B = B_true
-)
-
-model_syntax_study2 <- "
+model_syntax_study2 <- "    
     f1 =~ y1 + y2 + y3
     f2 =~ y4 + y5 + y6
     f3 =~ y7 + y8 + y9
     f4 =~ y10 + y11 + y12
     f5 =~ y13 + y14 + y15
     
-    f3 ~ f1 + f2 + f4
-    f4 ~ f1 + f2
-    f5 ~ f3 + f4 + f2 + f3 + f4
-"
-
-# Update the check_sanity function
-# Function to check the sanity check results
-check_sanity <- function(sanity_check_estimates, true_values) {
-  comparison <- compare_sanity_check(sanity_check_estimates, true_values)
-  
-  print("Sanity check comparison:")
-  print(comparison)
-  
-  if (is.null(comparison$Differences)) {
-    max_difference <- NA
-  } else if (any(!is.na(comparison$Differences$Difference))) {
-    max_difference <- max(comparison$Differences$Difference, na.rm = TRUE)
-  } else {
-    warning("comparison$Differences$Difference contains only missing values")
-    max_difference <- -Inf
-  }
-  return(list(
-    MaxDifference = max_difference,
-    Alarm = comparison$Alarm
-  ))
-}
-
-# Function to compare sanity check estimates with true values
-compare_sanity_check <- function(sanity_check_estimates, true_values, threshold = 0.1) {
-  true_values_flat <- as.numeric(true_values$B)
-  names(true_values_flat) <- names(true_values$B)
-  
-  # Align true values with the sanity check estimates
-  common_params <- intersect(names(sanity_check_estimates), names(true_values_flat))
-  aligned_true_values <- true_values_flat[common_params]
-  aligned_sanity_check_estimates <- sanity_check_estimates[common_params]
-  
-  differences <- abs(aligned_sanity_check_estimates - aligned_true_values)
-  differences_df <- data.frame(
-    Parameter = names(differences),
-    TrueValue = aligned_true_values,
-    SanityCheckEstimate = aligned_sanity_check_estimates,
-    Difference = differences
-  )
-  
-  # Check if any difference exceeds the threshold
-  alarm <- any(differences > threshold)
-  
-  return(list(
-    Differences = differences_df,
-    Alarm = alarm
-  ))
-}
-
+    f3 ~ f1 + f2
+    f4 ~ f1 + f2 + f3
+    f5 ~ f3 + f4 + f2
+                        "
+# Define true_values at the beginning of the script
+B_true <- c(
+  'f3~f1' = 0.1, 'f3~f2' = 0.1,
+  'f4~f1' = 0.1, 'f4~f2' = 0.1, 'f4~f3' = 0.1,
+  'f5~f3' = 0.1, 'f5~f4' = 0.1, 'f5~f2' = 0.1
+)
+true_values <- list(
+  B = B_true
+)
 
 # Study function
 run_study_2 <- function(params) {
@@ -130,7 +78,7 @@ run_study_2 <- function(params) {
   print(true_values)
   
   # Run the simulations and analysis in parallel
-  results <- future_pmap(params, function(model_type, N, reliability, method, rep, seed) {
+  results <- future_pmap(params, function(model_type, N, reliability, method, b, rep, seed) {
     pb$tick() # Update progress bar
     set.seed(seed)
     data <- gen_pop_model_data(model_type, N, reliability)$data
@@ -143,7 +91,7 @@ run_study_2 <- function(params) {
     cat("Type of method variable:", typeof(method), "\n")
     cat("Exact method value:", method, "\n")
     
-    fit_result <- safe_quiet_run_analysis(data, model_syntax_study2, method)
+    fit_result <- safe_quiet_run_analysis(data, model_syntax_study2, method, b)
     
     # Debug: Print fit result warnings and errors
     if (!is.null(fit_result$result$warnings)) {
@@ -234,7 +182,7 @@ run_study_2 <- function(params) {
   
   # Calculate summary statistics
   summary_stats <- results_df %>%
-    group_by(model_type, N, reliability, method) %>%
+    group_by(model_type, N, reliability, method, b) %>%  # Include b in grouping
     summarise(
       ConvergenceRate = mean(Converged),
       NonConvergenceCount = sum(NonConverged),
@@ -249,7 +197,7 @@ run_study_2 <- function(params) {
       ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),
       .groups = 'drop'
     ) %>%
-    arrange(model_type, N, reliability, method)
+    arrange(model_type, N, reliability, method, b)  # Include b in arrangement
   
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
@@ -267,4 +215,5 @@ save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
+
 

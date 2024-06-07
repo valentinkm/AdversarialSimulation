@@ -10,7 +10,6 @@ library(lavaan)
 library(purrr)
 library(parallel)
 library(Matrix)
-library(pryr)  # For monitoring memory usage
 
 # Function to log memory usage
 log_memory_usage <- function() {
@@ -57,5 +56,4 @@ save_results <- function(results, filename) {
   saveRDS(results, file.path(results_dir, filename))
 }
 
-# Log initial memory usage
-log_memory_usage()
+
