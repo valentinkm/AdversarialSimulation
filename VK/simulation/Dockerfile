@@ -21,9 +21,6 @@ RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 # Copy all files from VK/simulation to the working directory
 COPY VK/simulation /home/rstudio/simulation
 
-# Copy the batchtools SLURM template
-COPY VK/simulation/.batchtools.slurm.singularity.tmpl /home/rstudio/simulation/.batchtools.slurm.singularity.tmpl
-
 # Set up working directory
 WORKDIR /home/rstudio/simulation
 
@@ -34,4 +31,4 @@ RUN ls -l /home/rstudio/simulation
 RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make
-CMD ["make"]
+# CMD ["make"]
