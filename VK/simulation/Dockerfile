@@ -31,4 +31,4 @@ RUN ls -l /home/rstudio/simulation
 RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
 
 # Default command to run all simulations using make
-# CMD ["make"]
+CMD ["make"]

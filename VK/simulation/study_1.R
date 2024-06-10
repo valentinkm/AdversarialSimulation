@@ -176,15 +176,16 @@ run_study_1 <- function(params, true_values) {
 }
 
 
-# Run complete simulation study
+
 cat("Starting simulation study 1...\n")
 simulation_results <- run_study_1(params, true_values)
 cat("Simulation study completed. Saving results...\n")
 
-# Save with timestamp
+
 timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
 filename <- paste0("simulation_results_", timestamp, ".rda")
 save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
+
