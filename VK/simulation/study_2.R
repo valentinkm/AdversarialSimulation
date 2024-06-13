@@ -11,6 +11,11 @@ library(purrr)
 library(progress)
 library(lavaan)
 
+# Check if the sam function is available
+if (!exists("sam")) {
+  stop("The sam function is not available. Please ensure the lavaan package is correctly loaded.")
+}
+
 # Generate seeds
 parallel_seeds <- function(n, seed = NULL) {
   if (is.null(seed))
@@ -21,26 +26,49 @@ parallel_seeds <- function(n, seed = NULL) {
                     .init = .Random.seed)
 }
 
-# Generate parameters grid with seeds
+# Generate parameters grid with seeds for Study 2
 n_reps <- 2
 params <- expand.grid(
-  seed = parallel_seeds(n_reps, seed = 42), # seed position in grid is essential or reorder results later - implicit repetition parameter
-  model_type = c("1.1", "1.2", "1.3", "1.4"),
+  model_type = c("2.1", "2.2_exo", "2.2_endo", "2.2_both"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
-  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")
+  R_squared = c(0.1, 0.4),  # Adding R_squared parameter
+  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS"),
+  b = c(5, 3)  # Adding the measurement block condition
 )
 
+# Ensure method is a character vector
+params$method <- as.character(params$method)
 
-# Set population values
-B_true <- c(
-  'f3~f1' = 0.1, 'f3~f2' = 0.1, 'f3~f4' = 0.1,
-  'f4~f1' = 0.1, 'f4~f2' = 0.1,
-  'f5~f3' = 0.1, 'f5~f4' = 0.1
-)
-true_values <- list(
-  B = B_true
-)
+# Generate the seeds
+total_combinations <- nrow(params) * n_reps
+seeds <- parallel_seeds(total_combinations, seed = 42)
+
+# Expand params to include repetitions
+params <- params[rep(seq_len(nrow(params)), each = n_reps), ]
+params$seed <- seeds
+
+# Define the function to get true values based on model type and R_squared
+get_true_values <- function(model_type, R_squared) {
+  MLIST <- gen_mat(model_type, R_squared = R_squared)
+  BETA <- MLIST$beta
+  
+  B_true <- BETA[BETA != 0]
+  param_names <- character(length(B_true))
+  
+  counter <- 1
+  for (i in 1:nrow(BETA)) {
+    for (j in 1:ncol(BETA)) {
+      if (BETA[i, j] != 0) {
+        param_names[counter] <- paste0("f", i, "~f", j)
+        counter <- counter + 1
+      }
+    }
+  }
+  
+  names(B_true) <- param_names
+  return(list(B = B_true))
+}
 
 model_syntax_study2 <- "    
     f1 =~ y1 + y2 + y3
@@ -49,13 +77,13 @@ model_syntax_study2 <- "
     f4 =~ y10 + y11 + y12
     f5 =~ y13 + y14 + y15
     
-    f3 ~ f1 + f2 + f4
-    f4 ~ f1 + f2
-    f5 ~ f3 + f4 + f1
-                        "
+    f3 ~ f1 + f2
+    f4 ~ f1 + f2 + f3
+    f5 ~ f3 + f4 + f2
+"
 
 # Study function
-run_study_2 <- function(params, true_values) {
+run_study_2 <- function(params) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   
   # Progress bar setup
@@ -64,17 +92,23 @@ run_study_2 <- function(params, true_values) {
     total = nrow(params), clear = FALSE, width = 60
   )
   
+  # Set up the parallel plan
+  plan(multisession)
+  
   # Run the simulations and analysis in parallel
   results <- future_pmap(params,
-                         function(seed, model_type, N, reliability, method) {
+                         function(model_type, N, reliability, R_squared, method, b, seed) {
                            options <- furrr_options(seed = seed)  # Pass the seed to furrr_options
                            
                            # Update progress bar
                            pb$tick()  # Uncomment this line if you want to update the progress bar synchronously
                            
-                           data <- gen_pop_model_data(model_type, N, reliability)$data
+                           data <- gen_pop_model_data(model_type, N, reliability, R_squared = R_squared)$data
                            
-                           fit_result <- safe_quiet_run_analysis(data, model_syntax_study2, method)
+                           # Get true values based on model_type and R_squared
+                           true_values <- get_true_values(model_type, R_squared)
+                           
+                           fit_result <- safe_quiet_run_analysis(data, model_syntax_study2, method, b)
                            
                            sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study2)
                            sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
@@ -126,7 +160,8 @@ run_study_2 <- function(params, true_values) {
                                Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
                              )
                            }
-                         }, .options = furrr_options(seed = TRUE))  # Use the furrr options object here
+                         }, 
+                         .options = furrr_options(seed = TRUE))  # Ensure reproducibility
   
   # Ensure results are a list of lists
   results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)
@@ -160,7 +195,7 @@ run_study_2 <- function(params, true_values) {
   
   # Calculate summary statistics
   summary_stats <- results_df %>%
-    group_by(model_type, N, reliability, method) %>%
+    group_by(model_type, N, reliability, R_squared, method, b) %>%  # Include R_squared and b in grouping
     summarise(
       ConvergenceRate = mean(Converged),
       NonConvergenceCount = sum(NonConverged),
@@ -172,22 +207,18 @@ run_study_2 <- function(params, true_values) {
       MeanRelativeRMSE = mean(RelativeRMSE, na.rm = TRUE),
       MCSE_RelativeBias = calculate_mcse_bias(relative_bias_list),
       MCSE_RelativeRMSE = calculate_mcse_rmse(relative_rmse_list),
-      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),  # Update to count
+      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),
       .groups = 'drop'
     ) %>%
-    arrange(model_type, N, reliability, method)
+    arrange(model_type, N, reliability, R_squared, method, b)  # Include R_squared and b in arrangement
   
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
 
-
-# Plan for parallel execution
-plan(list(multisession, sequential))
-
 # Run complete simulation study
 cat("Starting simulation study 2...\n")
-simulation_results <- run_study_2(params, true_values)
+simulation_results <- run_study_2(params)
 cat("Simulation study completed. Saving results...\n")
 
 # Save with timestamp
