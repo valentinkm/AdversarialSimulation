@@ -57,7 +57,7 @@ We deemed this a fair deviation from our simulation protocol, especially because
 
 ### Bias
 In the original paper, @robitzsch_comparing_2022 had some inconsistencies when it came to the interpretation of the results of their simulation studies. 
-They did not thoroughly define an a prior criteria for when an estimator outperformed another. 
+They did not thoroughly define an a prior criterium for when an estimator outperformed another. 
 Only in their Studies 5 and 6, they defined an absolute bias equal to or larger than 0.05 as relevant. 
 Additionally, when an estimator had a minimum percentage error of 20% higher than another, they defined it as being better than the other, in these studies.
 Across the other studies, interpretations sometimes varied. 
@@ -101,13 +101,15 @@ library(kableExtra)
 library(tidyverse)
 ```
 
-# Results Sim1
+# Results Simulation 1: 2-factor-CFA with 0,1 or 2 correlated residuals
+
+##Print all tables
 ```{r}
 #| ouput: true
 
 
 # Load the relative bias results
-bias_ci <- readRDS("sim1_rel_bias_ci.rds")
+bias_ci <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
 
 # Display the relative bias results for each condition
 #for (condition in names(bias_ci)) {
@@ -135,4 +137,92 @@ for (condition in names(bias_ci)) {
 
 
 ```
+
+### Condition without correlated residuals (0_0.12)
+
+General interpretation: Biased if Bias estimate larger than 0.05
+
+Interpretation layers within one condition:
+
+- Unbiased judgement SAM vs. SEM
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+Both standard SEM estimators are unbiased (i.e. relative Bias < 0.05) across all N conditions.
+The 4 SAM estimators are negatively biased for sample sizes up to 500 and have nearly identical estimation results.
+Across all estimators, the relative Bias decreases with increasing N. 
+
+Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is no missspecification.
+
+### Condition with one negatively correlated residual (1_-0.12)
+
+All estimators are negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
+Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
+For SEM-ULS, it increases slightly but unsubstantially up to N=500, but is lowest overall.
+The 4 SAM estimators have nearly identical estimation results.
+In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
+
+Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is one negative residual.
+
+### Condition with one positively correlated residual (1_0.12)
+
+Besides SEM-ML in N=50, both SEM estimators are positively biased across all N, with no visible trend for increasing N.
+All SAM estimators have nearly identical values and increasing relative bias for increasing N.
+They are negatively biased up to N=250 and positively biased for the other N conditions. 
+For N=250 and N=500, their relative bias is unsubstantial.
+In relative comparison, the two SEM estimators outperform all SAM estimators for sample sizes up to 100. For all higher N, the SAM estimators outperform the SEM estimators, even though the difference is unsubstantial starting from N=1000.
+
+Thus, SEM estimation outperforms SEM in smaller samples (N=50-100), whereas SAM outperforms SEM in moderate samples (N250-500), and slightly in higher sample sizes.
+
+### Condition with two negatively correlated residuals (2_-0.12)
+##### identical to condition with one cr
+
+All estimators are negatively biased across all N conditions.
+Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
+For SEM-ULS, it slightly, but unsubstantially increases up to N=500, but is lowest overall in these conditions.
+The 4 SAM estimators have nearly identical estimation results.
+In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
+
+Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there are two negative residuals.
+
+### Condition with two positively correlated residuals (2_0.12)
+
+Both SEM estimators are positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
+All SAM estimators have nearly identical values and increasing relative bias for increasing N.
+They are negatively biased up to N=100 and positively biased for the other N conditions. 
+In relative comparison, the two SEM estimators outperform all SAM estimators for N=50. For all higher N, the SAM estimators outperform the SEM estimators (substantially, besides ML in N=100), even though the difference is unsubstantial starting from N=1000.
+
+Thus, SEM estimation outperforms SEM in small samples (N=50), whereas SAM outperforms SEM in small to moderate samples (N100-500), and slightly in higher sample sizes.
+
+
+
+# Comparison with original paper
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
