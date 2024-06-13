@@ -11,11 +11,6 @@ library(purrr)
 library(progress)
 library(lavaan)
 
-# Check if the sam function is available
-if (!exists("sam")) {
-  stop("The sam function is not available. Please ensure the lavaan package is correctly loaded.")
-}
-
 # Generate seeds
 parallel_seeds <- function(n, seed = NULL) {
   if (is.null(seed))
@@ -26,42 +21,26 @@ parallel_seeds <- function(n, seed = NULL) {
                     .init = .Random.seed)
 }
 
-# Generate parameters grid with seeds for Study 2
+# Generate parameters grid with seeds
 n_reps <- 2
 params <- expand.grid(
   seed = parallel_seeds(n_reps, seed = 42), # seed position in grid is essential or reorder results later - implicit repetition parameter
-  model_type = c("2.1", "2.2_exo", "2.2_endo", "2.2_both"),
+  model_type = c("1.1", "1.2", "1.3", "1.4"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
-  R_squared = c(0.1, 0.4),  # Adding R_squared parameter
-  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS"),
-  b = c(5, 3)  # Adding the measurement block condition
+  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")
 )
 
-# Ensure method is a character vector
-params$method <- as.character(params$method)
 
-# Define the function to get true values based on model type and R_squared
-get_true_values <- function(model_type, R_squared) {
-  MLIST <- gen_mat(model_type, R_squared = R_squared)
-  BETA <- MLIST$beta
-  
-  B_true <- BETA[BETA != 0]
-  param_names <- character(length(B_true))
-  
-  counter <- 1
-  for (i in 1:nrow(BETA)) {
-    for (j in 1:ncol(BETA)) {
-      if (BETA[i, j] != 0) {
-        param_names[counter] <- paste0("f", i, "~f", j)
-        counter <- counter + 1
-      }
-    }
-  }
-  
-  names(B_true) <- param_names
-  return(list(B = B_true))
-}
+# Set population values
+B_true <- c(
+  'f3~f1' = 0.1, 'f3~f2' = 0.1, 'f3~f4' = 0.1,
+  'f4~f1' = 0.1, 'f4~f2' = 0.1,
+  'f5~f3' = 0.1, 'f5~f4' = 0.1
+)
+true_values <- list(
+  B = B_true
+)
 
 model_syntax_study2 <- "    
     f1 =~ y1 + y2 + y3
@@ -70,13 +49,13 @@ model_syntax_study2 <- "
     f4 =~ y10 + y11 + y12
     f5 =~ y13 + y14 + y15
     
-    f3 ~ f1 + f2
-    f4 ~ f1 + f2 + f3
-    f5 ~ f3 + f4 + f2
-"
+    f3 ~ f1 + f2 + f4
+    f4 ~ f1 + f2
+    f5 ~ f3 + f4 + f1
+                        "
 
 # Study function
-run_study_2 <- function(params) {
+run_study_2 <- function(params, true_values) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   
   # Progress bar setup
@@ -86,77 +65,71 @@ run_study_2 <- function(params) {
   )
   
   # Run the simulations and analysis in parallel
-  results <- future_pmap(params %>% distinct(across(-seed)),
-                         function(model_type, N, reliability, R_squared, method, b) {
-               future_map(params %>% distinct(seed) %>% pull(seed),
-                          function(seed) {
-      set.seed(seed)
-      #pb$tick() # Update progress bar - don't use this in async/parallel scenario
-      data <- gen_pop_model_data(model_type, N, reliability, R_squared = R_squared)$data
-      
-      # Get true values based on model_type and R_squared
-      true_values <- get_true_values(model_type, R_squared)
-      
-      fit_result <- safe_quiet_run_analysis(data, model_syntax_study2, method, b)
-      
-      sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study2)
-      sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
-      
-      warnings_detected <- fit_result$result$warnings
-      improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
-      
-      if (!is.null(fit_result$result$result) && lavInspect(fit_result$result$result, "converged")) {
-        PT <- parTable(fit_result$result$result)
-        estimated_paths <- PT[PT$op == "~", "est"]
-        names(estimated_paths) <- paste0(PT[PT$op == "~", "lhs"], "~", PT[PT$op == "~", "rhs"])
-        
-        # Calculate performance metrics
-        coverage <- calculate_coverage(fit_result$result$result, true_values)
-        relative_bias <- calculate_relative_bias(estimated_paths, true_values)
-        relative_rmse <- calculate_relative_rmse(estimated_paths, true_values)
-        
-        list(
-          Converged = 1, NonConverged = 0, 
-          EstimatedPaths = list(estimated_paths),
-          SanityCheck = list(sanity_check_estimates),
-          MaxSanityCheckDifference = sanity_check_results$MaxDifference,
-          SanityCheckAlarm = sanity_check_results$Alarm,
-          Coverage = coverage,
-          RelativeBias = relative_bias,
-          RelativeRMSE = relative_rmse,
-          RelativeBiasList = list(relative_bias),
-          RelativeRMSEList = list(relative_rmse),
-          ImproperSolution = improper_solution,
-          Warnings = toString(fit_result$result$warnings), 
-          Messages = toString(fit_result$result$messages),
-          Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
-        )
-      } else {
-        list(
-          Converged = 0, NonConverged = 1, 
-          EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
-          SanityCheck = list(sanity_check_estimates),
-          MaxSanityCheckDifference = sanity_check_results$MaxDifference,
-          SanityCheckAlarm = sanity_check_results$Alarm,
-          Coverage = NA,
-          RelativeBias = NA,
-          RelativeRMSE = NA,
-          RelativeBiasList = list(NA),
-          RelativeRMSEList = list(NA),
-          ImproperSolution = improper_solution,
-          Warnings = toString(fit_result$result$warnings), 
-          Messages = toString(fit_result$result$messages),
-          Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
-        )
-      }
-    })
-  })
+  results <- future_pmap(params,
+                         function(seed, model_type, N, reliability, method) {
+                           options <- furrr_options(seed = seed)  # Pass the seed to furrr_options
+                           
+                           # Update progress bar
+                           pb$tick()  # Uncomment this line if you want to update the progress bar synchronously
+                           
+                           data <- gen_pop_model_data(model_type, N, reliability)$data
+                           
+                           fit_result <- safe_quiet_run_analysis(data, model_syntax_study2, method)
+                           
+                           sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study2)
+                           sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
+                           
+                           warnings_detected <- fit_result$result$warnings
+                           improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
+                           
+                           if (!is.null(fit_result$result$result) && lavInspect(fit_result$result$result, "converged")) {
+                             PT <- parTable(fit_result$result$result)
+                             estimated_paths <- PT[PT$op == "~", "est"]
+                             names(estimated_paths) <- paste0(PT[PT$op == "~", "lhs"], "~", PT[PT$op == "~", "rhs"])
+                             
+                             # Calculate performance metrics
+                             coverage <- calculate_coverage(fit_result$result$result, true_values)
+                             relative_bias <- calculate_relative_bias(estimated_paths, true_values)
+                             relative_rmse <- calculate_relative_rmse(estimated_paths, true_values)
+                             
+                             list(
+                               Converged = 1, NonConverged = 0,
+                               EstimatedPaths = list(estimated_paths),
+                               SanityCheck = list(sanity_check_estimates),
+                               MaxSanityCheckDifference = sanity_check_results$MaxDifference,
+                               SanityCheckAlarm = sanity_check_results$Alarm,
+                               Coverage = coverage,
+                               RelativeBias = relative_bias,
+                               RelativeRMSE = relative_rmse,
+                               RelativeBiasList = list(relative_bias),
+                               RelativeRMSEList = list(relative_rmse),
+                               ImproperSolution = improper_solution,
+                               Warnings = toString(fit_result$result$warnings),
+                               Messages = toString(fit_result$result$messages),
+                               Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
+                             )
+                           } else {
+                             list(
+                               Converged = 0, NonConverged = 1,
+                               EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
+                               SanityCheck = list(sanity_check_estimates),
+                               MaxSanityCheckDifference = sanity_check_results$MaxDifference,
+                               SanityCheckAlarm = sanity_check_results$Alarm,
+                               Coverage = NA,
+                               RelativeBias = NA,
+                               RelativeRMSE = NA,
+                               RelativeBiasList = list(NA),
+                               RelativeRMSEList = list(NA),
+                               ImproperSolution = improper_solution,
+                               Warnings = toString(fit_result$result$warnings),
+                               Messages = toString(fit_result$result$messages),
+                               Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
+                             )
+                           }
+                         }, .options = furrr_options(seed = TRUE))  # Use the furrr options object here
   
-  # Flatten the results
-  results <- flatten(results)
-  
-  # Verify the structure of results
-  stopifnot(length(results) == nrow(params))
+  # Ensure results are a list of lists
+  results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)
   
   # Create dataframe for results
   results_df <- params %>%
@@ -187,7 +160,7 @@ run_study_2 <- function(params) {
   
   # Calculate summary statistics
   summary_stats <- results_df %>%
-    group_by(model_type, N, reliability, R_squared, method, b) %>%  # Include R_squared and b in grouping
+    group_by(model_type, N, reliability, method) %>%
     summarise(
       ConvergenceRate = mean(Converged),
       NonConvergenceCount = sum(NonConverged),
@@ -199,18 +172,22 @@ run_study_2 <- function(params) {
       MeanRelativeRMSE = mean(RelativeRMSE, na.rm = TRUE),
       MCSE_RelativeBias = calculate_mcse_bias(relative_bias_list),
       MCSE_RelativeRMSE = calculate_mcse_rmse(relative_rmse_list),
-      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),
+      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),  # Update to count
       .groups = 'drop'
     ) %>%
-    arrange(model_type, N, reliability, R_squared, method, b)  # Include R_squared and b in arrangement
+    arrange(model_type, N, reliability, method)
   
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
 
+
+# Plan for parallel execution
+plan(list(multisession, sequential))
+
 # Run complete simulation study
 cat("Starting simulation study 2...\n")
-simulation_results <- run_study_2(params)
+simulation_results <- run_study_2(params, true_values)
 cat("Simulation study completed. Saving results...\n")
 
 # Save with timestamp

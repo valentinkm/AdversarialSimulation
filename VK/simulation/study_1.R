@@ -65,72 +65,71 @@ run_study_1 <- function(params, true_values) {
   )
   
   # Run the simulations and analysis in parallel
-  results <- future_pmap(params %>% distinct(across(-seed)),
-                         function(model_type, N, reliability, method) {
-               future_pmap(params %>% distinct(seed),
-                           function(seed) {
-      set.seed(seed)
-      #pb$tick() # Update progress bar - don't use this in async/parallel scenario
-      data <- gen_pop_model_data(model_type, N, reliability)$data
-      
-      fit_result <- safe_quiet_run_analysis(data, model_syntax_study1, method)
-      
-      
-      sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study1)
-      sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
-      
-      warnings_detected <- fit_result$result$warnings
-      improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
-      
-      if (!is.null(fit_result$result$result) && lavInspect(fit_result$result$result, "converged")) {
-        PT <- parTable(fit_result$result$result)
-        estimated_paths <- PT[PT$op == "~", "est"]
-        names(estimated_paths) <- paste0(PT[PT$op == "~", "lhs"], "~", PT[PT$op == "~", "rhs"])
-        
-        # Calculate performance metrics
-        coverage <- calculate_coverage(fit_result$result$result, true_values)
-        relative_bias <- calculate_relative_bias(estimated_paths, true_values)
-        relative_rmse <- calculate_relative_rmse(estimated_paths, true_values)
-        
-        list(
-          Converged = 1, NonConverged = 0, 
-          EstimatedPaths = list(estimated_paths),
-          SanityCheck = list(sanity_check_estimates),
-          MaxSanityCheckDifference = sanity_check_results$MaxDifference,
-          SanityCheckAlarm = sanity_check_results$Alarm,
-          Coverage = coverage,
-          RelativeBias = relative_bias,
-          RelativeRMSE = relative_rmse,
-          RelativeBiasList = list(relative_bias),
-          RelativeRMSEList = list(relative_rmse),
-          ImproperSolution = improper_solution,
-          Warnings = toString(fit_result$result$warnings), 
-          Messages = toString(fit_result$result$messages),
-          Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
-      )
-      } else {
-        list(
-          Converged = 0, NonConverged = 1, 
-          EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
-          SanityCheck = list(sanity_check_estimates),
-          MaxSanityCheckDifference = sanity_check_results$MaxDifference,
-          SanityCheckAlarm = sanity_check_results$Alarm,
-          Coverage = NA,
-          RelativeBias = NA,
-          RelativeRMSE = NA,
-          RelativeBiasList = list(NA),
-          RelativeRMSEList = list(NA),
-          ImproperSolution = improper_solution,
-          Warnings = toString(fit_result$result$warnings), 
-          Messages = toString(fit_result$result$messages),
-          Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
-        )
-      }
-    })
-  })
-
-  # XXX Make sure results are in correct order / check input grid !
-  results <- flatten(results)
+  results <- future_pmap(params,
+                         function(seed, model_type, N, reliability, method) {
+                           options <- furrr_options(seed = seed)  # Pass the seed to furrr_options
+                           
+                           # Update progress bar
+                           pb$tick()  # Uncomment this line if you want to update the progress bar synchronously
+                           
+                           data <- gen_pop_model_data(model_type, N, reliability)$data
+                           
+                           fit_result <- safe_quiet_run_analysis(data, model_syntax_study1, method)
+                           
+                           sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study1)
+                           sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
+                           
+                           warnings_detected <- fit_result$result$warnings
+                           improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
+                           
+                           if (!is.null(fit_result$result$result) && lavInspect(fit_result$result$result, "converged")) {
+                             PT <- parTable(fit_result$result$result)
+                             estimated_paths <- PT[PT$op == "~", "est"]
+                             names(estimated_paths) <- paste0(PT[PT$op == "~", "lhs"], "~", PT[PT$op == "~", "rhs"])
+                             
+                             # Calculate performance metrics
+                             coverage <- calculate_coverage(fit_result$result$result, true_values)
+                             relative_bias <- calculate_relative_bias(estimated_paths, true_values)
+                             relative_rmse <- calculate_relative_rmse(estimated_paths, true_values)
+                             
+                             list(
+                               Converged = 1, NonConverged = 0,
+                               EstimatedPaths = list(estimated_paths),
+                               SanityCheck = list(sanity_check_estimates),
+                               MaxSanityCheckDifference = sanity_check_results$MaxDifference,
+                               SanityCheckAlarm = sanity_check_results$Alarm,
+                               Coverage = coverage,
+                               RelativeBias = relative_bias,
+                               RelativeRMSE = relative_rmse,
+                               RelativeBiasList = list(relative_bias),
+                               RelativeRMSEList = list(relative_rmse),
+                               ImproperSolution = improper_solution,
+                               Warnings = toString(fit_result$result$warnings),
+                               Messages = toString(fit_result$result$messages),
+                               Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
+                             )
+                           } else {
+                             list(
+                               Converged = 0, NonConverged = 1,
+                               EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
+                               SanityCheck = list(sanity_check_estimates),
+                               MaxSanityCheckDifference = sanity_check_results$MaxDifference,
+                               SanityCheckAlarm = sanity_check_results$Alarm,
+                               Coverage = NA,
+                               RelativeBias = NA,
+                               RelativeRMSE = NA,
+                               RelativeBiasList = list(NA),
+                               RelativeRMSEList = list(NA),
+                               ImproperSolution = improper_solution,
+                               Warnings = toString(fit_result$result$warnings),
+                               Messages = toString(fit_result$result$messages),
+                               Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
+                             )
+                           }
+                         }, .options = furrr_options(seed = TRUE))  # Use the furrr options object here
+  
+  # Ensure results are a list of lists
+  results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)
   
   # Create dataframe for results
   results_df <- params %>%
