@@ -18,6 +18,10 @@ The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5"
 
 # Deviations from the simulation protocol
 
+## Across studies
+
+For pragmatic purposes of the simulation, we were unable to track and include non-convergence explicitly and exclude cases where it occured.
+
 ## Studies 1,2,3
 
 For all these studies, 3 deviations are present.
@@ -82,12 +86,12 @@ For our studies, in order to have a more coherent interpretation of results, we 
 
 Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE, they rarely explicitly mentioned them in the results sections or give cut-offs for substantial relevance.
 
-SD is only reported and mentioned in Study 1, even though also claimed to be calculated in studies 2 and 3. 
+SD is only reported and mentioned in the conditions without misspecification in Study 1, even though also claimed to be calculated in studies 2 and 3. 
 In this study, they mentioned a 6.6% reduction of SD for LSAM in comparison to ML. 
 This calculation, however, is wrong as the reduction amounts to 8%.
-For our interpretation, we will report percentage reductions larger than 5% as well and compare it with the original study, without drawing a substantive conclusion.
+For our interpretation, we will report percentage reductions larger than 5% as well and compare them with the original study, without drawing a substantive conclusion.
 
-RMSE (and average RMSE) is reported in Studies 1-4, but only in study 2 and 4 explicitly interpreted for our estimators of interest.
+RMSE (and average RMSE) is reported in Studies 1-4, but only in studies 2 and 4 explicitly interpreted for our estimators of interest.
 In study 2, differences of up to 0.03 are present and interpreted as not being substantial differences.
 In study 4, differences of up to 0.04 are present and interpreted as not being substantial differences.
 We infer that this lack of mentioning can be interpreted as there being no differences of interest. 
@@ -103,6 +107,7 @@ library(tidyverse)
 
 # Results Simulation 1: 2-factor-CFA with 0,1 or 2 correlated residuals
 
+## Error, warnings and messages
 First, lets check for any messages, warnings or errors:
 
 ```{r}
@@ -111,32 +116,44 @@ First, lets check for any messages, warnings or errors:
 #Save all errors, warnings and messages
 all_messages <- readRDS("SimulationResults/sim1_results_error.rds")
 
-errors <- all_messages$errors
-warnings <- all_messages$warnings
-messages <- all_messages$messages
-
 #errors
+errors <- all_messages$errors
 errors_sum <- unlist(errors)
 length(errors_sum)
 
 #warnings
+warnings <- all_messages$warnings
 warnings_sum <- unlist(warnings)
 length(warnings_sum)
-print(warnings[1:20])
 
 #messages
+messages <- all_messages$messages
 messages_sum <- unlist(messages)
 length(messages_sum)
 
+
+print(warnings[1:20])
+
 ```
-First 1000 entries no error & message
 
-First 1000 entries quite some warnings, but all the same
-$warnings[[8]], 14, 28[1 und 3], 41, 49, 53, 56, 63, 84[1 und 3], 95, 96, 98, 99, 116, 142[1 und 3], 162, 163, 173, 174, 181[1 und 3], 193, 195[1 und 3], 202[1,3,5],
--> "no non-missing arguments to min; returning Inf" "no non-missing arguments to min; returning Inf"
+No errors and messages were present. There were, however, 245 warnings, we will investigate in detail.
 
-Might just mean that there are in fact, convergence issues in ml estimation, even though constrained ML estimation!
-DEVIATION: Exclude casees with non-convergence -> Not possible anymore! Just count, report and guess.
+### Warnings investigation
+
+Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+```{r}
+#| ouput: true
+
+#exemplary display of warnings
+print(warnings[8])
+```
+ 
+This warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
+Unfortunately, due to the implementation of the study, we are unable to check for more details, as whether there is any kind of pattern with regards to the warning occurrence. 
+There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
+Even though in @robitzsch_comparing_2022 the authors claim that constraining estimation to realistic values (e.g. loadings between 0 and 1) should solve this, applying these same constraints still lead to these issues in our study.
+The combined study should check this more properly to evaluate these claims thoroughly.
+As the 245 are less than 0.5% of the 525000 estimations performed, we will continue with the interpretation as planned, as their impact is negligable.
 
 ##Print all tables
 
@@ -189,6 +206,13 @@ Interpretation layers within one condition:
 
 ### Condition without correlated residuals (0_0.12)
 
+```{r}
+#| ouput: true
+
+print(create_styled_table(bias_ci[["0_0.12"]], "0_0.12"))
+
+```
+
 Both standard SEM estimators are unbiased (i.e. relative Bias < 0.05) across all N conditions.
 The 4 SAM estimators are negatively biased for sample sizes up to 500 and have nearly identical estimation results.
 Across all estimators, the relative Bias decreases with increasing N. 
@@ -196,6 +220,13 @@ Across all estimators, the relative Bias decreases with increasing N.
 Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is no missspecification.
 
 ### Condition with one negative residual correlation (1_-0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(bias_ci[["1_-0.12"]], "1_-0.12"))
+
+```
 
 All estimators are negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
 Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
@@ -207,6 +238,13 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 
 ### Condition with one positive residual correlation (1_0.12)
 
+```{r}
+#| ouput: true
+
+print(create_styled_table(bias_ci[["1_0.12"]], "1_0.12"))
+
+```
+
 Besides SEM-ML in N=50, both SEM estimators are positively biased across all N, with no visible trend for increasing N.
 All SAM estimators have nearly identical values and increasing relative bias for increasing N.
 They are negatively biased up to N=250 and positively biased for the other N conditions. 
@@ -216,6 +254,13 @@ In relative comparison, the two SEM estimators outperform all SAM estimators for
 Thus, SEM estimation outperforms SAM in smaller samples (N=50-100), whereas SAM outperforms SEM in moderate samples (N250-500), and slightly in higher sample sizes.
 
 ### Condition with two negative residual correlations (2_-0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(bias_ci[["2_-0.12"]], "2_-0.12"))
+
+```
 
 All estimators are negatively biased across all N conditions.
 Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
@@ -227,6 +272,13 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 
 ### Condition with two positive residual correlation (2_0.12)
 
+```{r}
+#| ouput: true
+
+print(create_styled_table(bias_ci[["2_0.12"]], "2_0.12"))
+
+```
+
 Both SEM estimators are positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
 All SAM estimators have nearly identical values and increasing relative bias for increasing N.
 They are negatively biased up to N=100 and positively biased for the other N conditions. 
@@ -235,46 +287,94 @@ In relative comparison, the two SEM estimators outperform all SAM estimators for
 Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outperforms SEM in small to moderate samples (N100-500), and slightly in higher sample sizes.
 
 ### Summary
+
+in 0.5% of estimations, a warning referring to potential problems with convergence or improper solutions due to small sample sizes in one or multiple estimators occured. 
+This should be investigated more explicitly in the joint study.
+
 In conditions with no, one or two negative residual correlations,  SEM outperforms SAM in small to moderate sample sizes. This seems to be independent of the amount of misspecification (1 vs. 2).
 
 Comparing the conditions with one and two positive residual correlations, the results suggest that SAM outperforms SEM in smaller to moderate samples, with increasing amount of misspecifiation (even better for 2 than for 1 residual correlation). In small samples, SEM tends to perform better.
 
 ### Comparison with original paper
 
-Comparing these results with the original paper, the results are very similar and can be seen as succesfully replicated.
-Thus, we draw the same main conclusions as Robitzsch (2022):
+Comparing these results with the original paper, the results are  similar and can be seen as mostly replicated. The only difference lies in the potential convergence issues in a small number of estimations. 
+Besides that, we draw the same conclusions as @robitzsch_comparing_2022:
 All SAM approaches appear to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
 This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for positive misspecifications and makes SAM appear superior in these conditions.
 
 
 ## SD
+
+General interpretation: Substantial if percentage reductions are larger than 5%
+
+Interpretation layers within one condition:
+
+- Unbiased judgement SAM vs. SEM
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
+### print all tables
 ```{r}
 #| ouput: true
 
 # Load the relative bias results
 sd <- readRDS("SimulationResults/sim1_sd.rds")
 
-# Function to create a styled table for each condition
-create_styled_table <- function(data, condition) {
-  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
-    kable_styling(full_width = F, position = "left") %>%
-    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
-    row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = F) %>%
-    add_header_above(c("Condition:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE) %>%
-    footnote(general = paste("Condition:", condition))
-}
 
 # Loop through each condition and print the styled table
 for (condition in names(sd)) {
   print(create_styled_table(sd[[condition]], condition))
   cat("\n\n")  # Add space between tables
 }
+```
 
+### No residual correlations (0_0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(sd[["0_0.12"]], "0_0.12"))
 
 ```
 
+Across all estimators, the standard deviation decreases with increasing N. 
 
+There are only two substantial differences:
+Substantial percentage reduction of SD up to 22.4% when comparing SEM-ML and LSAM-ML in N=50: 
+0.299*x = 0.232
+0.232/0.299 = 0.775
+1-(0.232/0.299) = *0.224*
+
+Substantial percentage reduction of SD up to 8.6% when comparing SEM-ML and LSAM-ML in N=100:
+1-(0.19/0.208)
+
+Thus, SAM outperforms SEM in terms of SD reduction in smaller samples
+
+#### Robitzsch for this condition only:
+Similar reduction as Robitzsch for N=100, difference seems to be even more significant in samples smaller than N=100.
+
+### One negative residual correlation (1_-0.12)
+```{r}
+#| ouput: true
+
+print(create_styled_table(sd[["1_-0.12"]], "1_-0.12"))
+
+```
+
+Across all estimators, the standard deviation decreases with increasing N. 
+
+There are only two substantial differences:
+Substantial percentage reduction of SD up to 27.4% when comparing SEM-ML and LSAM-ML in N=50: 
+1-(0.233/ 0.321)
+
+Substantial percentage reduction of SD up to 12.2% when comparing SEM-ML and LSAM-ML in N=100:
+1-(0.187/0.213)
+
+Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 
 
 
