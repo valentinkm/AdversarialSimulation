@@ -103,14 +103,50 @@ library(tidyverse)
 
 # Results Simulation 1: 2-factor-CFA with 0,1 or 2 correlated residuals
 
+First, lets check for any messages, warnings or errors:
+
+```{r}
+#| ouput: true
+
+#Save all errors, warnings and messages
+all_messages <- readRDS("SimulationResults/sim1_results_error.rds")
+
+errors <- all_messages$errors
+warnings <- all_messages$warnings
+messages <- all_messages$messages
+
+#errors
+errors_sum <- unlist(errors)
+length(errors_sum)
+
+#warnings
+warnings_sum <- unlist(warnings)
+length(warnings_sum)
+print(warnings[1:20])
+
+#messages
+messages_sum <- unlist(messages)
+length(messages_sum)
+
+```
+First 1000 entries no error & message
+
+First 1000 entries quite some warnings, but all the same
+$warnings[[8]], 14, 28[1 und 3], 41, 49, 53, 56, 63, 84[1 und 3], 95, 96, 98, 99, 116, 142[1 und 3], 162, 163, 173, 174, 181[1 und 3], 193, 195[1 und 3], 202[1,3,5],
+-> "no non-missing arguments to min; returning Inf" "no non-missing arguments to min; returning Inf"
+
+Might just mean that there are in fact, convergence issues in ml estimation, even though constrained ML estimation!
+DEVIATION: Exclude casees with non-convergence -> Not possible anymore! Just count, report and guess.
+
 ##Print all tables
+
 ```{r}
 #| ouput: true
 
 # Load the relative bias results
 bias_ci <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
 
-# Display the relative bias results for each condition
+# Display the relative bias results for each condition, without formatting
 #for (condition in names(bias_ci)) {
 #  cat("## Condition:", condition, "\n\n")
 #  print(bias_ci[[condition]])
@@ -203,7 +239,7 @@ In conditions with no, one or two negative residual correlations,  SEM outperfor
 
 Comparing the conditions with one and two positive residual correlations, the results suggest that SAM outperforms SEM in smaller to moderate samples, with increasing amount of misspecifiation (even better for 2 than for 1 residual correlation). In small samples, SEM tends to perform better.
 
-## Comparison with original paper
+### Comparison with original paper
 
 Comparing these results with the original paper, the results are very similar and can be seen as succesfully replicated.
 Thus, we draw the same main conclusions as Robitzsch (2022):
@@ -211,7 +247,32 @@ All SAM approaches appear to be generally negatively biased for small to moderat
 This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for positive misspecifications and makes SAM appear superior in these conditions.
 
 
+## SD
+```{r}
+#| ouput: true
 
+# Load the relative bias results
+sd <- readRDS("SimulationResults/sim1_sd.rds")
+
+# Function to create a styled table for each condition
+create_styled_table <- function(data, condition) {
+  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
+}
+
+# Loop through each condition and print the styled table
+for (condition in names(sd)) {
+  print(create_styled_table(sd[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+
+
+```
 
 
 
