@@ -13,18 +13,9 @@ for (library_name in libraries) {
 # List of R scripts to run
 r_scripts <- c("simulation1.R", "simulation1b.R", "simulation2.R", "simulation3.R", "simulation4.R", "simulation4a.R")
 
-# Set up processing
+# Set up processing with multisession
 plan(multisession, workers = parallel::detectCores())
 
-#tweak(batchtools_slurm)
-#plan(tweak(batchtools_slurm,
-#           workers = 100,
-#           template = missing,
-#           resources=list(ncpus=1,
-#                          memore='700m',
-#                          walltime=6600,
-#                          partition=c('gpu'))
-#           ))
 
 # Function to source a script
 run_script <- function(script) {
