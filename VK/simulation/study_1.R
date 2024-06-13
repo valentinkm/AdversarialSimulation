@@ -61,42 +61,43 @@ model_syntax_study1 <- "
 # Study function
 run_study_1 <- function(params, true_values) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
-  
+
   # Progress bar setup
   pb <- progress_bar$new(
     format = "  Running [:bar] :percent in :elapsed, ETA: :eta",
-    total = nrow(params) / n_reps, clear = FALSE, width = 60
+    total = nrow(params), clear = FALSE, width = 60
   )
-  
+
   # Run the simulations and analysis in parallel
   results <- future_pmap(params,
                          function(seed, model_type, N, reliability, method) {
-                           
-                           set.seed(seed)  # Set seed for reproducibility
-                           
+                           # Pass the seed to furrr_options
+
+                           set.seed(seed)
+
                            # Update progress bar
                            pb$tick()
-                           
+
                            data <- gen_pop_model_data(model_type, N, reliability)$data
-                           
+
                            fit_result <- safe_quiet_run_analysis(data, model_syntax_study1, method)
-                           
+
                            sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study1)
                            sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
-                           
+
                            warnings_detected <- fit_result$result$warnings
                            improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
-                           
+
                            if (!is.null(fit_result$result$result) && lavInspect(fit_result$result$result, "converged")) {
                              PT <- parTable(fit_result$result$result)
                              estimated_paths <- PT[PT$op == "~", "est"]
                              names(estimated_paths) <- paste0(PT[PT$op == "~", "lhs"], "~", PT[PT$op == "~", "rhs"])
-                             
+
                              # Calculate performance metrics
                              coverage <- calculate_coverage(fit_result$result$result, true_values)
                              relative_bias <- calculate_relative_bias(estimated_paths, true_values)
                              relative_rmse <- calculate_relative_rmse(estimated_paths, true_values)
-                             
+
                              list(
                                Converged = 1, NonConverged = 0,
                                EstimatedPaths = list(estimated_paths),
@@ -132,10 +133,10 @@ run_study_1 <- function(params, true_values) {
                              )
                            }
                          }, .options = furrr_options(seed = params$seed))  # Pass the options variable here
-  
-  # Flatten results
-  results <- flatten(results)
-  
+
+  # Ensure results are a list of lists
+  results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)
+
   # Create dataframe for results
   results_df <- params %>%
     mutate(
@@ -155,14 +156,14 @@ run_study_1 <- function(params, true_values) {
       RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]]),
       ImproperSolution = map_lgl(results, ~ .x$ImproperSolution)
     )
-  
+
   # Remove NAs from the lists before calculating MCSE
   relative_bias_list <- unlist(results_df$RelativeBiasList)
   relative_rmse_list <- unlist(results_df$RelativeRMSEList)
-  
+
   relative_bias_list <- na.omit(relative_bias_list)
   relative_rmse_list <- na.omit(relative_rmse_list)
-  
+
   # Calculate summary statistics
   summary_stats <- results_df %>%
     group_by(model_type, N, reliability, method) %>%
@@ -181,7 +182,7 @@ run_study_1 <- function(params, true_values) {
       .groups = 'drop'
     ) %>%
     arrange(model_type, N, reliability, method)
-  
+
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
