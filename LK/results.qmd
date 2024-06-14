@@ -376,7 +376,21 @@ Substantial percentage reduction of SD up to 12.2% when comparing SEM-ML and LSA
 
 Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 
+### One positive residual correlation (1_0.12)
+```{r}
+#| ouput: true
 
+print(create_styled_table(sd[["1_0.12"]], "1_0.12"))
+
+```
+
+Across all estimators, the standard deviation decreases with increasing N. 
+
+The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 16.9%.
+ULS-SEM outperforms all SAM estimators with a percentage reduction of SD up to 8.16% in N=100-250.
+No substantial differences between the two SEM and all SAM estimators starting from moderate sample sizes (N=500-2500). 
+
+Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM outperforms SAM in moderate samples.
 
 
 
