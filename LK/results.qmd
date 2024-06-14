@@ -89,12 +89,12 @@ Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE
 SD is only reported and mentioned in the conditions without misspecification in Study 1, even though also claimed to be calculated in studies 2 and 3. 
 In this study, they mentioned a 6.6% reduction of SD for LSAM in comparison to ML. 
 This calculation, however, is wrong as the reduction amounts to 8%.
-For our interpretation, we will report percentage reductions larger than 5% as well and compare them with the original study, without drawing a substantive conclusion.
+For our interpretation, we will report percentage reductions larger than 5% as well and compare them with the original study.
 
 RMSE (and average RMSE) is reported in Studies 1-4, but only in studies 2 and 4 explicitly interpreted for our estimators of interest.
 In study 2, differences of up to 0.03 are present and interpreted as not being substantial differences.
-In study 4, differences of up to 0.04 are present and interpreted as not being substantial differences.
-We infer that this lack of mentioning can be interpreted as there being no differences of interest. 
+In study 4, differences of 0.01 are present and interpreted as slight efficiency gains.
+We infer that this lack of mentioning and consistency can be interpreted as there being no differences of interest. 
 Thus, we expect our studies to yield similar results. 
 If, however, there are differences large than 0.03, we will report them, without drawing a substantive conclusion.
 
@@ -354,9 +354,6 @@ Substantial percentage reduction of SD up to 8.6% when comparing SEM-ML and LSAM
 
 Thus, SAM outperforms SEM in terms of SD reduction in smaller samples
 
-#### Robitzsch for this condition only:
-Similar reduction as Robitzsch for N=100, difference seems to be even more significant in samples smaller than N=100.
-
 ### One negative residual correlation (1_-0.12)
 ```{r}
 #| ouput: true
@@ -392,20 +389,140 @@ No substantial differences between the two SEM and all SAM estimators starting f
 
 Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM outperforms SAM in moderate samples.
 
+### Two negative residual correlations (2_-0.12)
+```{r}
+#| ouput: true
 
+print(create_styled_table(sd[["2_-0.12"]], "2_-0.12"))
 
+```
 
+Across all estimators, the standard deviation decreases with increasing N. 
 
+The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 29% and in N=100 with up to 12.8%.
+For higher N, there are no substantial differences.
 
+Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 
+### Two positive residual correlations (2_0.12)
+```{r}
+#| ouput: true
 
+print(create_styled_table(sd[["2_0.12"]], "2_0.12"))
 
+```
 
+Across all estimators, the standard deviation decreases with increasing N. 
 
+The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 15.2%.
+Both SEM estimators ourperform the SAM estimators in N=100 with a percentage reduction of SD up to 11.1% and in N=250 with up to 10.3%.
+For higher N, there are no substantial differences.
 
+Thus, SAM outperforms SEM in terms of SD reduction in small samples, but SEM outperforms SAM in smaller to moderate samples.
 
+### Summary and comparison with original paper
 
+Overall, SAM outperforms SEM in terms of SD reduction in small to smaller samples, especially for negatively correlated residuals. 
+In smaller to moderate samples, SEM outperforms SAM only for positively correlated residuals.
+For conditions with no misspecification, which were the only conditions reported in @robitzsch_comparing_2022, the percentage reduction favoring SAM is nearly identical for N=100, and the reduction seems to be even more significantly in favor of SEM in smaller samples.
 
+## RMSE
+differences large than 0.03, we will report, without drawing a substantive conclusion.
+
+Interpretation layers within one condition:
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
+###Print all tables
+```{r}
+rmse <- readRDS("SimulationResults/sim1_rmse.rds")
+
+```
+
+### No residual correlations (0_0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse[["0_0.12"]], "0_0.12"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+In N=100, both SEM estimators were more efficient than all  SAM estimators.
+Besides, there are no substantial differences present.
+
+### One negative residual correlation (1_-0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse[["1_-0.12"]], "1_-0.12"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For small to moderate samples (N=50-250), both SEM estimators were more efficient than all SAM estimators.
+For higher N, there are no substantial differences present.
+
+### One positive residual correlation (1_0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse[["1_0.12"]], "1_0.12"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For smaller samples (N=50-100), SEM-ULS was more efficient than all SAM estimators.
+For higher N, there are no substantial differences present.
+
+### Two negative residual correlations (2_-0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse[["2_-0.12"]], "2_-0.12"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For small to moderate samples (N=50-500), The two SEM estimators were more efficient than all SAM estimators.
+For higher N, there are no substantial differences present.
+
+### Two positive residual correlations (2_0.12)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse[["2_0.12"]], "2_0.12"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For moderate samples (N=250-500), all SAM estimators were more efficient than the two SEM estimators.
+For higher and lower N, there are no substantial differences present.
+
+### Summary
+
+Overall, classic SEM estimation was more efficient than SAM estimation in small to moderate samples. Only in the case of two positive residual correlation, SAM was more efficient than SEM in moderate samples.
+It would be interesting to investigate higher amount of misspecification to investigate differential effects (Study 4?).
+
+## Summary Study 1
+
+We gained the following insights with regards to the 2-factor-CFA model:
+Unlike the original paper by @robitzsch_comparing_2022, we experienced some issues that are related to convergence or improper solutions in small samples
+.
+In terms of bias in small to moderate samples, SEM outperforms SAM in conditions with no, one and two negative residual correlations. SAM appears to outperform SEM for positive residual correlations. This, however, is an artefact of its negative small sample bias and not its performance. The results align with the ones obtained by the original paper.
+
+With regards to SD and RMSE, results are somewhat incoherent. 
+
+Thus, it cannot be stated that one estimation method is generally performing better than the other, based on the results of Study 1.
 
 
 
