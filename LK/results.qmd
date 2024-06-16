@@ -114,25 +114,22 @@ First, lets check for any messages, warnings or errors:
 #| ouput: true
 
 #Save all errors, warnings and messages
-all_messages <- readRDS("SimulationResults/sim1_results_error.rds")
+all_messages_s1 <- readRDS("SimulationResults/sim1_results_error.rds")
 
 #errors
-errors <- all_messages$errors
-errors_sum <- unlist(errors)
-length(errors_sum)
+errors_s1 <- all_messages_s1$errors
+errors_sum_s1 <- unlist(errors_s1)
+length(errors_sum_s1)
 
 #warnings
-warnings <- all_messages$warnings
-warnings_sum <- unlist(warnings)
-length(warnings_sum)
+warnings_s1 <- all_messages_s1$warnings
+warnings_sum_s1 <- unlist(warnings_s1)
+length(warnings_sum_s1)
 
 #messages
-messages <- all_messages$messages
-messages_sum <- unlist(messages)
-length(messages_sum)
-
-
-print(warnings[1:20])
+messages_s1 <- all_messages_s1$messages
+messages_sum_s1 <- unlist(messages_s1)
+length(messages_sum_s1)
 
 ```
 
@@ -144,8 +141,8 @@ Investigating the 'warnings' object list, it became apparent that all the warnin
 ```{r}
 #| ouput: true
 
-#exemplary display of warnings
-print(warnings[8])
+unique(warnings_s1)
+
 ```
  
 This warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
@@ -155,13 +152,13 @@ Even though in @robitzsch_comparing_2022 the authors claim that constraining est
 The combined study should check this more properly to evaluate these claims thoroughly.
 As the 245 are less than 0.5% of the 525000 estimations performed, we will continue with the interpretation as planned, as their impact is negligable.
 
-##Print all tables
+### Print all tables
 
 ```{r}
 #| ouput: true
 
 # Load the relative bias results
-bias_ci <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
+bias_ci_s1 <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
 
 # Display the relative bias results for each condition, without formatting
 #for (condition in names(bias_ci)) {
@@ -182,8 +179,8 @@ create_styled_table <- function(data, condition) {
 }
 
 # Loop through each condition and print the styled table
-for (condition in names(bias_ci)) {
-  print(create_styled_table(bias_ci[[condition]], condition))
+for (condition in names(bias_ci_s1)) {
+  print(create_styled_table(bias_ci_s1[[condition]], condition))
   cat("\n\n")  # Add space between tables
 }
 
@@ -204,12 +201,48 @@ Interpretation layers within one condition:
 
 -----------------
 
+
+### Print all tables
+
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci_s1 <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
+
+# Display the relative bias results for each condition, without formatting
+#for (condition in names(bias_ci)) {
+#  cat("## Condition:", condition, "\n\n")
+#  print(bias_ci[[condition]])
+#  cat("\n\n")
+#}
+
+# Function to create a styled table for each condition
+create_styled_table <- function(data, condition) {
+  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
+}
+
+# Loop through each condition and print the styled table
+for (condition in names(bias_ci_s1)) {
+  print(create_styled_table(bias_ci_s1[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+
+
+```
+
 ### Condition without correlated residuals (0_0.12)
 
 ```{r}
 #| ouput: true
 
-print(create_styled_table(bias_ci[["0_0.12"]], "0_0.12"))
+print(create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12"))
 
 ```
 
@@ -224,7 +257,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 ```{r}
 #| ouput: true
 
-print(create_styled_table(bias_ci[["1_-0.12"]], "1_-0.12"))
+print(create_styled_table(bias_ci_s1[["1_-0.12"]], "1_-0.12"))
 
 ```
 
@@ -241,7 +274,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 ```{r}
 #| ouput: true
 
-print(create_styled_table(bias_ci[["1_0.12"]], "1_0.12"))
+print(create_styled_table(bias_ci_s1[["1_0.12"]], "1_0.12"))
 
 ```
 
@@ -258,7 +291,7 @@ Thus, SEM estimation outperforms SAM in smaller samples (N=50-100), whereas SAM 
 ```{r}
 #| ouput: true
 
-print(create_styled_table(bias_ci[["2_-0.12"]], "2_-0.12"))
+print(create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12"))
 
 ```
 
@@ -275,7 +308,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 ```{r}
 #| ouput: true
 
-print(create_styled_table(bias_ci[["2_0.12"]], "2_0.12"))
+print(create_styled_table(bias_ci_s1[["2_0.12"]], "2_0.12"))
 
 ```
 
@@ -322,12 +355,12 @@ Interpretation layers within one condition:
 #| ouput: true
 
 # Load the relative bias results
-sd <- readRDS("SimulationResults/sim1_sd.rds")
+sd_s1 <- readRDS("SimulationResults/sim1_sd.rds")
 
 
 # Loop through each condition and print the styled table
-for (condition in names(sd)) {
-  print(create_styled_table(sd[[condition]], condition))
+for (condition in names(sd_s1)) {
+  print(create_styled_table(sd_s1[[condition]], condition))
   cat("\n\n")  # Add space between tables
 }
 ```
@@ -337,7 +370,7 @@ for (condition in names(sd)) {
 ```{r}
 #| ouput: true
 
-print(create_styled_table(sd[["0_0.12"]], "0_0.12"))
+print(create_styled_table(sd_s1[["0_0.12"]], "0_0.12"))
 
 ```
 
@@ -358,7 +391,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples
 ```{r}
 #| ouput: true
 
-print(create_styled_table(sd[["1_-0.12"]], "1_-0.12"))
+print(create_styled_table(sd_s1[["1_-0.12"]], "1_-0.12"))
 
 ```
 
@@ -377,7 +410,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 ```{r}
 #| ouput: true
 
-print(create_styled_table(sd[["1_0.12"]], "1_0.12"))
+print(create_styled_table(sd_s1[["1_0.12"]], "1_0.12"))
 
 ```
 
@@ -393,7 +426,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM
 ```{r}
 #| ouput: true
 
-print(create_styled_table(sd[["2_-0.12"]], "2_-0.12"))
+print(create_styled_table(sd_s1[["2_-0.12"]], "2_-0.12"))
 
 ```
 
@@ -408,7 +441,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 ```{r}
 #| ouput: true
 
-print(create_styled_table(sd[["2_0.12"]], "2_0.12"))
+print(create_styled_table(sd_s1[["2_0.12"]], "2_0.12"))
 
 ```
 
@@ -439,7 +472,7 @@ Interpretation layers within one condition:
 
 ###Print all tables
 ```{r}
-rmse <- readRDS("SimulationResults/sim1_rmse.rds")
+rmse_s1 <- readRDS("SimulationResults/sim1_rmse.rds")
 
 ```
 
@@ -448,7 +481,7 @@ rmse <- readRDS("SimulationResults/sim1_rmse.rds")
 ```{r}
 #| ouput: true
 
-print(create_styled_table(rmse[["0_0.12"]], "0_0.12"))
+print(create_styled_table(rmse_s1[["0_0.12"]], "0_0.12"))
 
 ```
 
@@ -461,7 +494,7 @@ Besides, there are no substantial differences present.
 ```{r}
 #| ouput: true
 
-print(create_styled_table(rmse[["1_-0.12"]], "1_-0.12"))
+print(create_styled_table(rmse_s1[["1_-0.12"]], "1_-0.12"))
 
 ```
 
@@ -474,7 +507,7 @@ For higher N, there are no substantial differences present.
 ```{r}
 #| ouput: true
 
-print(create_styled_table(rmse[["1_0.12"]], "1_0.12"))
+print(create_styled_table(rmse_s1[["1_0.12"]], "1_0.12"))
 
 ```
 
@@ -487,7 +520,7 @@ For higher N, there are no substantial differences present.
 ```{r}
 #| ouput: true
 
-print(create_styled_table(rmse[["2_-0.12"]], "2_-0.12"))
+print(create_styled_table(rmse_s1[["2_-0.12"]], "2_-0.12"))
 
 ```
 
@@ -500,7 +533,7 @@ For higher N, there are no substantial differences present.
 ```{r}
 #| ouput: true
 
-print(create_styled_table(rmse[["2_0.12"]], "2_0.12"))
+print(create_styled_table(rmse_s1[["2_0.12"]], "2_0.12"))
 
 ```
 
@@ -516,14 +549,166 @@ It would be interesting to investigate higher amount of misspecification to inve
 ## Summary Study 1
 
 We gained the following insights with regards to the 2-factor-CFA model:
-Unlike the original paper by @robitzsch_comparing_2022, we experienced some issues that are related to convergence or improper solutions in small samples
-.
-In terms of bias in small to moderate samples, SEM outperforms SAM in conditions with no, one and two negative residual correlations. SAM appears to outperform SEM for positive residual correlations. This, however, is an artefact of its negative small sample bias and not its performance. The results align with the ones obtained by the original paper.
+Unlike the original paper by @robitzsch_comparing_2022, we experienced some issues that are related to convergence or improper solutions in small samples.
 
-With regards to SD and RMSE, results are somewhat incoherent. 
+In terms of bias in small to moderate samples, SEM outperforms SAM in conditions with no, one and two negative residual correlations. SAM appears to outperform SEM for positive residual correlations. This, however, is an artifact of its negative small sample bias and not its performance. The results align with the ones obtained by the original paper.
+
+With regards to SD and RMSE, results are incoherent with no clear pattern emerging. 
 
 Thus, it cannot be stated that one estimation method is generally performing better than the other, based on the results of Study 1.
 
+# Results Simulation 2: 2-factor-CFA with 1 or 2 cross-loadings
 
+## Error, warnings and messages
+First, lets check for any messages, warnings or errors:
+
+```{r}
+#| ouput: true
+
+#Save all errors, warnings and messages
+all_messages_s2 <- readRDS("SimulationResults/sim2_results_error.rds")
+
+#errors
+errors_s2 <- all_messages_s2$errors
+errors_sum_s2 <- unlist(errors_s2)
+length(errors_sum_s2)
+
+#warnings
+warnings_s2 <- all_messages_s2$warnings
+warnings_sum_s2 <- unlist(warnings_s2)
+length(warnings_sum_s2)
+
+#messages
+messages_s2 <- all_messages_s2$messages
+messages_sum_s2 <- unlist(messages_s2)
+length(messages_sum_s2)
+
+
+```
+
+No errors and messages were present. There were, however, 612 warnings we will investigate in detail.
+
+
+### Warnings investigation
+Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+
+Sometimes 4-6 warnings per repetition, more than before (up to 2 per repetition)
+
+```{r}
+unique(warnings_s2)
+```
+
+As before, this warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
+Again, we are unable to check for more details, but hypothesize that this occurs mainly in the standard SEM estimators.
+There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
+The combined study should check this more properly to evaluate these claims thoroughly.
+As the 612 estimation are around 1.5% of the 42000 estimations performed, we will continue with the interpretation as planned, as their impact is negligable.
+
+## Bias
+
+General interpretation: Biased if Bias estimate larger than 0.05
+
+Interpretation layers within one condition:
+
+- Unbiased judgement SAM vs. SEM
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
+
+### Print all tables
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci_s2 <- readRDS("SimulationResults/sim2_rel_bias_ci.rds")
+
+# Loop through each condition and print the styled table
+for (condition in names(bias_ci_s2)) {
+  print(create_styled_table(bias_ci_s2[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+
+
+```
+
+### One negative cross-loading (1_-0.3)
+```{r}
+
+print(create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3"))
+
+```
+
+
+All estimators are negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
+Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
+For SEM-ULS, the bias stays constant across N, and is lowest by a substantial marging compared to all SAM estimators up until N=500.
+For higher N, SEM-ML is the best, but the differences between all estimators are negligible
+The 4 SAM estimators have nearly identical estimation results.
+In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
+
+Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is one negative cross-loading.
+
+### One positive cross-loadings (1_0.3)
+```{r}
+
+print(create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3"))
+
+```
+
+All estimators are biased across all N conditions.
+For the two SEM-estimators, the relative Bias is always positive and shows no trend across N.
+All SAM estimators have nearly identical values and increasing relative bias for increasing N.
+Their bias turn from being negative for N=50-100 to positive from N=250 on.
+In relative comparison, the two SEM estimators outperform all SAM estimators for N=50. For N=100-2500, the SAM estimators outperform the SEM estimators, even though the difference is unsubstantial starting from N=1000.
+
+Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outperforms SEM in smaller to moderate samples (N100-500), and slightly in higher sample sizes.
+
+### Two negative cross-loadings (2_-0.3)
+```{r}
+
+print(create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3"))
+
+```
+All estimators are negatively biased across all N conditions.
+Across all estimators, the Bias decreases substantially with increasing N.
+The 4 SAM estimators have nearly identical estimation results.
+In relative comparison, the two SEM estimators substantially outperform all SAM estimators in every condition of N.
+
+Thus, SEM estimation outperforms SAM, when there are two negative residuals.
+
+### Two positive cross-loadings (2_0.3)
+```{r}
+
+print(create_styled_table(bias_ci_s2[["2_0.3"]], "2_0.3"))
+
+```
+
+All estimators are biased across N conditions.
+Both SEM estimators are positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
+All SAM estimators have nearly identical values and increasing relative bias for increasing N.
+They are negatively biased in N=50 and positively biased for the other N conditions. 
+
+In relative comparison, the four SAM estimators outperform the two SEM estimators for N=50-500, even though unsubstantial for N=500. For all higher N, no estimator substantially differs from another, but the two SEM slightly outperform.
+
+Thus, SAM outperforms SEM in small to moderate samples (N50-250).
+
+### Summary
+
+Again, in 1.5% of estimations, a warning referring to potential problems with convergence or improper solutions due to small sample sizes in one or multiple estimators occured. 
+This should be investigated more explicitly in the joint study.
+
+For small to moderate samples, SEM outperforms SAM in conditions with negative cross-loadings. SAM outperforms SEM in conditions with positive cross-loadings.
+
+### Comparison with original paper
+
+Comparing these results with the original paper, the results are  similar and can be seen as replicated. The only difference lies in the potential convergence issues in a small number of estimations. 
+
+Besides that, we draw the same conclusions as @robitzsch_comparing_2022:
+All SAM approaches appear to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
+This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for positive misspecifications and makes SAM appear superior in these conditions.
 
 
