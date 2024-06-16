@@ -711,4 +711,206 @@ Besides that, we draw the same conclusions as @robitzsch_comparing_2022:
 All SAM approaches appear to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
 This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for positive misspecifications and makes SAM appear superior in these conditions.
 
+## SD
+
+General interpretation: Substantial if percentage reductions are larger than 5%
+
+Interpretation layers within one condition:
+
+- Unbiased judgement SAM vs. SEM
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
+### print all tables
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+sd_s2 <- readRDS("SimulationResults/sim2_sd.rds")
+
+
+# Loop through each condition and print the styled table
+for (condition in names(sd_s2)) {
+  print(create_styled_table(sd_s2[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+```
+
+### One negative cross-loading (1_-0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(sd_s2[["1_-0.3"]], "1_-0.3"))
+
+```
+
+
+Across all estimators, the standard deviation decreases with increasing N. 
+There are only two substantial differences:
+Substantial percentage reduction of SD up to 30.8% when comparing SEM-ML and LSAM-ML in N=50: 
+Substantial percentage reduction of SD up to 16% when comparing SEM-ML and LSAM-ML in N=100:
+
+Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
+
+### One positive cross-loading (1_0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(sd_s2[["1_0.3"]], "1_0.3"))
+
+```
+
+Across all estimators, the standard deviation decreases with increasing N. 
+
+The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 6.4%.
+ULS-SEM outperforms all SAM estimators with a percentage reduction of SD up to 14.1% in N=100, and of 12.3% in N=250 and of 8.6% in N=500.
+Above that point, overall SD is very small and negligible in all estimators
+No substantial differences between the two SEM and all SAM estimators starting from moderate sample sizes (N=500-2500). 
+
+Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM outperforms SAM in smaller to moderate samples.
+
+### Two negative cross-loadings (2_-0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(sd_s2[["2_-0.3"]], "2_-0.3"))
+
+```
+
+Across all estimators, the standard deviation decreases with increasing N. 
+
+The SAM estimators substantially, but decreasingly outperform both SEM estimators in samples N=50-500 with a SD percentage reduction of 10.1% remaining in N=500.
+For higher N, there are no substantial differences and overall SD is very small across estimators.
+
+Thus, SAM outperforms SEM in terms of SD reduction in small to moderate samples.
+
+### Two positive cross-loadings (2_0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(sd_s2[["2_0.3"]], "2_0.3"))
+
+```
+
+Across all estimators, the standard deviation decreases with increasing N. 
+
+Both SEM estimators outperform the SAM estimators in N=50-500 with a SD percentage reduction up to 11.7% remaining in N=500.
+For higher N, there are no substantial differences.
+
+Thus, SEM outperforms SAM in small to moderate samples.
+
+
+### Summary
+
+For negative cross-loadings, SAM tends to outperform SEM in terms of SD reduction small to moderate samples.
+For positive cross-loadings, SEM tends to outperform SAM in terms of SD reduction smaller to moderate samples.
+There seems to be an effect due to the amount of misspecification, such that the conditions with 2 cross-loadings had larger differences in performance (in both directions).
+This could be interesting to keep in mind for higher numbers of misspecification (Study4?).
+
+## RMSE
+differences large than 0.03, we will report, without drawing a substantive conclusion.
+
+Interpretation layers within one condition:
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
+###Print all tables
+```{r}
+rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
+
+```
+
+### One negative cross-loading (1_-0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse_s2[["1_-0.3"]], "1_-0.3"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For small to moderate samples (N=50-500), both SEM estimators were more efficient than all SAM estimators.
+For higher N, there are no substantial differences present.
+
+### One positive cross-loading (1_0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse_s2[["1_0.3"]], "1_0.3"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For smaller and large samples (N=50-100 and N=1000-100000), none of the estimators differed from another.
+For N=250, all 4 SAM estimators substantially outperformed the two SEM estimators.
+For N=500, all 4 SAM estimators substantially outperformed SEM-ML estimation.
+
+### Two negative cross-loadings (2_-0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3"))
+
+```
+
+Across all estimators, the RMSE decreases with increasing N.
+For small samples with N=50, none of the estimators differed in terms of efficiency.
+For all other conditions, The two SEM estimators were more efficient than all SAM estimators.
+
+### Two positive cross-loadings (2_0.3)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse_s2[["2_0.3"]], "2_0.3"))
+
+```
+
+Only for the two SEM estimators, the RMSE decreases with increasing N, but remains at higher values between 0.22-0.25 for all estimators.
+
+For small to moderate samples (N=50-250), all SAM estimators were more efficient than the two SEM estimators.
+For higher N, there are no substantial differences present.
+
+### Summary
+
+In moderate samples, SAM generally outperformed SEM in terms of RMSE.
+The only exception is the condition with 1 negative cross-loading, where SEM outperformed SAM in small to moderate samples.
+In the condition with 2 positive cross-loadings, SAM was more efficient in small samples as well.
+Unlike in Study 1, there seems to be no effect due to amount of misspecification.
+
+## Summary Study 2
+
+We gained the following insights with regards to the 2-factor-CFA model:
+Unlike the original paper by @robitzsch_comparing_2022, we experienced some issues that are related to convergence or improper solutions in small samples.
+
+In terms of bias in small to moderate samples, SEM outperformed SAM in conditions with negative cross-loadings. 
+SAM appeared to outperform SEM in conditions with positive cross-loadings. 
+This, however, is again an artifact of its negative small sample bias and not its performance. 
+The results align with the ones obtained by the original paper.
+
+With regards to SD reduction, findings were different. 
+In conditions with negative cross-loadings, SAM tended to outperform SEM, wheras the opposite was true for conditions with positive cross-loadings.
+Here, an effect due to the amount of misspecification seemed to be present, like for RMSE in Study 1.
+
+In terms of RMSE, results differed again. 
+Generally, SAM was more efficient than SEM in moderate samples. 
+For small samples, the results were not as clear.
+Unlike in Study 1, there seems to be no effect due to amount of misspecification.
+
+Overall, we can infer that findings are somewhat incoherent and it can not be stated that one estimation method is generally performing better than the other, based on the results of Study 2.
 
