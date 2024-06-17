@@ -58,19 +58,12 @@ model_syntax_study1 <- "
 run_study_1 <- function(params, true_values) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   
-  # Progress bar setup
-  pb <- progress_bar$new(
-    format = "  Running [:bar] :percent in :elapsed, ETA: :eta",
-    total = nrow(params), clear = FALSE, width = 60
-  )
   
   # Run the simulations and analysis in parallel
   results <- future_pmap(params,
                          function(seed, model_type, N, reliability, method) {
                            options <- furrr_options(seed = seed)  # Pass the seed to furrr_options
                            
-                           # Update progress bar
-                           pb$tick()  # Uncomment this line if you want to update the progress bar synchronously
                            
                            data <- gen_pop_model_data(model_type, N, reliability)$data
                            
@@ -126,7 +119,7 @@ run_study_1 <- function(params, true_values) {
                                Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
                              )
                            }
-                         }, .options = furrr_options(seed = TRUE))  # Use the furrr options object here
+                         }, .options = furrr_options(seed = TRUE))
   
   # Ensure results are a list of lists
   results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)
