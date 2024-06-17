@@ -914,3 +914,186 @@ Unlike in Study 1, there seems to be no effect due to amount of misspecification
 
 Overall, we can infer that findings are somewhat incoherent and it can not be stated that one estimation method is generally performing better than the other, based on the results of Study 2.
 
+# Results simulation 3:2-factor-CFA with one cross-loading and one residual correlation
+
+## Error, warnings and messages
+First, lets check for any messages, warnings or errors:
+
+```{r}
+#| ouput: true
+
+#Save all errors, warnings and messages
+all_messages_s3 <- readRDS("SimulationResults/sim3_results_error.rds")
+
+#errors
+errors_s3 <- all_messages_s3$errors
+errors_sum_s3 <- unlist(errors_s3)
+length(errors_sum_s3)
+
+#warnings
+warnings_s3 <- all_messages_s3$warnings
+warnings_sum_s3 <- unlist(warnings_s3)
+length(warnings_sum_s3)
+
+#messages
+messages_s3 <- all_messages_s3$messages
+messages_sum_s3 <- unlist(messages_s3)
+length(messages_sum_s3)
+
+
+```
+
+No errors and messages were present. There were, however, 193 warnings we will investigate in detail.
+
+### Warnings investigation
+Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+
+```{r}
+unique(warnings_s3)
+```
+
+As before, this warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
+Again, we are unable to check for more details, but hypothesize that this occurs mainly in the standard SEM estimators.
+There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
+The combined study should check this more properly to evaluate these claims thoroughly.
+As the 193 estimation are around 1.8% of the 10500 estimations performed, we will continue with the interpretation as planned, as their impact is negligable.
+
+## Bias
+
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci_s3 <- readRDS("SimulationResults/sim3_rel_bias_ci.rds")
+
+#Format table for results
+kbl(bias_ci_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+All estimators were biased for every condition of N.
+The SAM estimators had nearly identical values.
+Besides SEM-ULS, all estimators' Bias increased substantially, even though the increase was stronger for the SAM estimators.
+Only the SAM estimators had negative Bias for N=50-100.
+For N=50, none of the estimators outperformed another.
+For N=100-500, all SAM estimators outperformed the two SEM estimators.
+For higher N, none of the estimators substantially differed from another.
+
+Thus, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
+
+### Comparison with original paper
+
+Comparing these results with the original paper, our results were somewhat different.
+Even though the results were similar for most conditions (@robitzsch_comparing_2022 had the same results in conditions N=100-250 and N=1000-100000), the results were different for N=500.
+This, combined with the findings from the additional condition of N=50 revealed that SAM estimation outperformed SEM estimation in this data generating scenario in small to moderate samples.
+Another difference lies, again, in the potential convergence issues in a small number of estimations. 
+
+## SD
+
+```{r}
+#| ouput: true
+
+metrics_s3 <- readRDS("SimulationResults/sim3_metrics_list.rds")
+
+# Load the SD results
+sd_s3 <- metrics_s3[["sd"]]
+
+kbl(sd_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+Across all estimators, the standard deviation decreases with increasing N. 
+There are thre substantial differences:
+Substantial percentage reduction of SD up to 5.5% in favor of SEM-ULS when comparing with GSAM-ULS in N=50. 
+Substantial percentage reduction of SD up to 21.7% when comparing SEM-ULS when comparing with GSAM-ULS in N=100.
+Substantial percentage reduction of SD up to 15.6% when comparing SEM-ULS when comparing with GSAM-ULS in N=250.
+For higher N, the SD still partly differs but becomes negligibly small.
+
+Thus, SEM outperforms SAM in terms of SD reduction in small to moderate samples.
+
+## RMSE
+
+```{r}
+#| ouput: true
+
+# Load the rmse results
+rmse_s3 <-  metrics_s3[["rmse"]]
+
+#Format table for results
+kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
+    kable_styling(full_width = F, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+differences large than 0.03, we will report, without drawing a substantive conclusion.
+
+Interpretation layers within one condition:
+
+- ALL across increasing N
+
+- All within one N
+
+
+Across all estimators, the RMSE decreased with increasing N.
+For N=50 and N=1000-100000, none of the estimators differed from another.
+For N=100-500, the two SEM-estimators outperform all SAM-estimators in terms of efficiency.
+
+Thus, SEM outperforms SAM in smaller to moderate samples.
+
+## Summary Study 3
+As before, we experienced some issues that are related to convergence or improper solutions in small samples.
+
+In terms of Bias, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
+
+These results differed from the ones obtained with regards to SD and RMSE, where SEM tended to outperform SAM in smaller to moderate samples.
+
+Importantly, one has to bear in mind that same as before, SAM only appears to be more robust against positive misspecifications due to its general negative bias in small samples. 
+As in this study, same as in @robitzsch_comparing_2022, the misspecification values were positive, we again cannot conclude that SAM performs better than SEM.
+
+
+
+
+
+
+
+
+
+----------------------------------------
+# Summary 2-factor-CFA models
+SAM does not outperform! Negative small sample bias
+
+## Study 1
+In terms of bias in small to moderate samples, SEM outperforms SAM in conditions with no, one and two negative residual correlations. SAM appears to outperform SEM for positive residual correlations. This, however, is an artifact of its negative small sample bias and not its performance. The results align with the ones obtained by the original paper.
+
+With regards to SD and RMSE, results are incoherent with no clear pattern emerging. 
+
+Thus, it cannot be stated that one estimation method is generally performing better than the other, based on the results of Study 1.
+
+##Study 2
+Overall, we can infer that findings are somewhat incoherent and it can not be stated that one estimation method is generally performing better than the other, based on the results of Study 2.
+
+
+
+##Study 3
+In terms of Bias, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
+
+These results differed from the ones obtained with regards to SD and RMSE, where SEM tended to outperform SAM in smaller to moderate samples.
+
+Importantly, one has to bear in mind that same as before, SAM only appears to be more robust against positive misspecifications due to its general negative bias in small samples. 
+As in this study, same as in @robitzsch_comparing_2022, the misspecification values were positive, we again cannot conclude that SAM performs better than SEM.
+
+
