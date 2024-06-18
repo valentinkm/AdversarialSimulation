@@ -38,7 +38,7 @@ params <- expand.grid(
 )
 
 # Ensure method is a character vector
-params$method <- as.character(params$method)
+#params$method <- as.character(params$method)
 
 # Generate the seeds
 total_combinations <- nrow(params) * n_reps
@@ -161,7 +161,7 @@ run_study_2 <- function(params) {
                              )
                            }
                          }, 
-                         .options = furrr_options(seed = TRUE))  # Ensure reproducibility
+                         .options = furrr_options(seed = params$seed))
   
   # Ensure results are a list of lists
   results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)

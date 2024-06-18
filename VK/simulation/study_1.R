@@ -10,6 +10,8 @@ library(dplyr)
 library(purrr)
 library(progress)
 library(lavaan)
+library(pryr)
+
 
 # Generate seeds
 parallel_seeds <- function(n, seed = NULL) {
@@ -21,16 +23,25 @@ parallel_seeds <- function(n, seed = NULL) {
                     .init = .Random.seed)
 }
 
-# Generate parameters grid with seeds
+# Generate parameters grid for Study 1
 n_reps <- 2
 params <- expand.grid(
-  seed = parallel_seeds(n_reps, seed = 42), # seed position in grid is essential or reorder results later - implicit repetition parameter
   model_type = c("1.1", "1.2", "1.3", "1.4"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
   method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")
 )
 
+# Ensure method is a character vector
+# params$method <- as.character(params$method)
+
+# Generate the seeds
+total_combinations <- nrow(params) * n_reps
+seeds <- parallel_seeds(total_combinations, seed = 42)
+
+# Expand params to include repetitions
+params <- params[rep(seq_len(nrow(params)), each = n_reps), ]
+params$seed <- seeds
 
 # Set population values
 B_true <- c(
@@ -52,18 +63,28 @@ model_syntax_study1 <- "
     f3 ~ f1 + f2 + f4
     f4 ~ f1 + f2
     f5 ~ f3 + f4 + f1
-                        "
+"
 
 # Study function
 run_study_1 <- function(params, true_values) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   
+  # Progress bar setup
+  pb <- progress_bar$new(
+    format = "  Running [:bar] :percent in :elapsed, ETA: :eta",
+    total = nrow(params), clear = FALSE, width = 60
+  )
+  
+  # Set up the parallel plan
+  plan(multisession)
   
   # Run the simulations and analysis in parallel
   results <- future_pmap(params,
-                         function(seed, model_type, N, reliability, method) {
+                         function(model_type, N, reliability, method, seed) {
                            options <- furrr_options(seed = seed)  # Pass the seed to furrr_options
                            
+                           # Update progress bar
+                           pb$tick()  # Uncomment this line if you want to update the progress bar synchronously
                            
                            data <- gen_pop_model_data(model_type, N, reliability)$data
                            
@@ -119,7 +140,7 @@ run_study_1 <- function(params, true_values) {
                                Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
                              )
                            }
-                         }, .options = furrr_options(seed = TRUE))
+                         }, .options = furrr_options(seed = params$seed))
   
   # Ensure results are a list of lists
   results <- lapply(results, function(x) if (is.atomic(x)) list(x) else x)
@@ -173,7 +194,6 @@ run_study_1 <- function(params, true_values) {
   # Return summary statistics and detailed results
   list(Summary = summary_stats, DetailedResults = results_df)
 }
-
 
 # Run complete simulation study
 cat("Starting simulation study 1...\n")
