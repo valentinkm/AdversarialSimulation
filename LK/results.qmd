@@ -626,7 +626,9 @@ Layers between tables:
 
 ## Recalculation of CI's
 
-We did a mistake with the calculation of the confidence intervals, as we did not include the absolute, but relative mean in the two limits. Thus, we have to reextract the results correctly:
+We did a mistake with the calculation of the confidence intervals, as we did not include the absolute, but relative mean in the two limits. 
+Also, the standard error was wrongly calculated as relative, as well:
+Thus, we have to reextract the results correctly:
 ```{r}
 #Load raw results
 
@@ -643,7 +645,7 @@ extract_results <- function(results_df_raw) {
     list(
       abs_bias = mean(abs(values - phi)),  
       rmse = sqrt(mean((values - phi)^2)),
-      se_bias = sd(values - phi) / sqrt(length(values)),
+      se_bias = sd(abs(values - phi)) / sqrt(length(values)),
       ci_lower = mean(abs(values - phi)) - qt(0.975, df = length(values) - 1) * sd(abs(values - phi)) / sqrt(length(values)), #correct calculation
       ci_upper = mean(abs(values - phi)) + qt(0.975, df = length(values) - 1) * sd(abs(values - phi)) / sqrt(length(values)) #correct calculation
 
