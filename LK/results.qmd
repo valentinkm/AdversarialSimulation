@@ -625,7 +625,7 @@ Layers between tables:
 -----------------
 
 
-### N=50, LSAM-ML
+### Conditions with N=50
 ```{r}
 #| ouput: true
 
@@ -633,33 +633,23 @@ Layers between tables:
 bias_ci_s1b <- readRDS("SimulationResults/sim1b_abs_bias_ci.rds")
 
 print(bias_ci_s1b[["N_50"]][["LSAM_ML"]])
+print(bias_ci_s1b[["N_50"]][["LSAM_ULS"]])
+
 
 ################kable does not work yet
 
 ```
-######CI values weird?
 
-Interpretation layers within table condition:
+Comparing LSAM-ML and LSAM-ULS, the values are nearly identical. 
+Therefore, the interpretation is the same for both estimators.
 
-- Unbiased judgement overall
-Across all conditions, LSAM-ML is biased.
+Across all conditions, both estimatos were biased.
 
-- ALL across increasing lambda
-For higher values of lambda, LSAM-ML has less absolute Bias. This difference increases for higher phi values.
+For higher values of lambda, the estimators had less absolute Bias. This difference increased for higher phi values.
 
-- ALL across increasing phi
-For lower values of lambda, the absolute bias increases with increasing phi. This trend reverses for higher values of lambda, where the absolute bias decreases with higher phi values.
+For lower values of lambda, the absolute bias increased with increasing phi. This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
 
-### N=50, LSAM-ULS
-```{r}
-#| ouput: true
-
-print(bias_ci_s1b[["N_50"]][["LSAM_ULS"]])
-```
-The values are nearly identical to LSAM-ML. 
-Therefore, the interpretation is the same for LSAM-ULS
-
-### N=100, LSAM-ML
+### Conditions with N=100
 ```{r}
 #| ouput: true
 
@@ -667,21 +657,30 @@ print(bias_ci_s1b[["N_100"]][["LSAM_ML"]])
 print(bias_ci_s1b[["N_100"]][["LSAM_ULS"]])
 
 ```
-- Unbiased judgement overall
-Across all conditions, LSAM-ML is biased.
+Again, the values and therefore the interpretation of LSAM-ML and LSAM-ULS are identical.
 
-- ALL across increasing lambda
-For higher values of lambda, LSAM-ML has less absolute Bias. This difference increases for higher phi values.
+Across all conditions, both estimators were biased.
+For higher values of lambda, the estimators had less absolute Bias. This difference increased for higher phi values.
+For lower values of lambda, the absolute bias increased with increasing phi. 
+This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
 
-- ALL across increasing phi
-For lower values of lambda, the absolute bias increases with increasing phi. This trend reverses for higher values of lambda, where the absolute bias decreases with higher phi values.
+Additionally, there seems to be no differential effect due to N, as the interpretations between the different N-conditions are identical.
+Naturally, the bias values are larger for N=50, still.
 
-Again, the interpretation is identical to N=50
 
 ### Comparison to original paper
-In contrast to the original paper, we computed absolute bias to avoid infinte values in some conditions.
-Still, 
-
+In contrast to the original paper by @robitzsch_comparing_2022, we computed absolute bias to avoid infinite values in some conditions.
+Additionally, computing absolute instead of relative Bias solves the problem of positive and negative biases canceling each other out.
+Results partly align in terms of absolute bias:
+For higher values of lambda, LSAM-ML has less absolute Bias. 
+This difference increases for higher phi values.
+Only for low values of lambda, the bias increases for higher values of phi. 
+Unlike in this study, the original paper did not find a reversal effect for higher lambda values.
+Another difference is that we, unlike @robitzsch_comparing_2022, found estimates to be biased for low phi-values.
+This might be due to the difference of using absolute bias, thereby avoiding cancellation of positive and negative values.
+Still, our general conclusion corresponds to the original paper:
+LSAM has a general negative bias. 
+The bias is larger in magnitude for lower loadings and higher true factor correlations.
 
 # Results Simulation 2: 2-factor-CFA with 1 or 2 cross-loadings
 
