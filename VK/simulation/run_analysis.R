@@ -51,7 +51,7 @@ run_analysis <- function(data, model_syntax, method = "SEM", b = 5) {
 run_sanity_check <- function(model_type, model_syntax) {
   popmodel <- gen_pop_model_syntax(gen_mat(model_type = model_type))
   fit0 <- sem(model = popmodel, do.fit = FALSE)
-  COV <- inspect(fit0, what = "implied")$cov[,]
+  COV <- lavInspect(fit0, what = "implied")$cov[,]
   sanity_check_fit <- sem(sample.cov = COV, model = model_syntax, sample.nobs = 10^6)
   sanity_check_estimates <- coef(sanity_check_fit)
   names(sanity_check_estimates) <- paste0(names(sanity_check_estimates), "_pop")

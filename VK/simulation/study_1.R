@@ -10,7 +10,6 @@ library(dplyr)
 library(purrr)
 library(progress)
 library(lavaan)
-library(pryr)
 
 
 # Generate seeds
