@@ -632,11 +632,25 @@ Layers between tables:
 # Load the relative bias results
 bias_ci_s1b <- readRDS("SimulationResults/sim1b_abs_bias_ci.rds")
 
-print(bias_ci_s1b[["N_50"]][["LSAM_ML"]])
-print(bias_ci_s1b[["N_50"]][["LSAM_ULS"]])
+#Normal print
+#print(bias_ci_s1b[["N_50"]][["LSAM_ML"]])
+#print(bias_ci_s1b[["N_50"]][["LSAM_ULS"]])
 
+#Formatted tables
+kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Phi values" = 5)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
 
-################kable does not work yet
+kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Phi values" = 5)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ULS for N=50" = 6), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
 
 ```
 
@@ -653,8 +667,19 @@ For lower values of lambda, the absolute bias increased with increasing phi. Thi
 ```{r}
 #| ouput: true
 
-print(bias_ci_s1b[["N_100"]][["LSAM_ML"]])
-print(bias_ci_s1b[["N_100"]][["LSAM_ULS"]])
+kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Phi values" = 5)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=100" = 6), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Phi values" = 5)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ULS for N=100" = 6), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
 
 ```
 Again, the values and therefore the interpretation of LSAM-ML and LSAM-ULS are identical.
@@ -666,7 +691,6 @@ This trend reversed for higher values of lambda, where the absolute bias decreas
 
 Additionally, there seems to be no differential effect due to N, as the interpretations between the different N-conditions are identical.
 Naturally, the bias values are larger for N=50, still.
-
 
 ### Comparison to original paper
 In contrast to the original paper by @robitzsch_comparing_2022, we computed absolute bias to avoid infinite values in some conditions.
