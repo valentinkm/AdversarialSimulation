@@ -110,8 +110,8 @@ library(tidyverse)
 ## Recalculation of CI's
 
 We did multiple mistakes with the calculation of the confidence intervals, as we did not include the absolute, but relative mean in the two limits for studies 1b, 4 and 4a. 
-Also, the standard error was wrongly calculated as relative, as well.
-For studies 1,2 and 3, we wronlgy calculated the standard deviation of absolute differences in the CI's.
+Also, the standard error was wrongly calculated as relative.
+For Studies 1, 2 and 3, we misscalculated the standard error, as well as the confidence interval by including absolute values in their calculation, even though we were interested in relative values in these studies.
 Thus, we have to reextract the results for Bias correctly, which was done in postprocess_results.R.
 All we did there, was reapply the corrected extract_results() function and the same report_bias() function from the individual simulations, one after another.
 For the results of bias, we load these processed files, instead of the original ones, from the newly created folder: SimulationResultsProcessed.

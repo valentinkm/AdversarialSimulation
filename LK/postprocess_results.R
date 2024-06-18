@@ -1,3 +1,103 @@
+# Study 1
+
+#Load raw results
+
+results_df_raw <- readRDS("LK/SimulationResults/sim1_results_raw.rds")
+
+phi <- 0.60
+
+# Extract results
+
+extract_results <- function(results_df_raw){
+  #Compute performance measures
+  results_metrics <- results_df_raw %>%
+    group_by(N, rc, psi_value) %>%
+    summarize(across(everything(),
+                     list(
+                       abs_bias = ~mean(abs(.x - phi)),              # Average absolute bias
+                       rel_bias = ~mean(.x - phi) / phi,             # Relative bias
+                       sd = ~sd(.x),                                 # Standard deviation of estimates
+                       rmse = ~sqrt(mean((.x - phi)^2)),             # Root mean square error
+                       se_bias = ~(sd(.x - phi))/ sqrt(unique(N)),      # SE of bias
+                       ci_lower = ~((mean(.x - phi) / phi) - qt(0.975, df = unique(N) - 1) * (sd((.x - phi) / phi)) / sqrt(unique(N))),
+                       ci_upper = ~((mean(.x - phi) / phi) + qt(0.975, df = unique(N) - 1) * (sd((.x - phi) / phi)) / sqrt(unique(N)))
+                     )),  .groups = 'drop')
+  
+  # Split metrics by rc and psi_value into separate lists
+  split_metrics <- results_metrics %>%
+    group_by(rc, psi_value) %>%
+    group_split() %>%
+    set_names(map(., ~paste(unique(.x$rc), unique(.x$psi_value), sep="_")))
+  
+  # Define a function to transform each group into the desired format
+  transform_group <- function(df_group) {
+    df_group <- df_group %>%
+      select(-rc, -psi_value) %>%
+      pivot_longer(cols = starts_with(c("SEM_","LSAM_","GSAM_")), names_to = "method_metric", values_to = "value")
+    
+    # Creating nested lists for each metric
+    list(
+      abs_bias = df_group %>% filter(str_detect(method_metric, "abs_bias")) %>%
+        pivot_wider(names_from = N, values_from = value),
+      rel_bias = df_group %>% filter(str_detect(method_metric, "rel_bias")) %>%
+        pivot_wider(names_from = N, values_from = value),
+      sd = df_group %>% filter(str_detect(method_metric, "sd")) %>%
+        pivot_wider(names_from = N, values_from = value),
+      rmse = df_group %>% filter(str_detect(method_metric, "rmse")) %>%
+        pivot_wider(names_from = N, values_from = value),
+      se_bias = df_group %>% filter(str_detect(method_metric, "se_bias")) %>%
+        pivot_wider(names_from = N, values_from = value),
+      ci_lower = df_group %>% filter(str_detect(method_metric, "ci_lower")) %>%
+        pivot_wider(names_from = N, values_from = value),
+      ci_upper = df_group %>% filter(str_detect(method_metric, "ci_upper")) %>%
+        pivot_wider(names_from = N, values_from = value)
+    )
+  }
+  
+  # Apply the transformation to each group and store the results
+  metrics_list <- map(split_metrics, transform_group)
+  
+  return(metrics_list)
+}
+
+
+
+
+# Report Bias
+
+report_bias <- function(metrics_list) {
+  # Define a list to store results
+  bias_ci <- list()
+  
+  # Iterate over each condition in metrics_list
+  for (condition in names(metrics_list)) {
+    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    rel_bias <- metrics_list[[condition]]$rel_bias
+    ci_lower <- metrics_list[[condition]]$ci_lower
+    ci_upper <- metrics_list[[condition]]$ci_upper
+    
+    # Create the bias_ci table for the current condition and store it in the list
+    bias_ci[[condition]] <- rel_bias %>%
+      mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
+                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+                    .names = "{.col}_formatted")) %>%
+      select(method_metric, ends_with("formatted")) %>%
+      rename_all(~sub("_formatted$", "", .))
+  }
+  
+  return(bias_ci)
+}
+
+#Apply changed function
+metrics_list <- extract_results(results_df_raw)
+saveRDS(metrics_list, file = "LK/SimulationResultsProcessed/sim1_metrics_list.rds")
+
+### Report Bias
+bias_ci <- report_bias(metrics_list)
+saveRDS(bias_ci, file = "LK/SimulationResultsProcessed/sim1_abs_bias_ci.rds")
+
+
+
 # Study 1b
 
 #Load raw results
