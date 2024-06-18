@@ -557,6 +557,132 @@ With regards to SD and RMSE, results are incoherent with no clear pattern emergi
 
 Thus, it cannot be stated that one estimation method is generally performing better than the other, based on the results of Study 1.
 
+# Results Simulation 1b: 2-factor-CFA with 2 residual correlations and varying lambda and phi
+
+## Error, warnings and messages
+First, lets check for any messages, warnings or errors:
+
+```{r}
+#| ouput: true
+
+#Save all errors, warnings and messages
+all_messages_s1b <- readRDS("SimulationResults/sim1b_results_error.rds")
+
+#errors
+errors_s1b <- all_messages_s1b$errors
+errors_sum_s1b <- unlist(errors_s1b)
+length(errors_sum_s1b)
+
+#warnings
+warnings_s1b <- all_messages_s1b$warnings
+warnings_sum_s1b <- unlist(warnings_s1b)
+length(warnings_sum_s1b)
+
+#messages
+messages_s1b <- all_messages_s1b$messages
+messages_sum_s1b <- unlist(messages_s1b)
+length(messages_sum_s1b)
+
+```
+
+No errors and messages were present. There were, however, 414 warnings, we will investigate in detail.
+
+### Warnings investigation
+
+Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+
+```{r}
+unique(warnings_s1b)
+```
+
+As before, this warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
+Again, we are unable to check for more details, but hypothesize that this occurs mainly in the standard SEM estimators.
+There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
+The combined study should check this more properly to evaluate these claims thoroughly.
+As the 414 estimation are around 0.5% of the 75000 estimations performed, we will continue with the interpretation as planned, as their impact is negligable.
+
+## Bias
+
+General interpretation: Biased if Bias estimate larger than 0.05
+
+Interpretation layers within table condition:
+
+- Unbiased judgement overall
+
+- ALL across increasing lambda
+
+- ALL across increasing phi
+
+- All within one lambda 
+- All within one phi
+
+Layers between tables:
+
+-Comparison between estimators
+
+-Comparison between N's
+
+-----------------
+
+
+### N=50, LSAM-ML
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci_s1b <- readRDS("SimulationResults/sim1b_abs_bias_ci.rds")
+
+print(bias_ci_s1b[["N_50"]][["LSAM_ML"]])
+
+################kable does not work yet
+
+```
+######CI values weird?
+
+Interpretation layers within table condition:
+
+- Unbiased judgement overall
+Across all conditions, LSAM-ML is biased.
+
+- ALL across increasing lambda
+For higher values of lambda, LSAM-ML has less absolute Bias. This difference increases for higher phi values.
+
+- ALL across increasing phi
+For lower values of lambda, the absolute bias increases with increasing phi. This trend reverses for higher values of lambda, where the absolute bias decreases with higher phi values.
+
+### N=50, LSAM-ULS
+```{r}
+#| ouput: true
+
+print(bias_ci_s1b[["N_50"]][["LSAM_ULS"]])
+```
+The values are nearly identical to LSAM-ML. 
+Therefore, the interpretation is the same for LSAM-ULS
+
+### N=100, LSAM-ML
+```{r}
+#| ouput: true
+
+print(bias_ci_s1b[["N_100"]][["LSAM_ML"]])
+print(bias_ci_s1b[["N_100"]][["LSAM_ULS"]])
+
+```
+- Unbiased judgement overall
+Across all conditions, LSAM-ML is biased.
+
+- ALL across increasing lambda
+For higher values of lambda, LSAM-ML has less absolute Bias. This difference increases for higher phi values.
+
+- ALL across increasing phi
+For lower values of lambda, the absolute bias increases with increasing phi. This trend reverses for higher values of lambda, where the absolute bias decreases with higher phi values.
+
+Again, the interpretation is identical to N=50
+
+### Comparison to original paper
+In contrast to the original paper, we computed absolute bias to avoid infinte values in some conditions.
+Still, 
+
+
 # Results Simulation 2: 2-factor-CFA with 1 or 2 cross-loadings
 
 ## Error, warnings and messages
@@ -1095,5 +1221,7 @@ These results differed from the ones obtained with regards to SD and RMSE, where
 
 Importantly, one has to bear in mind that same as before, SAM only appears to be more robust against positive misspecifications due to its general negative bias in small samples. 
 As in this study, same as in @robitzsch_comparing_2022, the misspecification values were positive, we again cannot conclude that SAM performs better than SEM.
+
+
 
 
