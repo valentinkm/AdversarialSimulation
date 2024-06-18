@@ -169,7 +169,7 @@ As the 245 are less than 0.5% of the 525000 estimations performed, we will conti
 #| ouput: true
 
 # Load the relative bias results
-bias_ci_s1 <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
+bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
 
 # Display the relative bias results for each condition, without formatting
 #for (condition in names(bias_ci)) {
@@ -219,7 +219,7 @@ Interpretation layers within one condition:
 #| ouput: true
 
 # Load the relative bias results
-bias_ci_s1 <- readRDS("SimulationResults/sim1_rel_bias_ci.rds")
+bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
 
 # Display the relative bias results for each condition, without formatting
 #for (condition in names(bias_ci)) {
@@ -790,7 +790,7 @@ Interpretation layers within one condition:
 #| ouput: true
 
 # Load the relative bias results
-bias_ci_s2 <- readRDS("SimulationResults/sim2_rel_bias_ci.rds")
+bias_ci_s2 <- readRDS("SimulationResultsProcessed/sim2_rel_bias_ci.rds")
 
 # Loop through each condition and print the styled table
 for (condition in names(bias_ci_s2)) {
@@ -1130,7 +1130,7 @@ As the 193 estimation are around 1.8% of the 10500 estimations performed, we wil
 #| ouput: true
 
 # Load the relative bias results
-bias_ci_s3 <- readRDS("SimulationResults/sim3_rel_bias_ci.rds")
+bias_ci_s3 <- readRDS("SimulationResultsProcessed/sim3_rel_bias_ci.rds")
 
 #Format table for results
 kbl(bias_ci_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05"), format = "html") %>%
