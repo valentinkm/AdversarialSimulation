@@ -1273,10 +1273,6 @@ Investigating the 'warnings' object list, it became apparent that all the warnin
 ```{r}
 #| ouput: true
 
-unique(warnings_s4)
-
-unique_warnings <- unique(warnings_s4)
-
 # Flatten the list of warnings into a single character vector
 all_warnings <- unlist(warnings_s4)
 
@@ -1291,6 +1287,11 @@ colnames(warning_counts_df) <- c("Warning Message", "Count")
 kable(warning_counts_df, format = "html") %>%
   kable_styling(full_width = F, position = "left")
 ```
+
+The three warnings that amount to 7 overall, are referring to problems with regards to positive definite matrices or model identification.
+This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
+The 9000 warnings with regards to Gamma computation in smaller samples is negligible as well, as we are not interested in the computation of robust fit indices.
+
 
 ## Bias
 
