@@ -1231,12 +1231,113 @@ Importantly, one has to bear in mind that same as before, SAM only appears to be
 As in this study, same as in @robitzsch_comparing_2022, the misspecification values were positive, we again cannot conclude that SAM performs better than SEM.
 
 # Summary 2-factor-CFA models (Studies 1-3)
+
 SAM does not generally outperform SEM in small to moderate samples. 
 SAM exhibits a negative small sample bias that makes SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
 This bias is especially strong for lower lambda and higher phi values.
 If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM.
 
+# Results Simulation 4: 5-factor-CFA under 3 different data-generating mechanisms
 
+## Error, warnings and messages
+First, lets check for any messages, warnings or errors:
+
+```{r}
+#| ouput: true
+
+#Save all errors, warnings and messages
+all_messages_s4 <- readRDS("SimulationResults/sim4_results_error.rds")
+
+#errors
+errors_s4 <- all_messages_s4$errors
+errors_sum_s4 <- unlist(errors_s4)
+length(errors_sum_s4)
+
+#warnings
+warnings_s4 <- all_messages_s4$warnings
+warnings_sum_s4 <- unlist(warnings_s4)
+length(warnings_sum_s4)
+
+#messages
+messages_s4 <- all_messages_s4$messages
+messages_sum_s4 <- unlist(messages_s4)
+length(messages_sum_s4)
+
+```
+
+No errors and messages were present. There were, however, 9007 warnings, we will investigate in detail.
+
+### Warnings investigation
+
+Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+```{r}
+#| ouput: true
+
+unique(warnings_s4)
+
+unique_warnings <- unique(warnings_s4)
+
+# Flatten the list of warnings into a single character vector
+all_warnings <- unlist(warnings_s4)
+
+# Count the occurrences of each unique warning
+warning_counts <- table(all_warnings)
+
+# Convert to data frame for better formatting
+warning_counts_df <- as.data.frame(warning_counts)
+colnames(warning_counts_df) <- c("Warning Message", "Count")
+
+# Display the data frame
+kable(warning_counts_df, format = "html") %>%
+  kable_styling(full_width = F, position = "left")
+```
+
+## Bias
+
+### Print all tables
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
+
+
+# Loop through each condition and print the styled table from Study 1 function
+for (condition in names(bias_ci_s4)) {
+  print(create_styled_table(bias_ci_s4[[condition]], condition))
+  cat("\n\n")  # Add space between tables
+}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------
+# Starting points for joint simulation
+
+- Explicitly capture warnings in Studies 1-3
+- Investigate conditions with higher number of misspecifications (Study4?)
+- Investigate other models of interest? (Only if results of Study 4-4a are suggesting warranty for this)
 
 
 
