@@ -1237,7 +1237,9 @@ SAM exhibits a negative small sample bias that makes SAM appear superior in cond
 This bias is especially strong for lower lambda and higher phi values.
 If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM.
 
-# Results Simulation 4: 5-factor-CFA under 3 different data-generating mechanisms
+# Results Simulation 4: 5-factor-model under 3 different data-generating mechanisms
+
+Importantly, for this study, we do not investigate CFA's anymore, but models with regressions included.
 
 ## Error, warnings and messages
 First, lets check for any messages, warnings or errors:
@@ -1295,7 +1297,20 @@ The 9000 warnings with regards to Gamma computation in smaller samples is neglig
 
 ## Bias
 
+General interpretation: Biased if Bias estimate larger than 0.05
+
+Interpretation layers within one condition:
+
+- Unbiased judgement SAM vs. SEM
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
 ### Print all tables
+
 ```{r}
 #| ouput: true
 
@@ -1312,12 +1327,54 @@ for (condition in names(bias_ci_s4)) {
 
 ```
 
+### Conditions without misspecification (DGM 0)
+
+```{r}
+
+ print(create_styled_table(bias_ci_s4[["DGM_0"]], "DGM_0"))
+```
 
 
+All estimators are biased for small to moderate samples (N=50-250). 
+For higher N, no estimator is biased.
+Only in N=50, LSAM outperforms the two SEM-estimators. 
+For all other conditions, there is no substantial difference between any of the estimators bias.
 
+Thus, for the most part, no estimator generally outperforms another in the correctly specified model conditions.
 
+### Conditions with four unmodelled cross-loadings (DGM 1)
 
+```{r}
 
+ print(create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1"))
+
+```
+
+All estimators were biased across all conditions of N.
+Still, their bias decreases for higher N.
+LSAM-ML substantially outperforms the two SEM-estimators in each condition of N.
+
+Thus, SAM outperforms SAM in presence of unmodelled cross-loadings.
+
+### Conditions with 20 unmodelled residual correlation (DGM 2)
+
+```{r}
+
+ print(create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2"))
+
+```
+General interpretation: Biased if Bias estimate larger than 0.05
+
+Interpretation layers within one condition:
+
+- Unbiased judgement SAM vs. SEM
+All estimators are biased for small to moderate samples (N=50-500).
+Only SEM-ULS is unbiased for N=500 as well.
+For higher N (N=1000-100000), no estimator is biased.
+Only in N=50, LSAM outperforms the two SEM-estimators. 
+For all other conditions, there is no substantial difference between any of the estimators bias.
+
+Thus, for the most part, no estimator generally outperforms another in the correctly specified model conditions.
 
 
 
