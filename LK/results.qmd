@@ -71,7 +71,7 @@ Importantly, this deviation was present in both directions, and therefore did no
 In consequence, it appears that interpretations aren't coherent across the studies.
 
 Another important aspect to highlight in the original papers results refers to the general presence of a negative bias in LSAM estimation. 
-Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in the misspecifications, namely studies 3-6. 
+Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in unmodelled cross-loadings and residual correlation, namely studies 3-6. 
 This is done without a general note of some sorts, that this bias should apply in these data-generating scenarios the same as in Studies 1 and 2.
 In consequence, the interpretations @robitzsch_comparing_2022 make, are somewhat misleading on first sight, if one does not account for this bias.
 This does not, however, explain why they did not include more studies or conditions with negatively valenced residual correlations or cross-loadings. We hypothesize, that the goal of the paper was to show that even in these favorable constellations, SAM does not perform better than SEM.
@@ -344,7 +344,7 @@ Comparing the conditions with one and two positive residual correlations, the re
 Comparing these results with the original paper, the results are  similar and can be seen as mostly replicated. The only difference lies in the potential convergence issues in a small number of estimations. 
 Besides that, we draw the same conclusions as @robitzsch_comparing_2022:
 All SAM approaches appear to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
-This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for positive misspecifications and makes SAM appear superior in these conditions.
+This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for unmodelled positive residual correlations and makes SAM appear superior in these conditions.
 
 
 ## SD
@@ -672,7 +672,7 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0
 Comparing LSAM-ML and LSAM-ULS, the values are nearly identical. 
 Therefore, the interpretation is the same for both estimators.
 
-Across all conditions, both estimatos were biased.
+Across all conditions, both estimators were biased.
 
 For higher values of lambda, the estimators had less absolute Bias. This difference increased for higher phi values.
 
@@ -875,7 +875,7 @@ Comparing these results with the original paper, the results are  similar and ca
 
 Besides that, we draw the same conclusions as @robitzsch_comparing_2022:
 All SAM approaches appear to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
-This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for positive misspecifications and makes SAM appear superior in these conditions.
+This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for unmodelled positive cross-loadings and makes SAM appear superior in these conditions.
 
 ## SD
 
@@ -1227,40 +1227,15 @@ In terms of Bias, all SAM estimators outperformed the two SEM estimators in smal
 
 These results differed from the ones obtained with regards to SD and RMSE, where SEM tended to outperform SAM in smaller to moderate samples.
 
-Importantly, one has to bear in mind that same as before, SAM only appears to be more robust against positive misspecifications due to its general negative bias in small samples. 
+Importantly, one has to bear in mind that same as before, SAM only appears to be more robust against unmodelled positive residual correlations and cross-loadings due to its general negative bias in small samples. 
 As in this study, same as in @robitzsch_comparing_2022, the misspecification values were positive, we again cannot conclude that SAM performs better than SEM.
 
+# Summary 2-factor-CFA models (Studies 1-3)
+SAM does not generally outperform SEM in small to moderate samples. 
+SAM exhibits a negative small sample bias that makes SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
+This bias is especially strong for lower lambda and higher phi values.
+If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM.
 
-
-
-
-
-
-
-
-----------------------------------------
-# Summary 2-factor-CFA models
-SAM does not outperform! Negative small sample bias
-
-## Study 1
-In terms of bias in small to moderate samples, SEM outperforms SAM in conditions with no, one and two negative residual correlations. SAM appears to outperform SEM for positive residual correlations. This, however, is an artifact of its negative small sample bias and not its performance. The results align with the ones obtained by the original paper.
-
-With regards to SD and RMSE, results are incoherent with no clear pattern emerging. 
-
-Thus, it cannot be stated that one estimation method is generally performing better than the other, based on the results of Study 1.
-
-##Study 2
-Overall, we can infer that findings are somewhat incoherent and it can not be stated that one estimation method is generally performing better than the other, based on the results of Study 2.
-
-
-
-##Study 3
-In terms of Bias, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
-
-These results differed from the ones obtained with regards to SD and RMSE, where SEM tended to outperform SAM in smaller to moderate samples.
-
-Importantly, one has to bear in mind that same as before, SAM only appears to be more robust against positive misspecifications due to its general negative bias in small samples. 
-As in this study, same as in @robitzsch_comparing_2022, the misspecification values were positive, we again cannot conclude that SAM performs better than SEM.
 
 
 
