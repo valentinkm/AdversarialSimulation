@@ -1337,8 +1337,8 @@ for (condition in names(bias_ci_s4)) {
 
 All estimators are biased for small to moderate samples (N=50-250). 
 For higher N, no estimator is biased.
-Only in N=50, LSAM outperforms the two SEM-estimators. 
-For all other conditions, there is no substantial difference between any of the estimators bias.
+In N=50, LSAM outperforms SEM-ULS. 
+For all other conditions, there is no substantial difference between any of the estimators biases.
 
 Thus, for the most part, no estimator generally outperforms another in the correctly specified model conditions.
 
@@ -1352,9 +1352,11 @@ Thus, for the most part, no estimator generally outperforms another in the corre
 
 All estimators were biased across all conditions of N.
 Still, their bias decreases for higher N.
-LSAM-ML substantially outperforms the two SEM-estimators in each condition of N.
+LSAM-ML substantially outperforms the two SEM-estimators in small samples (N=50-100).
+It outperforms SEM-ULS in every other condition of N, as well.
+With regards to SEM-ML, LSAM-ML only slightly outperforms, for higher N.
 
-Thus, SAM outperforms SAM in presence of unmodelled cross-loadings.
+Thus, SAM tends to outperforms SEM in presence of unmodelled cross-loadings.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
@@ -1363,18 +1365,43 @@ Thus, SAM outperforms SAM in presence of unmodelled cross-loadings.
  print(create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2"))
 
 ```
-General interpretation: Biased if Bias estimate larger than 0.05
 
-Interpretation layers within one condition:
-
-- Unbiased judgement SAM vs. SEM
 All estimators are biased for small to moderate samples (N=50-500).
 Only SEM-ULS is unbiased for N=500 as well.
 For higher N (N=1000-100000), no estimator is biased.
-Only in N=50, LSAM outperforms the two SEM-estimators. 
+In N=50, LSAM outperforms SEM-ULS estimation. 
 For all other conditions, there is no substantial difference between any of the estimators bias.
 
 Thus, for the most part, no estimator generally outperforms another in the correctly specified model conditions.
+
+### Summary
+
+LSAM- outperforms SEM-ULS estimation in small samples (N=50) across all DGM's.
+Moreover, LSAM- outperforms SEM-estimation in all conditions with unmodelled cross-loadings.
+In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another, for smaller to moderate samples.
+
+################One important point to discuss is again the exclusive presence of positive loadings and residual correlations in the DGM's 1 and 2. 
+This might lead again to SAM's small sample bias make it appear to outperform. 
+But: Is this not negligible here, as we have low (cross) loadings (0.42) and beta (/phi??) values (0.1)?? No CFA though!
+
+#### Printing syntax again?
+
+```{r}
+#MLIST <- lav_sam_gen_model(nfactors = NFAC, nvar.factor = FVAR, lambda = lambda,
+#                           PSI = PSI, BETA = BETA, reliability = REL, misspecification = 0L,rho = #0.6)
+#pop.model <- lav_syntax_mlist(MLIST, include.values = TRUE)
+#cat(pop.model)
+```
+
+
+### Comparison with original paper
+
+Weirdly, unlike @robitzsch_comparing_2022, we have found some bias in DGM 0 ??
+
+For DMG1, results are very similar, with LSAM outperforming
+
+
+
 
 
 
