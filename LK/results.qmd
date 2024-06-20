@@ -1352,7 +1352,7 @@ Thus, for the most part, no estimator generally outperforms another in the corre
 
 All estimators were biased across all conditions of N.
 Still, their bias decreases for higher N.
-LSAM-ML substantially outperforms the two SEM-estimators in small samples (N=50-100).
+LSAM-ML substantially outperforms the two SEM-estimators in smaller samples (N=50-100).
 It outperforms SEM-ULS in every other condition of N, as well.
 With regards to SEM-ML, LSAM-ML only slightly outperforms, for higher N.
 
@@ -1367,38 +1367,28 @@ Thus, SAM tends to outperforms SEM in presence of unmodelled cross-loadings.
 ```
 
 All estimators are biased for small to moderate samples (N=50-500).
-Only SEM-ULS is unbiased for N=500 as well.
+Only SEM-ULS is unbiased for N=500.
 For higher N (N=1000-100000), no estimator is biased.
 In N=50, LSAM outperforms SEM-ULS estimation. 
 For all other conditions, there is no substantial difference between any of the estimators bias.
 
-Thus, for the most part, no estimator generally outperforms another in the correctly specified model conditions.
 
 ### Summary
 
-LSAM- outperforms SEM-ULS estimation in small samples (N=50) across all DGM's.
-Moreover, LSAM- outperforms SEM-estimation in all conditions with unmodelled cross-loadings.
+LSAM-estimation generally outperforms SEM-ULS estimation in smaller samples across all DGM's.
+Moreover, LSAM- outperforms both SEM-estimators in smaller samples, when unmodelled cross-loadings are present.
 In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another, for smaller to moderate samples.
-
-################One important point to discuss is again the exclusive presence of positive loadings and residual correlations in the DGM's 1 and 2. 
-This might lead again to SAM's small sample bias make it appear to outperform. 
-But: Is this not negligible here, as we have low (cross) loadings (0.42) and beta (/phi??) values (0.1)?? No CFA though!
-
-#### Printing syntax again?
-
-```{r}
-#MLIST <- lav_sam_gen_model(nfactors = NFAC, nvar.factor = FVAR, lambda = lambda,
-#                           PSI = PSI, BETA = BETA, reliability = REL, misspecification = 0L,rho = #0.6)
-#pop.model <- lav_syntax_mlist(MLIST, include.values = TRUE)
-#cat(pop.model)
-```
-
 
 ### Comparison with original paper
 
-Weirdly, unlike @robitzsch_comparing_2022, we have found some bias in DGM 0 ??
+Interestingly, unlike @robitzsch_comparing_2022, we have found some bias in DGM 0 even though the model was correctly specified in that scenario.
 
-For DMG1, results are very similar, with LSAM outperforming
+For DMG 1, results are very similar, with LSAM-ML only outperforming SEM-ULS estimation.
+A new insight is, that LSAM-ML seems to outperform SEM-ML in smaller samples as well.
+
+In DGM 2, we did not find the disadvantage of SEM-ML in comparison to the other estimators that @robitzsch_comparing_2022 found.
+
+An additional finding is, that LSAM-ML tends to generally perform better than SEM-ULS in smaller samples.
 
 
 
