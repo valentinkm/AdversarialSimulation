@@ -1383,7 +1383,7 @@ In conditions without misspecification (DGM 0) and in the presence of unmodelled
 
 Interestingly, unlike @robitzsch_comparing_2022, we have found some bias in DGM 0 even though the model was correctly specified in that scenario.
 
-For DMG 1, results are very similar, with LSAM-ML only outperforming SEM-ULS estimation.
+For DMG 1, results are very similar, with LSAM-ML outperforming SEM-ULS estimation.
 A new insight is that LSAM-ML seems to outperform SEM-ML in smaller samples as well.
 
 In DGM 2, we did not find the disadvantage of SEM-ML in comparison to the other estimators that @robitzsch_comparing_2022 found.
@@ -1455,15 +1455,19 @@ Thus, no estimator generally outperforms another in conditions with 20 unmodelle
 
 ### Summary
 
-
-
-
+LSAM-ML outperfoms the two SEM-estimators in conditions with unmodelled cross-loadings. 
+For conditions without misspecifications and unmodelled residual correlations, no difference arises besides a worse performance of SEM-ULS.
 
 ### Comparison with original paper
 
+The results align closely to the findings in @robitzsch_comparing_2022.
+A new insight is the comparatively worse performance of SEM-ULS in small samples (N=50).
 
+## Summary Study 4
 
-
+Overall, the main performance difference is LSAM outperforming the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
+In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
+A new insight is the comparatively worse performance of SEM-ULS in small samples (N=50).
 
 
 
