@@ -1271,7 +1271,6 @@ No errors and messages were present. There were, however, 9007 warnings, we will
 
 ### Warnings investigation
 
-Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
 ```{r}
 #| ouput: true
 
@@ -1468,6 +1467,146 @@ A new insight is the comparatively worse performance of SEM-ULS in small samples
 Overall, the main performance difference is LSAM outperforming the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
 In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
 A new insight is the comparatively worse performance of SEM-ULS in small samples (N=50).
+
+# Results Simulation 4a: 5-factor-model under 2 different data-generating mechanisms and varying beta size
+
+Again, we investigated a five factor model with regressions included, and this time under vary size of the regression coefficient beta.
+
+## Error, warnings and messages
+First, lets check for any messages, warnings or errors:
+
+```{r}
+#| ouput: true
+
+#Save all errors, warnings and messages
+all_messages_s4a <- readRDS("SimulationResults/sim4_results_error.rds")
+
+#errors
+errors_s4a <- all_messages_s4a$errors
+errors_sum_s4a <- unlist(errors_s4a)
+length(errors_sum_s4a)
+
+#warnings
+warnings_s4a <- all_messages_s4a$warnings
+warnings_sum_s4a <- unlist(warnings_s4a)
+length(warnings_sum_s4a)
+
+#messages
+messages_s4a <- all_messages_s4a$messages
+messages_sum_s4a <- unlist(messages_s4a)
+length(messages_sum_s4a)
+
+```
+
+No errors and messages were present. There were, however, 9007 warnings, we will investigate in detail.
+
+### Warnings investigation
+
+```{r}
+#| ouput: true
+
+# Flatten the list of warnings into a single character vector
+all_warnings <- unlist(warnings_s4a)
+
+# Count the occurrences of each unique warning
+warning_counts <- table(all_warnings)
+
+# Convert to data frame for better formatting
+warning_counts_df <- as.data.frame(warning_counts)
+colnames(warning_counts_df) <- c("Warning Message", "Count")
+
+# Display the data frame
+kable(warning_counts_df, format = "html") %>%
+  kable_styling(full_width = F, position = "left")
+```
+
+Identically as in Study 4, the three warnings that amount to 7 overall, are referring to problems with regards to positive definite matrices or model identification.
+This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
+The 9000 warnings with regards to Gamma computation in smaller samples is negligible as well, as we are not interested in the computation of robust fit indices.
+
+## Bias
+
+General interpretation: Biased if Bias estimate larger than 0.05
+
+Interpretation layers within table condition:
+
+- Unbiased judgement overall
+
+- ALL across increasing lambda
+
+- ALL across increasing phi
+
+- All within one lambda 
+- All within one phi
+
+Layers between tables:
+
+-Comparison between estimators
+
+-Comparison between N's
+
+-----------------
+
+### Print all tables
+
+```{r}
+#| ouput: true
+
+# Load the relative bias results
+bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
+
+```
+
+### Conditions with four unmodelled cross-loadings (DGM 1)
+
+#### SEM-ML
+```{r}
+
+#Normal print
+#print(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]])
+#print(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]])
+#print(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]])
+
+#Formatted tables
+kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: Absolute Bias of SEM-ML for DGM 1" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: Absolute Bias of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: Absolute Bias of LSAM-ML for DGM 1" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+All three estimators were biased across all conditions.
+The only exception is LSAM for very large samples (N=2500-100.000) and beta=0.3.
+For all three estimators, across increasing N, the bias decreased substantially, in all conditions of beta.
+For higher beta, the bias increased substantially, in all conditions of N for SEM-ML and SEM-ULS.
+This was not the case for LSAM-ML.
+
+
+
+
+
+
+
+
+
+
+
 
 
 
