@@ -1384,11 +1384,82 @@ In conditions without misspecification (DGM 0) and in the presence of unmodelled
 Interestingly, unlike @robitzsch_comparing_2022, we have found some bias in DGM 0 even though the model was correctly specified in that scenario.
 
 For DMG 1, results are very similar, with LSAM-ML only outperforming SEM-ULS estimation.
-A new insight is, that LSAM-ML seems to outperform SEM-ML in smaller samples as well.
+A new insight is that LSAM-ML seems to outperform SEM-ML in smaller samples as well.
 
 In DGM 2, we did not find the disadvantage of SEM-ML in comparison to the other estimators that @robitzsch_comparing_2022 found.
 
 An additional finding is, that LSAM-ML tends to generally perform better than SEM-ULS in smaller samples.
+
+## RMSE
+
+differences large than 0.03, we will report, without drawing a substantive conclusion.
+
+Interpretation layers within one condition:
+
+- ALL across increasing N
+
+- All within one N
+
+-----------------
+
+###Print all tables
+```{r}
+rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
+
+```
+
+### Conditions without misspecification (DGM 0)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse_s4[["DGM_0"]], "DGM_0"))
+
+```
+
+Across increasing N, the average RMSE decreases substantially for all estimators.
+For N=50, SEM-ULS performs substantially worse than the other two estimators.
+For all other conditions, there is no difference between any of the estimators.
+
+Thus, no estimator generally outperforms another in conditions with a correctly specified model.
+
+### Conditions with four unmodelled cross-loadings (DGM 1)
+
+```{r}
+#| ouput: true
+
+print(create_styled_table(rmse_s4[["DGM_1"]], "DGM_1"))
+
+```
+
+Across increasing N, the average RMSE decreases substantially for all estimators.
+Across all N, SEM-ULS performs substantially worse than the other two estimators.
+For N=50-500, SEM-ML performs substantially worse than LSAM-ML.
+For higher N, SEM-ML performs worse than LSAM-ML as well, but only slightly.
+
+Thus, LSAM-ML clearly outperforms the two SEM-estimators for small to moderate samples sizes, in the conditions with four unmodelled cross-loadings.
+
+### Conditions with 20 unmodelled residual correlation (DGM 2)
+
+```{r}
+
+ print(create_styled_table(rmse_s4[["DGM_2"]], "DGM_2"))
+
+```
+
+Across increasing N, the average RMSE decreases substantially for all estimators.
+For N=50, SEM-ULS performs substantially worse than the other two estimators.
+For all other conditions, there is no difference between any of the estimators.
+
+Thus, no estimator generally outperforms another in conditions with 20 unmodelled residual correlation.
+
+### Summary
+
+
+
+
+
+### Comparison with original paper
 
 
 
