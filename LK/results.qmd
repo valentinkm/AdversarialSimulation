@@ -1313,7 +1313,7 @@ Interpretation layers within one condition:
 ```{r}
 #| ouput: true
 
-# Load the relative bias results
+# Load the absolute bias results
 bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 
 
@@ -1532,34 +1532,31 @@ Interpretation layers within table condition:
 
 - Unbiased judgement overall
 
-- ALL across increasing lambda
+- ALL across increasing N
 
-- ALL across increasing phi
+- ALL across increasing beta
 
-- All within one lambda 
-- All within one phi
+- All within one N 
+- All within one beta
 
 Layers between tables:
 
 -Comparison between estimators
 
--Comparison between N's
+-Comparison between DGMs
 
 -----------------
-
-### Print all tables
 
 ```{r}
 #| ouput: true
 
-# Load the relative bias results
+# Load the absolute bias results
 bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
 ```
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
-#### SEM-ML
 ```{r}
 
 #Normal print
@@ -1597,13 +1594,59 @@ For all three estimators, across increasing N, the bias decreased substantially,
 For higher beta, the bias increased substantially, in all conditions of N for SEM-ML and SEM-ULS.
 This was not the case for LSAM-ML.
 
+Across all conditions, LSAM-ML substantially outperformed the two SEM-estimators.
+
+The only exception was for beta =0.1 in N=250 and all higher N. 
+Here, there was only a slightly better performance of LSAM- over SEM-ML estimation, though not substantial.
+
+This effect was stronger for higher values of beta.
+Additionally, SEM-ML outperformed SEM-ULS in all conditions as well.
+
+Thus, LSAM-ML generally outperformed SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
+This was especially evident for higher beta values.
 
 
+### Conditions with 20 unmodelled residual correlation (DGM 2)
 
+```{r}
 
+#Normal print
+#print(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]])
+#print(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]])
+#print(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]])
 
+#Formatted tables
+kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: Absolute Bias of SEM-ML for DGM 2" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
 
+kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: Absolute Bias of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
 
+kbl(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: Absolute Bias of LSAM-ML for DGM 2" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+All estimators were generally biased across conditions, besides conditions of very high N (N=1000-100.000) and lower to moderate beta (0.1-0.3).
+For all three estimators, across increasing N, the bias decreased substantially, in all conditions of beta.
+Only in SEM-ML in N=50 and SEM-ULS in N=100, there was a substantial increase in bias for higher beta values.
+
+For N=50, both SEM- and LSAM-ML substantially outperformed ULS estimation.
+For all other conditions, none of the estimators differed from another, in terms of bias.
+
+Thus, none of the estimators generally outperforms another in the presence of 20 unmodelled residual correlations.
 
 
 
