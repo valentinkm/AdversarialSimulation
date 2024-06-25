@@ -1718,12 +1718,91 @@ This effect was especially present in the two SEM estimators.
 
 Thus, LSAM-ML generally outperformed SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
 
+### Conditions with 20 unmodelled residual correlation (DGM 2)
+
+```{r}
+
+#Normal print
+#print(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]])
+#print(rmse_s4a[["DGM_2"]][["SEM_ULS_metrics"]])
+#print(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]])
+
+#Formatted tables
+kbl(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: RMSE of SEM-ML for DGM 2" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(rmse_s4a[["DGM_2"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: RMSE of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: RMSE of LSAM-ML for DGM 2" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+Across all conditions of N, LSAM-ML generally outperforms the two SEM-estimators for lower to moderate beta values (approx. beta= 0.2-0.4).
+This effect is stronger for higher values of beta.
+SEM-ULS had reduced RMSE values for higher N.
+All three estimators have higher RMSE values for higher beta.
+This effect was especially present in the two SEM estimators.
+
+Thus, LSAM-ML generally outperformed SEM-estimation, in the present of 20 unmodelled residual correlation.
+Even more so, for higher values of beta.
 
 
+## Summary Study 4a
 
+In terms of Bias, only in the presence of four unmodelled cross-loadings, did LSAM-estimation generally outperform both SEM-estimators.
+This was especially evident for higher beta values.
 
+With regards to RMSE, LSAM-ML outperformed SEM-estimation both under unmodelled cross-loadings and residual correlations.
+The same effect with regards to higher beta values was present in conditions with unmodelled residual correlation.
 
+All in all, this indicates that LSAM-ML estimation generally outperforms SEM-estimation in data-generating scenarios that contain regressions, especially if the regression coefficients have lower to moderate values.
 
+## Comparison to original paper
+
+Importantly, @robitzsch_comparing_2022 did not investigate differential effects due to sample size.
+Nor did they investigate RMSE.
+Thus, results are only partly comparable.
+As we did not find effects specific for comparing the estimators with regards to increasing N (besides the obvious decrease in Bias and RMSE), we can still compare the results in a general manner.
+
+In DMG1, the original paper indicated the same results, in that LSAM performed best.
+Interestingly, @robitzsch_comparing_2022 did not find the better performance of SEM-ML over SEM-ULS estimation that we found.
+Also no differential effect for higher beta values in original paper.
+
+In DGM2, @robitzsch_comparing_2022 found SEM-ULS to perform slightly better than the two others.
+Thus, results are quite similar, as we also did not find substantial differences between the three estimators.
+
+We disagree with the conclusion that @robitzsch_comparing_2022 draw with regards to this study, as they deem SEM-ULS and LSAM do not differ in performance, when in fact LSAM outperformed SEM-ULS in DGM1 in their studies.
+
+Still, later on in the paper, they agree that SAM can be expected to be more robust than both SEM-estimators in models with non-saturated structural models.
+With this last conclusion, we agree and extend the results to be even more convincing in that regard.
+
+# Summary for 5-factor-model under 3 different data-generating mechanisms (Studies 4 and 4a)
+
+For low beta (0.1), LSAM outperformed the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
+In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
+
+With increasing values of beta (0.2-0.4), the effect with regards to unmodelled cross-loadings became even stronger (DGM 1).
+in this context, LSAM not only outperformed SEM-estimation in terms of efficiency in DGM1, but also in conditions with unmodelled residual correlations (DGM2).
+
+All in all, this indicates that LSAM-ML estimation mostly outperforms SEM-estimation in data-generating scenarios that contain regressions, especially if the regression coefficients have increasing values.
+
+Very important to keep in mind here is a finding of the earlier study and the original paper, that LSAM exhibits a negative finite sample bias that skews results in conditions with positive values for unmodelled cross-loadings or residual correlations [@robitzsch_comparing_2022].
+
+Thus, in the joint study, conditions with negative unmodelled cross-loadings or residual correlations should be included for unsaturated structural models.
 
 
 
@@ -1731,9 +1810,10 @@ Thus, LSAM-ML generally outperformed SEM-estimation and SEM-ML outperformed SEM-
 ----------------
 # Starting points for joint simulation
 
-- Explicitly capture warnings in Studies 1-3
+- Explicitly capture warnings/ non-convergence in Studies 1-3
 - Investigate conditions with higher number of misspecifications (Study4?)
 - Investigate other models of interest? (Only if results of Study 4-4a are suggesting warranty for this)
+- conditions with negative unmodelled cross-loadings or residual correlations should be included for unsaturated structural models.
 
 
 
