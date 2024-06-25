@@ -1648,11 +1648,75 @@ For all other conditions, none of the estimators differed from another, in terms
 
 Thus, none of the estimators generally outperforms another in the presence of 20 unmodelled residual correlations.
 
+## RMSE
 
+General interpretation: substantial difference if RMSE estimates vary by 0.03
 
+Interpretation layers within table condition:
 
+- ALL across increasing N
 
+- ALL across increasing beta
 
+- All within one N 
+- All within one beta
+
+Layers between tables:
+
+-Comparison between estimators
+
+-Comparison between DGMs
+
+-----------------
+
+```{r}
+#| ouput: true
+
+# Load the rmse results
+rmse_s4a <- readRDS("SimulationResults/sim4a_rmse.rds")
+
+```
+
+### Conditions with four unmodelled cross-loadings (DGM 1)
+
+```{r}
+
+#Normal print
+#print(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]])
+#print(rmse_s4a[["DGM_1"]][["SEM_ULS_metrics"]])
+#print(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]])
+
+#Formatted tables
+kbl(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: RMSE of SEM-ML for DGM 1" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(rmse_s4a[["DGM_1"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: RMSE of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+kbl(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000"), format = "html") %>%
+  kable_styling(full_width = F, position = "left") %>%
+  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 4a: RMSE of LSAM-ML for DGM 1" = 8), bold = TRUE, align = "left", line = TRUE, italic = TRUE)
+
+```
+
+Across all conditions of N and beta, LSAM-ML estimation was more efficient than the two SEM-estimators.
+Additionally, SEM-ML outperformed SEM-ULS estimation, in terms of efficency, in all conditions as well.
+Both SEM estimators have reduced RMSE values for higher N.
+All three estimators have higher RMSE values for higher beta.
+This effect was especially present in the two SEM estimators.
+
+Thus, LSAM-ML generally outperformed SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
 
 
 
