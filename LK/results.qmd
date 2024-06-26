@@ -81,10 +81,15 @@ This does not, however, explain why they did not include more studies or conditi
 We hypothesize, that the goal of the paper was to show that even in these favorable constellations, SAM does not perform better than SEM.
 
 To be fair, it should be stated that most of the final conclusions drawn in the paper are correct, anyway. 
-With the use of the term "generally", @robitzsch_comparing_2022 are right in that there are many data constellations, were SAM does not outperform traditional SEM.
-They also acknowledge, that for non-saturated structural models, SAM seems to be the better choice.
+By saying that SAM- should not "generally" be preferred over SEM-estimation, they are right in that there are many data constellations, where SAM does not outperform traditional SEM.
+They also acknowledge, that based on their results for non-saturated structural models, SAM seems to be the better choice.
+Unfortunately, they use the term "generally" in a second context, when they argue in the discussion that still, SAM should still generally be used.
+Here, however, they say it should be used to avoid confounding the definition of measurement models from the estimation of structural models.
+This, according to @robitzsch_comparing_2022, often happens in applied research by including cross-loadings and residual correlations at will, without substantive reasons.
+In this sense, SAM should generally be used.
 
 For our studies, in order to have a more coherent interpretation of results, we will define an estimator to outperform another, based on the cut-off of 0.05 for bias.
+Additionally, we will only use the term "generally" to refer to the first meaning, that it outperforms across multiple data generating scenarios.
 
 ### SD and RMSE
 
