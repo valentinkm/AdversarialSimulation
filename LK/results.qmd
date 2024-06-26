@@ -312,7 +312,7 @@ For SEM-ULS, it slightly, but unsubstantially increases up to N=500, but is lowe
 The 4 SAM estimators have nearly identical estimation results.
 In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
 
-Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there are two negative residuals.
+Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there are two unmodelled negative residual correlations.
 
 ### Condition with two positive residual correlation (2_0.12)
 
@@ -335,7 +335,8 @@ Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outper
 in 0.5% of estimations, a warning referring to potential problems with convergence or improper solutions due to small sample sizes in one or multiple estimators occured. 
 This should be investigated more explicitly in the joint study.
 
-In conditions with no, one or two negative residual correlations,  SEM outperforms SAM in small to moderate sample sizes. This seems to be independent of the amount of misspecification (1 vs. 2).
+In conditions with no, one or two negative residual correlations,  SEM outperforms SAM in small to moderate sample sizes. 
+This seems to be independent of the amount of misspecification (1 vs. 2).
 
 Comparing the conditions with one and two positive residual correlations, the results suggest that SAM outperforms SEM in smaller to moderate samples, with increasing amount of misspecifiation (even better for 2 than for 1 residual correlation). In small samples, SEM tends to perform better.
 
@@ -554,7 +555,8 @@ For higher and lower N, there are no substantial differences present.
 
 ### Summary
 
-Overall, classic SEM estimation was more efficient than SAM estimation in small to moderate samples. Only in the case of two positive residual correlation, SAM was more efficient than SEM in moderate samples.
+Overall, classic SEM estimation was more efficient than SAM estimation in small to moderate samples. 
+Only in the case of two positive residual correlation, SAM was more efficient than SEM in moderate samples.
 It would be interesting to investigate higher amount of misspecification to investigate differential effects (Study 4?).
 
 ## Summary Study 1
@@ -720,7 +722,7 @@ Unlike in this study, the original paper did not find a reversal effect for high
 Another difference is that we, unlike @robitzsch_comparing_2022, found estimates to be biased for low phi-values.
 This might be due to the difference of using absolute bias, thereby avoiding cancellation of positive and negative values.
 Still, our general conclusion corresponds to the original paper:
-LSAM has a general negative bias. 
+LSAM has a general negative small sample bias. 
 The bias is larger in magnitude for lower loadings and higher true factor correlations.
 
 # Results Simulation 2: 2-factor-CFA with 1 or 2 cross-loadings
@@ -1205,15 +1207,6 @@ kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "
 
 ```
 
-differences large than 0.03, we will report, without drawing a substantive conclusion.
-
-Interpretation layers within one condition:
-
-- ALL across increasing N
-
-- All within one N
-
-
 Across all estimators, the RMSE decreased with increasing N.
 For N=50 and N=1000-100000, none of the estimators differed from another.
 For N=100-500, the two SEM-estimators outperform all SAM-estimators in terms of efficiency.
@@ -1596,14 +1589,16 @@ This was not the case for LSAM-ML.
 
 Across all conditions, LSAM-ML substantially outperformed the two SEM-estimators.
 
+The bias difference between LSAM-ML and the two other estimators is higher for lower N.
+
 The only exception was for beta =0.1 in N=250 and all higher N. 
 Here, there was only a slightly better performance of LSAM- over SEM-ML estimation, though not substantial.
 
 This effect was stronger for higher values of beta.
 Additionally, SEM-ML outperformed SEM-ULS in all conditions as well.
 
-Thus, LSAM-ML generally outperformed SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
-This was especially evident for higher beta values.
+Thus, LSAM-ML generally appeared to outperform SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
+This was especially evident for higher beta values and lower N.
 
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
@@ -1644,9 +1639,13 @@ For all three estimators, across increasing N, the bias decreased substantially,
 Only in SEM-ML in N=50 and SEM-ULS in N=100, there was a substantial increase in bias for higher beta values.
 
 For N=50, both SEM- and LSAM-ML substantially outperformed ULS estimation.
+In these conditions, LSAM-ML also outperformed SEM-ML. for beta 0.2-0.4.
+Lastly, LSAM-ML outperformed SEM-ULS in N=100 for beta = 0.4.
+
 For all other conditions, none of the estimators differed from another, in terms of bias.
 
-Thus, none of the estimators generally outperforms another in the presence of 20 unmodelled residual correlations.
+Thus, LSAM-ML appeared to perform best in small samples and higher beta.
+Besides that, none of the estimators generally outperforms another in the presence of 20 unmodelled residual correlations.
 
 ## RMSE
 
@@ -1711,12 +1710,14 @@ kbl(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=1
 ```
 
 Across all conditions of N and beta, LSAM-ML estimation was more efficient than the two SEM-estimators.
+This difference is stronger in smaller samples.
 Additionally, SEM-ML outperformed SEM-ULS estimation, in terms of efficency, in all conditions as well.
 Both SEM estimators have reduced RMSE values for higher N.
 All three estimators have higher RMSE values for higher beta.
 This effect was especially present in the two SEM estimators.
 
-Thus, LSAM-ML generally outperformed SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
+Thus, LSAM-ML appeared to outperform SEM-estimation and SEM-ML appeared to outperform SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
+This was especially true in lower samples and higher beta values.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
@@ -1752,24 +1753,29 @@ kbl(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=1
 ```
 
 Across all conditions of N, LSAM-ML generally outperforms the two SEM-estimators for lower to moderate beta values (approx. beta= 0.2-0.4).
-This effect is stronger for higher values of beta.
+This effect is stronger for higher values of beta and lower N.
 SEM-ULS had reduced RMSE values for higher N.
 All three estimators have higher RMSE values for higher beta.
 This effect was especially present in the two SEM estimators.
 
-Thus, LSAM-ML generally outperformed SEM-estimation, in the present of 20 unmodelled residual correlation.
-Even more so, for higher values of beta.
+Thus, LSAM-ML appeared to generally outperform SEM-estimation, in the presence of 20 unmodelled residual correlation.
+Even more so, for higher values of beta and lower N.
 
 
 ## Summary Study 4a
 
-In terms of Bias, only in the presence of four unmodelled cross-loadings, did LSAM-estimation generally outperform both SEM-estimators.
+In terms of Bias, only in the presence of four unmodelled cross-loadings, did LSAM-estimation appear to generally outperform both SEM-estimators.
 This was especially evident for higher beta values.
+In the presence of unmodelled residual correlations, LSAM-ML appeared to perform best in small samples and higher beta.
 
-With regards to RMSE, LSAM-ML outperformed SEM-estimation both under unmodelled cross-loadings and residual correlations.
-The same effect with regards to higher beta values was present in conditions with unmodelled residual correlation.
+With regards to RMSE, LSAM-ML appeared to outperform SEM-estimation both under unmodelled cross-loadings and residual correlations.
+Again, this appeared to be especially present in conditions with small samples and high beta values.
 
-All in all, this indicates that LSAM-ML estimation generally outperforms SEM-estimation in data-generating scenarios that contain regressions, especially if the regression coefficients have lower to moderate values.
+Going all the way back to Studies 1-3, we again have to remember that LSAM has a general negative bias in smaller samples.
+This makes it appear to outperform in conditions of lower N.
+As replicated in Study 1b, this bias tends to be even stronger for higher parameter values in the structural model, and thus probably for higher beta values as well.
+
+To paint a complete picture of the comparative performance of SAM vs. SEM estimation, the joint study should include more conditions with negatively valenced unmodelled cross-loadings and residual correlations.
 
 ## Comparison to original paper
 
