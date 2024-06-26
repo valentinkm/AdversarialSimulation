@@ -557,7 +557,6 @@ For higher and lower N, there are no substantial differences present.
 
 Overall, classic SEM estimation was more efficient than SAM estimation in small to moderate samples. 
 Only in the case of two positive residual correlation, SAM was more efficient than SEM in moderate samples.
-It would be interesting to investigate higher amount of misspecification to investigate differential effects (Study 4?).
 
 ## Summary Study 1
 
@@ -981,7 +980,6 @@ Thus, SEM outperforms SAM in small to moderate samples.
 For negative cross-loadings, SAM tends to outperform SEM in terms of SD reduction small to moderate samples.
 For positive cross-loadings, SEM tends to outperform SAM in terms of SD reduction smaller to moderate samples.
 There seems to be an effect due to the amount of misspecification, such that the conditions with 2 cross-loadings had larger differences in performance (in both directions).
-This could be interesting to keep in mind for higher numbers of misspecification (Study4?).
 
 ## RMSE
 differences large than 0.03, we will report, without drawing a substantive conclusion.
@@ -1782,11 +1780,10 @@ To paint a complete picture of the comparative performance of SAM vs. SEM estima
 Importantly, @robitzsch_comparing_2022 did not investigate differential effects due to sample size.
 Nor did they investigate RMSE.
 Thus, results are only partly comparable.
-As we did not find effects specific for comparing the estimators with regards to increasing N (besides the obvious decrease in Bias and RMSE), we can still compare the results in a general manner.
 
 In DMG1, the original paper indicated the same results, in that LSAM performed best.
 Interestingly, @robitzsch_comparing_2022 did not find the better performance of SEM-ML over SEM-ULS estimation that we found.
-Also no differential effect for higher beta values in original paper.
+Also no differential effect for higher beta values was found in the original paper.
 
 In DGM2, @robitzsch_comparing_2022 found SEM-ULS to perform slightly better than the two others.
 Thus, results are quite similar, as we also did not find substantial differences between the three estimators.
@@ -1794,53 +1791,28 @@ Thus, results are quite similar, as we also did not find substantial differences
 We disagree with the conclusion that @robitzsch_comparing_2022 draw with regards to this study, as they deem SEM-ULS and LSAM do not differ in performance, when in fact LSAM outperformed SEM-ULS in DGM1 in their studies.
 
 Still, later on in the paper, they agree that SAM can be expected to be more robust than both SEM-estimators in models with non-saturated structural models.
-With this last conclusion, we agree and extend the results to be even more convincing in that regard.
+With this last conclusion, we partly agree insofar, that we found SAM to appear more robust as well.
+We think however, as said before, that conditions with negatively valenced unmodelled cross-laodings and residual correlations shoud be investigated to be able to fully  agree with this sentiment.
 
 # Summary for 5-factor-model under 3 different data-generating mechanisms (Studies 4 and 4a)
 
-For low beta (0.1), LSAM outperformed the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
+For low beta (0.1), LSAM appeared to outperform the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
 In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
 
 With increasing values of beta (0.2-0.4), the effect with regards to unmodelled cross-loadings became even stronger (DGM 1).
-in this context, LSAM not only outperformed SEM-estimation in terms of efficiency in DGM1, but also in conditions with unmodelled residual correlations (DGM2).
-
-All in all, this indicates that LSAM-ML estimation mostly outperforms SEM-estimation in data-generating scenarios that contain regressions, especially if the regression coefficients have increasing values.
+in this context, LSAM appeared to not only outperform SEM-estimation in terms of efficiency in DGM1, but also in conditions with unmodelled residual correlations (DGM2).
 
 Very important to keep in mind here is a finding of the earlier study and the original paper, that LSAM exhibits a negative finite sample bias that skews results in conditions with positive values for unmodelled cross-loadings or residual correlations [@robitzsch_comparing_2022].
+This effect was even stronger for higher values of phi, which aligns with the findings in our studies.
 
 Thus, in the joint study, conditions with negative unmodelled cross-loadings or residual correlations should be included for unsaturated structural models.
 
-# General summary
+# Overall summary
 
-With regards to 2-factor-CFA-models, as in the original paper by @robitzsch_comparing_2022, SAM does not generally outperform SEM in small to moderate samples. 
+With regards to all studies conducted, as in the original paper by @robitzsch_comparing_2022, SAM does not generally outperform SEM in small to moderate samples. 
 SAM exhibits a negative small sample bias that makes SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias is especially strong for lower lambda and higher phi values.
-If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM.
-
-On the other side, when structural models are unsaturated, and thus contain regressions, LSAM is more robust than SEM-estimation to misspecifications, if the regressions are of smaller to moderate size and the values of the unmodelled parameters are positive.
-Only in the presence of unmodelled cross-loadings, this is generally the case for low beta-values as well.
-
-On the other side, when structural models are unsaturated, and thus contain regressions, the picture looks similar:
-All in all, this indicates that LSAM-ML estimation mostly outperforms SEM-estimation in data-generating scenarios that contain regressions, especially if the regression coefficients have increasing values.
-
-*Summary 2-factor-CFA models (Studies 1-3)*
-
-SAM does not generally outperform SEM in small to moderate samples. 
-SAM exhibits a negative small sample bias that makes SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias is especially strong for lower lambda and higher phi values.
-If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM.
-
-*Summary 5-factor model*
-
-For low beta (0.1), LSAM outperformed the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
-In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
-
-With increasing values of beta (0.2-0.4), the effect with regards to unmodelled cross-loadings became even stronger (DGM 1).
-in this context, LSAM not only outperformed SEM-estimation in terms of efficiency in DGM1, but also in conditions with unmodelled residual correlations (DGM2).
-
-All in all, this indicates that LSAM-ML estimation mostly outperforms SEM-estimation in data-generating scenarios that contain regressions, especially if the regression coefficients have increasing values.
-
-
+This bias is especially strong for lower lambda and higher phi or beta values.
+If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM, as far as can be concluded from the 2-factor-CFA-models.
 
 
 # Starting points for joint simulation
@@ -1851,16 +1823,6 @@ The implementation of the studies should allow to capture and investigate these 
 
 Secondly, conditions with negative unmodelled cross-loadings or residual correlations should be included for unsaturated structural models.
 This would be interesting to be able to differentiate whether the negative finite sample bias of LSAM, that became apparent in the 2-factor-CFA, is also influencing the results in the 5-factor-model with regressions.
-Only if this can be ruled out, we could conclude that SAM generally outperforms SEM in these models.
-
-
-
-
-
--------------------To delete:
-- Explicitly capture warnings/ non-convergence
-- From Simulation1 and 2: Investigate conditions with higher number of misspecifications (Study4?) -> No outperformance of SAM for 20 rc!
-- conditions with negative unmodelled cross-loadings or residual correlations should be included for unsaturated structural models.
-
+Only if this can be ruled out, we one could argue that SAM generally outperforms SEM in these models.
 
 
