@@ -38,7 +38,8 @@ For the same reasons as in studies 1,2 and 3, we used ML as well as ULS LSAM est
 
 Again, I forgot the addition of N=50 in the original condition calculation. 
 Importantly, the model parameters and resulting population-level covariance matrices for the different DGM's provided by @robitzsch_comparing_2022 in their github repository were not the same as in the first paper by @rosseel_structural_2022: They omitted, for example, the cross-loading of the last factor in DGM2, without an apparent reason. Additionally, they had different values for the residual variances without giving insight into why they chose to do so and how (there was no calculation in the simulation script provided). For these reasons, and because of the fact that the calculation of the values in @rosseel_structural_2022 was replicable, we chose to use the values of @rosseel_structural_2022 by generating them with the same functions they used. In consequence, a fourth cross-loading was present in DGM 2.
-The only difference in our data-simulation is that we only used the 3 out of 4 misspecification conditions that were present in @robitzsch_comparing_2022. 
+The only difference in our data-simulation is that we only used the 3 out of 4 misspecification conditions that were present in @rosseel_structural_2022. 
+Importantly, due to the implementation of the functions in the paper by @rosseel_structural_2022, the naming of the DGM's changed. In their paper, what @robitzsch_comparing_2022 called DGM1 is implemented with a value of 0. DGM 2 and 3 are thus also implemented with values 1 and 2. To avoid confusion, I will the terminology of the code I used, from @rosseel_structural_2022. Thus, the naming is now different when interpreting the results later on.
 
 ## Study 4a
 
@@ -49,6 +50,7 @@ These findings, combined with our goal to investigate realistic data conditions,
 As DGM1 neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study 4, it was omitted.
 Similarly, as no substantial conclusions were drawn with regards to RMSE in the original papers study 1 and 2, we omitted its calculation as well.
 Lastly, for the same reasons as argued for Study 4, we again created the DGM's based on the functions used in @rosseel_structural_2022.
+As in Study 4, from now on we will also adhere to the naming that follows from the code taken from @rosseel_structural_2022, so that DGM's 1-3 are now DGM's 0-2.
 
 ## Studies 5,6
 
@@ -70,11 +72,13 @@ In other studies (e.g. Study 2), they seemed to deviate from this value to defin
 Importantly, this deviation was present in both directions, and therefore did not appear to be consciously biased towards one direction of possible outcomes.
 In consequence, it appears that interpretations aren't coherent across the studies.
 
-Another important aspect to highlight in the original papers results refers to the general presence of a negative bias in LSAM estimation. 
-Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in unmodelled cross-loadings and residual correlation, namely studies 3-6. 
+Another important aspect to highlight in the original papers results refers to the general presence of a negative small sample bias in LSAM estimation. 
+This bias makes LSAM appear to perform superior in conditions with positive values in unmodelled cross-loadings and residual correlation, but worse when the values are negative.
+Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in unmodelled cross-loadings and residual correlation, namely in study 3. 
 This is done without a general note of some sorts, that this bias should apply in these data-generating scenarios the same as in Studies 1 and 2.
 In consequence, the interpretations @robitzsch_comparing_2022 make, are somewhat misleading on first sight, if one does not account for this bias.
-This does not, however, explain why they did not include more studies or conditions with negatively valenced residual correlations or cross-loadings. We hypothesize, that the goal of the paper was to show that even in these favorable constellations, SAM does not perform better than SEM.
+This does not, however, explain why they did not include more studies or conditions with negatively valenced residual correlations or cross-loadings. 
+We hypothesize, that the goal of the paper was to show that even in these favorable constellations, SAM does not perform better than SEM.
 
 To be fair, it should be stated that most of the final conclusions drawn in the paper are correct, anyway. 
 With the use of the term "generally", @robitzsch_comparing_2022 are right in that there are many data constellations, were SAM does not outperform traditional SEM.
@@ -714,7 +718,7 @@ Naturally, the bias values are larger for N=50, still.
 In contrast to the original paper by @robitzsch_comparing_2022, we computed absolute bias to avoid infinite values in some conditions.
 Additionally, computing absolute instead of relative Bias solves the problem of positive and negative biases canceling each other out.
 Results partly align in terms of absolute bias:
-For higher values of lambda, LSAM-ML has less absolute Bias. 
+For higher values of lambda, LSAM has less absolute Bias. 
 This difference increases for higher phi values.
 Only for low values of lambda, the bias increases for higher values of phi. 
 Unlike in this study, the original paper did not find a reversal effect for higher lambda values.
@@ -723,6 +727,7 @@ This might be due to the difference of using absolute bias, thereby avoiding can
 Still, our general conclusion corresponds to the original paper:
 LSAM has a general negative small sample bias. 
 The bias is larger in magnitude for lower loadings and higher true factor correlations.
+Importantly, the bias seems not to disappear for low values of phi and lambda, unlike in the original paper.
 
 # Results Simulation 2: 2-factor-CFA with 1 or 2 cross-loadings
 
@@ -1231,6 +1236,8 @@ If there is no misspecification or unmodelled negative cross-loadings and residu
 # Results Simulation 4: 5-factor-model under 3 different data-generating mechanisms
 
 Importantly, for this study, we do not investigate CFA's anymore, but models with regressions included.
+Also, keep in mind that the naming of the DGM changed to correspond with the code implementation. 
+What @robitzsch_comparing_2022 called DGM 1-3, we now will call DGM 0-2.
 
 ## Error, warnings and messages
 First, lets check for any messages, warnings or errors:
@@ -1362,23 +1369,28 @@ For higher N (N=1000-100000), no estimator is biased.
 In N=50, LSAM outperforms SEM-ULS estimation. 
 For all other conditions, there is no substantial difference between any of the estimators bias.
 
-
 ### Summary
 
-LSAM-estimation generally outperforms SEM-ULS estimation in smaller samples across all DGM's.
-Moreover, LSAM- outperforms both SEM-estimators in smaller samples, when unmodelled cross-loadings are present.
+LSAM-estimation appears to generally outperform SEM-ULS estimation in smaller samples across all DGM's.
+Moreover, LSAM- appeared to outperform both SEM-estimators in smaller samples, when unmodelled cross-loadings are present.
+Importantly, as we found LSAM to have a negative small sample bias in conditions with low values of phi as well in our simulation study 1b, we have to take this into account:
+Even though LSAM appears to outperform SEM-estimation in DGM 1, this should be attributed to its general negative small sample bias.
+Thus, it cannot simply be stated, that SAM estimation should be preferred in these scenarios.
+
 In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another, for smaller to moderate samples.
 
 ### Comparison with original paper
 
 Interestingly, unlike @robitzsch_comparing_2022, we have found some bias in DGM 0 even though the model was correctly specified in that scenario.
 
-For DMG 1, results are very similar, with LSAM-ML outperforming SEM-ULS estimation.
+For DMG 1, results are very similar, with LSAM-ML seemingly outperforming SEM-ULS estimation.
 A new insight is that LSAM-ML seems to outperform SEM-ML in smaller samples as well.
 
 In DGM 2, we did not find the disadvantage of SEM-ML in comparison to the other estimators that @robitzsch_comparing_2022 found.
 
 An additional finding is, that LSAM-ML tends to generally perform better than SEM-ULS in smaller samples.
+
+Importantly, our conclusion with regards to LSAM's performance is different, due to the different findings in our Study 1b, that found LSAM to be biased even for low values of phi and lambda.
 
 ## RMSE
 
@@ -1427,7 +1439,7 @@ Across all N, SEM-ULS performs substantially worse than the other two estimators
 For N=50-500, SEM-ML performs substantially worse than LSAM-ML.
 For higher N, SEM-ML performs worse than LSAM-ML as well, but only slightly.
 
-Thus, LSAM-ML clearly outperforms the two SEM-estimators for small to moderate samples sizes, in the conditions with four unmodelled cross-loadings.
+Thus, LSAM-ML appears to outperform the two SEM-estimators for small to moderate samples sizes, in the conditions with four unmodelled cross-loadings.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
@@ -1445,7 +1457,7 @@ Thus, no estimator generally outperforms another in conditions with 20 unmodelle
 
 ### Summary
 
-LSAM-ML outperfoms the two SEM-estimators in conditions with unmodelled cross-loadings. 
+LSAM-ML appears to outperfoms the two SEM-estimators in conditions with unmodelled cross-loadings. 
 For conditions without misspecifications and unmodelled residual correlations, no difference arises besides a worse performance of SEM-ULS.
 
 ### Comparison with original paper
@@ -1455,13 +1467,20 @@ A new insight is the comparatively worse performance of SEM-ULS in small samples
 
 ## Summary Study 4
 
-Overall, the main performance difference is LSAM outperforming the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
+Overall, the main performance difference is that LSAM appears to be outperforming the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
+Even though LSAM appears to outperform SEM-estimation in DGM 1, this should be attributed to its general negative small sample bias.
+Thus, it cannot simply be stated, that SAM estimation should be preferred in these scenarios.
+
 In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
 A new insight is the comparatively worse performance of SEM-ULS in small samples (N=50).
+Due to our different findings with regards to the small sample bias of LSAM in Study 1b, we arrive at different conclusions than @robitzsch_comparing_2022.
 
 # Results Simulation 4a: 5-factor-model under 2 different data-generating mechanisms and varying beta size
 
 Again, we investigated a five factor model with regressions included, and this time under vary size of the regression coefficient beta.
+Unlike the original paper, were the investigation was only conducted on the population level, we also varied the sample size as a factor in our simulation.
+Also, keep in mind that the naming of the DGM changed to correspond with the code implementation. 
+What @robitzsch_comparing_2022 called DGM 1-3, we now will call DGM 0-2.
 
 ## Error, warnings and messages
 First, lets check for any messages, warnings or errors:
@@ -1790,9 +1809,8 @@ Thus, results are quite similar, as we also did not find substantial differences
 
 We disagree with the conclusion that @robitzsch_comparing_2022 draw with regards to this study, as they deem SEM-ULS and LSAM do not differ in performance, when in fact LSAM outperformed SEM-ULS in DGM1 in their studies.
 
-Still, later on in the paper, they agree that SAM can be expected to be more robust than both SEM-estimators in models with non-saturated structural models.
-With this last conclusion, we partly agree insofar, that we found SAM to appear more robust as well.
-We think however, as said before, that conditions with negatively valenced unmodelled cross-laodings and residual correlations shoud be investigated to be able to fully  agree with this sentiment.
+Additionally, later on in the paper, they posit that SAM can be expected to be more robust than both SEM-estimators in models with non-saturated structural models.
+With this last conclusion, we disagree with regards to the now multiple times mentioned negative small sample bias of LSAM, that appears to be present in non-saturated structural models as well.
 
 # Summary for 5-factor-model under 3 different data-generating mechanisms (Studies 4 and 4a)
 
@@ -1812,6 +1830,8 @@ Thus, in the joint study, conditions with negative unmodelled cross-loadings or 
 With regards to all studies conducted, as in the original paper by @robitzsch_comparing_2022, SAM does not generally outperform SEM in small to moderate samples. 
 SAM exhibits a negative small sample bias that makes SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
 This bias is especially strong for lower lambda and higher phi or beta values.
+Going ahead of what was investigated in @robitzsch_comparing_2022, we found that this bias is also present in models with regressions.
+Thus, it cannot be concluded that SAM is more robust in non-saturated structural model, as of yet.
 If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform even worse than traditional SEM, as far as can be concluded from the 2-factor-CFA-models.
 
 
