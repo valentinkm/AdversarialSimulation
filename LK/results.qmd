@@ -182,9 +182,7 @@ As the 245 are less than 0.5% of the 525000 estimations performed, we will conti
 
 ### Print all tables
 
-```{r}
-#| ouput: true
-#| echo: false
+```{r output = TRUE, echo = FALSE}
 
 # Load the relative bias results
 bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
@@ -1471,7 +1469,7 @@ First, lets check for any messages, warnings or errors:
 ```{r output = TRUE, echo = FALSE}
 
 #Save all errors, warnings and messages
-all_messages_s4a <- readRDS("SimulationResults/sim4_results_error.rds")
+all_messages_s4a <- readRDS("SimulationResults/sim4a_results_error.rds")
 
 #errors
 errors_s4a <- all_messages_s4a$errors
@@ -1511,7 +1509,7 @@ kable(warning_counts_df) %>%
   kable_styling(full_width = F, position = "left")
 ```
 
-Identically as in Study 4, the three warnings that amount to 7 overall, are referring to problems with regards to positive definite matrices or model identification.
+Similarly as in Study 4, next to the warnings regarding the Gamma calculation, all 89 other warnings referred to problems with positive definite matrices or model identification.
 This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
 The 9000 warnings with regards to Gamma computation in smaller samples is negligible as well, as we are not interested in the computation of robust fit indices.
 
