@@ -207,7 +207,7 @@ create_styled_table <- function(data, condition) {
 
 # Loop through each condition and print the styled table
 for (condition in names(bias_ci_s1)) {
-  print(create_styled_table(bias_ci_s1[[condition]], condition))
+  create_styled_table(bias_ci_s1[[condition]], condition)
   cat("\n\n")  # Add space between tables
 }
 
@@ -256,8 +256,7 @@ create_styled_table <- function(data, condition) {
 
 # Loop through each condition and print the styled table
 for (condition in names(bias_ci_s1)) {
-  print(create_styled_table(bias_ci_s1[[condition]], condition))
-  cat("\n\n")  # Add space between tables
+  create_styled_table(bias_ci_s1[[condition]], condition)
 }
 
 
@@ -267,7 +266,7 @@ for (condition in names(bias_ci_s1)) {
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12"))
+create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 
 ```
 
