@@ -280,7 +280,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s1[["1_-0.12"]], "1_-0.12"))
+create_styled_table(bias_ci_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
@@ -296,7 +296,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s1[["1_0.12"]], "1_0.12"))
+create_styled_table(bias_ci_s1[["1_0.12"]], "1_0.12")
 
 ```
 
@@ -312,7 +312,7 @@ Thus, SEM estimation outperforms SAM in smaller samples (N=50-100), whereas SAM 
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12"))
+create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
@@ -328,7 +328,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s1[["2_0.12"]], "2_0.12"))
+create_styled_table(bias_ci_s1[["2_0.12"]], "2_0.12")
 
 ```
 
@@ -382,7 +382,7 @@ sd_s1 <- readRDS("SimulationResults/sim1_sd.rds")
 
 # Loop through each condition and print the styled table
 for (condition in names(sd_s1)) {
-  print(create_styled_table(sd_s1[[condition]], condition))
+  create_styled_table(sd_s1[[condition]], condition)
   cat("\n\n")  # Add space between tables
 }
 ```
@@ -391,7 +391,7 @@ for (condition in names(sd_s1)) {
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s1[["0_0.12"]], "0_0.12"))
+create_styled_table(sd_s1[["0_0.12"]], "0_0.12")
 
 ```
 
@@ -411,7 +411,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples
 ### One negative residual correlation (1_-0.12)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s1[["1_-0.12"]], "1_-0.12"))
+create_styled_table(sd_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
@@ -429,7 +429,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 ### One positive residual correlation (1_0.12)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s1[["1_0.12"]], "1_0.12"))
+create_styled_table(sd_s1[["1_0.12"]], "1_0.12")
 
 ```
 
@@ -444,7 +444,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM
 ### Two negative residual correlations (2_-0.12)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s1[["2_-0.12"]], "2_-0.12"))
+create_styled_table(sd_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
@@ -458,7 +458,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 ### Two positive residual correlations (2_0.12)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s1[["2_0.12"]], "2_0.12"))
+create_styled_table(sd_s1[["2_0.12"]], "2_0.12")
 
 ```
 
@@ -497,7 +497,7 @@ rmse_s1 <- readRDS("SimulationResults/sim1_rmse.rds")
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s1[["0_0.12"]], "0_0.12"))
+create_styled_table(rmse_s1[["0_0.12"]], "0_0.12")
 
 ```
 
@@ -509,7 +509,7 @@ Besides, there are no substantial differences present.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s1[["1_-0.12"]], "1_-0.12"))
+create_styled_table(rmse_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
@@ -521,7 +521,7 @@ For higher N, there are no substantial differences present.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s1[["1_0.12"]], "1_0.12"))
+create_styled_table(rmse_s1[["1_0.12"]], "1_0.12")
 
 ```
 
@@ -533,7 +533,7 @@ For higher N, there are no substantial differences present.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s1[["2_-0.12"]], "2_-0.12"))
+create_styled_table(rmse_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
@@ -545,7 +545,7 @@ For higher N, there are no substantial differences present.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s1[["2_0.12"]], "2_0.12"))
+create_styled_table(rmse_s1[["2_0.12"]], "2_0.12")
 
 ```
 
@@ -794,7 +794,7 @@ bias_ci_s2 <- readRDS("SimulationResultsProcessed/sim2_rel_bias_ci.rds")
 
 # Loop through each condition and print the styled table
 for (condition in names(bias_ci_s2)) {
-  print(create_styled_table(bias_ci_s2[[condition]], condition))
+  create_styled_table(bias_ci_s2[[condition]], condition)
   cat("\n\n")  # Add space between tables
 }
 
@@ -804,7 +804,7 @@ for (condition in names(bias_ci_s2)) {
 ### One negative cross-loading (1_-0.3)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3"))
+create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3")
 
 ```
 
@@ -821,7 +821,7 @@ Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when the
 ### One positive cross-loadings (1_0.3)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3"))
+create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3")
 
 ```
 
@@ -836,7 +836,7 @@ Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outper
 ### Two negative cross-loadings (2_-0.3)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3"))
+create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 All estimators are negatively biased across all N conditions.
@@ -849,7 +849,7 @@ Thus, SEM estimation outperforms SAM, when there are two negative residuals.
 ### Two positive cross-loadings (2_0.3)
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(bias_ci_s2[["2_0.3"]], "2_0.3"))
+create_styled_table(bias_ci_s2[["2_0.3"]], "2_0.3")
 
 ```
 
@@ -900,7 +900,7 @@ sd_s2 <- readRDS("SimulationResults/sim2_sd.rds")
 
 # Loop through each condition and print the styled table
 for (condition in names(sd_s2)) {
-  print(create_styled_table(sd_s2[[condition]], condition))
+  create_styled_table(sd_s2[[condition]], condition)
   cat("\n\n")  # Add space between tables
 }
 ```
@@ -909,7 +909,7 @@ for (condition in names(sd_s2)) {
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s2[["1_-0.3"]], "1_-0.3"))
+create_styled_table(sd_s2[["1_-0.3"]], "1_-0.3")
 
 ```
 
@@ -925,7 +925,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s2[["1_0.3"]], "1_0.3"))
+create_styled_table(sd_s2[["1_0.3"]], "1_0.3")
 
 ```
 
@@ -942,7 +942,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s2[["2_-0.3"]], "2_-0.3"))
+create_styled_table(sd_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 
@@ -957,7 +957,7 @@ Thus, SAM outperforms SEM in terms of SD reduction in small to moderate samples.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(sd_s2[["2_0.3"]], "2_0.3"))
+create_styled_table(sd_s2[["2_0.3"]], "2_0.3")
 
 ```
 
@@ -998,7 +998,7 @@ rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s2[["1_-0.3"]], "1_-0.3"))
+create_styled_table(rmse_s2[["1_-0.3"]], "1_-0.3")
 
 ```
 
@@ -1010,7 +1010,7 @@ For higher N, there are no substantial differences present.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s2[["1_0.3"]], "1_0.3"))
+create_styled_table(rmse_s2[["1_0.3"]], "1_0.3")
 
 ```
 
@@ -1023,7 +1023,7 @@ For N=500, all 4 SAM estimators substantially outperformed SEM-ML estimation.
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3"))
+create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 
@@ -1035,7 +1035,7 @@ For all other conditions, The two SEM estimators were more efficient than all SA
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s2[["2_0.3"]], "2_0.3"))
+create_styled_table(rmse_s2[["2_0.3"]], "2_0.3")
 
 ```
 
@@ -1299,7 +1299,7 @@ bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 
 # Loop through each condition and print the styled table from Study 1 function
 for (condition in names(bias_ci_s4)) {
-  print(create_styled_table(bias_ci_s4[[condition]], condition))
+  create_styled_table(bias_ci_s4[[condition]], condition)
   cat("\n\n")  # Add space between tables
 }
 
@@ -1310,7 +1310,7 @@ for (condition in names(bias_ci_s4)) {
 
 ```{r output = TRUE, echo = FALSE}
 
- print(create_styled_table(bias_ci_s4[["DGM_0"]], "DGM_0"))
+create_styled_table(bias_ci_s4[["DGM_0"]], "DGM_0")
 ```
 
 
@@ -1325,7 +1325,7 @@ Thus, for the most part, no estimator generally outperforms another in the corre
 
 ```{r output = TRUE, echo = FALSE}
 
- print(create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1"))
+create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1")
 
 ```
 
@@ -1341,7 +1341,7 @@ Thus, SAM tends to outperforms SEM in presence of unmodelled cross-loadings.
 
 ```{r output = TRUE, echo = FALSE}
 
- print(create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2"))
+create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2")
 
 ```
 
@@ -1396,7 +1396,7 @@ rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s4[["DGM_0"]], "DGM_0"))
+create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
 
@@ -1410,7 +1410,7 @@ Thus, no estimator generally outperforms another in conditions with a correctly 
 
 ```{r output = TRUE, echo = FALSE}
 
-print(create_styled_table(rmse_s4[["DGM_1"]], "DGM_1"))
+create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
 ```
 
@@ -1425,7 +1425,7 @@ Thus, LSAM-ML appears to outperform the two SEM-estimators for small to moderate
 
 ```{r output = TRUE, echo = FALSE}
 
- print(create_styled_table(rmse_s4[["DGM_2"]], "DGM_2"))
+create_styled_table(rmse_s4[["DGM_2"]], "DGM_2")
 
 ```
 
