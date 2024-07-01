@@ -4,16 +4,12 @@ subtitle: "A case study"
 author: "Leonard Kosanke"
 format:
     pdf:
-        include-in-header: ../preamble.tex
         fontsize: 11pt
         linestretch: 1.2
-        geometry: "left=4cm, right=4cm, top=3cm, bottom=5cm, bindingoffset=7mm"
+        geometry: "left=15mm, right=15mm, top=30mm, bottom=30mm"
         classoption: twoside
         papersize: a4
 fontsize: 11pt
-# https://practicaltypography.com/page-margins.html
-# 3.81 to 5.08cm or 45-90 characters or 2-3 alphabets
-# asymetric geometry is set after/in frontmatter.md
 bibliography: ../bibliography.bib
 engine: knitr
 ---
@@ -22,32 +18,229 @@ The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5"
 
 # Introduction
 
-Monte Carlo simulations are an extensively utilized tool for assessing and comparing statistical methods in quantitative empirical science. They are used to evaluate the performance of estimation and inference methods by analyzing them in light of known simulated population models and values.
-Despite the clear insight into the underlying data structures that simulations provide, they are not immune to common pitfalls that thus far have been predominantly associated with the replication crisis in empirical research [@lohmann_its_2022]. In simulation studies, a key challenge is ensuring that results can be generalized to real-world applications. These studies must ensure that the chosen performance metrics, experimental factors, and inference models accurately reflect and test real-world scenarios. Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias. For example, the decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding on which sample size to simulate), can have substantive impact on the results.
+Monte Carlo simulations are an extensively utilized tool for assessing and comparing statistical methods in quantitative empirical science. 
+They are used to evaluate the performance of estimation and inference methods by analyzing them in light of known simulated population models and values.
+Despite the clear insight into the underlying data structures that simulations provide, they are not immune to common pitfalls that thus far have been predominantly associated with the replication crisis in empirical research [@lohmann_its_2022].
+In simulation studies, a key challenge is ensuring that results can be generalized to real-world applications.
+These studies must ensure that the chosen performance metrics, experimental factors, and inference models accurately reflect and test real-world scenarios. 
+Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias. 
+For example, the decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding on which sample size to simulate), can have substantive impact on the results.
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
-One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. Even though this idea is fruitful and improves upon the problem of generalizability, the argument with regards to the arbitrariness of decision-making still remains. For example, deciding on which papers, or even which models within a paper to select (and which not), can still be subject to individual bias or simply chance. Additionally, conducting extensive literature reviews for all parameter values chosen is very time-consuming and difficult to apply in practice.
+One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
+An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
+Even though this idea is fruitful and improves upon the problem of generalizability, the argument with regards to the arbitrariness of decision-making still remains. 
+For example, deciding on which papers, or even which models within a paper to select (and which not), can still be subject to individual bias or simply chance. 
+Additionally, conducting extensive literature reviews for all parameter values chosen is very time-consuming and difficult to apply in practice.
 
 Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
-Adversarial collaboration, piloted by [@mellers_frequency_2001] and popularized by [@kahneman_thinking_2011], is a research method increasingly recognized within the quantitative empirical research community for enhancing scientific rigor. Praised as “The next science reform” [@clark_adversarial_2021] adversarial collaboration is the process of disagreeing scholars working jointly to resolve scientific disputes. 
-An ongoing effort by Meloni et al. (2023), for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. Adversarial Collaboration entails identifying points of empirical disagreement, designing mutually agreed upon studies to test competing hypotheses, and jointly publishing results, irrespective of the outcome. The idea is that in conducting adversarial collaboration, fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. Additionally, juxtaposing and debating competing positions in this way can improve generalizability of results.
+Adversarial collaboration, piloted by @mellers_frequency_2001 and popularized by @kahneman_thinking_2011, is a research method increasingly recognized within the quantitative empirical research community for enhancing scientific rigor. 
+Praised as “The next science reform” adversarial collaboration is the process of disagreeing scholars working jointly to resolve scientific disputes [@clark_adversarial_2021]. 
+An ongoing effort by @melloni_adversarial_2023, for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
+Adversarial Collaboration entails identifying points of empirical disagreement, designing mutually agreed upon studies to test competing hypotheses, and jointly publishing results, irrespective of the outcome. 
+The idea is that in conducting adversarial collaboration, fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. 
+Additionally, juxtaposing and debating competing positions in this way can improve generalizability of results.
 
-Our goal is to transfer the benefits of adversarial collaboration to simulation studies. To do so, we conducted a focused case study, utilizing an exemplary topic in the literature of simulation studies: comparing a newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation (Dhaene & Rosseel, 2023; Robitzsch, 2022; Rosseel & Loh, 2022). In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for conducting adversarial collaboration. While Dhaene and Rosseel (2023) concluded that SAM estimation generally outperforms non-iterative SEM in small samples, Robitzsch (2022) did not find the methods to differ. Similarly, whereas the former found SAM to be more robust against model misspecification, the latter argued the opposite to be true. Applying Adversarial Collaboration, we, the authors of this paper, each represented one of these competing positions, as detailed later.
+Our goal is to transfer the benefits of adversarial collaboration to simulation studies. 
+To do so, we conducted a focused case study, utilizing an exemplary topic in the literature of simulation studies: comparing a newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
+In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for conducting adversarial collaboration. 
+While @dhaene_evaluation_2023 concluded that SAM estimation generally outperforms non-iterative SEM in small samples, @robitzsch_comparing_2022 did not find the methods to differ. 
+Similarly, whereas the former found SAM to be more robust against model misspecification, the latter argued the opposite to be true. 
+Applying Adversarial Collaboration, we, the authors of this paper, each represented one of these competing positions, as detailed later.
 
-This allows us to examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. Thus, this investigation leads us to address the following research question:
+This allows us to examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
+Thus, this investigation leads us to address the following research question:
 
 Can adversarial collaboration be applied to simulation studies, in terms of practical applicability and technical feasibility?
 
+# Methods 
+
+To answer this research question, we created and followed the following procedure for the 
+adversarial collaboration process: 
+
+## Outline 
+The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study as a replication of their side of the argument. 
+Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
+The replications included the generation of individual simulation protocols, as suggested by @morris_using_2019. 
+These can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
+In the second part, a joint study, including a joint simulation protocol, was pursued. 
+Here, the main part of the adversarial collaboration took place. 
+Each step of the individual simulation studies (from the substantive research question up until the interpretation of the results) was scrutinized and debated between collaborators, using adversarial collaboration techniques.
+Decisions were made and documented based on the most convincing argument presented, if possible. 
+This process started based on the results of Part 1.
+To facilitate a structured comparison and integration of our studies through the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.  
+
+Table 1: Structure of simulation studies 
+1. Defining aims and objectives / Research Question of Interest. ( = verbal description) 
+o as specific as possible 
+o e.g. examination of goodness-of-fit statistics under varying degrees of 
+misspecification 
+o comparison of the maximum likelihood (ML) to (2SLS) 
+2. Specification of Population Model 
+o Optional and depending on field of simulation 
+Modularities: 
+o Structure: (e.g. CFA or SEM) 
+o Size: number of latents and indicators 
+o Complexity: (cross-loaded indicators, Reciprocal paths, Exogenous 
+predictors) 
+→ select target model for (assumed) general model types 
+3. Data Generation Mechanism 
+o resampling vs. parametric model draw 
+o random number draw for data generation 
+4. Experimental Design Simulation Procedures 
+o Determine what factors to vary, on what levels, and whether fully, or partly 
+factorially or one at a time (factor = scenario in Morris et al., 2019) 
+o e.g. 
+▪ sample size 
+▪ distribution of the observed variables 
+▪ extent of misspecification 
+… 
+5. Method Selection 
+o Varies depending on research question 
+o e.g. 
+▪ type of and number of estimation methods to be compared 
+6. Defining Estimands / Population level values 
+o should reflect values commonly encountered in applied research. 
+o e.g. 
+▪ R2 values the chosen coefficients produce should also be reasonable 
+for applied research. 
+▪ parameters of the model should be statistically significant, even at the 
+smallest sample size of the simulation. 
+▪ consider power issues (e.g.:enough power to detect misspecification, 
+too much power to detect misspecification at all sample sizes?) 
+▪ “bias” in the estimates that will be introduced by the misspecification. 
+7. Performance Measures 
+o Selection and justification of use of e.g. 
+▪ Bias 
+▪ sensitivity/ specificity 
+▪ predictive accuracy 
+o decision on number of simulations for acceptable Monte Carlo SE for these 
+measures 
+8. Software Selection 
+o to run simulation 
+o packages & functions 
+9. Analysis and Interpretation plan 
+o Analysis: descriptive vs. inferential 
+o Interpretation: decision criteria that evaluate performance : e.g. if 1-ß > 90, 
+the method performs well 
+
+Before Coding and Execution: Anticipating all critical decision processes (e.g. exclusion 
+criteria for “imperfect” samples) 
+10. Coding and Execution 
+o Amount and content of scripts 
+o include (sanity) checks 
+o setting seeds 
+o troubleshooting & verification 
+11. Analyzing results 
+o descriptive 
+o graphical 
+o inferential 
+o exploration 
+12. Reporting & Presentation 
+o provide rationales for each choice made in the previous steps 
+o publishing code and simulated data 
+
+End of Table 1 
+
+This framework allows for the expected divergences in results of the individual simulations, and at the same time provides a basis for systematic comparison and synthesis for the joint simulation. 
+Additionally, we have identified two substantive research questions to co-align the individual simulation studies: 
+
+1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
+
+2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
+
+In the end, each collaborator reports the results in their own paper. 
+We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001). 
+In order to mitigate this risk, we conducted the joint study in a structured and formalized manner. 
+To this end, we used the tools presented in Table 2. 
+These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
+
+ 
+
+Table 2: Adversarial Collaboration (AC) Techniques: 
+
+At each step of decision making in the Joint Study, any of the following techniques 
 
 
+Thesis of: Leonard Kosanke 
+
+can be used, depending on their applicability: 
+
+ 
+
+• Core Disagreements: Arrive at clearly defined core disagreements that might be the origin 
+for conflicts. (Clark et al., 2022) 
+
+ 
+
+• Assumption check: List, question, and categorize assumptions (Kardos Dexter, 2017) 
+
+ 
+
+• Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ 
+approach (Kardos Dexter, 2017) 
+
+ 
+
+• Quality of information (Kardos Dexter, 2017): checking the adversaries’ quality of 
+evidence based on literature. 
+
+ 
+
+• Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third 
+neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. 
+
+ 
+
+End of table 2 
 
 
+## Documentation - Decision log 
+
+As the number of decisions made and their documentation is large, only the most important results are presented in this paper. 
+In addition, the appendix contains a separate decision log with a detailed and complete documentation of all decisions made. 
+Here, we summarized the results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process. 
+Another aspect of structuring the collaboration, within the decision log, lied in the way we tackle decision making in the joint study. 
+In our mind, decision making can be based on four distinct grounds: Evidence-based, pragmatic reasons, arbitrary reasons or other reasons (e.g. personal values, political issues). 
+Firstly, we deem a decision evidence based, if we can find a clear answer for a disagreement, based on empirical evidence or in the literature more general. 
+Secondly, to be able to keep the scope of this project, we can argue and make decisions for pragmatic reasons, as for example time needed to implement another condition that could be added. 
+Thirdly, arbitrary reasons could be any agreement where the first too grounds are not present, but still a decision has to be made. 
+Importantly, while this reason does not help in deciding for an option directly, it helps in understanding how often there is no substantive or pragmatic reason for decisions in simulation studies.
+If this is the case, we might resort deciding at random. Lastly, there might be other reasons that lead to a decision, that we do not anticipate as of now or did not deem to be likely enough to get their own category for our purpose.  
+These four reasons grounded our decision making. 
+In some cases, more than one of these reasons were present. 
+In such cases, we ranked their relevance to a decision, if possible. An example is the log entry in figure 1: 
 
 
+Figure 1: Exemplary log entry for deciding for a range of sample sizes 
+
+ 
+
+Decision element: factor of sample sizes 
+
+ 
+
+Result: c(50, 100, 200) 
 
 
+ 
 
+Grounds: Primary - Evidence-based, as per Peikert et al. (2020); 
 
-{{< include simulation1.qmd >}}
+ 
 
+Secondary – pragmatic reason, based on the average of individual suggestions. 
 
+ 
 
+Evaluation - Diary entries 
+
+ 
+
+End of figure 1 
+
+## Diary 
+We documented and evaluated the adversarial collaboration in Part 2 (Joint study) from 
+each collaborators subjective perspective using semi-structured diary entries based on @shah_exploring_2016, after each step. 
+This had two purposes: Firstly, accumulating evidence for the evaluation of the AC and the collaboration procedure we propose. Secondly, we wanted to capture information that can help us improve this procedure. 
+Thus, the resulting diaries were used to evaluate the applicability of the adversarial collaboration and answer the research question. 
+The evaluation of the diary entry was conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words. 
