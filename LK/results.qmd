@@ -977,7 +977,7 @@ bias_ci_s3 <- readRDS("SimulationResultsProcessed/sim3_rel_bias_ci.rds")
 
 #Format table for results
 kbl(bias_ci_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left") %>%
+    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
@@ -1402,7 +1402,6 @@ Additionally, SEM-ML outperformed SEM-ULS in all conditions as well.
 
 Thus, LSAM-ML generally appeared to outperform SEM-estimation and SEM-ML outperformed SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
 This was especially evident for higher beta values and lower N.
-
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
