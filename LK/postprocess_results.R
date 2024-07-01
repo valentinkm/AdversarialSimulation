@@ -78,10 +78,10 @@ report_bias <- function(metrics_list) {
     # Create the bias_ci table for the current condition and store it in the list
     bias_ci[[condition]] <- rel_bias %>%
       mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
+                                            ~sprintf("%.2f [%.2f-%.2f]", ..1, ..2, ..3)),
                     .names = "{.col}_formatted")) %>%
       select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_formatted$", "", .))
+      rename_all(~sub("_rel_bias_formatted$", "", .))
   }
   
   return(bias_ci)

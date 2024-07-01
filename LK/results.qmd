@@ -16,7 +16,7 @@ engine: knitr
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
-```{r eval = TRUE, echo = FALSE}
+```{r include = FALSE}
 library(knitr)
 library(kableExtra)
 library(tidyverse)
@@ -194,10 +194,16 @@ bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
 #  cat("\n\n")
 #}
 
+shorten_names <- function(df) {
+  df$method_metric <- sub("_rel_bias", "", df$method_metric)
+  return(df)
+}
+
 # Function to create a styled table for each condition
 create_styled_table <- function(data, condition) {
-  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left") %>%
+  data <- shorten_names(data)
+  kbl(data, col.names = c("Method", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
@@ -228,39 +234,6 @@ Interpretation layers within one condition:
 
 -----------------
 
-
-### Print all tables
-
-```{r output = TRUE, echo = FALSE}
-
-# Load the relative bias results
-bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
-
-# Display the relative bias results for each condition, without formatting
-#for (condition in names(bias_ci)) {
-#  cat("## Condition:", condition, "\n\n")
-#  print(bias_ci[[condition]])
-#  cat("\n\n")
-#}
-
-# Function to create a styled table for each condition
-create_styled_table <- function(data, condition) {
-  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left") %>%
-    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
-    row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = F) %>%
-    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE) %>%
-    footnote(general = paste("Condition:", condition))
-}
-
-# Loop through each condition and print the styled table
-for (condition in names(bias_ci_s1)) {
-  create_styled_table(bias_ci_s1[[condition]], condition)
-}
-
-
-```
 
 ### Condition without correlated residuals (0_0.12)
 
@@ -655,14 +628,14 @@ bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
 
 #Formatted tables
 kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
@@ -685,14 +658,14 @@ For lower values of lambda, the absolute bias increased with increasing phi. Thi
 ```{r output = TRUE, echo = FALSE}
 
 kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
@@ -1296,6 +1269,16 @@ Interpretation layers within one condition:
 # Load the absolute bias results
 bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 
+#Change create_styled_table function names function for abs_bias
+create_styled_table <- function(data, condition) {
+  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
+}
 
 # Loop through each condition and print the styled table from Study 1 function
 for (condition in names(bias_ci_s4)) {
@@ -1553,21 +1536,21 @@ bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
 #Formatted tables
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 4a: Absolute Bias of SEM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 4a: Absolute Bias of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
@@ -1606,21 +1589,21 @@ This was especially evident for higher beta values and lower N.
 
 #Formatted tables
 kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 4a: Absolute Bias of SEM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 4a: Absolute Bias of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left") %>%
+  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
