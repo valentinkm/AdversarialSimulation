@@ -180,9 +180,9 @@ Even though in @robitzsch_comparing_2022 the authors claim that constraining est
 The combined study should check this more properly to evaluate these claims thoroughly.
 As the 245 are less than 0.5% of the 525000 estimations performed, we will continue with the interpretation as planned, as their impact is negligible.
 
-### Print all tables
+## Bias
 
-```{r output = TRUE, echo = FALSE}
+```{r include = FALSE}
 
 # Load the relative bias results
 bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
@@ -211,16 +211,7 @@ create_styled_table <- function(data, condition) {
     footnote(general = paste("Condition:", condition))
 }
 
-# Loop through each condition and print the styled table
-for (condition in names(bias_ci_s1)) {
-  create_styled_table(bias_ci_s1[[condition]], condition)
-  cat("\n\n")  # Add space between tables
-}
-
-
 ```
-
-## Bias
 
 ### Condition without correlated residuals (0_0.12)
 
@@ -321,18 +312,11 @@ Additionally, this negative bias corrects for unmodelled positive residual corre
 
 ## SD
 
-### print all tables
-```{r output = TRUE, echo = FALSE}
+```{r include = FALSE}
 
 # Load the relative bias results
 sd_s1 <- readRDS("SimulationResults/sim1_sd.rds")
 
-
-# Loop through each condition and print the styled table
-for (condition in names(sd_s1)) {
-  create_styled_table(sd_s1[[condition]], condition)
-  cat("\n\n")  # Add space between tables
-}
 ```
 
 ### No residual correlations (0_0.12)
@@ -401,6 +385,7 @@ For higher N, there are no substantial differences.
 Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 
 ### Two positive residual correlations (2_0.12)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(sd_s1[["2_0.12"]], "2_0.12")
@@ -423,8 +408,7 @@ For conditions with no misspecification, which were the only conditions reported
 
 ## RMSE
 
-###Print all tables
-```{r}
+```{r include = FALSE}
 rmse_s1 <- readRDS("SimulationResults/sim1_rmse.rds")
 
 ```
@@ -689,18 +673,10 @@ As the 612 estimation are around 1.5% of the 42000 estimations performed, we wil
 
 ## Bias
 
-### Print all tables
-```{r}
+```{r include = FALSE}
 
 # Load the relative bias results
 bias_ci_s2 <- readRDS("SimulationResultsProcessed/sim2_rel_bias_ci.rds")
-
-# Loop through each condition and print the styled table
-for (condition in names(bias_ci_s2)) {
-  create_styled_table(bias_ci_s2[[condition]], condition)
-  cat("\n\n")  # Add space between tables
-}
-
 
 ```
 
@@ -786,18 +762,11 @@ This leads to the comparatively worse performance in the conditions with no, one
 
 ## SD
 
-### print all tables
-```{r}
+```{r include = FALSE}
 
 # Load the relative bias results
 sd_s2 <- readRDS("SimulationResults/sim2_sd.rds")
 
-
-# Loop through each condition and print the styled table
-for (condition in names(sd_s2)) {
-  create_styled_table(sd_s2[[condition]], condition)
-  cat("\n\n")  # Add space between tables
-}
 ```
 
 ### One negative cross-loading (1_-0.3)
@@ -872,9 +841,7 @@ There seems to be an effect due to the amount of misspecification, such that the
 
 ## RMSE
 
-###Print all tables
-
-```{r}
+```{r include = FALSE}
 rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
 
 ```
@@ -1162,9 +1129,7 @@ The 9000 warnings with regards to Gamma computation in smaller samples is neglig
 
 ## Bias
 
-### Print all tables
-
-```{r}
+```{r include = FALSE}
 
 # Load the absolute bias results
 bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
@@ -1179,13 +1144,6 @@ create_styled_table <- function(data, condition) {
     add_header_above(c("Condition:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE) %>%
     footnote(general = paste("Condition:", condition))
 }
-
-# Loop through each condition and print the styled table from Study 1 function
-for (condition in names(bias_ci_s4)) {
-  create_styled_table(bias_ci_s4[[condition]], condition)
-  cat("\n\n")  # Add space between tables
-}
-
 
 ```
 
@@ -1259,18 +1217,7 @@ Importantly, our conclusion with regards to LSAM's performance is different, due
 
 ## RMSE
 
-differences large than 0.03, we will report, without drawing a substantive conclusion.
-
-Interpretation layers within one condition:
-
-- ALL across increasing N
-
-- All within one N
-
------------------
-
-###Print all tables
-```{r}
+```{r include = FALSE}
 rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 
 ```
@@ -1505,7 +1452,7 @@ Besides that, none of the estimators generally outperforms another in the presen
 
 ## RMSE
 
-```{r output = TRUE, echo = FALSE}
+```{r include = FALSE}
 
 # Load the rmse results
 rmse_s4a <- readRDS("SimulationResults/sim4a_rmse.rds")
