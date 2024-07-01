@@ -236,8 +236,7 @@ For study 2, again, different population models will be generated parametrically
 
 ![Model 2.2](figures/model2_2.tex) **Model 2.2** Note. Error terms are not explicitly shown in the figure
 Orange lines represent misspecifications in the endogenous part of the model.
-Green lines represent misspecifications in the exogenous part of the model.
-The green line indicates the structural misspecification. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
+Green lines represent misspecifications in the exogenous part of the model. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
 
 :::
 
