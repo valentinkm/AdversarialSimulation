@@ -1,0 +1,111 @@
+name: Release QMD and PDF to Zenodo
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger on version tags
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Quarto
+      run: |
+        case $RUNNER_OS in
+          "Linux")
+              BUNDLE_EXT="linux-amd64.deb"
+              ;;
+          "macOS")
+              BUNDLE_EXT="macos.pkg"
+              ;;
+          "Windows")
+              BUNDLE_EXT="win.msi"
+              ;;
+          *)
+              echo "$RUNNER_OS not supported"
+              exit 1
+              ;;
+        esac
+
+        if [ $RUNNER_OS != "Windows" ]; then
+          version=$(curl -s https://quarto.org/docs/download/_download.json | jq -r '.version')
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v$version/quarto-$version-$BUNDLE_EXT
+          installer=$(ls quarto*${BUNDLE_EXT})
+          echo "installer=${installer}" >> $GITHUB_ENV
+          sudo dpkg -i $installer
+        else
+          echo "Windows installation not supported in this script."
+          exit 1
+        fi
+      shell: bash
+
+    - name: Install TinyTeX
+      run: |
+        sudo apt-get install -y ghostscript
+        wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
+        export PATH=$PATH:/home/runner/.TinyTeX/bin/x86_64-linux
+        sudo apt-get install -y texlive-xetex
+
+    - name: Render QMD to PDF
+      run: |
+        export PATH=$PATH:/home/runner/.TinyTeX/bin/x86_64-linux
+        quarto render VK/preregistration.qmd --to pdf
+
+    - name: Create release artifacts
+      run: |
+        mkdir -p release
+        cp VK/preregistration.qmd release/
+        cp VK/preregistration.pdf release/
+
+    - name: Upload Release Assets
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifacts
+        path: release/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download release artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: release-artifacts
+        path: ./release
+
+    - name: Verify downloaded artifacts
+      run: ls -l ./release
+
+    - name: Find existing Zenodo deposition
+      id: find_deposition
+      env:
+        ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
+      run: |
+        deposition_id=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" "https://zenodo.org/api/records?doi=10.5281/zenodo.11458547" | jq -r '.id')
+        echo "::set-output name=deposition_id::$deposition_id"
+
+    - name: Create or update Zenodo deposition
+      env:
+        ZENODO_ACCESS_TOKEN: ${{ secrets.ZENODO_ACCESS_TOKEN }}
+      run: |
+        if [ -z "${{ steps.find_deposition.outputs.deposition_id }}" ]; then
+          echo "Deposition not found, please ensure the correct DOI is used."
+          exit 1
+        else
+          # Create a new version of the existing deposition
+          new_version_url=$(curl -s -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/${{ steps.find_deposition.outputs.deposition_id }}/actions/newversion | jq -r .links.latest_draft)
+          new_version_id=$(basename $new_version_url)
+          echo "New version ID: $new_version_id"
+          
+          # Upload files to the new version
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.qmd" https://zenodo.org/api/deposit/depositions/$new_version_id/files
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -F "file=@release/preregistration.pdf" https://zenodo.org/api/deposit/depositions/$new_version_id/files
+
+          # Publish the new version
+          curl -H "Authorization: Bearer $ZENODO_ACCESS_TOKEN" -X POST https://zenodo.org/api/deposit/depositions/$new_version_id/actions/publish
+        fi

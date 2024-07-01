@@ -1,2 +1,14 @@
 .DS_Store
 *.tex
+.Rproj.user
+*.ipynb
+*.html
+VK/preregistration_files/*
+notes.md
+VK/simulation/.Rhistory
+VK/.Rhistory
+VK/.Rapp.history
+.Rprofile
+.RData
+*.Rproj
+VK/simulation/gen_est_lavsyntax.R
