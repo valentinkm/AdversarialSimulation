@@ -222,19 +222,6 @@ for (condition in names(bias_ci_s1)) {
 
 ## Bias
 
-General interpretation: Biased if Bias estimate larger than 0.05
-
-Interpretation layers within one condition:
-
-- Unbiased judgement SAM vs. SEM
-
-- ALL across increasing N
-
-- All within one N
-
------------------
-
-
 ### Condition without correlated residuals (0_0.12)
 
 ```{r output = TRUE, echo = FALSE}
@@ -334,18 +321,6 @@ Additionally, this negative bias corrects for unmodelled positive residual corre
 
 ## SD
 
-General interpretation: Substantial if percentage reductions are larger than 5%
-
-Interpretation layers within one condition:
-
-- Unbiased judgement SAM vs. SEM
-
-- ALL across increasing N
-
-- All within one N
-
------------------
-
 ### print all tables
 ```{r output = TRUE, echo = FALSE}
 
@@ -377,7 +352,6 @@ Substantial percentage reduction of SD up to 22.4% when comparing SEM-ML and LSA
 1-(0.232/0.299) = *0.224*
 
 Substantial percentage reduction of SD up to 8.6% when comparing SEM-ML and LSAM-ML in N=100:
-1-(0.19/0.208)
 
 Thus, SAM outperforms SEM in terms of SD reduction in smaller samples
 
@@ -392,10 +366,8 @@ Across all estimators, the standard deviation decreases with increasing N.
 
 There are only two substantial differences:
 Substantial percentage reduction of SD up to 27.4% when comparing SEM-ML and LSAM-ML in N=50: 
-1-(0.233/ 0.321)
 
 Substantial percentage reduction of SD up to 12.2% when comparing SEM-ML and LSAM-ML in N=100:
-1-(0.187/0.213)
 
 Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
 
@@ -450,15 +422,6 @@ In smaller to moderate samples, SEM outperforms SAM only for positively correlat
 For conditions with no misspecification, which were the only conditions reported in @robitzsch_comparing_2022, the percentage reduction favoring SAM is nearly identical for N=100, and the reduction seems to be even more significantly in favor of SEM in the smaller sample size.
 
 ## RMSE
-differences large than 0.03, we will report, without drawing a substantive conclusion.
-
-Interpretation layers within one condition:
-
-- ALL across increasing N
-
-- All within one N
-
------------------
 
 ###Print all tables
 ```{r}
@@ -590,27 +553,6 @@ As the 414 estimation are around 0.5% of the 75000 estimations performed, we wil
 
 ## Bias
 
-General interpretation: Biased if Bias estimate larger than 0.05
-
-Interpretation layers within table condition:
-
-- Unbiased judgement overall
-
-- ALL across increasing lambda
-
-- ALL across increasing phi
-
-- All within one lambda 
-- All within one phi
-
-Layers between tables:
-
--Comparison between estimators
-
--Comparison between N's
-
------------------
-
 ```{r}
 #Load processed results
 bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
@@ -730,6 +672,7 @@ No errors and messages were present. There were, however, 612 warnings we will i
 
 
 ### Warnings investigation
+
 Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
 
 Sometimes 4-6 warnings per repetition, more than before (up to 2 per repetition)
@@ -745,19 +688,6 @@ The combined study should check this more properly to evaluate these claims thor
 As the 612 estimation are around 1.5% of the 42000 estimations performed, we will continue with the interpretation as planned, as their impact is negligable.
 
 ## Bias
-
-General interpretation: Biased if Bias estimate larger than 0.05
-
-Interpretation layers within one condition:
-
-- Unbiased judgement SAM vs. SEM
-
-- ALL across increasing N
-
-- All within one N
-
------------------
-
 
 ### Print all tables
 ```{r}
@@ -775,6 +705,7 @@ for (condition in names(bias_ci_s2)) {
 ```
 
 ### One negative cross-loading (1_-0.3)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3")
@@ -792,6 +723,7 @@ In relative comparison, the two SEM estimators outperform all SAM estimators in 
 Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is one negative cross-loading.
 
 ### One positive cross-loadings (1_0.3)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3")
@@ -807,6 +739,7 @@ In relative comparison, the two SEM estimators outperform all SAM estimators for
 Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outperforms SEM in smaller to moderate samples (N100-500), and slightly in higher sample sizes.
 
 ### Two negative cross-loadings (2_-0.3)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3")
@@ -820,6 +753,7 @@ In relative comparison, the two SEM estimators substantially outperform all SAM 
 Thus, SEM estimation outperforms SAM, when there are two negative residuals.
 
 ### Two positive cross-loadings (2_0.3)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(bias_ci_s2[["2_0.3"]], "2_0.3")
@@ -851,18 +785,6 @@ All SAM approaches appear to be generally negatively biased for small to moderat
 This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrects for unmodelled positive cross-loadings and makes SAM appear superior in these conditions.
 
 ## SD
-
-General interpretation: Substantial if percentage reductions are larger than 5%
-
-Interpretation layers within one condition:
-
-- Unbiased judgement SAM vs. SEM
-
-- ALL across increasing N
-
-- All within one N
-
------------------
 
 ### print all tables
 ```{r}
@@ -949,16 +871,6 @@ For positive cross-loadings, SEM tends to outperform SAM in terms of SD reductio
 There seems to be an effect due to the amount of misspecification, such that the conditions with 2 cross-loadings had larger differences in performance (in both directions).
 
 ## RMSE
-
-differences large than 0.03, we will report, without drawing a substantive conclusion.
-
-Interpretation layers within one condition:
-
-- ALL across increasing N
-
-- All within one N
-
------------------
 
 ###Print all tables
 
@@ -1250,18 +1162,6 @@ The 9000 warnings with regards to Gamma computation in smaller samples is neglig
 
 ## Bias
 
-General interpretation: Biased if Bias estimate larger than 0.05
-
-Interpretation layers within one condition:
-
-- Unbiased judgement SAM vs. SEM
-
-- ALL across increasing N
-
-- All within one N
-
------------------
-
 ### Print all tables
 
 ```{r}
@@ -1497,27 +1397,6 @@ The 9000 warnings with regards to Gamma computation in smaller samples is neglig
 
 ## Bias
 
-General interpretation: Biased if Bias estimate larger than 0.05
-
-Interpretation layers within table condition:
-
-- Unbiased judgement overall
-
-- ALL across increasing N
-
-- ALL across increasing beta
-
-- All within one N 
-- All within one beta
-
-Layers between tables:
-
--Comparison between estimators
-
--Comparison between DGMs
-
------------------
-
 ```{r}
 
 # Load the absolute bias results
@@ -1625,25 +1504,6 @@ Thus, LSAM-ML appeared to perform best in small samples and higher beta.
 Besides that, none of the estimators generally outperforms another in the presence of 20 unmodelled residual correlations.
 
 ## RMSE
-
-General interpretation: substantial difference if RMSE estimates vary by 0.03
-
-Interpretation layers within table condition:
-
-- ALL across increasing N
-
-- ALL across increasing beta
-
-- All within one N 
-- All within one beta
-
-Layers between tables:
-
--Comparison between estimators
-
--Comparison between DGMs
-
------------------
 
 ```{r output = TRUE, echo = FALSE}
 
