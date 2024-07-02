@@ -4,12 +4,12 @@ subtitle: "A case study"
 author: "Leonard Kosanke"
 format:
     pdf:
-        fontsize: 11pt
-        linestretch: 1.2
-        geometry: "left=15mm, right=15mm, top=30mm, bottom=30mm"
+        fontsize: 12pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: twoside
         papersize: a4
-fontsize: 11pt
+fontsize: 12pt
 bibliography: ../bibliography.bib
 engine: knitr
 ---
