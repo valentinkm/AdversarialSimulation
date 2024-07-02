@@ -1,0 +1,34 @@
+name: Render and Deploy Quarto Files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  render-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.VK_TOKEN }}
+
+    - name: Run Docker container to render QMD files
+      run: |
+        docker run --rm -v ${{ github.workspace }}/VK/analyze_results:/root/project/VK/analyze_results \
+                     -v ${{ github.workspace }}/VK/simulation/results:/root/project/VK/simulation/results \
+                     ghcr.io/${{ github.repository_owner }}/adversarialsimulation:latest \
+                     sh -c "quarto render /root/project/VK/analyze_results/analyze_results_study1.qmd && quarto render /root/project/VK/analyze_results/analyze_results_study2.qmd"
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./VK/analyze_results
