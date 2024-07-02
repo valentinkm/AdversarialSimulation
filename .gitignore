@@ -2,7 +2,6 @@
 *.tex
 .Rproj.user
 *.ipynb
-*.html
 VK/preregistration_files/*
 notes.md
 VK/simulation/.Rhistory
