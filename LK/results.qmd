@@ -1105,24 +1105,26 @@ No errors and messages were present. There were, however, 9007 warnings, we will
 
 ### Warnings investigation
 
-```{r output = TRUE, echo = FALSE}
+```{r output= FALSE, echo = FALSE}
 
 # Flatten the list of warnings into a single character vector
-all_warnings <- unlist(warnings_s4)
+all_warnings_s4 <- unlist(warnings_s4)
 
 # Count the occurrences of each unique warning
-warning_counts <- table(all_warnings)
+warning_counts_s4 <- table(all_warnings_s4)
 
 # Convert to data frame for better formatting
-warning_counts_df <- as.data.frame(warning_counts)
-colnames(warning_counts_df) <- c("Warning Message", "Count")
+warning_counts_df_s4 <- as.data.frame(warning_counts_s4)
+colnames(warning_counts_df_s4) <- c("Warning Message", "Count")
 
-# Display the data frame
-kable(warning_counts_df) %>%
-  kable_styling(full_width = F, position = "left")
+warning_counts_df_s4
+
 ```
 
-The three warnings that amount to 7 overall, are referring to problems with regards to positive definite matrices or model identification.
+There are three warnings that amount to 7 overall, that are referring to problems with regards to positive definite matrices or model identification:
+`lavaan WARNING: covariance matrix of latent variables is not positive definite; use lavInspect(fit, "cov.lv") to investigate.`
+`lavaan WARNING: Could not compute standard errors! The information matrix could not be inverted. This may be a symptom that the model is not identified.`
+`lavaan WARNING: The variance-covariance matrix of the estimated parameters (vcov) does not appear to be positive definite! The smallest eigenvalue (= 1.595219e-17) is close to zero. This may be a symptom that the model is not identified.`
 This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
 The 9000 warnings with regards to Gamma computation in smaller samples is negligible as well, as we are not interested in the computation of robust fit indices.
 
@@ -1317,30 +1319,29 @@ length(messages_sum_s4a)
 
 ```
 
-No errors and messages were present. There were, however, 9007 warnings, we will investigate in detail.
+No errors and messages were present. There were, however, 24089 warnings, we will investigate in detail.
 
 ### Warnings investigation
 
-```{r output = TRUE, echo = FALSE}
+```{r output= FALSE, echo = FALSE}
 
 # Flatten the list of warnings into a single character vector
-all_warnings <- unlist(warnings_s4a)
+all_warnings_s4a <- unlist(warnings_s4a)
 
 # Count the occurrences of each unique warning
-warning_counts <- table(all_warnings)
+warning_counts_s4a <- table(all_warnings_s4a)
 
 # Convert to data frame for better formatting
-warning_counts_df <- as.data.frame(warning_counts)
-colnames(warning_counts_df) <- c("Warning Message", "Count")
+warning_counts_df_s4a <- as.data.frame(warning_counts_s4a)
+colnames(warning_counts_df_s4a) <- c("Warning Message", "Count")
 
-# Display the data frame
-kable(warning_counts_df) %>%
-  kable_styling(full_width = F, position = "left")
+warning_counts_df_s4a
 ```
 
-Similarly as in Study 4, next to the warnings regarding the Gamma calculation, all 89 other warnings referred to problems with positive definite matrices or model identification.
+The 24000 warnings with regards to Gamma computation in smaller samples is negligible as well, as we are not interested in the computation of robust fit indices.
+All 89 other warnings referred to problems with positive definite matrices or model identification:
 This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
-The 9000 warnings with regards to Gamma computation in smaller samples is negligible as well, as we are not interested in the computation of robust fit indices.
+
 
 ## Bias
 
