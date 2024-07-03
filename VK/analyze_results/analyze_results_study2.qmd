@@ -123,57 +123,44 @@ Measurement block size (b = 3 or b = 5) has minimal impact on the difference in 
 Model misspecifications impact SEM more significantly regarding bias. SEM shows notably higher relative biases under all misspecification conditions, especially at smaller sample sizes and lower reliability levels. For example, under model 2.2_exo, SEM shows a significantly higher bias when R-squared is 0.1 and reliability is 0.3, with differences as high as -0.709 in comparison to gSAM. Similarly, for model 2.2_both, SEM shows substantial biases in comparison to gSAM, lSAM-ML, and lSAM-ULS across various conditions. These results indicate that SEM is more sensitive to model misspecifications, leading to higher relative biases, whereas gSAM, lSAM-ML, and lSAM-ULS exhibit more robustness and lower bias in the presence of model misspecifications.
 
 ```{r}
-# Function to create a relative bias table for a specific model type with differences to SEM
-create_relative_bias_diff_table <- function(model_type_label, model_type_value) {
-  sem_values <- summary_2 %>%
-    filter(model_type == model_type_value, method == "SEM") %>%
-    select(N, reliability, R_squared, b, MeanRelativeBias) %>%
-    rename(
-      Reliability = reliability,
-      R_Squared = R_squared,
-      `Measurement Block (b)` = b,
-      SEM_Value = MeanRelativeBias
-    )
-  
+# Function to create a relative bias table for a specific model type with SEM performance included
+create_relative_bias_table <- function(model_type_label, model_type_value) {
   summary_2 %>%
-    filter(model_type == model_type_value, method != "SEM") %>%
+    filter(model_type == model_type_value) %>%
     select(N, reliability, R_squared, b, method, MeanRelativeBias) %>%
-    left_join(sem_values, by = c("N", "reliability" = "Reliability", "R_squared" = "R_Squared", "b" = "Measurement Block (b)")) %>%
-    mutate(Diff_to_SEM = MeanRelativeBias - SEM_Value) %>%
-    select(N, reliability, R_squared, b, method, Diff_to_SEM) %>%
     rename(
       Reliability = reliability,
       R_Squared = R_squared,
       `Measurement Block (b)` = b,
       Method = method,
-      `Difference to SEM` = Diff_to_SEM
+      `Mean Relative Bias` = MeanRelativeBias
     ) %>%
     mutate(
-      `Difference to SEM` = round(`Difference to SEM`, 3),
+      `Mean Relative Bias` = round(`Mean Relative Bias` * 100, 2),  # Convert to percentage and round to 2 decimal places
       Method = recode(Method, 
+                      SEM = "SEM", 
                       gSAM = "GSAM", 
                       lSAM_ML = "SAM-ML", 
                       lSAM_ULS = "SAM-ULS")
     ) %>%
-    pivot_wider(names_from = Method, values_from = `Difference to SEM`) %>%
-    kbl(caption = paste("Difference in Mean Relative Bias to SEM for (Mis-)Specification (Model):", model_type_label),
+    pivot_wider(names_from = Method, values_from = `Mean Relative Bias`) %>%
+    kbl(caption = paste("Mean Relative Bias for (Mis-)Specification (Model):", model_type_label),
         format = "html", booktabs = TRUE) %>%
     kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 }
 
 # Create and display the tables for each model type in Study 2
-relative_bias_diff_table_2_1 <- create_relative_bias_diff_table("2.1", "2.1")
-relative_bias_diff_table_2_1
+relative_bias_table_2_1 <- create_relative_bias_table("2.1", "2.1")
+relative_bias_table_2_1
 
-relative_bias_diff_table_2_2_exo <- create_relative_bias_diff_table("2.2_exo", "2.2_exo")
-relative_bias_diff_table_2_2_exo
+relative_bias_table_2_2_exo <- create_relative_bias_table("2.2_exo", "2.2_exo")
+relative_bias_table_2_2_exo
 
-relative_bias_diff_table_2_2_endo <- create_relative_bias_diff_table("2.2_endo", "2.2_endo")
-relative_bias_diff_table_2_2_endo
+relative_bias_table_2_2_endo <- create_relative_bias_table("2.2_endo", "2.2_endo")
+relative_bias_table_2_2_endo
 
-relative_bias_diff_table_2_2_both <- create_relative_bias_diff_table("2.2_both", "2.2_both")
-relative_bias_diff_table_2_2_both
-
+relative_bias_table_2_2_both <- create_relative_bias_table("2.2_both", "2.2_both")
+relative_bias_table_2_2_both
 ```
 
 ```{r}
@@ -246,7 +233,7 @@ Measurement block size (b = 3 or b = 5) has minimal impact on the difference in 
 Model misspecifications impact SEM more significantly regarding RMSE. SEM shows notably higher RMSE under all misspecification conditions, especially at smaller sample sizes and lower reliability levels. For example, under model 2.2_exo, SEM shows a significantly higher RMSE when R-squared is 0.1 and reliability is 0.3, with differences as high as -1.486 in comparison to gSAM. Similarly, for model 2.2_both, SEM shows substantial RMSE in comparison to gSAM, lSAM-ML, and lSAM-ULS across various conditions. These results indicate that SEM is more sensitive to model misspecifications, leading to higher RMSE, whereas gSAM, lSAM-ML, and lSAM-ULS exhibit more robustness and lower RMSE in the presence of model misspecifications.
 
 ```{r}
-# Function to create an RMSE table for a specific model type with differences to SEM
+# Function to create an RMSE table for a specific model type with SEM included
 create_rmse_diff_table <- function(model_type_label, model_type_value) {
   sem_values <- summary_2 %>%
     filter(model_type == model_type_value, method == "SEM") %>%
@@ -255,31 +242,34 @@ create_rmse_diff_table <- function(model_type_label, model_type_value) {
       Reliability = reliability,
       R_Squared = R_squared,
       `Measurement Block (b)` = b,
-      SEM_Value = MeanRelativeRMSE
+      SEM = MeanRelativeRMSE
     )
   
   summary_2 %>%
-    filter(model_type == model_type_value, method != "SEM") %>%
+    filter(model_type == model_type_value) %>%
     select(N, reliability, R_squared, b, method, MeanRelativeRMSE) %>%
     left_join(sem_values, by = c("N", "reliability" = "Reliability", "R_squared" = "R_Squared", "b" = "Measurement Block (b)")) %>%
-    mutate(Diff_to_SEM = MeanRelativeRMSE - SEM_Value) %>%
-    select(N, reliability, R_squared, b, method, Diff_to_SEM) %>%
+    mutate(Diff_to_SEM = MeanRelativeRMSE - SEM) %>%
+    select(N, reliability, R_squared, b, method, MeanRelativeRMSE, Diff_to_SEM) %>%
     rename(
       Reliability = reliability,
       R_Squared = R_squared,
       `Measurement Block (b)` = b,
       Method = method,
+      `Mean Relative RMSE` = MeanRelativeRMSE,
       `Difference to SEM` = Diff_to_SEM
     ) %>%
     mutate(
+      `Mean Relative RMSE` = round(`Mean Relative RMSE`, 3),
       `Difference to SEM` = round(`Difference to SEM`, 3),
       Method = recode(Method, 
+                      SEM = "SEM",
                       gSAM = "GSAM", 
                       lSAM_ML = "SAM-ML", 
                       lSAM_ULS = "SAM-ULS")
     ) %>%
-    pivot_wider(names_from = Method, values_from = `Difference to SEM`) %>%
-    kbl(caption = paste("Difference in Mean Relative RMSE to SEM for (Mis-)Specification (Model):", model_type_label),
+    pivot_wider(names_from = Method, values_from = c(`Mean Relative RMSE`, `Difference to SEM`)) %>%
+    kbl(caption = paste("Mean Relative RMSE and Difference to SEM for (Mis-)Specification (Model):", model_type_label),
         format = "html", booktabs = TRUE) %>%
     kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 }
@@ -296,7 +286,6 @@ rmse_diff_table_2_2_endo
 
 rmse_diff_table_2_2_both <- create_rmse_diff_table("2.2_both", "2.2_both")
 rmse_diff_table_2_2_both
-
 
 ```
 
