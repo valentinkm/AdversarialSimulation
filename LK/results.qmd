@@ -522,7 +522,7 @@ bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
 
 ### Conditions with N=50
 
-```{r, tidy = TRUE}
+```{r}
 
 #Normal print
 #print(bias_ci_s1b[["N_50"]][["LSAM_ML"]])
