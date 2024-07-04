@@ -961,7 +961,7 @@ metrics_s3 <- readRDS("SimulationResults/sim3_metrics_list.rds")
 sd_s3 <- metrics_s3[["sd"]]
 
 kbl(sd_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left") %>%
+    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
@@ -987,7 +987,7 @@ rmse_s3 <-  metrics_s3[["rmse"]]
 
 #Format table for results
 kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left") %>%
+    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
