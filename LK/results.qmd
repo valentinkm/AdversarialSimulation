@@ -7,7 +7,7 @@ format:
         fontsize: 12pt
         linestretch: 1.5
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
-        classoption: twoside
+        classoption: oneside
         papersize: a4
 fontsize: 12pt
 bibliography: ../bibliography.bib
@@ -119,9 +119,6 @@ In study 4, differences of 0.01 were present and interpreted as slight efficienc
 I infered that this lack of mentioning and consistency can be interpreted as there being no differences of interest. 
 Thus, I expected my studies to yield similar results. 
 If, however, there were differences larger than 0.03, I reported them.
-
-
-# Preliminary information for results
 
 ## Recalculation of CI's
 
