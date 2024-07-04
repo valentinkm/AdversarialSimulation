@@ -1065,8 +1065,7 @@ warn_s4$`Count` <- as.character(warn_s4$`Count`)
 
 kable(warn_s4, format = "latex", booktabs = TRUE, longtable = TRUE
       , escape = FALSE) %>%
-  kable_styling(latex_options = c("striped", "hold_position")
-                , full_width = FALSE) %>%
+  kable_styling(latex_options = "hold_position", full_width = FALSE) %>%
   column_spec(1, width = "30em") %>%
   column_spec(2, width = "5em") %>%
   row_spec(0, bold = TRUE)
@@ -1272,20 +1271,29 @@ No errors and messages were present. There were, however, 24089 warnings, I inve
 
 ### Warnings investigation
 
-```{r output= FALSE, echo = FALSE}
+```{r results ='asis'}
 
 # Flatten the list of warnings into a single character vector
 all_warnings_s4a <- unlist(warnings_s4a)
 
 # Count the occurrences of each unique warning
-warning_counts_s4a <- table(all_warnings_s4a)
+warn_s4a <- table(all_warnings_s4a)
 
 # Convert to data frame for better formatting
-warning_counts_df_s4a <- as.data.frame(warning_counts_s4a)
-colnames(warning_counts_df_s4a) <- c("Warning Message", "Count")
+warn_s4a <- as.data.frame(warn_s4a)
+colnames(warn_s4a) <- c("Warning Message", "Count")
 
-warning_counts_df_s4a
+warn_s4a$`Warning Message` <- as.character(warn_s4a$`Warning Message`)
+warn_s4a$`Count` <- as.character(warn_s4a$`Count`)
+
+kable(warn_s4a, format = "latex", booktabs = TRUE, longtable = TRUE
+      , escape = FALSE) %>%
+  kable_styling(latex_options = "hold_position", full_width = FALSE) %>%
+  column_spec(1, width = "30em") %>%
+  column_spec(2, width = "5em") %>%
+  row_spec(0, bold = TRUE)
 ```
+
 
 The 24000 warnings with regards to Gamma computation in smaller samples were negligible as well, as I was not interested in the computation of robust fit indices:
 
