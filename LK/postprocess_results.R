@@ -442,7 +442,7 @@ report_bias <- function(metrics_list) {
       # Map each N to create formatted bias strings
       n_results <- map_dfc(set_names(unique(filtered_data$N)), ~{
         metrics <- estimator_data[[which(filtered_data$N == .x)]]
-        formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+        formatted_bias <- sprintf("%.3f", metrics$abs_bias)
         set_names(formatted_bias, paste("N", .x, sep = "_"))
       })
       
@@ -451,7 +451,7 @@ report_bias <- function(metrics_list) {
     })
     
     # Name the dataframe with the current N value
-    rename(estimator_results, set_names(names(estimator_results[-1]),paste("N", unique(filtered_data$N), sep = "_")))
+    rename(estimator_results, set_names(names(estimator_results[-1]), paste("N", unique(filtered_data$N), sep = "_")))
   }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
   
   # Return a list of dataframes, one for each DGM
