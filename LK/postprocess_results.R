@@ -1,3 +1,16 @@
+# Specify the libraries to load
+libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
+# Set the R mirror to the cloud mirror of RStudio
+options(repos = "https://cloud.r-project.org/")
+
+# Load the libraries
+for (library_name in libraries) {
+  if (!require(library_name, character.only = TRUE)) {
+    install.packages(library_name)
+    library(library_name, character.only = TRUE)
+  }
+}
+
 # Study 1
 
 #Load raw results
@@ -66,26 +79,21 @@ extract_results <- function(results_df_raw){
 
 report_bias <- function(metrics_list) {
   # Define a list to store results
-  bias_ci <- list()
+  bias_list <- list()
   
   # Iterate over each condition in metrics_list
   for (condition in names(metrics_list)) {
-    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    # Extract rel_bias for the current condition
     rel_bias <- metrics_list[[condition]]$rel_bias
-    ci_lower <- metrics_list[[condition]]$ci_lower
-    ci_upper <- metrics_list[[condition]]$ci_upper
     
-    # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- rel_bias %>%
-      mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                            ~sprintf("%.2f [%.2f-%.2f]", ..1, ..2, ..3)),
-                    .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_rel_bias_formatted$", "", .))
+    # Create the bias table for the current condition and store it in the list
+    bias_list[[condition]] <- rel_bias %>%
+      mutate(across(`50`:`1e+05`, ~sprintf("%.3f", .)))
   }
   
-  return(bias_ci)
+  return(bias_list)
 }
+
 
 #Apply changed function
 metrics_list <- extract_results(results_df_raw)
