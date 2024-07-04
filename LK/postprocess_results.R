@@ -537,7 +537,7 @@ report_bias <- function(metrics_list) {
         n_results <- map_dfc(unique_ns, function(n_val) {
           metrics <- filtered_beta_data %>% filter(N == n_val) %>% pull(estimator)
           metrics <- metrics[[1]]
-          formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+          formatted_bias <- sprintf("%.3f", metrics$abs_bias)
           set_names(formatted_bias, paste("N", n_val, sep = "_"))
         })
         
