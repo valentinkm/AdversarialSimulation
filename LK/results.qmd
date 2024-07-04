@@ -191,6 +191,12 @@ shorten_names <- function(df) {
 # Function to create a styled table for each condition
 create_styled_table <- function(data, condition) {
   data <- shorten_names(data)
+  
+  # round to three digits
+  data <- data %>%
+    mutate(across(where(is.numeric), ~ round(., 3)))
+  
+  # Format table
   kbl(data, col.names = c("Method", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
     kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
