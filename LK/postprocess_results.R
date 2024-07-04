@@ -170,7 +170,7 @@ report_bias <- function(metrics_list) {
         phi_results <- map_dfc(unique_phis, function(phi_val) {
           metrics <- filtered_lambda_data %>% filter(phi == phi_val) %>% pull(estimator)
           metrics <- metrics[[1]]
-          formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+          formatted_bias <- sprintf("%.3f", metrics$abs_bias)
           set_names(formatted_bias, paste("phi", phi_val, sep = "_"))
         })
         
