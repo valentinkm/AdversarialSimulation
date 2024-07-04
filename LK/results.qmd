@@ -26,7 +26,7 @@ library(tidyverse)
 
 ## Across studies
 
-For pragmatic purposes of the simulation implementation, I was unable to track and include non-convergence explicitly and exclude cases where it occured.
+For pragmatic purposes of the simulation implementation, I was unable to track and include non-convergence explicitly and exclude cases where it occurred.
 
 ## Studies 1,2,3
 
@@ -56,7 +56,7 @@ Thus, the naming was different when interpreting the results.
 
 ## Study 4a
 
-I decided to include a variation of study 4a after all, as the relation between beta/phi values and N is interesting: 
+I decided to include a variation of study 4a after all, as the relation between beta/phi values and N was interesting: 
 The original paper showed that results differed between estimators, depending on the size of the factor correlation in Studies 5, 6 and 1b, as well as differential effects due to N in Studies 1,2 and 3.
 I deemed it interesting to investigate these results in a model with a different number of factors.
 These findings, combined with our goal to investigate realistic data conditions, rather than just the population level, left me to include Study 4a, with the addition of an additional factor sample size.
@@ -87,7 +87,7 @@ In consequence, it appears that interpretations aren't coherent across the studi
 
 Another important aspect to highlight in the original papers results refers to the general presence of a negative small sample bias in LSAM estimation. 
 This bias makes LSAM appear to perform superior in conditions with positive values in unmodelled cross-loadings and residual correlation, but worse when the values are negative.
-Even though this bias is correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in unmodelled cross-loadings and residual correlation, namely in study 3. 
+Even though this bias was correctly identified and explained already in Study 1, @robitzsch_comparing_2022 conduct multiple follow-up studies only investigating positive values in unmodelled cross-loadings and residual correlation, namely in study 3. 
 This is done without a general note of some sorts, that this bias should apply in these data-generating scenarios the same as in Studies 1 and 2.
 In consequence, the interpretations @robitzsch_comparing_2022 make, are somewhat misleading on first sight, if one does not account for this bias.
 This does not, however, explain why they did not include more studies or conditions with negatively valenced residual correlations or cross-loadings. 
@@ -101,24 +101,24 @@ Here, however, they say it should be used to avoid confounding the definition of
 This, according to @robitzsch_comparing_2022, often happens in applied research by including cross-loadings and residual correlations at will, without substantive reasons.
 In this sense, SAM should generally be used.
 
-For my studies, in order to have a more coherent interpretation of results, I will define an estimator to outperform another, based on the cut-off of 0.05 for bias.
-Additionally, I will only use the term "generally" to refer to the first meaning, that it outperforms across multiple data generating scenarios or conditions.
+For my studies, in order to have a more coherent interpretation of results, I defined an estimator to outperform another, based on the cut-off of 0.05 for bias.
+Additionally, I only used the term "generally" to refer to the first meaning, that it outperforms across multiple data generating scenarios or conditions.
 
 ### SD and RMSE
 
-Even though @robitzsch_comparing_2022 report tables with results for SD and RMSE, they rarely explicitly mentioned them in the results sections or give cut-offs for substantial relevance.
+Even though @robitzsch_comparing_2022 reported tables with results for SD and RMSE, they rarely explicitly mentioneded them in the results sections or gave cut-offs for substantial relevance.
 
-SD is only reported and mentioned in the conditions without misspecification in Study 1, even though also claimed to be calculated in studies 2 and 3. 
+SD was only reported and mentioned in the conditions without misspecification in Study 1, even though also claimed to be calculated in studies 2 and 3. 
 In this study, they mentioned a 6.6% reduction of SD for LSAM in comparison to ML. 
-This calculation, however, is wrong as the reduction amounts to 8%.
-For my interpretation, I will report percentage reductions larger than 5% as well and compare them with the original study.
+This calculation, however, was wrong as the reduction amounts to 8%.
+For my interpretation, I reported percentage reductions larger than 5% as well and compared them with the original study, where possible.
 
-RMSE (and average RMSE) is reported in Studies 1-4, but only in studies 2 and 4 explicitly interpreted for my estimators of interest.
-In study 2, differences of up to 0.03 are present and interpreted as not being substantial differences.
-In study 4, differences of 0.01 are present and interpreted as slight efficiency gains.
-I infer that this lack of mentioning and consistency can be interpreted as there being no differences of interest. 
-Thus, I expect my studies to yield similar results. 
-If, however, there are differences large than 0.03, I will report them.
+RMSE (and average RMSE) was reported in Studies 1-4, but only in studies 2 and 4 explicitly interpreted for my estimators of interest.
+In study 2, differences of up to 0.03 were present and interpreted as not being substantial differences.
+In study 4, differences of 0.01 were present and interpreted as slight efficiency gains.
+I infered that this lack of mentioning and consistency can be interpreted as there being no differences of interest. 
+Thus, I expected my studies to yield similar results. 
+If, however, there were differences larger than 0.03, I reported them.
 
 
 # Preliminary information for results
@@ -165,7 +165,7 @@ No errors and messages were present. There were, however, 245 warnings, I will i
 
 ### Warnings investigation
 
-Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+Investigating the 'warnings' object list, it became apparent that all the warnings were the same: `no non-missing arguments to min; returning Inf`.
 ```{r}
 #| ouput: true
 
@@ -174,11 +174,8 @@ unique(warnings_s1)
 ```
  
 This warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
-Unfortunately, due to the implementation of the study, I was unable to check for more details, as whether there is any kind of pattern with regards to the warning occurrence. 
-There is, however, evidence that this occurs frequently in standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
-Even though in @robitzsch_comparing_2022 the authors claim that constraining estimation to realistic values (e.g. loadings between 0 and 1) should solve this, applying these same constraints still lead to these issues in my study.
-The combined study should check this more properly to evaluate these claims thoroughly.
-As the 245 are less than 0.5% of the 525000 estimations performed, I will continue with the interpretation as planned, as their impact is negligible.
+Unfortunately, due to the implementation of the study, I was unable to check for more details, as whether there is any kind of pattern with regards to the warning occurrence.
+As the 245 are less than 0.5% of the 52500 estimations performed, I will continue with the interpretation as planned, as their impact is negligible.
 
 ## Bias
 
@@ -186,13 +183,6 @@ As the 245 are less than 0.5% of the 525000 estimations performed, I will contin
 
 # Load the relative bias results
 bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
-
-# Display the relative bias results for each condition, without formatting
-#for (condition in names(bias_ci)) {
-#  cat("## Condition:", condition, "\n\n")
-#  print(bias_ci[[condition]])
-#  cat("\n\n")
-#}
 
 shorten_names <- function(df) {
   df$method_metric <- sub("_rel_bias", "", df$method_metric)
@@ -216,16 +206,13 @@ create_styled_table <- function(data, condition) {
 ### Condition without correlated residuals (0_0.12)
 
 ```{r output = TRUE, echo = FALSE}
-
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
-
 ```
+Both standard SEM estimators were unbiased (i.e. relative Bias < 0.05) across all conditions of N.
+The 4 SAM estimators were negatively biased for sample sizes up to 500 and had nearly identical estimation results.
+Across all estimators, the relative Bias decreased with increasing N. 
 
-Both standard SEM estimators are unbiased (i.e. relative Bias < 0.05) across all N conditions.
-The 4 SAM estimators are negatively biased for sample sizes up to 500 and have nearly identical estimation results.
-Across all estimators, the relative Bias decreases with increasing N. 
-
-Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is no misspecification.
+Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when there was no misspecification.
 
 ### Condition with one negative residual correlation (1_-0.12)
 
@@ -235,13 +222,13 @@ create_styled_table(bias_ci_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
-All estimators are negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
-Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
-For SEM-ULS, it increases slightly but unsubstantially up to N=500, but is lowest overall.
-The 4 SAM estimators have nearly identical estimation results.
-In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
+All estimators were negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
+Across all estimators except SEM-ULS, the Bias decreased substantially with increasing N.
+For SEM-ULS, it increased slightly but unsubstantially up to N=500, but was lowest overall.
+The 4 SAM estimators had nearly identical estimation results.
+In relative comparison, the two SEM estimators outperformed all SAM estimators in every condition of N, even though this difference was not substantive for N=1000 and higher.
 
-Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is one negative residual.
+Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when there was one unmodelled negative residual correlation.
 
 ### Condition with one positive residual correlation (1_0.12)
 
@@ -251,13 +238,13 @@ create_styled_table(bias_ci_s1[["1_0.12"]], "1_0.12")
 
 ```
 
-Besides SEM-ML in N=50, both SEM estimators are positively biased across all N, with no visible trend for increasing N.
-All SAM estimators have nearly identical values and increasing relative bias for increasing N.
-They are negatively biased up to N=250 and positively biased for the other N conditions. 
-For N=250 and N=500, their relative bias is unsubstantial.
-In relative comparison, the two SEM estimators outperform all SAM estimators for sample sizes up to 100. For all higher N, the SAM estimators outperform the SEM estimators, even though the difference is unsubstantial starting from N=1000.
+Besides SEM-ML in N=50, both SEM estimators were positively biased across all N, with no visible trend for increasing N.
+All SAM estimators had nearly identical values and increasing relative bias for increasing N.
+They were negatively biased up to N=250 and positively biased for the other N conditions. 
+For N=250 and N=500, their relative bias was unsubstantial.
+In relative comparison, the two SEM estimators outperformed all SAM estimators for sample sizes up to 100. For all higher N, the SAM estimators outperformed the SEM estimators, even though the difference was unsubstantial starting from N=1000.
 
-Thus, SEM estimation outperforms SAM in smaller samples (N=50-100), whereas SAM outperforms SEM in moderate samples (N250-500), and slightly in higher sample sizes.
+Thus, SEM estimation outperformed SAM in smaller samples (N=50-100), whereas SAM outperformed SEM in moderate samples (N250-500), and slightly in higher sample sizes, when there was one unmodelled positive residual correlation.
 
 ### Condition with two negative residual correlations (2_-0.12)
 
@@ -267,13 +254,13 @@ create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
-All estimators are negatively biased across all N conditions.
-Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
-For SEM-ULS, it slightly, but unsubstantially increases up to N=500, but is lowest overall in these conditions.
-The 4 SAM estimators have nearly identical estimation results.
-In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
+All estimators were negatively biased across all N conditions.
+Across all estimators except SEM-ULS, the Bias decreased substantially with increasing N.
+For SEM-ULS, it slightly, but unsubstantially increasd up to N=500, but was lowest overall in these conditions.
+The 4 SAM estimators had nearly identical estimation results.
+In relative comparison, the two SEM estimators outperformed all SAM estimators in every condition of N, even though this difference was not substantive for N=1000 and higher.
 
-Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there are two unmodelled negative residual correlations.
+Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when there were two unmodelled negative residual correlations.
 
 ### Condition with two positive residual correlation (2_0.12)
 
@@ -283,29 +270,26 @@ create_styled_table(bias_ci_s1[["2_0.12"]], "2_0.12")
 
 ```
 
-Both SEM estimators are positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
-All SAM estimators have nearly identical values and increasing relative bias for increasing N.
-They are negatively biased up to N=100 and positively biased for the other N conditions. 
-In relative comparison, the two SEM estimators outperform all SAM estimators for N=50. For all higher N, the SAM estimators outperform the SEM estimators (substantially, besides ML in N=100), even though the difference is unsubstantial starting from N=1000.
+Both SEM estimators were positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
+All SAM estimators had nearly identical values and increasing relative bias for increasing N.
+They were negatively biased up to N=100 and positively biased for the other N conditions. 
+In relative comparison, the two SEM estimators outperformed all SAM estimators for N=50. For all higher N, the SAM estimators outperformed the SEM estimators (substantially, besides ML in N=100), even though the difference was unsubstantial starting from N=1000.
 
-Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outperforms SEM in small to moderate samples (N100-500), and slightly in higher sample sizes.
+Thus, SEM estimation outperformed SAM in small samples (N=50), whereas SAM outperformed SEM in small to moderate samples (N100-500), and slightly in higher sample sizes when two unmodelled positive residual correlations were present.
 
 ### Summary
 
-in 0.5% of estimations, a warning referring to potential problems with convergence or improper solutions due to small sample sizes in one or multiple estimators occurred. 
-This should be investigated more explicitly in the joint study.
-
-In conditions with no, one or two negative residual correlations,  SEM outperforms SAM in small to moderate sample sizes. 
-This seems to be independent of the amount of misspecification (1 vs. 2).
-
-Comparing the conditions with one and two positive residual correlations, the results suggest that SAM outperforms SEM in smaller to moderate samples, with increasing amount of misspecifiation (even better for 2 than for 1 residual correlation). 
-In small samples, SEM tends to perform better.
+in 0.5% of estimations, a warning referring to potential problems with convergence or improper solutions due to small sample sizes in one or multiple estimators occurred.
+In conditions with no, one or two negative residual correlations, SEM outperformed SAM in small to moderate sample sizes. 
+This seemed to be independent of the amount of misspecification (1 vs. 2).
+Comparing the conditions with one and two positive residual correlations, the results suggested that SAM outperformed SEM in smaller to moderate samples, with increasing amount of misspecifiation (even better for 2 than for 1 unmodelled residual correlation).
+In small samples, SEM tended to perform better.
 
 ### Comparison with original paper
 
-Comparing these results with the original paper, the results are similar and can be seen as mostly replicated. The only difference lies in the potential convergence issues in a small number of estimations. 
+Comparing these results with the original paper, the results were similar and can be seen as mostly replicated. The only difference lied in the potential convergence issues in a small number of estimations. 
 Besides that, I drew the same conclusions as @robitzsch_comparing_2022:
-All SAM approaches appear to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
+All SAM approaches appeared to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
 This leads to the comparatively worse performance in the conditions with no, one or two negative residual correlations. 
 Additionally, this negative bias corrects for unmodelled positive residual correlations and makes SAM appear superior in these conditions.
 
@@ -327,33 +311,24 @@ create_styled_table(sd_s1[["0_0.12"]], "0_0.12")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N. 
+There were only two substantial differences:
+There was a substantial percentage reduction of SD up to 22.4% when comparing SEM-ML and LSAM-ML in N=50, as well as a substantial percentage reduction of SD up to 8.6% when comparing SEM-ML and LSAM-ML in N=100.
 
-There are only two substantial differences:
-Substantial percentage reduction of SD up to 22.4% when comparing SEM-ML and LSAM-ML in N=50: 
-0.299*x = 0.232
-0.232/0.299 = 0.775
-1-(0.232/0.299) = *0.224*
-
-Substantial percentage reduction of SD up to 8.6% when comparing SEM-ML and LSAM-ML in N=100:
-
-Thus, SAM outperforms SEM in terms of SD reduction in smaller samples
+Thus, SAM outperformed SEM in terms of SD reduction in smaller samples, when there was no misspecification.
 
 ### One negative residual correlation (1_-0.12)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(sd_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N.
+There were only two substantial differences: A substantial percentage reduction of SD up to 27.4% when comparing SEM-ML and LSAM-ML in N=50, as well as a substantial percentage reduction of SD up to 12.2% when comparing SEM-ML and LSAM-ML in N=100.
 
-There are only two substantial differences:
-Substantial percentage reduction of SD up to 27.4% when comparing SEM-ML and LSAM-ML in N=50: 
-
-Substantial percentage reduction of SD up to 12.2% when comparing SEM-ML and LSAM-ML in N=100:
-
-Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
+Thus, SAM outperformed SEM in terms of SD reduction in smaller samples when one unmodelled negative residual correlation was present.
 
 ### One positive residual correlation (1_0.12)
 ```{r output = TRUE, echo = FALSE}
@@ -362,27 +337,26 @@ create_styled_table(sd_s1[["1_0.12"]], "1_0.12")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N.
+The SAM estimators outperformed both SEM estimators in N=50 with a percentage reduction of SD up to 16.9%.
+ULS-SEM outperformed all SAM estimators with a percentage reduction of SD up to 8.16% in N=100-250.
+No substantial differences between the two SEM and all SAM estimators arose, starting from moderate sample sizes (N=500-2500). 
 
-The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 16.9%.
-ULS-SEM outperforms all SAM estimators with a percentage reduction of SD up to 8.16% in N=100-250.
-No substantial differences between the two SEM and all SAM estimators starting from moderate sample sizes (N=500-2500). 
-
-Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM outperforms SAM in moderate samples.
+Thus, SAM outperformed SEM in terms of SD reduction in small samples, whereas SEM outperformed SAM in moderate samples, when one positive unmodelled residual correlation was present.
 
 ### Two negative residual correlations (2_-0.12)
+
 ```{r output = TRUE, echo = FALSE}
 
 create_styled_table(sd_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N. 
+The SAM estimators outperformed both SEM estimators in N=50 with a percentage reduction of SD up to 29% and in N=100 with up to 12.8%.
+For higher N, there were no substantial differences.
 
-The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 29% and in N=100 with up to 12.8%.
-For higher N, there are no substantial differences.
-
-Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
+Thus, SAM outperformed SEM in terms of SD reduction in smaller samples.
 
 ### Two positive residual correlations (2_0.12)
 
@@ -392,19 +366,18 @@ create_styled_table(sd_s1[["2_0.12"]], "2_0.12")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N. 
+The SAM estimators outperformed both SEM estimators in N=50 with a percentage reduction of SD up to 15.2%.
+Both SEM estimators ourperformed the SAM estimators in N=100 with a percentage reduction of SD up to 11.1% and in N=250 with up to 10.3%.
+For higher N, there was no substantial differences.
 
-The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 15.2%.
-Both SEM estimators ourperform the SAM estimators in N=100 with a percentage reduction of SD up to 11.1% and in N=250 with up to 10.3%.
-For higher N, there are no substantial differences.
-
-Thus, SAM outperforms SEM in terms of SD reduction in small samples, but SEM outperforms SAM in smaller to moderate samples.
+Thus, SAM outperformed SEM in terms of SD reduction in small samples, but SEM outperformed SAM in smaller to moderate samples.
 
 ### Summary and comparison with original paper
 
-Overall, SAM outperforms SEM in terms of SD reduction in small to smaller samples, especially for negatively correlated residuals. 
-In smaller to moderate samples, SEM outperforms SAM only for positively correlated residuals.
-For conditions with no misspecification, which were the only conditions reported in @robitzsch_comparing_2022, the percentage reduction favoring SAM is nearly identical for N=100, and the reduction seems to be even more significantly in favor of SEM in the smaller sample size.
+Overall, SAM outperformed SEM in terms of SD reduction in small to smaller samples, especially for negatively correlated residuals. 
+In smaller to moderate samples, SEM outperformed SAM only for positively correlated residuals.
+For conditions with no misspecification, which were the only conditions reported in @robitzsch_comparing_2022, the percentage reduction favoring SAM was nearly identical for N=100, and the reduction seems to be even more significantly in favor of SEM in the smaller sample size.
 
 ## RMSE
 
@@ -421,9 +394,9 @@ create_styled_table(rmse_s1[["0_0.12"]], "0_0.12")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
-In N=100, both SEM estimators were more efficient than all  SAM estimators.
-Besides, there are no substantial differences present.
+Across all estimators, the RMSE decreased with increasing N.
+In N=100, both SEM estimators were more efficient than all SAM estimators.
+Besides that, there were no substantial differences present.
 
 ### One negative residual correlation (1_-0.12)
 
@@ -433,9 +406,9 @@ create_styled_table(rmse_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For small to moderate samples (N=50-250), both SEM estimators were more efficient than all SAM estimators.
-For higher N, there are no substantial differences present.
+For higher N, there were no substantial differences.
 
 ### One positive residual correlation (1_0.12)
 
@@ -445,9 +418,9 @@ create_styled_table(rmse_s1[["1_0.12"]], "1_0.12")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For smaller samples (N=50-100), SEM-ULS was more efficient than all SAM estimators.
-For higher N, there are no substantial differences present.
+For higher N, there were no substantial differences present.
 
 ### Two negative residual correlations (2_-0.12)
 
@@ -457,9 +430,9 @@ create_styled_table(rmse_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For small to moderate samples (N=50-500), The two SEM estimators were more efficient than all SAM estimators.
-For higher N, there are no substantial differences present.
+For higher N, there were no substantial differences present.
 
 ### Two positive residual correlations (2_0.12)
 
@@ -469,9 +442,9 @@ create_styled_table(rmse_s1[["2_0.12"]], "2_0.12")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For moderate samples (N=250-500), all SAM estimators were more efficient than the two SEM estimators.
-For higher and lower N, there are no substantial differences present.
+For higher and lower N, there were no substantial differences present.
 
 ### Summary
 
@@ -481,21 +454,20 @@ Only in the case of two positive residual correlation, SAM was more efficient th
 ## Summary Study 1
 
 I gained the following insights with regards to the 2-factor-CFA model:
-Unlike the original paper by @robitzsch_comparing_2022, I experienced some issues that are related to convergence or improper solutions in small samples.
 
-In terms of bias in small to moderate samples, SEM outperforms SAM in conditions with no, one and two negative residual correlations. 
-SAM appears to outperform SEM for positive residual correlations. 
-This, however, is an artifact of its negative small sample bias and not its performance. 
+In terms of bias in small to moderate samples, SEM outperformed SAM in conditions with no, one and two negative residual correlations. 
+SAM appeared to outperform SEM for positive residual correlations. 
+This, however, was an artifact of its negative small sample bias and not its performance. 
 The results align with the ones obtained by the original paper.
 
-With regards to SD and RMSE, results are incoherent with no clear pattern emerging. 
+With regards to SD and RMSE, results were incoherent with no clear pattern emerging. 
 
-Thus, it cannot be stated that one estimation method is generally performing better than the other, based on the results of Study 1.
+Thus, it cannot be stated that one estimation method was generally performing better than the other, based on the results of Study 1.
 
 # Results Simulation 1b: 2-factor-CFA with 2 residual correlations and varying lambda and phi
 
 ## Error, warnings and messages
-First, lets check for any messages, warnings or errors:
+First, I checked for any messages, warnings or errors the same way as in Study 1:
 
 ```{r output = TRUE, echo = FALSE}
 
@@ -523,17 +495,15 @@ No errors and messages were present. There were, however, 414 warnings, I invest
 
 ### Warnings investigation
 
-Investigating the 'warnings' object list, it became apparent that all the warnings are the same: "no non-missing arguments to min; returning Inf".
+Investigating the 'warnings' object list, it became apparent that all the warnings were the same: `no non-missing arguments to min; returning Inf`.
 
 ```{r}
 unique(warnings_s1b)
 ```
 
 As before, this warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
-Again, I was unable to check for more details, but hypothesize that this occurs mainly in the standard SEM estimators.
-There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
-The combined study should check this more properly to evaluate these claims thoroughly.
-As the 414 estimation are around 0.5% of the 75000 estimations performed, I will continue with the interpretation as planned, as their impact is negligible.
+Similarly, I was unable to check for more details, besides the fact that the 414 estimation were around 0.5% of the 75000 estimations performed.
+I continued with the interpretation as planned, as their impact was negligible.
 
 ## Bias
 
@@ -570,13 +540,11 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0
 
 ```
 
-Comparing LSAM-ML and LSAM-ULS, the values are nearly identical. 
-Therefore, the interpretation is the same for both estimators.
-
+Comparing LSAM-ML and LSAM-ULS, the values were nearly identical. 
+Therefore, I interpretated the estimators together:
 Across all conditions, both estimators were biased.
-
-For higher values of lambda, the estimators had less absolute Bias. This difference increased for higher phi values.
-
+For higher values of lambda, the estimators had less absolute Bias. 
+This difference increased for higher phi values.
 For lower values of lambda, the absolute bias increased with increasing phi. This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
 
 ### Conditions with N=100
@@ -598,26 +566,24 @@ kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=
   add_header_above(c("Study 1b: Absolute Bias of LSAM-ULS for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
-Again, the values and therefore the interpretation of LSAM-ML and LSAM-ULS are identical.
-
+Again, the values and therefore the interpretation of LSAM-ML and LSAM-ULS were identical.
 Across all conditions, both estimators were biased.
 For higher values of lambda, the estimators had less absolute Bias. This difference increased for higher phi values.
 For lower values of lambda, the absolute bias increased with increasing phi. 
 This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
-
-Additionally, there seems to be no differential effect due to N, as the interpretations between the different N-conditions are identical.
-Naturally, the bias values are larger for N=50, still.
+Additionally, there seemed to be no differential effect due to N, as the interpretations of the different N-conditions were identical.
+Naturally, the bias values were larger for N=50.
 
 ### Comparison to original paper
 
 In contrast to the original paper by @robitzsch_comparing_2022, I computed absolute bias to avoid infinite values in some conditions.
-Additionally, computing absolute instead of relative Bias solves the problem of positive and negative biases canceling each other out.
+Additionally, computing absolute instead of relative Bias solved the problem of positive and negative biases canceling each other out.
 Results partly align in terms of absolute bias:
-For higher values of lambda, LSAM has less absolute Bias. 
-This difference increases for higher phi values.
-Only for low values of lambda, the bias increases for higher values of phi. 
+For higher values of lambda, LSAM had less absolute Bias. 
+This difference increased for higher phi values.
+Only for low values of lambda, the bias increased for higher values of phi. 
 Unlike in this study, the original paper did not find a reversal effect for higher lambda values.
-Another difference is that we, unlike @robitzsch_comparing_2022, found estimates to be biased for low phi-values.
+Another difference is that we, unlike @robitzsch_comparing_2022, found estimates to be biased for low phi-values aswell.
 This might be due to the difference of using absolute bias, thereby avoiding cancellation of positive and negative values.
 Still, my general conclusion corresponds to the original paper:
 LSAM has a general negative small sample bias. 
@@ -627,7 +593,6 @@ Importantly, the bias seems to not disappear for low values of phi and lambda, u
 # Results Simulation 2: 2-factor-CFA with 1 or 2 cross-loadings
 
 ## Error, warnings and messages
-First, lets check for any messages, warnings or errors:
 
 ```{r output = TRUE, echo = FALSE}
 
@@ -651,15 +616,13 @@ length(messages_sum_s2)
 
 
 ```
-
 No errors and messages were present. There were, however, 612 warnings I investigated in detail.
 
 
 ### Warnings investigation
 
-Investigating the 'warnings' object list, it became apparent that all the warnings are the same: 
+Again, all the warnings were the same:
 `no non-missing arguments to min; returning Inf`.
-
 One difference was that there were sometimes 4-6 warnings per repetition, more than before were I only saw up to 2 per repetition.
 
 ```{r}
@@ -667,10 +630,7 @@ unique(warnings_s2)
 ```
 
 As before, this warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
-Again, I was unable to check for more details, but hypothesize that this occurs mainly in the standard SEM estimators.
-There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
-The combined study should check this more properly to evaluate these claims thoroughly.
-As the 612 estimation were around 1.5% of the 42000 estimations performed, I continued with the interpretation as planned, as their impact was negligible.
+Again, I was unable to check for more details, but the 612 estimation were only around 1.5% of the 42000 estimations performed. I continued with the interpretation as planned, as their impact was negligible.
 
 ## Bias
 
@@ -690,14 +650,14 @@ create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3")
 ```
 
 
-All estimators are negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
-Across all estimators except SEM-ULS, the Bias decreases substantially with increasing N.
-For SEM-ULS, the bias stays constant across N, and is lowest by a substantial marging compared to all SAM estimators up until N=500.
-For higher N, SEM-ML is the best, but the differences between all estimators are negligible
+All estimators were negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
+Across all estimators except SEM-ULS, the Bias decreased substantially with increasing N.
+For SEM-ULS, the bias stayed constant across N, and was lowest by a substantial marging compared to all SAM estimators up until N=500.
+For higher N, SEM-ML was best, but the differences between all estimators were negligible.
 The 4 SAM estimators have nearly identical estimation results.
-In relative comparison, the two SEM estimators outperform all SAM estimators in every condition of N, even though this difference is not substantive for N=1000 and higher.
+In relative comparison, the two SEM estimators outperformed all SAM estimators in every condition of N, even though this difference was not substantive for N=1000 and higher.
 
-Thus, SEM estimation outperforms SAM in small to moderate sample sizes, when there is one negative cross-loading.
+Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when there was one negative cross-loading.
 
 ### One positive cross-loadings (1_0.3)
 
@@ -707,13 +667,14 @@ create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3")
 
 ```
 
-All estimators are biased across all N conditions.
-For the two SEM-estimators, the relative Bias is always positive and shows no trend across N.
-All SAM estimators have nearly identical values and increasing relative bias for increasing N.
-Their bias turn from being negative for N=50-100 to positive from N=250 on.
-In relative comparison, the two SEM estimators outperform all SAM estimators for N=50. For N=100-2500, the SAM estimators outperform the SEM estimators, even though the difference is unsubstantial starting from N=1000.
+All estimators were biased across all N conditions.
+For the two SEM-estimators, the relative Bias was always positive and showed no trend across N.
+All SAM estimators had nearly identical values and increasing relative bias for increasing N.
+Their bias turned from being negative for N=50-100 to positive from N=250 on.
+In relative comparison, the two SEM estimators outperformed all SAM estimators for N=50. 
+For N=100-2500, the SAM estimators outperformed the SEM estimators, even though the difference was unsubstantial starting from N=1000.
 
-Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outperforms SEM in smaller to moderate samples (N100-500), and slightly in higher sample sizes.
+Thus, SEM estimation outperformed SAM in small samples (N=50), whereas SAM outperformed SEM in smaller to moderate samples (N100-500), and slightly in higher sample sizes.
 
 ### Two negative cross-loadings (2_-0.3)
 
@@ -722,12 +683,12 @@ Thus, SEM estimation outperforms SAM in small samples (N=50), whereas SAM outper
 create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3")
 
 ```
-All estimators are negatively biased across all N conditions.
-Across all estimators, the Bias decreases substantially with increasing N.
-The 4 SAM estimators have nearly identical estimation results.
-In relative comparison, the two SEM estimators substantially outperform all SAM estimators in every condition of N.
+All estimators were negatively biased across all N conditions.
+Across all estimators, the Bias decreased substantially with increasing N.
+The 4 SAM estimators had nearly identical estimation results.
+In relative comparison, the two SEM estimators substantially outperformed all SAM estimators in every condition of N.
 
-Thus, SEM estimation outperforms SAM, when there are two negative residuals.
+Thus, SEM estimation outperformed SAM, when there were two negative residuals.
 
 ### Two positive cross-loadings (2_0.3)
 
@@ -737,27 +698,23 @@ create_styled_table(bias_ci_s2[["2_0.3"]], "2_0.3")
 
 ```
 
-All estimators are biased across N conditions.
-Both SEM estimators are positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
-All SAM estimators have nearly identical values and increasing relative bias for increasing N.
-They are negatively biased in N=50 and positively biased for the other N conditions. 
+All estimators were biased across N conditions.
+Both SEM estimators were positively biased across all N, with no visible trend for increasing N for ULS, but a substantial increase for ML.
+All SAM estimators had nearly identical values and increasing relative bias for increasing N.
+They were negatively biased in N=50 and positively biased for the other N conditions. 
+In relative comparison, the four SAM estimators outperformed the two SEM estimators for N=50-500, even though unsubstantial for N=500. For all higher N, no estimator substantially differed from another, but the two SEM estimators slightly outperformed.
 
-In relative comparison, the four SAM estimators outperform the two SEM estimators for N=50-500, even though unsubstantial for N=500. For all higher N, no estimator substantially differs from another, but the two SEM slightly outperform.
-
-Thus, SAM outperforms SEM in small to moderate samples (N50-250).
+Thus, SAM outperformed SEM in small to moderate samples (N50-250).
 
 ### Summary
 
-Again, in 1.5% of estimations, a warning referring to potential problems with convergence or improper solutions due to small sample sizes in one or multiple estimators occured. 
-This should be investigated more explicitly in the joint study.
-
-For small to moderate samples, SEM outperforms SAM in conditions with negative cross-loadings. SAM outperforms SEM in conditions with positive cross-loadings.
+For small to moderate samples, SEM outperformed SAM in conditions with negative cross-loadings. SAM outperformed SEM in conditions with positive cross-loadings.
 
 ### Comparison with original paper
 
-Comparing these results with the original paper, the results are  similar and can be seen as replicated. The only difference lies in the potential convergence issues in a small number of estimations. 
+Comparing these results with the original paper, the results were similar and can be seen as replicated. 
 
-Besides that, I drew the same conclusions as @robitzsch_comparing_2022:
+Consequently, I drew the same conclusions as @robitzsch_comparing_2022:
 All SAM approaches appeared to be generally negatively biased for small to moderate samples in the 2-factor-CFA model. 
 This lead to the comparatively worse performance in the conditions with no, one or two negative residual correlations. Additionally, this negative bias corrected for unmodelled positive cross-loadings and made SAM appear superior in these conditions.
 
@@ -780,11 +737,9 @@ create_styled_table(sd_s2[["1_-0.3"]], "1_-0.3")
 
 
 Across all estimators, the standard deviation decreases with increasing N. 
-There are only two substantial differences:
-Substantial percentage reduction of SD up to 30.8% when comparing SEM-ML and LSAM-ML in N=50: 
-Substantial percentage reduction of SD up to 16% when comparing SEM-ML and LSAM-ML in N=100:
+There were only two substantial differences: One substantial percentage reduction of SD up to 30.8% when comparing SEM-ML and LSAM-ML in N=50, and one substantial percentage reduction of SD up to 16% when comparing SEM-ML and LSAM-ML in N=100.
 
-Thus, SAM outperforms SEM in terms of SD reduction in smaller samples.
+Thus, SAM outperformed SEM in terms of SD reduction in smaller samples.
 
 ### One positive cross-loading (1_0.3)
 
@@ -794,14 +749,13 @@ create_styled_table(sd_s2[["1_0.3"]], "1_0.3")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N. 
+The SAM estimators outperformed both SEM estimators in N=50 with a percentage reduction of SD up to 6.4%.
+ULS-SEM outperformed all SAM estimators with a percentage reduction of SD up to 14.1% in N=100, and of 12.3% in N=250 and of 8.6% in N=500.
+Above that point, overall SD was very small and negligible in all estimators
+No substantial differences between the two SEM and all SAM estimators arose starting from moderate sample sizes (N=500-2500). 
 
-The SAM estimators outperform both SEM estimators in N=50 with a percentage reduction of SD up to 6.4%.
-ULS-SEM outperforms all SAM estimators with a percentage reduction of SD up to 14.1% in N=100, and of 12.3% in N=250 and of 8.6% in N=500.
-Above that point, overall SD is very small and negligible in all estimators
-No substantial differences between the two SEM and all SAM estimators starting from moderate sample sizes (N=500-2500). 
-
-Thus, SAM outperforms SEM in terms of SD reduction in small samples, whereas SEM outperforms SAM in smaller to moderate samples.
+Thus, SAM outperformed SEM in terms of SD reduction in small samples, whereas SEM outperformed SAM in smaller to moderate samples.
 
 ### Two negative cross-loadings (2_-0.3)
 
@@ -811,12 +765,12 @@ create_styled_table(sd_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N. 
 
-The SAM estimators substantially, but decreasingly outperform both SEM estimators in samples N=50-500 with a SD percentage reduction of 10.1% remaining in N=500.
-For higher N, there are no substantial differences and overall SD is very small across estimators.
+The SAM estimators substantially, but decreasingly, outperformed both SEM estimators in samples N=50-500 with a SD percentage reduction of 10.1% remaining in N=500.
+For higher N, there were no substantial differences and overall SD was very small across estimators.
 
-Thus, SAM outperforms SEM in terms of SD reduction in small to moderate samples.
+Thus, SAM outperformed SEM in terms of SD reduction in small to moderate samples.
 
 ### Two positive cross-loadings (2_0.3)
 
@@ -826,19 +780,19 @@ create_styled_table(sd_s2[["2_0.3"]], "2_0.3")
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
+Across all estimators, the standard deviation decreased with increasing N. 
 
 Both SEM estimators outperform the SAM estimators in N=50-500 with a SD percentage reduction up to 11.7% remaining in N=500.
-For higher N, there are no substantial differences.
+For higher N, there were no substantial differences.
 
-Thus, SEM outperforms SAM in small to moderate samples.
+Thus, SEM outperformed SAM in small to moderate samples.
 
 
 ### Summary
 
-For negative cross-loadings, SAM tends to outperform SEM in terms of SD reduction small to moderate samples.
-For positive cross-loadings, SEM tends to outperform SAM in terms of SD reduction smaller to moderate samples.
-There seems to be an effect due to the amount of misspecification, such that the conditions with 2 cross-loadings had larger differences in performance (in both directions).
+For negative cross-loadings, SAM tended to outperform SEM in terms of SD reduction small to moderate samples.
+For positive cross-loadings, SEM tended to outperform SAM in terms of SD reduction smaller to moderate samples.
+There seemed to be an effect due to the amount of misspecification, such that the conditions with 2 cross-loadings had larger differences in performance (in both directions).
 
 ## RMSE
 
@@ -855,9 +809,9 @@ create_styled_table(rmse_s2[["1_-0.3"]], "1_-0.3")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For small to moderate samples (N=50-500), both SEM estimators were more efficient than all SAM estimators.
-For higher N, there are no substantial differences present.
+For higher N, there were no substantial differences present.
 
 ### One positive cross-loading (1_0.3)
 
@@ -867,7 +821,7 @@ create_styled_table(rmse_s2[["1_0.3"]], "1_0.3")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For smaller and large samples (N=50-100 and N=1000-100000), none of the estimators differed from another.
 For N=250, all 4 SAM estimators substantially outperformed the two SEM estimators.
 For N=500, all 4 SAM estimators substantially outperformed SEM-ML estimation.
@@ -880,7 +834,7 @@ create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 
-Across all estimators, the RMSE decreases with increasing N.
+Across all estimators, the RMSE decreased with increasing N.
 For small samples with N=50, none of the estimators differed in terms of efficiency.
 For all other conditions, The two SEM estimators were more efficient than all SAM estimators.
 
@@ -892,27 +846,26 @@ create_styled_table(rmse_s2[["2_0.3"]], "2_0.3")
 
 ```
 
-Only for the two SEM estimators, the RMSE decreases with increasing N, but remains at higher values between 0.22-0.25 for all estimators.
+Only for the two SEM estimators, the RMSE decreased with increasing N, but remained at higher values between 0.22-0.25 for all estimators.
 
 For small to moderate samples (N=50-250), all SAM estimators were more efficient than the two SEM estimators.
-For higher N, there are no substantial differences present.
+For higher N, there were no substantial differences present.
 
 ### Summary
 
 In moderate samples, SAM generally outperformed SEM in terms of RMSE.
 The only exception is the condition with 1 negative cross-loading, where SEM outperformed SAM in small to moderate samples.
 In the condition with 2 positive cross-loadings, SAM was more efficient in small samples as well.
-Unlike in Study 1, there seems to be no effect due to amount of misspecification.
+Unlike in Study 1, there seemed to be no effect due to amount of misspecification.
 
 ## Summary Study 2
 
 I gained the following insights with regards to the 2-factor-CFA model:
-Unlike the original paper by @robitzsch_comparing_2022, I experienced some issues that are related to convergence or improper solutions in small samples.
 
 In terms of bias in small to moderate samples, SEM outperformed SAM in conditions with negative cross-loadings. 
 SAM appeared to outperform SEM in conditions with positive cross-loadings. 
-This, however, is again an artifact of its negative small sample bias and not its performance. 
-The results align with the ones obtained by the original paper.
+This, however, was again an artifact of its negative small sample bias and not its performance. 
+The results aligned with the ones obtained by the original paper.
 
 With regards to SD reduction, findings were different. 
 In conditions with negative cross-loadings, SAM tended to outperform SEM, whereas the opposite was true for conditions with positive cross-loadings.
@@ -923,12 +876,11 @@ Generally, SAM was more efficient than SEM in moderate samples.
 For small samples, the results were not as clear.
 Unlike in Study 1, there seems to be no effect due to amount of misspecification.
 
-Overall, findings are somewhat incoherent and it can not be stated that one estimation method was generally performing better than the other, based on the results of Study 2.
+Overall, findings are somewhat incoherent and it can not be stated that one estimation method generally performed better than the other, based on the results of Study 2.
 
 # Results simulation 3:2-factor-CFA with one cross-loading and one residual correlation
 
 ## Error, warnings and messages
-First, lets check for any messages, warnings or errors:
 
 ```{r output = TRUE, echo = FALSE}
 
@@ -957,17 +909,14 @@ No errors and messages were present. There were, however, 193 warnings I investi
 
 ### Warnings investigation
 
-Investigating the 'warnings' object list, it became apparent that all the warnings were the same: `no non-missing arguments to min; returning Inf`.
+Investigating the 'warnings' object list, it became apparent that all the warnings were the same again: `no non-missing arguments to min; returning Inf`.
 
 ```{r}
 unique(warnings_s3)
 ```
 
 As before, this warning could indicate either convergence issues or improper solutions due to small sample size in one or multiple estimators.
-Again, I was unable to check for more details, but hypothesize that this occured mainly in the standard SEM estimators.
-There is, however, evidence that this occurs frequently standard SEM estimation and was one claimed advantage of SAM- over SEM-estimation [@rosseel_structural_2022].
-The combined study should check this more properly to evaluate these claims thoroughly.
-As the 193 estimation are around 1.8% of the 10500 estimations performed, I continued with the interpretation as planned, as their impact was negligable.
+Again, I was unable to check for more details, but as the 193 estimation amount to only around 1.8% of the 10500 estimations performed, I continued with the interpretation as planned, as their impact was negligable.
 
 ## Bias
 
@@ -1001,7 +950,6 @@ Thus, all SAM estimators outperformed the two SEM estimators in smaller to moder
 Comparing these results with the original paper, my results were somewhat different.
 Even though the results were similar for most conditions (@robitzsch_comparing_2022 had the same results in conditions N=100-250 and N=1000-100000), the results were different for N=500.
 This, combined with the findings from the additional condition of N=50 revealed that SAM estimation outperformed SEM estimation in this data generating scenario in small to moderate samples.
-Another difference lies, again, in the potential convergence issues in a small number of estimations. 
 
 ## SD
 
@@ -1021,14 +969,14 @@ kbl(sd_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "25
 
 ```
 
-Across all estimators, the standard deviation decreases with increasing N. 
-There are thre substantial differences:
-Substantial percentage reduction of SD up to 5.5% in favor of SEM-ULS when comparing with GSAM-ULS in N=50. 
-Substantial percentage reduction of SD up to 21.7% when comparing SEM-ULS when comparing with GSAM-ULS in N=100.
-Substantial percentage reduction of SD up to 15.6% when comparing SEM-ULS when comparing with GSAM-ULS in N=250.
-For higher N, the SD still partly differs but becomes negligibly small.
+Across all estimators, the standard deviation decreased with increasing N. 
+There were three substantial differences:
+A substantial percentage reduction of SD up to 5.5% in favor of SEM-ULS when comparing with GSAM-ULS in N=50. 
+Another substantial percentage reduction of SD up to 21.7% when comparing SEM-ULS when comparing with GSAM-ULS in N=100.
+And lastly a substantial percentage reduction of SD up to 15.6% when comparing SEM-ULS with GSAM-ULS in N=250.
+For higher N, the SD still partly differed but became negligibly small.
 
-Thus, SEM outperforms SAM in terms of SD reduction in small to moderate samples.
+Thus, SEM outperformed SAM in terms of SD reduction in small to moderate samples.
 
 ## RMSE
 
@@ -1049,13 +997,11 @@ kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "
 
 Across all estimators, the RMSE decreased with increasing N.
 For N=50 and N=1000-100000, none of the estimators differed from another.
-For N=100-500, the two SEM-estimators outperform all SAM-estimators in terms of efficiency.
+For N=100-500, the two SEM-estimators outperformed all SAM-estimators in terms of efficiency.
 
-Thus, SEM outperforms SAM in smaller to moderate samples.
+Thus, SEM outperformed SAM in smaller to moderate samples.
 
 ## Summary Study 3
-
-As before, I experienced some issues that are related to convergence or improper solutions in small samples.
 
 In terms of Bias, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
 
@@ -1078,7 +1024,6 @@ Also, keep in mind that the naming of the DGM changed to correspond with the cod
 What @robitzsch_comparing_2022 called DGM 1-3, I now named DGM 0-2.
 
 ## Error, warnings and messages
-First, lets check for any messages, warnings or errors:
 
 ```{r output = TRUE, echo = FALSE}
 
@@ -1131,8 +1076,7 @@ There are three warnings that amount to 7 overall, that are referring to problem
 `lavaan WARNING: The variance-covariance matrix of the estimated parameters (vcov) does not appear to be positive definite! The smallest eigenvalue (= 1.595219e-17) is close to zero. This may be a symptom that the model is not identified.`
 
 This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
-The 9000 warnings with regards to Gamma computation in smaller samples is negligible as well, as I was not interested in the computation of robust fit indices.
-
+The 9000 warnings with regards to Gamma computation in smaller samples are negligible as well, as I was not interested in the computation of robust fit indices.
 
 ## Bias
 
@@ -1161,13 +1105,12 @@ create_styled_table <- function(data, condition) {
 create_styled_table(bias_ci_s4[["DGM_0"]], "DGM_0")
 ```
 
-
-All estimators are biased for small to moderate samples (N=50-250). 
-For higher N, no estimator is biased.
+All estimators were biased for small to moderate samples (N=50-250). 
+For higher N, no estimator was biased.
 In N=50, LSAM outperforms SEM-ULS. 
-For all other conditions, there is no substantial difference between any of the estimators biases.
+For all other conditions, there was no substantial difference between any of the estimators biases.
 
-Thus, for the most part, no estimator generally outperforms another in the correctly specified model conditions.
+Thus, for the most part, no estimator generally outperformed another in the correctly specified model conditions.
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
@@ -1178,12 +1121,12 @@ create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1")
 ```
 
 All estimators were biased across all conditions of N.
-Still, their bias decreases for higher N.
-LSAM-ML substantially outperforms the two SEM-estimators in smaller samples (N=50-100).
-It outperforms SEM-ULS in every other condition of N, as well.
-With regards to SEM-ML, LSAM-ML only slightly outperforms, for higher N.
+Still, their bias decreased for higher N.
+LSAM-ML substantially outperformed the two SEM-estimators in smaller samples (N=50-100).
+It outperformed SEM-ULS in every other condition of N, as well.
+With regards to SEM-ML, LSAM-ML only slightly outperformed, for higher N.
 
-Thus, SAM tends to outperforms SEM in presence of unmodelled cross-loadings.
+Thus, SAM tended to outperform SEM in presence of unmodelled cross-loadings.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
@@ -1193,34 +1136,30 @@ create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2")
 
 ```
 
-All estimators are biased for small to moderate samples (N=50-500).
-Only SEM-ULS is unbiased for N=500.
-For higher N (N=1000-100000), no estimator is biased.
-In N=50, LSAM outperforms SEM-ULS estimation. 
-For all other conditions, there is no substantial difference between any of the estimators bias.
+All estimators were biased for small to moderate samples (N=50-500).
+Only SEM-ULS was unbiased for N=500.
+For higher N (N=1000-100000), no estimator was biased.
+In N=50, LSAM outperformed SEM-ULS estimation. 
+For all other conditions, there were no substantial differences between any of the estimators biases.
 
 ### Summary
 
-LSAM-estimation appears to generally outperform SEM-ULS estimation in smaller samples across all DGM's.
+LSAM-estimation appeared to generally outperform SEM-ULS estimation in smaller samples across all DGM's.
 Moreover, LSAM- appeared to outperform both SEM-estimators in smaller samples, when unmodelled cross-loadings are present.
 Importantly, as I found LSAM to have a negative small sample bias in conditions with low values of phi as well in my simulation study 1b, we have to take this into account:
-Even though LSAM appeared to outperform SEM-estimation in DGM 1, this might be attributable to its general negative small sample bias.
-Thus, it cannot simply be stated, that SAM estimation should be preferred in these scenarios.
+Even though LSAM appeared to outperform SEM-estimation in DGM 1, this is attributable to its general negative small sample bias.
+Thus, it cannot be stated, that SAM estimation should be preferred in these scenarios.
 
 In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there was no general advantage of one estimation method over another, for smaller to moderate samples.
 
 ### Comparison with original paper
 
 Interestingly, unlike @robitzsch_comparing_2022, I have found some bias in DGM 0, even though the model was correctly specified in that scenario.
-
 For DMG 1, results are very similar, with LSAM-ML seemingly outperforming SEM-ULS estimation.
 A new insight is that LSAM-ML seemed to outperform SEM-ML in smaller samples as well.
-
 In DGM 2, I did not find the disadvantage of SEM-ML in comparison to the other estimators that @robitzsch_comparing_2022 found.
-
 An additional finding was, that LSAM-ML tended to generally perform better than SEM-ULS in smaller samples.
-
-Importantly, my conclusion with regards to LSAM's performance is different, due to the different findings in my Study 1b, that found LSAM to be biased even for low values of phi and lambda.
+Importantly, my conclusion with regards to LSAM's performance was different, due to the different findings in my Study 1b, that found LSAM to be biased even for low values of phi and lambda.
 
 ## RMSE
 
@@ -1237,11 +1176,11 @@ create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
 
-Across increasing N, the average RMSE decreases substantially for all estimators.
-For N=50, SEM-ULS performs substantially worse than the other two estimators.
-For all other conditions, there is no difference between any of the estimators.
+Across increasing N, the average RMSE decreased substantially for all estimators.
+For N=50, SEM-ULS performed substantially worse than the other two estimators.
+For all other conditions, there was no difference between any of the estimators.
 
-Thus, no estimator generally outperforms another in conditions with a correctly specified model.
+Thus, no estimator generally outperformed another in conditions for a correctly specified model.
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
@@ -1251,12 +1190,12 @@ create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
 ```
 
-Across increasing N, the average RMSE decreases substantially for all estimators.
-Across all N, SEM-ULS performs substantially worse than the other two estimators.
-For N=50-500, SEM-ML performs substantially worse than LSAM-ML.
-For higher N, SEM-ML performs worse than LSAM-ML as well, but only slightly.
+Across increasing N, the average RMSE decreased substantially for all estimators.
+Across all N, SEM-ULS performed substantially worse than the other two estimators.
+For N=50-500, SEM-ML performed substantially worse than LSAM-ML.
+For higher N, SEM-ML performed worse than LSAM-ML as well, but only slightly.
 
-Thus, LSAM-ML appears to outperform the two SEM-estimators for small to moderate samples sizes, in the conditions with four unmodelled cross-loadings.
+Thus, LSAM-ML appeared to outperform the two SEM-estimators for small to moderate samples sizes, in the conditions with four unmodelled cross-loadings.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
@@ -1266,16 +1205,16 @@ create_styled_table(rmse_s4[["DGM_2"]], "DGM_2")
 
 ```
 
-Across increasing N, the average RMSE decreases substantially for all estimators.
-For N=50, SEM-ULS performs substantially worse than the other two estimators.
-For all other conditions, there is no difference between any of the estimators.
+Across increasing N, the average RMSE decreased substantially for all estimators.
+For N=50, SEM-ULS performed substantially worse than the other two estimators.
+For all other conditions, there was no difference between any of the estimators.
 
-Thus, no estimator generally outperforms another in conditions with 20 unmodelled residual correlation.
+Thus, no estimator generally outperformed another in conditions with 20 unmodelled residual correlation.
 
 ### Summary
 
-LSAM-ML appears to outperfoms the two SEM-estimators in conditions with unmodelled cross-loadings. 
-For conditions without misspecifications and unmodelled residual correlations, no difference arises besides a worse performance of SEM-ULS.
+LSAM-ML appeared to outperform the two SEM-estimators in conditions with unmodelled cross-loadings. 
+For conditions without misspecifications and unmodelled residual correlations, no difference arose besides a worse performance of SEM-ULS.
 
 ### Comparison with original paper
 
@@ -1284,23 +1223,22 @@ A new insight is the comparatively worse performance of SEM-ULS in small samples
 
 ## Summary Study 4
 
-Overall, the main performance difference is that LSAM appears to be outperforming the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
-Even though LSAM appears to outperform SEM-estimation in DGM 1, this might be attributed to its general negative small sample bias, that persisted even for low phi values in my study1b.
-Thus, it cannot simply be stated, that SAM estimation should be preferred in these scenarios.
+Overall, the main performance difference is that LSAM appeared to be outperforming the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
+This performance difference is attributed to its general negative small sample bias, that persisted even for low phi values in my Study 1b.
 
-In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
-A new insight is the comparatively worse performance of SEM-ULS in small samples (N=50).
+Thus, it cannot simply be stated that SAM estimation should be preferred in these scenarios.
+In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there was no general advantage of one estimation method over another.
+A new insight was the comparatively worse performance of SEM-ULS in small samples (N=50).
 Due to my different findings with regards to the small sample bias of LSAM in Study 1b, I arrived at different conclusions than @robitzsch_comparing_2022.
 
 # Results Simulation 4a: 5-factor-model under 2 different data-generating mechanisms and varying beta size
 
-Again, I investigated a five factor model with regressions included, and this time under vary size of the regression coefficient beta.
+Again, I investigated a five factor model with regressions included, and this time under varying size of the regression coefficient beta.
 Unlike the original paper, were the investigation was only conducted on the population level, I also varied the sample size as a factor in my simulation.
 Also, keep in mind that the naming of the DGM changed to correspond with the code implementation. 
 What @robitzsch_comparing_2022 called DGM 1-3, I now called DGM 0-2.
 
 ## Error, warnings and messages
-First, lets check for any messages, warnings or errors:
 
 ```{r output = TRUE, echo = FALSE}
 
@@ -1343,7 +1281,7 @@ colnames(warning_counts_df_s4a) <- c("Warning Message", "Count")
 warning_counts_df_s4a
 ```
 
-There are 24000 warnings with regards to Gamma computation in smaller samples was negligible as well, as I was not interested in the computation of robust fit indices:
+The 24000 warnings with regards to Gamma computation in smaller samples were negligible as well, as I was not interested in the computation of robust fit indices:
 
 `lavaan WARNING: number of observations (50) too small to compute Gamma`
 
@@ -1407,12 +1345,9 @@ For higher beta, the bias increased substantially, in all conditions of N for SE
 This was not the case for LSAM-ML.
 
 Across all conditions, LSAM-ML substantially outperformed the two SEM-estimators.
-
-The bias difference between LSAM-ML and the two other estimators is higher for lower N.
-
+The bias difference between LSAM-ML and the two other estimators was higher for lower N.
 The only exception was for beta =0.1 in N=250 and all higher N. 
 Here, there was only a slightly better performance of LSAM- over SEM-ML estimation, though not substantial.
-
 This effect was stronger for higher values of beta.
 Additionally, SEM-ML outperformed SEM-ULS in all conditions as well.
 
@@ -1463,7 +1398,7 @@ Lastly, LSAM-ML outperformed SEM-ULS in N=100 for beta = 0.4.
 For all other conditions, none of the estimators differed from another, in terms of bias.
 
 Thus, LSAM-ML appeared to perform best in small samples and higher beta.
-Besides that, none of the estimators generally outperforms another in the presence of 20 unmodelled residual correlations.
+Besides that, none of the estimators generally outperformed another in the presence of 20 unmodelled residual correlations.
 
 ## RMSE
 
@@ -1508,10 +1443,10 @@ kbl(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=1
 ```
 
 Across all conditions of N and beta, LSAM-ML estimation was more efficient than the two SEM-estimators.
-This difference is stronger in smaller samples.
+This difference was stronger in smaller samples.
 Additionally, SEM-ML outperformed SEM-ULS estimation, in terms of efficiency, in all conditions as well.
-Both SEM estimators have reduced RMSE values for higher N.
-All three estimators have higher RMSE values for higher beta.
+Both SEM estimators had reduced RMSE values for higher N.
+All three estimators had higher RMSE values for higher beta.
 This effect was especially present in the two SEM estimators.
 
 Thus, LSAM-ML appeared to outperform SEM-estimation and SEM-ML appeared to outperform SEM-ULS estimation, in the presence of four unmodelled cross-loadings.
@@ -1550,14 +1485,14 @@ kbl(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=1
 
 ```
 
-Across all conditions of N, LSAM-ML generally outperforms the two SEM-estimators for lower to moderate beta values (approx. beta= 0.2-0.4).
-This effect is stronger for higher values of beta and lower N.
+Across all conditions of N, LSAM-ML generally outperformed the two SEM-estimators for lower to moderate beta values (approx. beta= 0.2-0.4).
+This effect was stronger for higher values of beta and lower N.
 SEM-ULS had reduced RMSE values for higher N.
-All three estimators have higher RMSE values for higher beta.
+All three estimators had higher RMSE values for higher beta.
 This effect was especially present in the two SEM estimators.
 
 Thus, LSAM-ML appeared to generally outperform SEM-estimation, in the presence of 20 unmodelled residual correlation.
-Even more so, for higher values of beta and lower N.
+Even more so for higher values of beta and lower N.
 
 
 ## Summary Study 4a
@@ -1570,10 +1505,8 @@ With regards to RMSE, LSAM-ML appeared to outperform SEM-estimation both under u
 Again, this appeared to be especially present in conditions with small samples and high beta values.
 
 Going all the way back to Studies 1-3, we again have to remember that LSAM exhibited a general negative bias in smaller samples for the 2-factor-CFA.
-This makes it appear to outperform in conditions of lower N and higher phi or beta.
-As replicated in Study 1b, this bias tends to be even stronger for higher parameter values in the structural model, and thus probably for higher beta values as well.
-
-To paint a complete picture of the comparative performance of SAM vs. SEM estimation, the joint study should include more conditions with negatively valenced unmodelled cross-loadings and residual correlations, as well as include a DGM with correctly specified models to investigate a potential small sample bias in models with regressions.
+This made LSAM appear to outperform in conditions of lower N and higher phi or beta.
+As replicated in Study 1b, this bias tended to be even stronger for higher parameter values in the structural model, and thus for higher beta values as well.
 
 ## Comparison to original paper
 
@@ -1581,50 +1514,34 @@ Importantly, @robitzsch_comparing_2022 did not investigate differential effects 
 Nor did they investigate RMSE.
 Thus, results are only partly comparable.
 
-In DMG1, the original paper indicated the same results, in that LSAM performed best.
+In DMG1 (which was called DGM 2 in the original paper), the original paper indicated the same results, in that LSAM performed best.
 Interestingly, @robitzsch_comparing_2022 did not find the better performance of SEM-ML over SEM-ULS estimation that I found.
 Also, no differential effect for higher beta values was found in the original paper.
 
 In DGM2, @robitzsch_comparing_2022 found SEM-ULS to perform slightly better than the two others.
 Thus, results are quite similar, as I also did not find substantial differences between the three estimators.
 
-I disagree with the conclusion that @robitzsch_comparing_2022 draw with regards to this study, as they deem SEM-ULS and LSAM do not differ in performance, when in fact LSAM outperformed SEM-ULS in DGM1 in their studies.
+I disagree with the conclusion that @robitzsch_comparing_2022 drew with regards to this study, as they deemed SEM-ULS and LSAM do not differ in performance, when in fact LSAM outperformed SEM-ULS in DGM1 in their studies.
 
-Additionally, later on in the paper, they posit that SAM can be expected to be more robust than both SEM-estimators in models with non-saturated structural models.
-With this last conclusion, I disagree with regards to the now multiple times mentioned potential negative small sample bias of LSAM, that appears to be present in non-saturated structural models as well.
+Additionally, later on in the paper, they posited that SAM can be expected to be more robust than both SEM-estimators in models with non-saturated structural models.
+With this last conclusion, I disagree with regards to the now multiple times mentioned potential negative small sample bias of LSAM, that was present for lower phi/ beta values as well.
 
 # Summary for 5-factor-model under 3 different data-generating mechanisms (Studies 4 and 4a)
 
 For low beta (0.1), LSAM appeared to outperform the two SEM-estimators in smaller to moderate samples sizes, in conditions with unmodelled cross-loadings (DGM1).
-In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there is no general advantage of one estimation method over another.
+In conditions without misspecification (DGM 0) and in the presence of unmodelled residual correlations (DGM 2), there was no general advantage of one estimation method over another.
 
 With increasing values of beta (0.2-0.4), the effect with regards to unmodelled cross-loadings became even stronger (DGM 1).
 In this context, LSAM appeared to not only outperform SEM-estimation in terms of efficiency in small to moderate samples in DGM1, but also in conditions with unmodelled residual correlations (DGM2).
 
-Very important to keep in mind here is a finding of the earlier study and the original paper, that LSAM exhibited a negative finite sample bias that skewed results in conditions with positive values for unmodelled cross-loadings or residual correlations [@robitzsch_comparing_2022].
-This effect was even stronger for higher values of phi and low N, which aligns with the findings in my studies for models with regressions..
-
-Thus, in the joint study, conditions with negative unmodelled cross-loadings or residual correlations should be included for unsaturated structural models.
-Additionally, conditions with correctly specified models should be included for higher values of beta.
-Adding these conditions would shed light onto the question of whether LSAM's small sample bias is present in regression models as well, or whether it actually outperforms SEM in these models.
+Very important to keep in mind here is the importang finding of the earlier study and the original paper, that LSAM exhibits a negative finite sample bias that skewed results in conditions with positive values for unmodelled cross-loadings or residual correlations [@robitzsch_comparing_2022].
+This effect was even stronger for higher values of phi and low N, which aligns with the findings in my studies for models with regressions.
 
 # Overall summary
 
-With regards to all studies conducted, as in the original paper by @robitzsch_comparing_2022, SAM does not generally outperform SEM in small to moderate samples. 
-SAM exhibits a negative small sample bias that makes SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias is especially strong for lower lambda and higher phi or beta values.
-Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias might also present in models with regressions.
-Thus, it cannot be concluded that SAM is more robust in non-saturated structural model, as of yet.
-If there is no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tends to perform worse than traditional SEM, as far as can be concluded from the 2-factor-CFA-models.
-
-
-# Starting points for joint simulation
-
-With regards to the joint simulation, three main aspects might be interesting to investigate in further data constellations.
-Firstly, with regards to the conceptual side of the simulation, we should include the explicit monitoring of non-convergence, as we found potential issues with it in multiple studies.
-The implementation of the studies should allow to capture and investigate these issues in more detail.
-
-Secondly, conditions with negative unmodelled cross-loadings and residual correlations should be included for unsaturated structural models.
-This would be interesting to be able to differentiate whether the negative finite sample bias of LSAM, that became apparent in the 2-factor-CFA, is also influencing the results in the 5-factor-model with regressions.
-For the same reason, conditions resembling the inclusion of DGM 0 (so correctly specified regression models) in Study 4a (under increasing beta and N) should be investigated.
-Only if the presence of a negativ small sample bias can be ruled out in regression models, one could discuss if SAM generally outperforms SEM in these models.
+With regards to all studies conducted, as in the original paper by @robitzsch_comparing_2022, SAM did not generally outperform SEM in small to moderate samples. 
+SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
+This bias was especially strong for lower lambda and higher phi or beta values.
+Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
+Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
+If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from the 2-factor-CFA-models.
