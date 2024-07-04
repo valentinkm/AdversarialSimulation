@@ -1048,27 +1048,29 @@ No errors and messages were present. There were, however, 9007 warnings, I inves
 
 ### Warnings investigation
 
-```{r}
+```{r results ='asis'}
 
 # Flatten the list of warnings into a single character vector
 all_warnings_s4 <- unlist(warnings_s4)
 
 # Count the occurrences of each unique warning
-warning_counts_s4 <- table(all_warnings_s4)
+warn_s4 <- table(all_warnings_s4)
 
 # Convert to data frame for better formatting
-warning_counts_df_s4 <- as.data.frame(warning_counts_s4)
-colnames(warning_counts_df_s4) <- c("Warning Message", "Count")
+warn_s4 <- as.data.frame(warn_s4)
+colnames(warn_s4) <- c("Warning Message", "Count")
 
+warn_s4$`Warning Message` <- as.character(warn_s4$`Warning Message`)
+warn_s4$`Count` <- as.character(warn_s4$`Count`)
 
-warning_counts_df_s4$`Warning Message` <- as.character(warning_counts_df_s4$`Warning Message`)
-warning_counts_df_s4$`Count` <- as.character(warning_counts_df_s4$`Count`)
-
-kable(warning_counts_df_s4, format = "latex", booktabs = TRUE, longtable = TRUE, escape = FALSE) %>%
-  kable_styling(latex_options = c("striped", "hold_position"), full_width = FALSE) %>%
+kable(warn_s4, format = "latex", booktabs = TRUE, longtable = TRUE
+      , escape = FALSE) %>%
+  kable_styling(latex_options = c("striped", "hold_position")
+                , full_width = FALSE) %>%
   column_spec(1, width = "30em") %>%
   column_spec(2, width = "5em") %>%
   row_spec(0, bold = TRUE)
+
 ```
 
 There are three warnings that amount to 7 overall, that are referring to problems with regards to positive definite matrices or model identification:
