@@ -128,7 +128,7 @@ If, however, there were differences larger than 0.03, I reported them.
 I did multiple mistakes with the calculation of the confidence intervals, as I did not include the absolute, but relative mean in the two limits for studies 1b, 4 and 4a. 
 Also, the standard error was wrongly calculated as relative.
 For Studies 1, 2 and 3, I misscalculated the standard error, as well as the confidence interval by including absolute values in their calculation, even though I was interested in relative values in these studies.
-Thus, I had to reextract the results for Bias correctly, which was done in postprocess_results.R.
+Thus, I had to reextract the results for bias correctly, which was done in postprocess_results.R.
 All I did there, was reapply the corrected extract_results() function and the same report_bias() function from the individual simulations, one after another.
 For the results of bias, I loaded these processed files, instead of the original ones, from the newly created folder: SimulationResultsProcessed.
 
@@ -208,9 +208,9 @@ create_styled_table <- function(data, condition) {
 ```{r output = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
-Both standard SEM estimators were unbiased (i.e. relative Bias < 0.05) across all conditions of N.
+Both standard SEM estimators were unbiased (i.e. relative bias < 0.05) across all conditions of N.
 The 4 SAM estimators were negatively biased for sample sizes up to 500 and had nearly identical estimation results.
-Across all estimators, the relative Bias decreased with increasing N. 
+Across all estimators, the relative bias decreased with increasing N. 
 
 Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when there was no misspecification.
 
@@ -222,8 +222,8 @@ create_styled_table(bias_ci_s1[["1_-0.12"]], "1_-0.12")
 
 ```
 
-All estimators were negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
-Across all estimators except SEM-ULS, the Bias decreased substantially with increasing N.
+All estimators were negatively biased (i.e. relative bias >= -0.05) across all N conditions.
+Across all estimators except SEM-ULS, the bias decreased substantially with increasing N.
 For SEM-ULS, it increased slightly but unsubstantially up to N=500, but was lowest overall.
 The 4 SAM estimators had nearly identical estimation results.
 In relative comparison, the two SEM estimators outperformed all SAM estimators in every condition of N, even though this difference was not substantive for N=1000 and higher.
@@ -255,7 +255,7 @@ create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 ```
 
 All estimators were negatively biased across all N conditions.
-Across all estimators except SEM-ULS, the Bias decreased substantially with increasing N.
+Across all estimators except SEM-ULS, the bias decreased substantially with increasing N.
 For SEM-ULS, it slightly, but unsubstantially increasd up to N=500, but was lowest overall in these conditions.
 The 4 SAM estimators had nearly identical estimation results.
 In relative comparison, the two SEM estimators outperformed all SAM estimators in every condition of N, even though this difference was not substantive for N=1000 and higher.
@@ -543,7 +543,7 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0
 Comparing LSAM-ML and LSAM-ULS, the values were nearly identical. 
 Therefore, I interpretated the estimators together:
 Across all conditions, both estimators were biased.
-For higher values of lambda, the estimators had less absolute Bias. 
+For higher values of lambda, the estimators had less absolute bias. 
 This difference increased for higher phi values.
 For lower values of lambda, the absolute bias increased with increasing phi. This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
 
@@ -556,19 +556,19 @@ kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 1b: Absolute bias of LSAM-ML for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
   kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute Bias of LSAM-ULS for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 1b: Absolute bias of LSAM-ULS for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 Again, the values and therefore the interpretation of LSAM-ML and LSAM-ULS were identical.
 Across all conditions, both estimators were biased.
-For higher values of lambda, the estimators had less absolute Bias. This difference increased for higher phi values.
+For higher values of lambda, the estimators had less absolute bias. This difference increased for higher phi values.
 For lower values of lambda, the absolute bias increased with increasing phi. 
 This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
 Additionally, there seemed to be no differential effect due to N, as the interpretations of the different N-conditions were identical.
@@ -577,13 +577,13 @@ Naturally, the bias values were larger for N=50.
 ### Comparison to original paper
 
 In contrast to the original paper by @robitzsch_comparing_2022, I computed absolute bias to avoid infinite values in some conditions.
-Additionally, computing absolute instead of relative Bias solved the problem of positive and negative biases canceling each other out.
-Results partly align in terms of absolute bias:
-For higher values of lambda, LSAM had less absolute Bias. 
+Additionally, computing absolute instead of relative bias solved the problem of positive and negative biases canceling each other out.
+Results partly aligned in terms of absolute bias:
+For higher values of lambda, LSAM had less absolute bias. 
 This difference increased for higher phi values.
-Only for low values of lambda, the bias increased for higher values of phi. 
+Only for low values of lambda, the bias increased with higher values of phi. 
 Unlike in this study, the original paper did not find a reversal effect for higher lambda values.
-Another difference is that we, unlike @robitzsch_comparing_2022, found estimates to be biased for low phi-values aswell.
+Another difference was that we, unlike @robitzsch_comparing_2022, found estimates to be biased for low phi-values as well.
 This might be due to the difference of using absolute bias, thereby avoiding cancellation of positive and negative values.
 Still, my general conclusion corresponds to the original paper:
 LSAM has a general negative small sample bias. 
@@ -650,8 +650,8 @@ create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3")
 ```
 
 
-All estimators were negatively biased (i.e. relative Bias >= -0.05) across all N conditions.
-Across all estimators except SEM-ULS, the Bias decreased substantially with increasing N.
+All estimators were negatively biased (i.e. relative bias >= -0.05) across all N conditions.
+Across all estimators except SEM-ULS, the bias decreased substantially with increasing N.
 For SEM-ULS, the bias stayed constant across N, and was lowest by a substantial marging compared to all SAM estimators up until N=500.
 For higher N, SEM-ML was best, but the differences between all estimators were negligible.
 The 4 SAM estimators have nearly identical estimation results.
@@ -668,7 +668,7 @@ create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3")
 ```
 
 All estimators were biased across all N conditions.
-For the two SEM-estimators, the relative Bias was always positive and showed no trend across N.
+For the two SEM-estimators, the relative bias was always positive and showed no trend across N.
 All SAM estimators had nearly identical values and increasing relative bias for increasing N.
 Their bias turned from being negative for N=50-100 to positive from N=250 on.
 In relative comparison, the two SEM estimators outperformed all SAM estimators for N=50. 
@@ -684,7 +684,7 @@ create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 All estimators were negatively biased across all N conditions.
-Across all estimators, the Bias decreased substantially with increasing N.
+Across all estimators, the bias decreased substantially with increasing N.
 The 4 SAM estimators had nearly identical estimation results.
 In relative comparison, the two SEM estimators substantially outperformed all SAM estimators in every condition of N.
 
@@ -822,7 +822,7 @@ create_styled_table(rmse_s2[["1_0.3"]], "1_0.3")
 ```
 
 Across all estimators, the RMSE decreased with increasing N.
-For smaller and large samples (N=50-100 and N=1000-100000), none of the estimators differed from another.
+For smaller and large samples (N=50-100 and N=1000-100000), none of the estimators differed from each other
 For N=250, all 4 SAM estimators substantially outperformed the two SEM estimators.
 For N=500, all 4 SAM estimators substantially outperformed SEM-ML estimation.
 
@@ -937,8 +937,8 @@ kbl(bias_ci_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000"
 
 All estimators were biased for every condition of N.
 The SAM estimators had nearly identical values.
-Besides SEM-ULS, all estimators' Bias increased substantially, even though the increase was stronger for the SAM estimators.
-Only the SAM estimators had negative Bias for N=50-100.
+Besides SEM-ULS, all estimators' bias increased substantially, even though the increase was stronger for the SAM estimators.
+Only the SAM estimators had negative bias for N=50-100.
 For N=50, none of the estimators outperformed another.
 For N=100-500, all SAM estimators outperformed the two SEM estimators.
 For higher N, none of the estimators substantially differed from another.
@@ -973,7 +973,7 @@ Across all estimators, the standard deviation decreased with increasing N.
 There were three substantial differences:
 A substantial percentage reduction of SD up to 5.5% in favor of SEM-ULS when comparing with GSAM-ULS in N=50. 
 Another substantial percentage reduction of SD up to 21.7% when comparing SEM-ULS when comparing with GSAM-ULS in N=100.
-And lastly a substantial percentage reduction of SD up to 15.6% when comparing SEM-ULS with GSAM-ULS in N=250.
+And lastly, a substantial percentage reduction of SD up to 15.6% when comparing SEM-ULS with GSAM-ULS in N=250.
 For higher N, the SD still partly differed but became negligibly small.
 
 Thus, SEM outperformed SAM in terms of SD reduction in small to moderate samples.
@@ -1003,7 +1003,7 @@ Thus, SEM outperformed SAM in smaller to moderate samples.
 
 ## Summary Study 3
 
-In terms of Bias, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
+In terms of bias, all SAM estimators outperformed the two SEM estimators in smaller to moderate samples.
 
 These results differed from the ones obtained with regards to SD and RMSE, where SEM tended to outperform SAM in smaller to moderate samples.
 
@@ -1320,21 +1320,21 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute Bias of SEM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute Bias of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute Bias of LSAM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 
@@ -1369,21 +1369,21 @@ kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute Bias of SEM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute Bias of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 kbl(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute Bias of LSAM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 
@@ -1497,7 +1497,7 @@ Even more so for higher values of beta and lower N.
 
 ## Summary Study 4a
 
-In terms of Bias, only in the presence of four unmodelled cross-loadings, did LSAM-estimation appear to generally outperform both SEM-estimators.
+In terms of bias, only in the presence of four unmodelled cross-loadings, did LSAM-estimation appear to generally outperform both SEM-estimators.
 This was especially evident for higher beta values and lower N.
 In the presence of unmodelled residual correlations, LSAM-ML appeared to perform best in small samples and higher beta as well.
 
