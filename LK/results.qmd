@@ -1106,14 +1106,7 @@ kable(warn_s4, format = "latex", booktabs = TRUE, longtable = TRUE
 
 ```
 
-There are three warnings that amount to 7 overall, that are referring to problems with regards to positive definite matrices or model identification:
-
-`lavaan WARNING: covariance matrix of latent variables is not positive definite; use lavInspect(fit, "cov.lv") to investigate.`
-
-`lavaan WARNING: Could not compute standard errors! The information matrix could not be inverted. This may be a symptom that the model is not identified.`
-
-`lavaan WARNING: The variance-covariance matrix of the estimated parameters (vcov) does not appear to be positive definite! The smallest eigenvalue (= 1.595219e-17) is close to zero. This may be a symptom that the model is not identified.`
-
+There are three warnings that amount to 7 overall, that are referring to problems with regards to positive definite matrices or model identification.
 This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
 The 9000 warnings with regards to Gamma computation in smaller samples are negligible as well, as I was not interested in the computation of robust fit indices.
 
@@ -1333,20 +1326,9 @@ kable(warn_s4a, format = "latex", booktabs = TRUE, longtable = TRUE
 ```
 
 
-The 24000 warnings with regards to Gamma computation in smaller samples were negligible as well, as I was not interested in the computation of robust fit indices:
-
-`lavaan WARNING: number of observations (50) too small to compute Gamma`
-
-`lavaan WARNING: number of observations (100) too small to compute Gamma`
-
-All 89 other warnings referred to problems with positive definite matrices or model identification:
-
-`lavaan WARNING: Could not compute standard errors! The information matrix could not be inverted. This may be a symptom that the model is not identified.`
-
-`lavaan WARNING: The variance-covariance matrix of the estimated parameters (vcov) does not appear to be positive definite! The smallest eigenvalue is smaller than zero. This may be a symptom that the model is not identified.`
-
+The 24000 warnings with regards to Gamma computation in smaller samples were negligible as well, as I was not interested in the computation of robust fit indices.
+All 89 other warnings referred to problems with positive definite matrices or model identification.
 This suggests potential issues with multicollinearity or redundancy among latent variables, but only in a negligible number of estimations.
-
 
 ## Bias
 
