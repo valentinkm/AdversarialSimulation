@@ -198,7 +198,7 @@ create_styled_table <- function(data, condition) {
   
   # Format table
   kbl(data, col.names = c("Method", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+    kable_styling(full_width = F, position = "left", latex_options ="scale_down", "hold_position") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
