@@ -357,22 +357,16 @@ extract_results <- function(results_df_raw){
 
 # Report bias
 
-
 report_bias <- function(metrics_list) {
   # Define a list to store results
   bias_ci <- list()
   
-  # Iterate over each condition in metrics_list
-  # Extract rel_bias, ci_lower, and ci_upper for the current condition
+  # Extract rel_bias
   rel_bias <- metrics_list$rel_bias
-  ci_lower <- metrics_list$ci_lower
-  ci_upper <- metrics_list$ci_upper
   
-  # Create the bias_ci table for the current condition and store it in the list
+  # Create the bias_ci table and store it in the list
   bias_ci <- rel_bias %>%
-    mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                          ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-                  .names = "{.col}"))
+    mutate(across(`50`:`1e+05`, ~sprintf("%.3f", .)))
   
   return(bias_ci)
 }
