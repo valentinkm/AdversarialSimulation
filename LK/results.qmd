@@ -120,7 +120,7 @@ I infered that this lack of mentioning and consistency can be interpreted as the
 Thus, I expected my studies to yield similar results. 
 If, however, there were differences larger than 0.03, I reported them.
 
-## Recalculation of CI's
+## Recalculation of Confidence intervals
 
 I did multiple mistakes with the calculation of the confidence intervals, as I did not include the absolute, but relative mean in the two limits for studies 1b, 4 and 4a. 
 Also, the standard error was wrongly calculated as relative.
@@ -128,6 +128,8 @@ For Studies 1, 2 and 3, I misscalculated the standard error, as well as the conf
 Thus, I had to reextract the results for bias correctly, which was done in postprocess_results.R.
 All I did there, was reapply the corrected extract_results() function and the same report_bias() function from the individual simulations, one after another.
 For the results of bias, I loaded these processed files, instead of the original ones, from the newly created folder: SimulationResultsProcessed.
+For presentation purposes, we did not include the CI's in the tables for this document.
+They can, however, be easily included as they are contained in the metrics_list object in each study in the same folder.
 
 # Results Simulation 1: 2-factor-CFA with 0,1 or 2 correlated residuals
 
