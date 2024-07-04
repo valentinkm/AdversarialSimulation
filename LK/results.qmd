@@ -16,7 +16,7 @@ engine: knitr
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
-```{r include = FALSE}
+```{r message = FALSE, warning = FALSE}
 library(knitr)
 library(kableExtra)
 library(tidyverse)
@@ -166,7 +166,6 @@ No errors and messages were present. There were, however, 245 warnings, I will i
 
 Investigating the 'warnings' object list, it became apparent that all the warnings were the same: `no non-missing arguments to min; returning Inf`.
 ```{r}
-#| ouput: true
 
 unique(warnings_s1)
 
@@ -178,7 +177,7 @@ As the 245 are less than 0.5% of the 52500 estimations performed, I will continu
 
 ## Bias
 
-```{r include = FALSE}
+```{r}
 
 # Load the relative bias results
 bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
@@ -191,18 +190,20 @@ shorten_names <- function(df) {
 # Function to create a styled table for each condition
 create_styled_table <- function(data, condition) {
   data <- shorten_names(data)
-  
-  # round to three digits
   data <- data %>%
     mutate(across(where(is.numeric), ~ round(., 3)))
   
   # Format table
-  kbl(data, col.names = c("Method", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left", latex_options ="scale_down", "hold_position") %>%
+  kbl(data,
+      col.names = c("Method", "50", "100", "250", "500", 
+                    "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options ="scale_down", "hold_position") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE,  align = "l", 
+                     line = TRUE, italic = TRUE) %>%
     footnote(general = paste("Condition:", condition))
 }
 
@@ -210,7 +211,7 @@ create_styled_table <- function(data, condition) {
 
 ### Condition without correlated residuals (0_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
 Both standard SEM estimators were unbiased (i.e. relative bias < 0.05) across all conditions of N.
@@ -221,7 +222,7 @@ Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when th
 
 ### Condition with one negative residual correlation (1_-0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s1[["1_-0.12"]], "1_-0.12")
 
@@ -237,7 +238,7 @@ Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when th
 
 ### Condition with one positive residual correlation (1_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s1[["1_0.12"]], "1_0.12")
 
@@ -253,7 +254,7 @@ Thus, SEM estimation outperformed SAM in smaller samples (N=50-100), whereas SAM
 
 ### Condition with two negative residual correlations (2_-0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 
@@ -269,7 +270,7 @@ Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when th
 
 ### Condition with two positive residual correlation (2_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s1[["2_0.12"]], "2_0.12")
 
@@ -301,7 +302,7 @@ Additionally, this negative bias corrects for unmodelled positive residual corre
 
 ## SD
 
-```{r include = FALSE}
+```{r}
 
 # Load the relative bias results
 sd_s1 <- readRDS("SimulationResults/sim1_sd.rds")
@@ -310,7 +311,7 @@ sd_s1 <- readRDS("SimulationResults/sim1_sd.rds")
 
 ### No residual correlations (0_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s1[["0_0.12"]], "0_0.12")
 
@@ -324,7 +325,7 @@ Thus, SAM outperformed SEM in terms of SD reduction in smaller samples, when the
 
 ### One negative residual correlation (1_-0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s1[["1_-0.12"]], "1_-0.12")
 
@@ -336,7 +337,7 @@ There were only two substantial differences: A substantial percentage reduction 
 Thus, SAM outperformed SEM in terms of SD reduction in smaller samples when one unmodelled negative residual correlation was present.
 
 ### One positive residual correlation (1_0.12)
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s1[["1_0.12"]], "1_0.12")
 
@@ -351,7 +352,7 @@ Thus, SAM outperformed SEM in terms of SD reduction in small samples, whereas SE
 
 ### Two negative residual correlations (2_-0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s1[["2_-0.12"]], "2_-0.12")
 
@@ -365,7 +366,7 @@ Thus, SAM outperformed SEM in terms of SD reduction in smaller samples.
 
 ### Two positive residual correlations (2_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s1[["2_0.12"]], "2_0.12")
 
@@ -386,14 +387,14 @@ For conditions with no misspecification, which were the only conditions reported
 
 ## RMSE
 
-```{r include = FALSE}
+```{r}
 rmse_s1 <- readRDS("SimulationResults/sim1_rmse.rds")
 
 ```
 
 ### No residual correlations (0_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s1[["0_0.12"]], "0_0.12")
 
@@ -405,7 +406,7 @@ Besides that, there were no substantial differences present.
 
 ### One negative residual correlation (1_-0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s1[["1_-0.12"]], "1_-0.12")
 
@@ -417,7 +418,7 @@ For higher N, there were no substantial differences.
 
 ### One positive residual correlation (1_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s1[["1_0.12"]], "1_0.12")
 
@@ -429,7 +430,7 @@ For higher N, there were no substantial differences present.
 
 ### Two negative residual correlations (2_-0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s1[["2_-0.12"]], "2_-0.12")
 
@@ -441,7 +442,7 @@ For higher N, there were no substantial differences present.
 
 ### Two positive residual correlations (2_0.12)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s1[["2_0.12"]], "2_0.12")
 
@@ -474,7 +475,7 @@ Thus, it cannot be stated that one estimation method was generally performing be
 ## Error, warnings and messages
 First, I checked for any messages, warnings or errors the same way as in Study 1:
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Save all errors, warnings and messages
 all_messages_s1b <- readRDS("SimulationResults/sim1b_results_error.rds")
@@ -521,28 +522,34 @@ bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
 
 ### Conditions with N=50
 
-```{r output = TRUE, echo = FALSE}
+```{r, tidy = TRUE}
 
 #Normal print
 #print(bias_ci_s1b[["N_50"]][["LSAM_ML"]])
 #print(bias_ci_s1b[["N_50"]][["LSAM_ULS"]])
 
 #Formatted tables
-kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], 
+    col.names = c("Lambda", "phi=0", "phi=0.2", 
+                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+  kable_styling(full_width = F, position = "left", 
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], 
+    col.names = c("Lambda", "phi=0", "phi=0.2",
+                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute Bias of LSAM-ULS for N=50" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
-
-
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ULS for N=50" = 6),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 ```
 
 Comparing LSAM-ML and LSAM-ULS, the values were nearly identical. 
@@ -554,21 +561,29 @@ For lower values of lambda, the absolute bias increased with increasing phi. Thi
 
 ### Conditions with N=100
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
-kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]],
+    col.names = c("Lambda", "phi=0", "phi=0.2", 
+                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute bias of LSAM-ML for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 1b: Absolute bias of LSAM-ML for N=100" = 6), 
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]], col.names = c("Lambda", "phi=0", "phi=0.2", "phi=0.4", "phi=0.6", "phi=0.8")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]],
+    col.names = c("Lambda", "phi=0", "phi=0.2", 
+                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+  kable_styling(full_width = F, position = "left", 
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute bias of LSAM-ULS for N=100" = 6), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 1b: Absolute bias of LSAM-ULS for N=100" = 6), 
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 Again, the values and therefore the interpretation of LSAM-ML and LSAM-ULS were identical.
@@ -599,7 +614,7 @@ Importantly, the bias seems to not disappear for low values of phi and lambda, u
 
 ## Error, warnings and messages
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Save all errors, warnings and messages
 all_messages_s2 <- readRDS("SimulationResults/sim2_results_error.rds")
@@ -639,7 +654,7 @@ Again, I was unable to check for more details, but the 612 estimation were only 
 
 ## Bias
 
-```{r include = FALSE}
+```{r}
 
 # Load the relative bias results
 bias_ci_s2 <- readRDS("SimulationResultsProcessed/sim2_rel_bias_ci.rds")
@@ -648,7 +663,7 @@ bias_ci_s2 <- readRDS("SimulationResultsProcessed/sim2_rel_bias_ci.rds")
 
 ### One negative cross-loading (1_-0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s2[["1_-0.3"]], "1_-0.3")
 
@@ -666,7 +681,7 @@ Thus, SEM estimation outperformed SAM in small to moderate sample sizes, when th
 
 ### One positive cross-loadings (1_0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s2[["1_0.3"]], "1_0.3")
 
@@ -683,7 +698,7 @@ Thus, SEM estimation outperformed SAM in small samples (N=50), whereas SAM outpe
 
 ### Two negative cross-loadings (2_-0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3")
 
@@ -697,7 +712,7 @@ Thus, SEM estimation outperformed SAM, when there were two negative residuals.
 
 ### Two positive cross-loadings (2_0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s2[["2_0.3"]], "2_0.3")
 
@@ -725,7 +740,7 @@ This lead to the comparatively worse performance in the conditions with no, one 
 
 ## SD
 
-```{r include = FALSE}
+```{r}
 
 # Load the relative bias results
 sd_s2 <- readRDS("SimulationResults/sim2_sd.rds")
@@ -734,7 +749,7 @@ sd_s2 <- readRDS("SimulationResults/sim2_sd.rds")
 
 ### One negative cross-loading (1_-0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s2[["1_-0.3"]], "1_-0.3")
 
@@ -748,7 +763,7 @@ Thus, SAM outperformed SEM in terms of SD reduction in smaller samples.
 
 ### One positive cross-loading (1_0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s2[["1_0.3"]], "1_0.3")
 
@@ -764,7 +779,7 @@ Thus, SAM outperformed SEM in terms of SD reduction in small samples, whereas SE
 
 ### Two negative cross-loadings (2_-0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s2[["2_-0.3"]], "2_-0.3")
 
@@ -779,7 +794,7 @@ Thus, SAM outperformed SEM in terms of SD reduction in small to moderate samples
 
 ### Two positive cross-loadings (2_0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(sd_s2[["2_0.3"]], "2_0.3")
 
@@ -801,14 +816,14 @@ There seemed to be an effect due to the amount of misspecification, such that th
 
 ## RMSE
 
-```{r include = FALSE}
+```{r}
 rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
 
 ```
 
 ### One negative cross-loading (1_-0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s2[["1_-0.3"]], "1_-0.3")
 
@@ -820,7 +835,7 @@ For higher N, there were no substantial differences present.
 
 ### One positive cross-loading (1_0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s2[["1_0.3"]], "1_0.3")
 
@@ -833,7 +848,7 @@ For N=500, all 4 SAM estimators substantially outperformed SEM-ML estimation.
 
 ### Two negative cross-loadings (2_-0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 
@@ -845,7 +860,7 @@ For all other conditions, The two SEM estimators were more efficient than all SA
 
 ### Two positive cross-loadings (2_0.3)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s2[["2_0.3"]], "2_0.3")
 
@@ -887,7 +902,7 @@ Overall, findings are somewhat incoherent and it can not be stated that one esti
 
 ## Error, warnings and messages
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Save all errors, warnings and messages
 all_messages_s3 <- readRDS("SimulationResults/sim3_results_error.rds")
@@ -925,18 +940,22 @@ Again, I was unable to check for more details, but as the 193 estimation amount 
 
 ## Bias
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 # Load the relative bias results
 bias_ci_s3 <- readRDS("SimulationResultsProcessed/sim3_rel_bias_ci.rds")
 
 #Format table for results
-kbl(bias_ci_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s3,
+    col.names = c("Method/Metric", "50", "100", "250", 
+                  "500", "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+    add_header_above(c("Study 3:" = 8), bold = TRUE,
+                     align = "l", line = TRUE, italic = TRUE)
 
 ```
 
@@ -958,19 +977,23 @@ This, combined with the findings from the additional condition of N=50 revealed 
 
 ## SD
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 metrics_s3 <- readRDS("SimulationResults/sim3_metrics_list.rds")
 
 # Load the SD results
 sd_s3 <- metrics_s3[["sd"]]
 
-kbl(sd_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(sd_s3, 
+    col.names = c("Method/Metric", "50", "100", "250",
+                  "500", "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+    add_header_above(c("Study 3:" = 8), bold = TRUE,
+                     align = "l", line = TRUE, italic = TRUE)
 
 ```
 
@@ -985,18 +1008,21 @@ Thus, SEM outperformed SAM in terms of SD reduction in small to moderate samples
 
 ## RMSE
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 # Load the rmse results
 rmse_s3 <-  metrics_s3[["rmse"]]
 
 #Format table for results
-kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250",
+                           "500", "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+    add_header_above(c("Study 3:" = 8), bold = TRUE, align = "l",
+                     line = TRUE, italic = TRUE)
 
 ```
 
@@ -1030,7 +1056,7 @@ What @robitzsch_comparing_2022 called DGM 1-3, I now named DGM 0-2.
 
 ## Error, warnings and messages
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Save all errors, warnings and messages
 all_messages_s4 <- readRDS("SimulationResults/sim4_results_error.rds")
@@ -1056,7 +1082,7 @@ No errors and messages were present. There were, however, 9007 warnings, I inves
 
 ### Warnings investigation
 
-```{r results ='asis'}
+```{r}
 
 # Flatten the list of warnings into a single character vector
 all_warnings_s4 <- unlist(warnings_s4)
@@ -1093,19 +1119,23 @@ The 9000 warnings with regards to Gamma computation in smaller samples are negli
 
 ## Bias
 
-```{r include = FALSE}
+```{r}
 
 # Load the absolute bias results
 bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 
 #Change create_styled_table function names function for abs_bias
 create_styled_table <- function(data, condition) {
-  kbl(data, col.names = c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "1e+05")) %>%
-    kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+  kbl(data, 
+      col.names = c("Method/Metric", "50", "100", "250",
+                    "500", "1000", "2500", "1e+05")) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l",
+                     line = TRUE, italic = TRUE) %>%
     footnote(general = paste("Condition:", condition))
 }
 
@@ -1113,7 +1143,7 @@ create_styled_table <- function(data, condition) {
 
 ### Conditions without misspecification (DGM 0)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s4[["DGM_0"]], "DGM_0")
 ```
@@ -1127,7 +1157,7 @@ Thus, for the most part, no estimator generally outperformed another in the corr
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1")
 
@@ -1143,7 +1173,7 @@ Thus, SAM tended to outperform SEM in presence of unmodelled cross-loadings.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2")
 
@@ -1176,14 +1206,14 @@ Importantly, my conclusion with regards to LSAM's performance was different, due
 
 ## RMSE
 
-```{r include = FALSE}
+```{r}
 rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 
 ```
 
 ### Conditions without misspecification (DGM 0)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
@@ -1197,7 +1227,7 @@ Thus, no estimator generally outperformed another in conditions for a correctly 
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
@@ -1212,7 +1242,7 @@ Thus, LSAM-ML appeared to outperform the two SEM-estimators for small to moderat
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 create_styled_table(rmse_s4[["DGM_2"]], "DGM_2")
 
@@ -1253,7 +1283,7 @@ What @robitzsch_comparing_2022 called DGM 1-3, I now called DGM 0-2.
 
 ## Error, warnings and messages
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Save all errors, warnings and messages
 all_messages_s4a <- readRDS("SimulationResults/sim4a_results_error.rds")
@@ -1279,7 +1309,7 @@ No errors and messages were present. There were, however, 24089 warnings, I inve
 
 ### Warnings investigation
 
-```{r results ='asis'}
+```{r}
 
 # Flatten the list of warnings into a single character vector
 all_warnings_s4a <- unlist(warnings_s4a)
@@ -1329,7 +1359,7 @@ bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Normal print
 #print(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]])
@@ -1337,26 +1367,38 @@ bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 #print(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]])
 
 #Formatted tables
-kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], 
+    col.names = c("beta", "N=50", "N=100", "N=250",
+                  "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 1" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]], 
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ULS for DGM 1" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], 
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 1" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 
@@ -1378,7 +1420,7 @@ This was especially evident for higher beta values and lower N.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Normal print
 #print(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]])
@@ -1386,26 +1428,38 @@ This was especially evident for higher beta values and lower N.
 #print(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]])
 
 #Formatted tables
-kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 2" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of SEM-ULS for DGM 2" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
-  kable_styling(full_width = F, position = "left", latex_options ="scale_down") %>%
+kbl(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]], 
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
+  kable_styling(full_width = F, position = "left",
+                latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 2" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 
@@ -1424,7 +1478,7 @@ Besides that, none of the estimators generally outperformed another in the prese
 
 ## RMSE
 
-```{r include = FALSE}
+```{r}
 
 # Load the rmse results
 rmse_s4a <- readRDS("SimulationResults/sim4a_rmse.rds")
@@ -1433,7 +1487,7 @@ rmse_s4a <- readRDS("SimulationResults/sim4a_rmse.rds")
 
 ### Conditions with four unmodelled cross-loadings (DGM 1)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Normal print
 #print(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]])
@@ -1441,27 +1495,35 @@ rmse_s4a <- readRDS("SimulationResults/sim4a_rmse.rds")
 #print(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]])
 
 #Formatted tables
-kbl(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+kbl(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: RMSE of SEM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: RMSE of SEM-ML for DGM 1" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(rmse_s4a[["DGM_1"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+kbl(rmse_s4a[["DGM_1"]][["SEM_ULS_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: RMSE of SEM-ULS for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: RMSE of SEM-ULS for DGM 1" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+kbl(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: RMSE of LSAM-ML for DGM 1" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
-
+  add_header_above(c("Study 4a: RMSE of LSAM-ML for DGM 1" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 ```
 
 Across all conditions of N and beta, LSAM-ML estimation was more efficient than the two SEM-estimators.
@@ -1476,7 +1538,7 @@ This was especially true in lower samples and higher beta values.
 
 ### Conditions with 20 unmodelled residual correlation (DGM 2)
 
-```{r output = TRUE, echo = FALSE}
+```{r}
 
 #Normal print
 #print(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]])
@@ -1484,26 +1546,35 @@ This was especially true in lower samples and higher beta values.
 #print(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]])
 
 #Formatted tables
-kbl(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+kbl(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]], 
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: RMSE of SEM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: RMSE of SEM-ML for DGM 2" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(rmse_s4a[["DGM_2"]][["SEM_ULS_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+kbl(rmse_s4a[["DGM_2"]][["SEM_ULS_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: RMSE of SEM-ULS for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: RMSE of SEM-ULS for DGM 2" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
-kbl(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]], col.names = c("beta", "N=50", "N=100", "N=250", "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+kbl(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]],
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
+                  "N=1000", "N=2500", "N=100.000")) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: RMSE of LSAM-ML for DGM 2" = 8), bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  add_header_above(c("Study 4a: RMSE of LSAM-ML for DGM 2" = 8),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 
 ```
 
