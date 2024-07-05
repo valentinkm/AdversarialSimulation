@@ -948,6 +948,10 @@ Again, I was unable to check for more details, but as the 193 estimation amount 
 # Load the relative bias results
 bias_ci_s3 <- readRDS("SimulationResultsProcessed/sim3_rel_bias_ci.rds")
 
+# Round all numeric values to 3 digits
+bias_ci_s3 <- bias_ci_s3 %>%
+  mutate(across(where(is.numeric), ~ round(., 3)))
+
 #Format table for results
 kbl(bias_ci_s3,
     col.names = c("Method/Metric", "50", "100", "250", 
@@ -987,6 +991,11 @@ metrics_s3 <- readRDS("SimulationResults/sim3_metrics_list.rds")
 # Load the SD results
 sd_s3 <- metrics_s3[["sd"]]
 
+# Round all numeric values to 3 digits
+sd_s3 <- sd_s3 %>%
+  mutate(across(where(is.numeric), ~ round(., 3)))
+
+#Format table
 kbl(sd_s3, 
     col.names = c("Method/Metric", "50", "100", "250",
                   "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
@@ -1015,6 +1024,10 @@ Thus, SEM outperformed SAM in terms of SD reduction in small to moderate samples
 
 # Load the rmse results
 rmse_s3 <-  metrics_s3[["rmse"]]
+
+# Round all numeric values to 3 digits
+rmse_s3 <- rmse_s3 %>%
+  mutate(across(where(is.numeric), ~ round(., 3)))
 
 #Format table for results
 kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250",
