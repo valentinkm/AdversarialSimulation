@@ -9,6 +9,9 @@ format:
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: oneside
         papersize: a4
+        header-includes:
+           - \usepackage{float}
+           - \floatplacement{table}{H}
 fontsize: 12pt
 bibliography: ../bibliography.bib
 engine: knitr
