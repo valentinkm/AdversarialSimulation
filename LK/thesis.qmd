@@ -9,6 +9,8 @@ format:
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: twoside
         papersize: a4
+        header-includes:
+            - \usepackage{pdflscape}
 fontsize: 12pt
 bibliography: ../bibliography.bib
 engine: knitr
@@ -54,10 +56,13 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 
 # Methods 
 
-To answer this research question, we created and followed the following procedure for the 
-adversarial collaboration process: 
+This section contains two parts. 
+First, an outline of the AC framework we agreed upon before the start of the collaboration.
+Then, each sides describes the methods they used to answer the substantive research question of the individual studies.
+To answer this research question, we created and followed the following procedure for the adversarial collaboration process: 
 
-## Outline 
+## Outline of the Adversarial Collaboration
+
 The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study as a replication of their side of the argument. 
 Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
 The replications included the generation of individual simulation protocols, as suggested by @morris_using_2019. 
@@ -194,7 +199,7 @@ neutral arbiter (Aaron Peikert) will be consulted to try to resolve them.
 End of table 2 
 
 
-## Documentation - Decision log 
+### Documentation - Decision log 
 
 As the number of decisions made and their documentation is large, only the most important results are presented in this paper. 
 In addition, the appendix contains a separate decision log with a detailed and complete documentation of all decisions made. 
@@ -238,9 +243,100 @@ Evaluation - Diary entries
 
 End of figure 1 
 
-## Diary 
+### Diary
+
 We documented and evaluated the adversarial collaboration in Part 2 (Joint study) from 
 each collaborators subjective perspective using semi-structured diary entries based on @shah_exploring_2016, after each step. 
 This had two purposes: Firstly, accumulating evidence for the evaluation of the AC and the collaboration procedure we propose. Secondly, we wanted to capture information that can help us improve this procedure. 
 Thus, the resulting diaries were used to evaluate the applicability of the adversarial collaboration and answer the research question. 
 The evaluation of the diary entry was conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words. 
+
+## Methods for Replicating Robitzsch (2022)
+
+For my individual study, I replicated parts that were relevant to our substantive research questions:
+
+1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
+
+2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
+
+In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.
+This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
+Overall, I conducted 6 simulation studies.
+The most important details are visible in Table \ref{tbl-overview}
+
+\begin{landscape}
+
+\begin{table}[h!]
+\centering
+\caption{Overview of all simulation studies conducted by Leonard Kosanke}
+\label{tbl-overview}
+\end{table}
+
+Model type | Conditions with correct specification y/n | Unmodelled RC | Unmodelled CL | N Sizes | $\phi$/ / $\beta$ Sizes| lambda sizes | Estimators
+-----------|--------------------------------------------|---------------|---------------|---------|-----------------|---------------|------------
+Study 1    | Yes, Factor RC with 3 levels, including 0  | 1 and 2, both | No            | 7 levels| Fixed           | Fixed         | 2 SEM           
+           |                                            | pos. and neg. |               |         | $\phi$ = 0.6    |               | 4 SAM          
+Study 1b   | Yes, 2 RC correctly specified in model     |               |               |         |                 |               |            
+           |                                            |               |               |         |                 |               |            
+Study 2    | No                                         |               |               |         |                 |               |            
+           |                                            |               |               |         |                 |               |            
+Study 3    | No                                         |               |               |         |                 |               |            
+           |                                            |               |               |         |                 |               |            
+Study 4    | Yes, one DGM without RC and CL at all      |               |               |         |                 |               |            
+           |                                            |               |               |         |                 |               |            
+Study 4a   | No                                         |               |               |         |                 |               |            
+           |                                            |               |               |         |                 |               |            
+
+\end{landscape}
+
+
+
+\begin{landscape}
+
+\begin{table}[ht]
+\centering
+\caption{Overview of all simulation studies conducted by Leonard Kosanke}
+\label{tbl-overview}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline
+Model type & Conditions with correct specification y/n & Unmodelled RC & Unmodelled CL & N Sizes & $\phi$ / $\beta$ Sizes & lambda sizes & Estimators \\ \hline
+Study 1 & Yes, Factor RC with 3 levels, including 0 & 1 and 2, both pos. and neg. & No & 7 levels & Fixed, $\phi$ = 0.6 & Fixed & 2 SEM, 4 SAM \\ \hline
+Study 1b & Yes, 2 RC correctly specified in model &  &  &  &  &  &  \\ \hline
+Study 2 & No &  &  &  &  &  &  \\ \hline
+Study 3 & No &  &  &  &  &  &  \\ \hline
+Study 4 & Yes, one DGM without RC and CL at all &  &  &  &  &  &  \\ \hline
+Study 4a & No &  &  &  &  &  &  \\ \hline
+\end{tabular}
+\end{table}
+
+\end{landscape}
+
+See Table \ref{tbl-overview} for an overview of all simulation studies.
+
+
+The first four studies investigated the comparative robustness of SAM vs. SEM estimation in a 2-factor-CFA model under different data generation mechanisms and conditions.
+Studies 1, 2, and 3 varied the factors sample size and different kinds and levels of misspecification for multiple estimators of either estimation method.
+Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes, by varying lambda and phi values.
+Studies 4 and 4a then investigated the comparative performance of the same estimators in a 5-factor model with different beta weights, as well as again under different conditions of sample size and misspecification in the data generating mechanism.
+These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
+They were, however, extended to look at the interaction of beta and N for the 5-factor regression model.
+Different performance measures were computed and compared between estimators, conditions and with the original papers results.
+I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
+As @robitzsch_comparing_2022 argue in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
+I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimation as a sanity check.
+For interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
+For Bias, I interpreted difference of 0.05 or higher as substantial.
+For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
+For RMSE, the same interpretation was used for differences of 0.03 or higher. 
+The full result analysis is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
+The same folder contains all simulation scripts that were used.
+The simulation was repeated 1500 times for each Study.
+
+
+
+
+
+
+
+
+
