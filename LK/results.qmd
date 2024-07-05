@@ -1113,12 +1113,22 @@ colnames(warn_s4) <- c("Warning Message", "Count")
 warn_s4$`Warning Message` <- as.character(warn_s4$`Warning Message`)
 warn_s4$`Count` <- as.character(warn_s4$`Count`)
 
-kable(warn_s4, format = "latex", booktabs = TRUE, longtable = TRUE
-      , escape = FALSE) %>%
-  kable_styling(latex_options = "hold_position", full_width = FALSE) %>%
+# Define a helper function for conditional formatting
+conditional_kable <- function(data) {
+  if (knitr::is_latex_output()) {
+    kable(data, booktabs = TRUE, longtable = TRUE
+      , escape = FALSE, format = "latex" ) %>%
+  kable_styling(latex_options = c("hold_position", "scale_down"), 
+                full_width = FALSE) %>%
   column_spec(1, width = "30em") %>%
   column_spec(2, width = "5em") %>%
   row_spec(0, bold = TRUE)
+  } else {
+    print(data)
+  }
+}
+
+conditional_kable(warn_s4)
 
 ```
 
@@ -1333,12 +1343,9 @@ colnames(warn_s4a) <- c("Warning Message", "Count")
 warn_s4a$`Warning Message` <- as.character(warn_s4a$`Warning Message`)
 warn_s4a$`Count` <- as.character(warn_s4a$`Count`)
 
-kable(warn_s4a, format = "latex", booktabs = TRUE, longtable = TRUE
-      , escape = FALSE) %>%
-  kable_styling(latex_options = "hold_position", full_width = FALSE) %>%
-  column_spec(1, width = "30em") %>%
-  column_spec(2, width = "5em") %>%
-  row_spec(0, bold = TRUE)
+#Using formatting function from previous study
+conditional_kable(warn_s4a)
+
 ```
 
 
@@ -1636,3 +1643,7 @@ This bias was especially strong for lower lambda and higher phi or beta values.
 Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
 If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from the 2-factor-CFA-models.
+
+
+\newpage
+# Bibliography
