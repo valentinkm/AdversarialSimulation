@@ -1124,7 +1124,7 @@ conditional_kable <- function(data) {
   column_spec(2, width = "5em") %>%
   row_spec(0, bold = TRUE)
   } else {
-    print(data)
+    data
   }
 }
 
