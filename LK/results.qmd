@@ -199,9 +199,9 @@ create_styled_table <- function(data, condition) {
   # Format table
   kbl(data,
       col.names = c("Method", "50", "100", "250", "500", 
-                    "1000", "2500", "1e+05")) %>%
+                    "1000", "2500", "1e+05"), booktabs = TRUE) %>%
     kable_styling(full_width = F, position = "left",
-                  latex_options ="scale_down", "hold_position") %>%
+                  latex_options =c("scale_down", "hold_position")) %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
@@ -534,7 +534,7 @@ bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
 #Formatted tables
 kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], 
     col.names = c("Lambda", "phi=0", "phi=0.2", 
-                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+                  "phi=0.4", "phi=0.6", "phi=0.8"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left", 
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
@@ -545,7 +545,7 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
 
 kbl(bias_ci_s1b[["N_50"]][["LSAM_ULS"]], 
     col.names = c("Lambda", "phi=0", "phi=0.2",
-                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+                  "phi=0.4", "phi=0.6", "phi=0.8"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
@@ -568,7 +568,7 @@ For lower values of lambda, the absolute bias increased with increasing phi. Thi
 
 kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]],
     col.names = c("Lambda", "phi=0", "phi=0.2", 
-                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+                  "phi=0.4", "phi=0.6", "phi=0.8"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
@@ -579,7 +579,7 @@ kbl(bias_ci_s1b[["N_100"]][["LSAM_ML"]],
 
 kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]],
     col.names = c("Lambda", "phi=0", "phi=0.2", 
-                  "phi=0.4", "phi=0.6", "phi=0.8")) %>%
+                  "phi=0.4", "phi=0.6", "phi=0.8"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left", 
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
@@ -951,7 +951,7 @@ bias_ci_s3 <- readRDS("SimulationResultsProcessed/sim3_rel_bias_ci.rds")
 #Format table for results
 kbl(bias_ci_s3,
     col.names = c("Method/Metric", "50", "100", "250", 
-                  "500", "1000", "2500", "1e+05")) %>%
+                  "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
     kable_styling(full_width = F, position = "left",
                   latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
@@ -989,7 +989,7 @@ sd_s3 <- metrics_s3[["sd"]]
 
 kbl(sd_s3, 
     col.names = c("Method/Metric", "50", "100", "250",
-                  "500", "1000", "2500", "1e+05")) %>%
+                  "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
     kable_styling(full_width = F, position = "left",
                   latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
@@ -1018,7 +1018,7 @@ rmse_s3 <-  metrics_s3[["rmse"]]
 
 #Format table for results
 kbl(rmse_s3, col.names = c("Method/Metric", "50", "100", "250",
-                           "500", "1000", "2500", "1e+05")) %>%
+                           "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
     kable_styling(full_width = F, position = "left",
                   latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
@@ -1124,7 +1124,7 @@ bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 create_styled_table <- function(data, condition) {
   kbl(data, 
       col.names = c("Method/Metric", "50", "100", "250",
-                    "500", "1000", "2500", "1e+05")) %>%
+                    "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
     kable_styling(full_width = F, position = "left",
                   latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
@@ -1353,8 +1353,8 @@ bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
 #Formatted tables
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], 
-    col.names = c("beta", "N=50", "N=100", "N=250",
-                  "N=500", "N=1000", "N=2500", "N=100.000")) %>%
+    col.names = c("beta", "N=50", "N=100", "N=250", "N=500", 
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
@@ -1365,7 +1365,7 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]],
 
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]], 
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
@@ -1376,7 +1376,7 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ULS_metrics"]],
 
 kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], 
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
@@ -1415,7 +1415,7 @@ This was especially evident for higher beta values and lower N.
 #Formatted tables
 kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
@@ -1426,7 +1426,7 @@ kbl(bias_ci_s4a[["DGM_2"]][["SEM_ML_metrics"]],
 
 kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
@@ -1437,7 +1437,7 @@ kbl(bias_ci_s4a[["DGM_2"]][["SEM_ULS_metrics"]],
 
 kbl(bias_ci_s4a[["DGM_2"]][["LSAM_ML_metrics"]], 
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left",
                 latex_options ="scale_down") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
@@ -1482,7 +1482,7 @@ rmse_s4a <- readRDS("SimulationResults/sim4a_rmse.rds")
 #Formatted tables
 kbl(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
@@ -1492,7 +1492,7 @@ kbl(rmse_s4a[["DGM_1"]][["SEM_ML_metrics"]],
 
 kbl(rmse_s4a[["DGM_1"]][["SEM_ULS_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
@@ -1502,7 +1502,7 @@ kbl(rmse_s4a[["DGM_1"]][["SEM_ULS_metrics"]],
 
 kbl(rmse_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
@@ -1533,7 +1533,7 @@ This was especially true in lower samples and higher beta values.
 #Formatted tables
 kbl(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]], 
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
@@ -1543,7 +1543,7 @@ kbl(rmse_s4a[["DGM_2"]][["SEM_ML_metrics"]],
 
 kbl(rmse_s4a[["DGM_2"]][["SEM_ULS_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
@@ -1553,7 +1553,7 @@ kbl(rmse_s4a[["DGM_2"]][["SEM_ULS_metrics"]],
 
 kbl(rmse_s4a[["DGM_2"]][["LSAM_ML_metrics"]],
     col.names = c("beta", "N=50", "N=100", "N=250", "N=500",
-                  "N=1000", "N=2500", "N=100.000")) %>%
+                  "N=1000", "N=2500", "N=100.000"), booktabs = TRUE) %>%
   kable_styling(full_width = F, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
