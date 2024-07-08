@@ -74,13 +74,12 @@ To answer our research question, we created and followed the following procedure
 The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study as a replication of their side of the argument. 
 In our case, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
 The replications should include the generation of individual simulation protocols, as suggested by @morris_using_2019. 
-Our protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
-In the second part, a joint study, including a joint simulation protocol, was pursued. 
-Here, the main part of the adversarial collaboration took place. 
-Each step of the individual simulation studies (from the substantive research question up until the interpretation of the results) was scrutinized and debated between collaborators, using adversarial collaboration techniques.
-Decisions were made and documented based on the most convincing argument presented, if possible. 
-This process started based on the results of Part 1.
-To facilitate a structured comparison and integration of our studies through the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.  
+In the second part, a joint study, including a joint simulation protocol, should be pursued. 
+Here, the main part of the adversarial collaboration takes place. 
+Each step of the individual simulation studies (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
+Decisions are made and documented based on the most convincing argument presented, if possible. 
+This process starts based on the results of Part 1.
+To facilitate a structured comparison and integration of studies through the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.  
 
 Table 1: Structure of simulation studies 
 1. Defining aims and objectives / Research Question of Interest. ( = verbal description) 
@@ -154,19 +153,21 @@ o publishing code and simulated data
 
 End of Table 1 
 
-This framework allows for the expected divergences in results of the individual simulations, and at the same time provides a basis for systematic comparison and synthesis for the joint simulation. 
-Additionally, we have identified two substantive research questions to co-align the individual simulation studies: 
+This framework allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation. 
+In our case study, we have identified two substantive research questions to co-align the individual simulation studies: 
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
 
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
 
-In the end, each collaborator reports the results in their own paper. 
-We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001). 
-In order to mitigate this risk, we conducted the joint study in a structured and formalized manner. 
-To this end, we used the tools presented in Table 2. 
-These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
+In the end, each collaborator reports the results in their own paper.
 
+# Adversarial collaboration techniques
+
+We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001). 
+In order to mitigate this risk, next to each collaborator publishing their own paper, we propose to conduct the joint study in a structured and formalized manner. 
+To this end, we identified several collaboration techniques presented in Table 2. 
+These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
  
 
 Table 2: Adversarial Collaboration (AC) Techniques: 
@@ -209,19 +210,20 @@ End of table 2
 
 ### Documentation - Decision log 
 
-As the number of decisions made and their documentation is large, only the most important results are presented in this paper. 
-In addition, the appendix contains a separate decision log with a detailed and complete documentation of all decisions made. 
-Here, we summarized the results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process. 
-Another aspect of structuring the collaboration, within the decision log, lied in the way we tackle decision making in the joint study. 
+As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
+In addition, the appendix should contain a separate decision log with a detailed and complete documentation of all decisions made.
+Here, the summarized results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process should be detailed. 
+Another aspect of structuring the collaboration within the decision log, lies in the way decision making is implemented in the joint study of our framework. 
 In our mind, decision making can be based on four distinct grounds: Evidence-based, pragmatic reasons, arbitrary reasons or other reasons (e.g. personal values, political issues). 
-Firstly, we deem a decision evidence based, if we can find a clear answer for a disagreement, based on empirical evidence or in the literature more general. 
-Secondly, to be able to keep the scope of this project, we can argue and make decisions for pragmatic reasons, as for example time needed to implement another condition that could be added. 
+Firstly, we deem a decision evidence based, if one can find a clear answer for a disagreement, based on empirical evidence or in the literature more general. 
+Secondly, to be able to keep the scope of this project, decisions can be made for pragmatic reasons, as for example in the presence of time constraints. 
 Thirdly, arbitrary reasons could be any agreement where the first too grounds are not present, but still a decision has to be made. 
 Importantly, while this reason does not help in deciding for an option directly, it helps in understanding how often there is no substantive or pragmatic reason for decisions in simulation studies.
-If this is the case, we might resort deciding at random. Lastly, there might be other reasons that lead to a decision, that we do not anticipate as of now or did not deem to be likely enough to get their own category for our purpose.  
-These four reasons grounded our decision making. 
-In some cases, more than one of these reasons were present. 
-In such cases, we ranked their relevance to a decision, if possible. An example is the log entry in figure 1: 
+If this is the case, one might resort to deciding at random. 
+Lastly, there might be other reasons that lead to a decision, that can not be anticipated but should still be captured.  
+These four reasons ground decision-making and aim to ease the collaborative process by giving a structure. 
+In some cases, more than one of these reasons can be present. 
+In such cases, we their relevance to a decision could be ranked, if possible. An example is the log entry in figure 1: 
 
 
 Figure 1: Exemplary log entry for deciding for a range of sample sizes 
@@ -253,11 +255,10 @@ End of figure 1
 
 ### Diary
 
-We documented and evaluated the adversarial collaboration in Part 2 (Joint study) from 
-each collaborators subjective perspective using semi-structured diary entries based on @shah_exploring_2016, after each step. 
-This had two purposes: Firstly, accumulating evidence for the evaluation of the AC and the collaboration procedure we propose. Secondly, we wanted to capture information that can help us improve this procedure. 
-Thus, the resulting diaries were used to evaluate the applicability of the adversarial collaboration and answer the research question. 
-The evaluation of the diary entry was conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words. 
+The adversarial collaboration in Part 2 (Joint study) should be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries based on @shah_exploring_2016, after each step.
+This has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
+In our case, collecting this qualitative data was supposed to help us answer our research question. 
+The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration. 
 
 ## Methods for Replicating Robitzsch (2022)
 
@@ -267,6 +268,7 @@ In a first step, I published a simulation protocol containing all the planned an
 This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
 
 **Aims, objectives and research questions**
+
 For my individual study, I replicated parts of @robitzsch_comparing_2022 that were relevant to our substantive research questions:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
@@ -339,6 +341,11 @@ All analyses were conducted in R.
 I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
 
 # Results
+
+## Adversarial collaboration
+
+Our simulation protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
+
 
 ## Individual study by Leonard Kosanke
 
@@ -503,8 +510,6 @@ The small sample bias was especially strong for lower lambda and higher phi valu
 
 
 ### Conclusions
-
-
 
 
 
