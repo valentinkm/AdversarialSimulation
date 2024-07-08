@@ -19,9 +19,11 @@ engine: knitr
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
-```{r}
+```{r include = FALSE}
 library(here)
 library(knitr)
+library(kableExtra)
+library(tidyverse)
 ```
 
 # Introduction
@@ -363,12 +365,53 @@ Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameter
 In these studies, it became apparent that traditional SEM outperformed SAM estimation.
 
 As can be seen in Table 1, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
-```{r}
+
+```{r eval = TRUE, echo = FALSE}
+
+# Load the relative bias results
+bias_ci_s1 <- readRDS("SimulationResultsProcessed/sim1_rel_bias_ci.rds")
+
+shorten_names <- function(df) {
+  df$method_metric <- sub("_rel_bias", "", df$method_metric)
+  return(df)
+}
+
+# Function to create a styled table for each condition
+create_styled_table <- function(data, condition) {
+  data <- shorten_names(data)
+  data <- data %>%
+    mutate(across(where(is.numeric), ~ round(., 3)))
+  
+  # Format table
+  kbl(data,
+      col.names = c("Method", "50", "100", "250", "500", 
+                    "1000", "2500", "1e+05"), booktabs = TRUE) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options =c("scale_down", "hold_position")) %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE,  align = "l", 
+                     line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
+}
 
 ```
 
-The same is true in Table 2, in the presence of two negative cross-loadings.
-```{r}
+```{r eval = TRUE, echo = FALSE}
+create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
+
+```
+
+The same is true in Study 2, in the presence of two negative cross-loadings (see Table 2).
+
+```{r eval = TRUE, echo = FALSE}
+bias_ci_s2 <- readRDS("SimulationResultsProcessed/sim2_rel_bias_ci.rds")
+
+```
+
+```{r eval = TRUE, echo = FALSE}
+create_styled_table(bias_ci_s2[["2_-0.3"]], "2_-0.3")
 
 ```
 
@@ -377,7 +420,29 @@ The same is true in Table 2, in the presence of two negative cross-loadings.
 In terms of performance for positively valenced cross-loadings and residual correlations, SAM appears to outperform traditional SEM estimation. 
 Table 3 shows this finding in Study 4, in the DGM 3 conditions with 20 unmodelled residual correlations in the five factor regression model.
 
-```{r}
+```{r eval = TRUE, echo = FALSE}
+
+# Load the absolute bias results
+bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
+
+#Change create_styled_table function names function for abs_bias
+create_styled_table <- function(data, condition) {
+  kbl(data, 
+      col.names = c("Method/Metric", "50", "100", "250",
+                    "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
+    kable_styling(full_width = F, position = "left",
+                  latex_options ="scale_down") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l",
+                     line = TRUE, italic = TRUE) %>%
+    footnote(general = paste("Condition:", condition))
+}
+
+```
+
+```{r eval = TRUE, echo = FALSE}
 ## Different naming!!
 create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2")
 
@@ -385,7 +450,7 @@ create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2")
 
 In table 4, we see the same effect for cross-loadings in DGM 2 in the same study.
 
-```{r}
+```{r eval = TRUE, echo = FALSE}
 ## Different naming!!
 create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1")
 
@@ -396,12 +461,12 @@ create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1")
 The small sample Bias of LSAM estimation in Study 1b revealed that in smaller samples, ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
 
 Table 5 showed this to be especially apparent in a sample size of 50.
-```{r}
+```{r eval = TRUE, echo = FALSE}
 #Load processed results
 bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
 ```
 
-```{r}
+```{r eval = TRUE, echo = FALSE}
 #Formatted tables
 kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], 
     col.names = c("Lambda", "phi=0", "phi=0.2", 
@@ -417,7 +482,7 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
 ```
 
 The bias persisted in samples of 100, as can be seen in Table 6 for the example of LSAM-ULS estimation.
-```{r}
+```{r eval = TRUE, echo = FALSE}
 
 kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]],
     col.names = c("Lambda", "phi=0", "phi=0.2", 
