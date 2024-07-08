@@ -33,7 +33,7 @@ They are used to evaluate the performance of estimation and inference methods by
 Despite the clear insight into the underlying data structures that simulations provide, they are not immune to common pitfalls that thus far have been predominantly associated with the replication crisis in empirical research [@lohmann_its_2022].
 In simulation studies, a key challenge is ensuring that results can be generalized to real-world applications.
 These studies must ensure that the chosen performance metrics, experimental factors, and inference models accurately reflect and test real-world scenarios. 
-Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias. 
+Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias.
 For example, the decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding on which sample size to simulate), can have substantive impact on the results.
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
@@ -67,14 +67,14 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 This section contains two parts. 
 First, an outline of the AC framework we agreed upon before the start of the collaboration.
 Then, each sides describes the methods they used to answer the substantive research question of the individual studies.
-To answer this research question, we created and followed the following procedure for the adversarial collaboration process: 
 
-## Outline of the Adversarial Collaboration
+## Outline of the Adversarial Collaboration framework
 
+To answer our research question, we created and followed the following procedure for the adversarial collaboration process: 
 The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study as a replication of their side of the argument. 
-Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
-The replications included the generation of individual simulation protocols, as suggested by @morris_using_2019. 
-These can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
+In our case, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
+The replications should include the generation of individual simulation protocols, as suggested by @morris_using_2019. 
+Our protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
 In the second part, a joint study, including a joint simulation protocol, was pursued. 
 Here, the main part of the adversarial collaboration took place. 
 Each step of the individual simulation studies (from the substantive research question up until the interpretation of the results) was scrutinized and debated between collaborators, using adversarial collaboration techniques.
