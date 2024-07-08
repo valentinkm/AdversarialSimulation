@@ -300,10 +300,11 @@ Additionally, the amount of misspecification was varied in all studies, either v
 In Studies 1b and 4a, some population values for model parameters (phi, beta and/ or lambda) were varied, as well.
 Besides studies 1 and 2, full factorial designs were implemented.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
-I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the author does not give reasoning for this decision himself.
+I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors do not give reasoning for this decision themselves.
 Studies 4 and 4a looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
 These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
 I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
+Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor lead to interesting results in the original study.
 
 **Method Selection**
 
@@ -321,15 +322,13 @@ In Addition to what was done in @robitzsch_comparing_2022, I calculated confiden
 The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the github repository.
 
 I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
-As @robitzsch_comparing_2022 argue in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
-I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimation as a sanity check.
+As @robitzsch_comparing_2022 argued in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
+I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimations as a sanity check.
 
 For interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
 For Bias, I interpreted difference of 0.05 or higher as substantial.
 For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
 For RMSE, the same interpretation was used for differences of 0.03 or higher. 
-The full result analysis is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
-The same folder contains all simulation scripts that were used.
 The simulation was repeated 1500 times for each Study.
 
 **Software**
@@ -337,7 +336,108 @@ The simulation was repeated 1500 times for each Study.
 All analyses were conducted in R.
 I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
 
+# Results
 
+## Individual study by Leonard Kosanke
+
+The full result analysis is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
+Here, I will focus on the most important results only.
+For the most part, results from @robitzsch_comparing_2022 have been successfully replicated.
+With regards to all studies conducted, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
+SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
+This bias was especially strong for lower lambda and higher phi or beta values.
+Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
+Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
+If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from the 2-factor-CFA-models.
+
+### Comparative performance in conditions without misspecification
+
+Only Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
+Here it became apparent, that in absence of misspecification, the two estimation methods did not differ in terms of bias and RMSE.
+
+DEEEEEEEEEEEETAILS....
+
+### Bias in conditions with negatively valenced unmodelled parameters
+
+Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating mechanism.
+In these studies, it became apparent that traditional SEM outperformed SAM estimation.
+
+As can be seen in Table 1, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
+```{r}
+
+```
+
+The same is true in Table 2, in the presence of two negative cross-loadings.
+```{r}
+
+```
+
+### Bias in conditions with positively valenced unmodelled parameters
+
+In terms of performance for positively valenced cross-loadings and residual correlations, SAM appears to outperform traditional SEM estimation. 
+Table 3 shows this finding in Study 4, in the DGM 3 conditions with 20 unmodelled residual correlations in the five factor regression model.
+
+```{r}
+## Different naming!!
+create_styled_table(bias_ci_s4[["DGM_2"]], "DGM_2")
+
+```
+
+In table 4, we see the same effect for cross-loadings in DGM 2 in the same study.
+
+```{r}
+## Different naming!!
+create_styled_table(bias_ci_s4[["DGM_1"]], "DGM_1")
+
+```
+
+### Small sample Bias in LSAM estimation
+
+The small sample Bias of LSAM estimation in Study 1b revealed that in smaller samples, ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
+
+Table 5 showed this to be especially apparent in a sample size of 50.
+```{r}
+#Load processed results
+bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
+```
+
+```{r}
+#Formatted tables
+kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], 
+    col.names = c("Lambda", "phi=0", "phi=0.2", 
+                  "phi=0.4", "phi=0.6", "phi=0.8"), booktabs = TRUE) %>%
+  kable_styling(full_width = F, position = "left", 
+                latex_options ="scale_down") %>%
+  add_header_above(c(" " = 1, "Phi values" = 5)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6),
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+
+```
+
+The bias persisted in samples of 100, as can be seen in Table 6 for the example of LSAM-ULS estimation.
+```{r}
+
+kbl(bias_ci_s1b[["N_100"]][["LSAM_ULS"]],
+    col.names = c("Lambda", "phi=0", "phi=0.2", 
+                  "phi=0.4", "phi=0.6", "phi=0.8"), booktabs = TRUE) %>%
+  kable_styling(full_width = F, position = "left", 
+                latex_options ="scale_down") %>%
+  add_header_above(c(" " = 1, "Phi values" = 5)) %>%
+  row_spec(0, bold = TRUE) %>%
+  kable_classic(full_width = F) %>%
+  add_header_above(c("Study 1b: Absolute bias of LSAM-ULS for N=100" = 6), 
+                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+```
+
+Importantly, differential effects due to N and phi were present in Study 1b.
+The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations. regressions.
+
+
+
+
+### Conclusions
 
 
 
