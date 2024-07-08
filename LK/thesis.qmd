@@ -7,16 +7,22 @@ format:
         fontsize: 12pt
         linestretch: 1.5
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
-        classoption: twoside
+        classoption: oneside
         papersize: a4
         header-includes:
-            - \usepackage{pdflscape}
+           - \usepackage{float}
+           - \floatplacement{table}{H}
 fontsize: 12pt
 bibliography: ../bibliography.bib
 engine: knitr
 ---
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
+
+```{r}
+library(here)
+library(knitr)
+```
 
 # Introduction
 
@@ -253,7 +259,8 @@ The evaluation of the diary entry was conducted in a semi-structured and compara
 
 ## Methods for Replicating Robitzsch (2022)
 
-For my individual study, I replicated parts that were relevant to our substantive research questions:
+The structure of this section closely aligns to our agreed upon structure of simulation studies.
+For my individual study, I replicated parts of @robitzsch_comparing_2022 that were relevant to our substantive research questions:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
 
@@ -262,56 +269,66 @@ For my individual study, I replicated parts that were relevant to our substantiv
 In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.
 This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
 Overall, I conducted 6 simulation studies.
-The most important details are visible in Table \ref{tbl-overview}
+Their most important details with regards to the population models and data-generating mechanisms are visible in Table 1.
 
-\begin{landscape}
+```{r schematic 1, eval = TRUE, echo = FALSE, out.width="110%"}
 
-\begin{table}[h!]
-\centering
-\caption{Overview of all simulation studies conducted by Leonard Kosanke}
-\label{tbl-overview}
-\end{table}
+knitr::include_graphics(here::here("LK/images/TableOverviewIndividualStudies.pdf"))
 
-Model type | Conditions with correct specification y/n | Unmodelled RC | Unmodelled CL | N Sizes | $\phi$/ / $\beta$ Sizes| lambda sizes | Estimators
------------|--------------------------------------------|---------------|---------------|---------|-----------------|---------------|------------
-Study 1    | Yes, Factor RC with 3 levels, including 0  | 1 and 2, both | No            | 7 levels| Fixed           | Fixed         | 2 SEM           
-           |                                            | pos. and neg. |               |         | $\phi$ = 0.6    |               | 4 SAM          
-Study 1b   | Yes, 2 RC correctly specified in model     |               |               |         |                 |               |            
-           |                                            |               |               |         |                 |               |            
-Study 2    | No                                         |               |               |         |                 |               |            
-           |                                            |               |               |         |                 |               |            
-Study 3    | No                                         |               |               |         |                 |               |            
-           |                                            |               |               |         |                 |               |            
-Study 4    | Yes, one DGM without RC and CL at all      |               |               |         |                 |               |            
-           |                                            |               |               |         |                 |               |            
-Study 4a   | No                                         |               |               |         |                 |               |            
-           |                                            |               |               |         |                 |               |            
+```
 
-\end{landscape}
+With regards to the population models, all factors in all studies loaded onto 3 indicators each.
+I chose the population values to align to the original paper by @robitzsch_comparing_2022.
+For more details on the exact values of each study, see the simulation scripts in the github repository.
+The multivariate normally distributed data was generated parametrically, based on a specified population model.
+All simulations were conducted using seeds to allow for reproducibility.
+
+**Experimental Design of simulation procedures**
+
+Overall, 3 different types of factors were varied that can be deducted from Table 1 and are detailed again in the simulation scripts provided.
+Firstly, we varied the Sample Size in all studies, ranging from N = 50 to 100.000.
+Additionally, the amount of misspecification was varied, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
+In Studies 1b and 4a, some population values for model parameters were varied, as well.
+Besides studies 1 and 2, full factorial designs were implemented.
+In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
+I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the author does not give reasoning for this decision himself.
+
+**Method Selection**
+
+I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
+I calculated the bias and RMSE of the estimated factor correlations in all studies, as well as the standard deviation of the one factor correlation present in Studies 1,2 and 3.
+For the type of bias calculated, I oriented on @robitzsch_comparing_2022, besides in Study 1b:
+Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes with N=50 and N=100 and varying lambda and phi values.
+Here, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values.
+Studies 4 and 4a looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
+These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
+They were, however, extended to look at the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
+
+I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
+As @robitzsch_comparing_2022 argue in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
+I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimation as a sanity check.
+For interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
+For Bias, I interpreted difference of 0.05 or higher as substantial.
+For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
+For RMSE, the same interpretation was used for differences of 0.03 or higher. 
+The full result analysis is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
+The same folder contains all simulation scripts that were used.
+The simulation was repeated 1500 times for each Study.
 
 
 
-\begin{landscape}
 
-\begin{table}[ht]
-\centering
-\caption{Overview of all simulation studies conducted by Leonard Kosanke}
-\label{tbl-overview}
-\begin{tabular}{|l|l|l|l|l|l|l|l|}
-\hline
-Model type & Conditions with correct specification y/n & Unmodelled RC & Unmodelled CL & N Sizes & $\phi$ / $\beta$ Sizes & lambda sizes & Estimators \\ \hline
-Study 1 & Yes, Factor RC with 3 levels, including 0 & 1 and 2, both pos. and neg. & No & 7 levels & Fixed, $\phi$ = 0.6 & Fixed & 2 SEM, 4 SAM \\ \hline
-Study 1b & Yes, 2 RC correctly specified in model &  &  &  &  &  &  \\ \hline
-Study 2 & No &  &  &  &  &  &  \\ \hline
-Study 3 & No &  &  &  &  &  &  \\ \hline
-Study 4 & Yes, one DGM without RC and CL at all &  &  &  &  &  &  \\ \hline
-Study 4a & No &  &  &  &  &  &  \\ \hline
-\end{tabular}
-\end{table}
 
-\end{landscape}
 
-See Table \ref{tbl-overview} for an overview of all simulation studies.
+
+
+
+
+
+
+
+
+
 
 
 The first four studies investigated the comparative robustness of SAM vs. SEM estimation in a 2-factor-CFA model under different data generation mechanisms and conditions.
