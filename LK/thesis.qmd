@@ -260,16 +260,22 @@ The evaluation of the diary entry was conducted in a semi-structured and compara
 ## Methods for Replicating Robitzsch (2022)
 
 The structure of this section closely aligns to our agreed upon structure of simulation studies.
+
+In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.
+This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
+
+**Aims, objectives and research questions**
 For my individual study, I replicated parts of @robitzsch_comparing_2022 that were relevant to our substantive research questions:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
 
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
 
-In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.
-This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
 Overall, I conducted 6 simulation studies.
-Their most important details with regards to the population models and data-generating mechanisms are visible in Table 1.
+
+**Population Models and Data Generation Mechanisms**
+
+The most important details with regards to the population models and data-generating mechanisms are visible in Table 1.
 
 ```{r schematic 1, eval = TRUE, echo = FALSE, out.width="110%"}
 
@@ -287,26 +293,37 @@ All simulations were conducted using seeds to allow for reproducibility.
 
 Overall, 3 different types of factors were varied that can be deducted from Table 1 and are detailed again in the simulation scripts provided.
 Firstly, we varied the Sample Size in all studies, ranging from N = 50 to 100.000.
-Additionally, the amount of misspecification was varied, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
-In Studies 1b and 4a, some population values for model parameters were varied, as well.
+I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
+Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes. 
+Thus, only N=50 and N=100 are present in this study.
+Additionally, the amount of misspecification was varied in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
+In Studies 1b and 4a, some population values for model parameters (phi, beta and/ or lambda) were varied, as well.
 Besides studies 1 and 2, full factorial designs were implemented.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
 I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the author does not give reasoning for this decision himself.
+Studies 4 and 4a looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
+These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
+I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
 
 **Method Selection**
 
-I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
+In terms of estimation methods, I used constrained maximum likelihood and unweighted least squares estimation, so that loadings and variance parameters were given the constraints that they had to be positive and larger than 0.01.
+These were implemented in  classical SEM-estimation, as well as both in their LSAM and GSAM variants.
+Exceptions were studies 1b, 4 and 4a, where only LSAM was investigated, as results did not really differ between the two different SAM-methods.
+
+**Performance Measures**
+
 I calculated the bias and RMSE of the estimated factor correlations in all studies, as well as the standard deviation of the one factor correlation present in Studies 1,2 and 3.
-For the type of bias calculated, I oriented on @robitzsch_comparing_2022, besides in Study 1b:
-Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes with N=50 and N=100 and varying lambda and phi values.
-Here, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values.
-Studies 4 and 4a looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
-These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
-They were, however, extended to look at the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
+For the type of bias calculated, I oriented on @robitzsch_comparing_2022, besides in Study 1b.
+Thus, I calculated average relative bias in Studies 1, 2 and 3, and average absolute bias in Studies 1b, 4 and 4a.
+In Study 1b, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values.
+In Addition to what was done in @robitzsch_comparing_2022, I calculated confidence intervals for the bias estimates, but omitted them in the results tables for presentation purposes.
+The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the github repository.
 
 I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
 As @robitzsch_comparing_2022 argue in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
 I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimation as a sanity check.
+
 For interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
 For Bias, I interpreted difference of 0.05 or higher as substantial.
 For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
@@ -315,39 +332,11 @@ The full result analysis is available here: <https://github.com/lkosanke/Adversa
 The same folder contains all simulation scripts that were used.
 The simulation was repeated 1500 times for each Study.
 
+**Software**
 
+All analyses were conducted in R.
+I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-The first four studies investigated the comparative robustness of SAM vs. SEM estimation in a 2-factor-CFA model under different data generation mechanisms and conditions.
-Studies 1, 2, and 3 varied the factors sample size and different kinds and levels of misspecification for multiple estimators of either estimation method.
-Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes, by varying lambda and phi values.
-Studies 4 and 4a then investigated the comparative performance of the same estimators in a 5-factor model with different beta weights, as well as again under different conditions of sample size and misspecification in the data generating mechanism.
-These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
-They were, however, extended to look at the interaction of beta and N for the 5-factor regression model.
-Different performance measures were computed and compared between estimators, conditions and with the original papers results.
-I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
-As @robitzsch_comparing_2022 argue in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
-I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimation as a sanity check.
-For interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
-For Bias, I interpreted difference of 0.05 or higher as substantial.
-For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
-For RMSE, the same interpretation was used for differences of 0.03 or higher. 
-The full result analysis is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
-The same folder contains all simulation scripts that were used.
-The simulation was repeated 1500 times for each Study.
 
 
 
