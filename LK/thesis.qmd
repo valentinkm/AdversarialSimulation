@@ -509,9 +509,27 @@ The small sample bias was especially strong for lower lambda and higher phi valu
 
 
 
-### Conclusions
+### Conclusions from both studies
 
+Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
+This is because some central distinctions between the studies.
+Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the estimator.
+The evident performance differences observed between traditional SEM and SAM estimation in the study by Valentin Kriegmair are thus undermined.
+-----
+QUESTION: RMSE performance? Undercoverage? In context of constrained ML? What are the RMSE values in study 1? 22.6 vs. 26.4? Percent?
+--> Question if better performance is mostly in higher N or only in lower N.
+-----
 
+Additionally, the results with regards to negatively valenced unmodelled residual correlations and cross-loading paint a more complete picture of the comparative performance of the two estimation methods.
+The apparent performance advantages for traditional SEM in these conditions compensates the advantages in positive conditions.
+In context of empirical studies, where the valenced of potential residual correlations and cross-loadings is not known a priori.
+If that would be the case, one could simply turn to an estimator that is biased in the appropriate direction, to compensate this misspecification.
+Thus, achieving unbiased estimates is desirable in application contexts.
+The results of the individual studies leave us with no imminent call for additional investigation in the joint study.
+What we and others viewed as a disagreement up to the point of contradiction, turned out not to be one, upon closer examination.
+In consequence, we did not conduct a joint study and stopped the collaboration.
+
+# Discussion
 
 
 
