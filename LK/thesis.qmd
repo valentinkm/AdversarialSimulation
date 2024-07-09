@@ -531,9 +531,30 @@ In consequence, we did not conduct a joint study and stopped the collaboration.
 
 # Discussion
 
+#### Repeating results, shortly
 
+#### Discussion of AC
+- Necessity of structured approach? vs. Implicity of Discussion
+- High additional load to already potentially high stakes
+- Maybe, just having preliminary meetings to really find disagreements first, only then start collaboration (Starting with 2nd part, maybe add more explicit definition and collection of disagreement, in theory and especially in evidence! )
+- Advantage of simulations vs. empirical papers: Simpler operationalizations, no paradigm differences, mostly numbers and preferred functions/ estimators etc.
+- Another advantage: If in doubt, do  both! Easier to resolve disagreements but additional increase in load and complexity of studies conducted.
+- But: Generally advisable! Already more thought into: focus of what is important vs. not. More need for explanation (maybe already covered mostly by simulation protocols?), overall more rigor and transparency (as everything has to be understood by the adversary) --> all positive effects
 
+- What about points in beginning? Increased generalizability and...?
 
+----- Still to integrate
+  fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. 
+Additionally, juxtaposing and debating competing positions in this way can improve generalizability of results.
+
+Examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
+
+Into results:
+
+Thus, this investigation leads us to address the following research question:
+
+Can adversarial collaboration be applied to simulation studies, in terms of practical applicability and technical feasibility?
+-----
 
 \newpage
 # Bibliography
