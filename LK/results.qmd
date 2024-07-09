@@ -560,7 +560,8 @@ Therefore, I interpretated the estimators together:
 Across all conditions, both estimators were biased.
 For higher values of lambda, the estimators had less absolute bias. 
 This difference increased for higher phi values.
-For lower values of lambda, the absolute bias increased with increasing phi. This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
+For lower values of lambda, the absolute bias increased with increasing phi. 
+This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
 
 ### Conditions with N=100
 
@@ -594,7 +595,7 @@ Across all conditions, both estimators were biased.
 For higher values of lambda, the estimators had less absolute bias. This difference increased for higher phi values.
 For lower values of lambda, the absolute bias increased with increasing phi. 
 This trend reversed for higher values of lambda, where the absolute bias decreased with higher phi values.
-Additionally, there seemed to be no differential effect due to N, as the interpretations of the different N-conditions were identical.
+Additionally, there seemed to be no interaction effect due to N, as the interpretations of the different N-conditions were identical.
 Naturally, the bias values were larger for N=50.
 
 ### Comparison to original paper
@@ -1473,7 +1474,7 @@ For all three estimators, across increasing N, the bias decreased substantially,
 Only in SEM-ML in N=50 and SEM-ULS in N=100, there was a substantial increase in bias for higher beta values.
 
 For N=50, both SEM- and LSAM-ML substantially outperformed ULS estimation.
-In these conditions, LSAM-ML also outperformed SEM-ML. for beta 0.2-0.4.
+In these conditions, LSAM-ML also outperformed SEM-ML for beta 0.3-0.4.
 Lastly, LSAM-ML outperformed SEM-ULS in N=100 for beta = 0.4.
 
 For all other conditions, none of the estimators differed from another, in terms of bias.
