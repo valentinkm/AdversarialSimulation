@@ -64,7 +64,7 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 
 # Methods 
 
-This section contains two parts. 
+This section contains three parts. 
 First, an outline of the AC framework we agreed upon before the start of the collaboration.
 Then, each sides describes the methods they used to answer the substantive research question of the individual studies.
 
@@ -162,7 +162,7 @@ In our case study, we have identified two substantive research questions to co-a
 
 In the end, each collaborator reports the results in their own paper.
 
-# Adversarial collaboration techniques
+### Adversarial collaboration techniques
 
 We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001). 
 In order to mitigate this risk, next to each collaborator publishing their own paper, we propose to conduct the joint study in a structured and formalized manner. 
@@ -260,7 +260,9 @@ This has the purpose of accumulating data for the evaluation of the AC and the c
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
 The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration. 
 
-## Methods for Replicating Robitzsch (2022)
+## Individual study by Kriegmair
+
+## Individual study by Kosanke
 
 The structure of this section closely aligns to our agreed upon structure of simulation studies.
 
@@ -307,6 +309,10 @@ In Studies 1 and 2 I omitted conditions were both one positive and one negative 
 I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors do not give reasoning for this decision themselves.
 Studies 4 and 4a looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
 These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
+In contrast to the other studies, studies 4 and 4a differed in the way the misspecification variation was labelled in @robitzsch_comparing_2022.
+Instead of varying a factor misspecification as in the previous study, they vary 3 different data-generating mechanisms (DGM's) as a whole.
+Thus the conditions are labelled differently:
+DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. DGM 3 contained 20 residual correlations that were not modelled in the models.
 I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
 Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor lead to interesting results in the original study.
 
@@ -347,20 +353,38 @@ We replicated and in some parts extended on the results of @robitzsch_comparing_
 Our simulation protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
 The next sections presents the results of these studies and their integration.
 
+## Individual study by Kriegmair
 
-## Individual study by Leonard Kosanke
 
-The full result analysis is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
-Here, I will focus on the most important results only.
-For the most part, results from @robitzsch_comparing_2022 have been successfully replicated.
-With regards to all studies conducted, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
+## Individual study by Kosanke
+
+The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
+In this section, I will focus on the most important results only.
+For the most part, results from @robitzsch_comparing_2022 have been successfully replicated:
+I did not observe substantial convergence issues in any study.
+Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
 SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
 This bias was especially strong for lower lambda and higher phi or beta values.
 Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
 If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
 
-### Comparative performance in conditions without misspecification
+### Convergence
+
+As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.
+Nevertheless, I captured all messages, warnings and errors that occurred during the simulations.
+No messages and errors were present in any of the studies.
+Multiple warnings were observed in the first 4 simulations, some of them referring to potential problems with convergence.
+Overall, the number of these warnings was very small compared to the total number of estimations performed.
+They amounted to between 0.5-1.8%.
+In studies 4 and 4a, an even smaller number of warnings was present, amounting to problems in 0.02% of estimations in study 4 and 0.1% in study 4a.
+These warnings referred to potential problems with positive definite matrices and model identification.
+In total, these numbers are negligible in size and align with the report of @robitzsch_comparing_2022, that convergence issues were not substantial for my estimations.
+Additionally, a larger number of warnings was present with regards to the computation of fit indices in these final two studies.
+As we were not interest in fit indices in our research question, they are not relevance for us.
+A detailed analysis of all the warnings was conducted in the results.pdf document in my sub-folder of the github repository.
+
+### Conditions without misspecification
 
 Mainly Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of two estimation methods clearly outperformed the other.
@@ -526,7 +550,7 @@ create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 ```
 
 
-### Small sample Bias in LSAM estimation
+### Small sample bias in LSAM estimation
 
 The small sample Bias of LSAM estimation in Study 1b revealed that in smaller samples, ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
 
@@ -594,6 +618,9 @@ Thus, we can see the negative small sample bias come into play in this study as 
 Results looked very similar with regards to RMSE.
 Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
 
+
+
+
 ### Conclusions from both studies
 
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
@@ -643,10 +670,7 @@ Another aspect of technical feasibility was the access to a computing cluster, t
 This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing to much runtime or having to limit the number of repetitions.
 Again, as we could not conduct the second part of our collaboration framework, the technical feasibility of the collaborative study can not be judged conclusively.
 
-
 # Discussion
-
-#### Repeating results, shortly
 
 In this focused case study, we aimed to conduct adversarial collaboration to investigate the question if adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
 To do so, we created and tested a collaboration framework that start with each adversary conducting an individual study, before collaborating in a joint study.
@@ -662,8 +686,6 @@ Technical feasibility was present with the use of github for sharing and accessi
 
 For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible in simulation studies.
 Another attempt should be pursued to be able to answer our research question.
-
-#### Discussion of AC
 
 Even though we did not get to the point of direct collaboration in the second part of our framework, we are confident that it should be practically applicable and technically feasible:
 Facilitating advancement in discussion between adversaries with the structured use of the tools we presented, we are confident that the necessary convergence for a joint study is achievable.
@@ -685,13 +707,13 @@ Still, besides these assumptions and learnings from our first case study, we wer
 
 With regards to limitations there are several aspects to consider.
 First and foremost, we are aware that we tested a very superficial "simulation" of adversariality.
-Neither side had long scientific experience in our substantial field of interest, and thus the stakes are much lower than as if the original authors would have collaborated.
-In that case, stakes would have been much higher and collaboration more difficult.
+Neither side had long scientific experience in our substantial field of interest, and thus the stakes were much lower than as if the original authors would have collaborated.
+In that case, collaboration most likely would have been more difficult.
 Still, including the individual studies as a first step, we think we did a good job of priming ourselves to the views of our respective sides of the argument.
 
 Another important aspect to discuss is whether we should have been able to see the lack of disagreement earlier, even before conducting our individual studies.
 As most of our findings were replications of the original papers, we might have been able to see their alignment if our preparation of the substantive topic would have been more in depth.
-To avoid this, a more explicit and detailed evaluation of all the papers of interest could be done before deciding on adversarial collaboration, to make sure that there is actually conflicting evidence.
+To avoid this, a more explicit and detailed evaluation of all the papers of interest could be done before deciding on adversarial collaboration, to make sure that there is actually conflicting evidence present.
 
 Another question is in how far the advantages we observed with regards to increased rigor, transparency and open access were incremental benefits of adversarial collaboration, over and above the usage of simulation protocols and our open access approach to science.
 We believe this not to be problematic, as AC and other aspects of open science can complement each very nicely and reinforce positive effects.
@@ -699,7 +721,7 @@ Thus, researchers who are not generally interested in open science, but in colla
 
 In the end, we believe that it would be worthwile for future research to conduct another case study like ours.
 Science is, in the end, a collaborative effort.
-Exploring the limits of the collaboration is thus valuable to investigate opportunities to advance scientific progress.
+Exploring the limits of collaboration is thus valuable to investigate opportunities to advance scientific progress.
 
 
 
