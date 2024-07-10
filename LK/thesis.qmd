@@ -64,11 +64,12 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 
 # Methods 
 
-This section contains three parts that represent our proposed AC framework. 
+This section contains four parts that represent our proposed AC framework. 
 First, I describe the procedure of the AC.
 Then, I present adversarial collaboration techniques that should be utilized to facilitate the collaborative process.
 Thirdly, I explain how the decision-making process can be documented and presented with a decision-log and in papers.
-Lastly, I explain how diaries can be used to evaluate the AC.
+Next, I explain how diaries can be used to evaluate the AC.
+Lastly, I describe the technical setup we propose to conduct the AC. 
 
 ## Procedure of the Adversarial Collaboration
 
@@ -259,6 +260,18 @@ The diary has the purpose of accumulating data for the evaluation of the AC and 
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
 The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration.
 
+### Technical setup
+
+As simulation studies are computationally intensive and require a structured approach to save, share and review code, we propose using Github to ease collaboration.
+Github allows to set up and synchronize multiple repositories to allow both individual and collaborative work.
+After setting up a first repository at one adversaries user account, the other party can fork that repository to have a copy at their own account.
+These forks can be synchronized at any time, but also left seperate.
+This functionality aligns well with the different parts of our procedure:
+For the individual studies, each adversary can work in their own repository.
+For the joint study, both can work in one repository, and synchronize the other one at will.
+Additionally, the Github releases feature allows to align milestones such as the publishing of the simulation protocols or the finished result analysis of all studies.
+These can even be assigned a DOI via Zenodo.
+
 # Results
 
 For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
@@ -271,7 +284,7 @@ As a first step, we agreed on two substantive research questions to depict our d
 
 Next, we started the AC by conducting our individual studies.
 We replicated and in some parts extended on the results of @robitzsch_comparing_2022 and @dhaene_evaluation_2023.
-Our simulation protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
+Our simulation protocols can be accessed in our individual Github-repositories, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
 The next sections presents the methods and results of these studies, as well as their integration.
 
 ## Individual study by Kriegmair
