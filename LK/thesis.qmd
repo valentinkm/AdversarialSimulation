@@ -161,6 +161,7 @@ In our case study, we have identified two substantive research questions to co-a
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
 
 In the end, each collaborator reports the results in their own paper.
+If desired, a joint paper can be published in addition.
 
 ### Adversarial collaboration techniques
 
