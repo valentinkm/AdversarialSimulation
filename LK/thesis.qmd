@@ -34,7 +34,7 @@ Despite the clear insight into the underlying data structures that simulations p
 In simulation studies, a key challenge is ensuring that results can be generalized to real-world applications.
 These studies must ensure that the chosen performance metrics, experimental factors, and inference models accurately reflect and test real-world scenarios. 
 Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias.
-For example, the decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding on which sample size to simulate), can have substantive impact on the results.
+For example, the decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantive impact on the results.
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
 An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
@@ -64,24 +64,21 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 
 # Methods 
 
-This section contains four parts that represent our proposed AC framework. 
-First, I describe the procedure of the AC.
-Then, I present adversarial collaboration techniques that should be utilized to facilitate the collaborative process.
-Thirdly, I explain how the decision-making process can be documented and presented with a decision-log and in papers.
-Next, I explain how diaries can be used to evaluate the AC.
-Lastly, I describe the technical setup we propose to conduct the AC. 
+This section contains two parts that represent our proposed AC framework. 
+First, I describe the procedure of the AC with its two parts and the tools it uses.
+Then, I propose a technical setup to facilitate its implementation.
 
 ## Procedure of the Adversarial Collaboration
 
 To answer our research question, we created and followed the following procedure for the adversarial collaboration process: 
-The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study.
-As a first step to do so, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
-These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019. 
-In the second part, a joint study, including a joint simulation protocol, should be pursued. 
-Here, the main part of the adversarial collaboration takes place. 
-Each step of the individual simulation studies (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
-Decisions are made and documented based on the most convincing argument presented, if possible. 
-This process starts based on the results of Part 1.
+The procedure consists of two parts. 
+In the first part, each researcher conducts an independent preliminary study.
+In the second part, a joint study, including a joint simulation protocol, should be pursued.
+
+### Part one: Individual studies
+
+As a first step of the individual studies, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
+These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019.
 To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.
 
 Table 1: Structure of simulation studies 
@@ -157,12 +154,22 @@ o publishing code and simulated data
 End of Table 1 
 
 This framework allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
+
+### Part two: Joint study
+
+In the second part, a joint study, including a joint simulation protocol, should be pursued. 
+This process starts based on the results of Part one.
+Here, the main part of the adversarial collaboration takes place.
+It exists of multiple parts I will explain in the following sectinos:
+Each step of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
+Decisions are made and documented based on the most convincing argument presented, if possible.
+If an interest in the evaluation of the collaboration exists, diary entries can be written after each step.
 In the end, each collaborator reports the results in their own paper.
 If desired, a joint paper can be published in addition.
 
-### Adversarial collaboration techniques
+#### Adversarial collaboration techniques
 
-We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001). 
+We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001]. 
 In order to mitigate this risk, next to each collaborator publishing their own paper, we propose to conduct the joint study in a structured and formalized manner. 
 To this end, we identified several collaboration techniques presented in Table 2. 
 These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
@@ -207,7 +214,7 @@ End of table 2
 
 
 
-### Documentation - Decision log 
+#### Documentation - Decision log 
 
 As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
 In addition, the appendix should contain a separate decision log with a detailed and complete documentation of all decisions made.
@@ -252,15 +259,15 @@ Evaluation - Diary entries
 
 End of figure 1 
 
-### Diary
+#### Diary
 
-The adversarial collaboration in Part 2 (Joint study) should be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries after each step.
+The adversarial collaboration in Part 2 (Joint study) can be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries after each step.
 We provided an exemplary diary template that includes questions based on @shah_exploring_2016 in our github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
 The diary has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
 The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration.
 
-### Technical setup
+## Technical setup
 
 As simulation studies are computationally intensive and require a structured approach to save, share and review code, we propose using Github to ease collaboration.
 Github allows to set up and synchronize multiple repositories to allow both individual and collaborative work.
@@ -695,13 +702,13 @@ After finishing our individual studies, the supposed disagreement turned out not
 Thus, we did not conduct a joint study and were only partly able to answer our research question.
 
 For the first part of our framework, we found some evidence for practical applicability and technical feasibility:
-We were able to agree on two focussed research question, that nudged our individual studies to focus on points of potential disagreement.
+We were able to agree on two focused research question, that nudged our individual studies to focus on points of potential disagreement.
 Additionally, we were both able to successfully plan and conduct our individual simulations in a way that allowed integration of our results and to converge on a shared understanding of their consequences. 
 Thus, we achieved a fair and truthful representation of both sides views.
 Technical feasibility was present with the use of github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster allowed us to freely include conditions where we deemed it necessary, in our individual studies.
 
-For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible in simulation studies.
-Another attempt should be pursued to be able to answer our research question.
+For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible.
+Another attempt should be pursued to be able to answer our research question in the second part of our AC framework.
 
 Even though we did not get to the point of direct collaboration in the second part of our framework, we are confident that it should be practically applicable and technically feasible:
 Facilitating advancement in discussion between adversaries with the structured use of the tools we presented, we are confident that the necessary convergence for a joint study is achievable.
