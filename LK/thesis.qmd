@@ -64,22 +64,24 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 
 # Methods 
 
-This section contains three parts. 
-First, an outline of the AC framework we agreed upon before the start of the collaboration.
-Then, each sides describes the methods they used to answer the substantive research question of the individual studies.
+This section contains three parts that represent our proposed AC framework. 
+First, I describe the procedure of the AC.
+Then, I present adversarial collaboration techniques that should be utilized to facilitate the collaborative process.
+Thirdly, I explain how the decision-making process can be documented and presented with a decision-log and in papers.
+Lastly, I explain how diaries can be used to evaluate the AC.
 
-## Outline of the Adversarial Collaboration framework
+## Procedure of the Adversarial Collaboration
 
 To answer our research question, we created and followed the following procedure for the adversarial collaboration process: 
-The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study as a replication of their side of the argument. 
-In our case, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
-The replications should include the generation of individual simulation protocols, as suggested by @morris_using_2019. 
+The procedure consists of two parts. In the first part, each researcher conducts an independent preliminary study.
+As a first step to do so, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
+These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019. 
 In the second part, a joint study, including a joint simulation protocol, should be pursued. 
 Here, the main part of the adversarial collaboration takes place. 
 Each step of the individual simulation studies (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
 Decisions are made and documented based on the most convincing argument presented, if possible. 
 This process starts based on the results of Part 1.
-To facilitate a structured comparison and integration of studies through the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.  
+To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.
 
 Table 1: Structure of simulation studies 
 1. Defining aims and objectives / Research Question of Interest. ( = verbal description) 
@@ -153,13 +155,7 @@ o publishing code and simulated data
 
 End of Table 1 
 
-This framework allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation. 
-In our case study, we have identified two substantive research questions to co-align the individual simulation studies: 
-
-1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
-
-2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
-
+This framework allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
 In the end, each collaborator reports the results in their own paper.
 If desired, a joint paper can be published in addition.
 
@@ -209,6 +205,7 @@ neutral arbiter (Aaron Peikert) will be consulted to try to resolve them.
 End of table 2 
 
 
+
 ### Documentation - Decision log 
 
 As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
@@ -256,14 +253,33 @@ End of figure 1
 
 ### Diary
 
-The adversarial collaboration in Part 2 (Joint study) should be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries based on @shah_exploring_2016, after each step.
-This has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
+The adversarial collaboration in Part 2 (Joint study) should be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries after each step.
+We provided an exemplary diary template that includes questions based on @shah_exploring_2016 in our github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
+The diary has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
-The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration. 
+The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration.
+
+# Results
+
+For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
+
+As a first step, we agreed on two substantive research questions to depict our disagreement as precisely as possible:
+
+1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
+
+2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
+
+Next, we started the AC by conducting our individual studies.
+We replicated and in some parts extended on the results of @robitzsch_comparing_2022 and @dhaene_evaluation_2023.
+Our simulation protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
+The next sections presents the methods and results of these studies, as well as their integration.
 
 ## Individual study by Kriegmair
 
+
 ## Individual study by Kosanke
+
+### Methods
 
 The structure of this section closely aligns to our agreed upon structure of simulation studies.
 
@@ -272,12 +288,7 @@ This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimu
 
 **Aims, objectives and research questions**
 
-For my individual study, I replicated parts of @robitzsch_comparing_2022 that were relevant to our substantive research questions:
-
-1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
-
-2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
-
+For my individual study, I replicated parts of @robitzsch_comparing_2022 that were relevant to our two substantive research questions.
 Overall, I conducted 6 simulation studies.
 
 **Population Models and Data Generation Mechanisms**
@@ -347,17 +358,8 @@ The simulation was repeated 1500 times for each Study.
 All analyses were conducted in R.
 I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
 
-# Results
 
-After agreeing on our two substantive research question, we started the AC by conducting our individual studies.
-We replicated and in some parts extended on the results of @robitzsch_comparing_2022 and @dhaene_evaluation_2023.
-Our simulation protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
-The next sections presents the results of these studies and their integration.
-
-## Individual study by Kriegmair
-
-
-## Individual study by Kosanke
+### Results
 
 The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
 In this section, I will focus on the most important results only.
@@ -370,7 +372,7 @@ Going ahead of what was investigated in @robitzsch_comparing_2022, I found that 
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
 If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
 
-### Convergence
+#### Convergence
 
 As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.
 Nevertheless, I captured all messages, warnings and errors that occurred during the simulations.
@@ -385,7 +387,7 @@ Additionally, a larger number of warnings was present with regards to the comput
 As we were not interest in fit indices in our research question, they are not relevance for us.
 A detailed analysis of all the warnings was conducted in the results.pdf document in my sub-folder of the github repository.
 
-### Conditions without misspecification
+#### Conditions without misspecification
 
 Mainly Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of two estimation methods clearly outperformed the other.
@@ -465,7 +467,7 @@ create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
 
 
-### Conditions with negatively valenced unmodelled parameters
+#### Conditions with negatively valenced unmodelled parameters
 
 Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
 In these studies, it became apparent that traditional SEM outperformed SAM estimation.
@@ -488,7 +490,7 @@ rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
 create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 ```
 
-### Conditions with positively valenced unmodelled parameters
+#### Conditions with positively valenced unmodelled parameters
 
 In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
 
@@ -551,7 +553,7 @@ create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 ```
 
 
-### Small sample bias in LSAM estimation
+#### Small sample bias in LSAM estimation
 
 The small sample Bias of LSAM estimation in Study 1b revealed that in smaller samples, ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
 
@@ -622,7 +624,7 @@ Note that this trend was less strong, but still present in the conditions of DGM
 
 
 
-### Conclusions from both studies
+## Conclusions from both studies
 
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
 This is because of some central distinctions between the studies.
