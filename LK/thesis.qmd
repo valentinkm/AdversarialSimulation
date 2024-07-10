@@ -342,9 +342,10 @@ I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, 
 
 # Results
 
-## Adversarial collaboration
-
+After agreeing on our two substantive research question, we started the AC by conducting our individual studies.
+We replicated and in some parts extended on the results of @robitzsch_comparing_2022 and @dhaene_evaluation_2023.
 Our simulation protocols can be accessed in our Github-repository, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
+The next sections presents the results of these studies and their integration.
 
 
 ## Individual study by Leonard Kosanke
@@ -598,43 +599,109 @@ Note that this trend was less strong, but still present in the conditions of DGM
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
 This is because of some central distinctions between the studies.
 Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the estimator.
-The evident performance differences observed between traditional SEM and SAM estimation in the study by Valentin Kriegmair are thus to be taken cautiously.
+The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be taken cautiously.
 
 Additionally, the results with regards to negatively valenced unmodelled residual correlations and cross-loading paint a more complete picture of the comparative performance of the two estimation methods.
-The apparent performance advantages for traditional SEM in these conditions compensates the advantages of SAM in positive conditions.
-In teh context of empirical studies, the valence of potential residual correlations and cross-loadings is not known a priori.
+The apparent performance advantages for traditional SEM in these conditions balance the advantages of SAM in positive conditions.
+In the context of empirical studies, the valence of potential residual correlations and cross-loadings is not known a priori.
 If that would be the case, one could simply turn to an estimator that is biased in the appropriate direction, to compensate this misspecification.
 Thus, achieving unbiased estimates is desirable in application contexts.
 The results of the individual studies leave us with no imminent call for additional investigation in the joint study.
 What we and others viewed as a disagreement up to the point of contradiction, did not turn out to be one, upon closer examination.
 In consequence, we did not conduct a joint study and stopped the collaboration at this point.
 
+## Results of the collaboration
+
+Going back to the outline of our collaboration framework, we successfully agreed on two research questions, conducted individual studies and integrated their results.
+In consequence, we did not find remaining disagreement or additional scenarios of interest that would warrant to conduct the second part of the joint study.
+This means that we were unable to completely test our framework.
+Still, we have gained some insights with regards to our research question of whether adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
+
+### Practical applicability
+
+Already the first step of arriving at common research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their studies.
+We see the main success of the research question formulation in the focus on small to moderate sample sizes.
+This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
+When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
+This increased quality of reporting, rigor and transparency in our individual studies.
+After the individual studies, we integrated our results and looked for disagreement and points for further investigation.
+We achieved a fair and truthful comparison of views and could agree that they were not opposing each other.
+We also believe that we increased generalizability simply by integrating the findings of two studies into one conclusion for more data generating scenarios and conditions than one individual study conducted.
+
+With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
+We observed already the possibility to converge on research questions and found our individual simulations to be generally very compatible.
+We believe this to be evidence, that the second part of the collaboration should be practically applicable.
+Still, at the end of the day we could not conduct the second part of our collaboration framework.
+We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
+
+### Technical feasibility.
+
+Technical feasibility in the collaboration was achieved for the parts we could implement in our case study.
+Utilizing tools like github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual study within the same github repository.
+We see a lot of potential for these tools to be used in the second part of our collaboration framework as well, to be able to split work within one study, give feedback on each others implementations via pull-requests, and much more.
+Another aspect of technical feasibility was the access to a computing cluster, that we had.
+This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing to much runtime or having to limit the number of repetitions.
+Again, as we could not conduct the second part of our collaboration framework, the technical feasibility of the collaborative study can not be judged conclusively.
+
+
 # Discussion
 
 #### Repeating results, shortly
 
+In this focused case study, we aimed to conduct adversarial collaboration to investigate the question if adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
+To do so, we created and tested a collaboration framework that start with each adversary conducting an individual study, before collaborating in a joint study.
+For this, we agreed on two substantial research questions to judge the comparative performance of traditional SEM vs. SAM estimation in small to moderate samples and under misspecifications.
+After finishing our individual studies, the supposed disagreement turned out not to be one, as results aligned well.
+Thus, we did not conduct a joint study and were only partly able to answer our research question.
+
+For the first part of our framework, we found some evidence for practical applicability and technical feasibility:
+We were able to agree on two focussed research question, that nudged our individual studies to focus on points of potential disagreement.
+Additionally, we were both able to successfully plan and conduct our individual simulations in a way that allowed integration of our results and to converge on a shared understanding of their consequences. 
+Thus, we achieved a fair and truthful representation of both sides views.
+Technical feasibility was present with the use of github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster allowed us to freely include conditions where we deemed it necessary, in our individual studies.
+
+For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible in simulation studies.
+Another attempt should be pursued to be able to answer our research question.
+
 #### Discussion of AC
-- Necessity of structured approach? vs. Implicity of Discussion
-- High additional load to already potentially high stakes
-- Maybe, just having preliminary meetings to really find disagreements first, only then start collaboration (Starting with 2nd part, maybe add more explicit definition and collection of disagreement, in theory and especially in evidence! )
-- Advantage of simulations vs. empirical papers: Simpler operationalizations, no paradigm differences, mostly numbers and preferred functions/ estimators etc.
-- Another advantage: If in doubt, do  both! Easier to resolve disagreements but additional increase in load and complexity of studies conducted.
-- But: Generally advisable! Already more thought into: focus of what is important vs. not. More need for explanation (maybe already covered mostly by simulation protocols?), overall more rigor and transparency (as everything has to be understood by the adversary) --> all positive effects
 
-- What about points in beginning? Increased generalizability and...?
+Even though we did not get to the point of direct collaboration in the second part of our framework, we are confident that it should be practically applicable and technically feasible:
+Facilitating advancement in discussion between adversaries with the structured use of the tools we presented, we are confident that the necessary convergence for a joint study is achievable.
+This should be even more so the case, because of some key differences between empirical and simulation studies:
+Firstly, opposing opinions in simulation studies are less incomensurable in terms of testing.
+In empirical studies, opposing theories might have completely different paradigms, measures and even construct definitions to answer the same research question.
+In simulation studies, these differences are much smaller.
+There is much more consensus on what data generating scenarios of interest could be, how performance is measured, and what the opposing methods are.
+Another difference is the luxury of simulation studies to have much fewer resource restrictions.
+The main resources are time and computation power, which usually are not too limited.
+This allows adversaries to not have to find compromise in all cases, and, if in doubt, just include all conditions that might be relevant.
+In empirical studies, there are much more limited resources such as number of participants, money, labs and much more.
+Thus, aspects of power have to always be considered and this leads to having to have much more compromise in AC.
 
------ Still to integrate
-  fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. 
-Additionally, juxtaposing and debating competing positions in this way can improve generalizability of results.
+In terms of technical feasibility, we believe that using tools like github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
+Ideally, additional resources like a computing cluster should be present to guarantee a higher limit on computational load, and thus more freedom to include additional conditions to test.
+This, however, should not be a problem for research conducted in universities or institutes that usually have access to computing clusters.
+Still, besides these assumptions and learnings from our first case study, we were unable to actually test the collaboration and can not say that the practical applicability and technical feasibility is given.
 
-Examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
+With regards to limitations there are several aspects to consider.
+First and foremost, we are aware that we tested a very superficial "simulation" of adversariality.
+Neither side had long scientific experience in our substantial field of interest, and thus the stakes are much lower than as if the original authors would have collaborated.
+In that case, stakes would have been much higher and collaboration more difficult.
+Still, including the individual studies as a first step, we think we did a good job of priming ourselves to the views of our respective sides of the argument.
 
-Into results:
+Another important aspect to discuss is whether we should have been able to see the lack of disagreement earlier, even before conducting our individual studies.
+As most of our findings were replications of the original papers, we might have been able to see their alignment if our preparation of the substantive topic would have been more in depth.
+To avoid this, a more explicit and detailed evaluation of all the papers of interest could be done before deciding on adversarial collaboration, to make sure that there is actually conflicting evidence.
 
-Thus, this investigation leads us to address the following research question:
+Another question is in how far the advantages we observed with regards to increased rigor, transparency and open access were incremental benefits of adversarial collaboration, over and above the usage of simulation protocols and our open access approach to science.
+We believe this not to be problematic, as AC and other aspects of open science can complement each very nicely and reinforce positive effects.
+Thus, researchers who are not generally interested in open science, but in collaboration, would still be nudged to work more openly, which we view as a positive outcome.
 
-Can adversarial collaboration be applied to simulation studies, in terms of practical applicability and technical feasibility?
------
+In the end, we believe that it would be worthwile for future research to conduct another case study like ours.
+Science is, in the end, a collaborative effort.
+Exploring the limits of the collaboration is thus valuable to investigate opportunities to advance scientific progress.
+
+
 
 \newpage
 # Bibliography
