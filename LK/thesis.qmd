@@ -160,12 +160,12 @@ This framework allows for the expected divergences in results of the individual 
 In the second part, a joint study, including a joint simulation protocol, should be pursued. 
 This process starts based on the results of Part one.
 Here, the main part of the adversarial collaboration takes place.
-It exists of multiple parts I will explain in the following sectinos:
+It contains multiple parts I will explain in the following sections:
 Each step of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
 Decisions are made and documented based on the most convincing argument presented, if possible.
 If an interest in the evaluation of the collaboration exists, diary entries can be written after each step.
 In the end, each collaborator reports the results in their own paper.
-If desired, a joint paper can be published in addition.
+If desired, a joint paper can be published as well.
 
 #### Adversarial collaboration techniques
 
@@ -281,6 +281,13 @@ These can even be assigned a DOI via Zenodo.
 
 # Results
 
+The structure of this section mirrors our AC procedure.
+I will start presenting the preparations, methods and results of the individual studies and their substantive topics.
+Then, I will integrate the results of these studies to form a substantive conclusion.
+Lastly, I will judge the results of the collaboration and thus answer our main research question.
+
+## Preparation of the individual studies
+
 For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
 
 As a first step, we agreed on two substantive research questions to depict our disagreement as precisely as possible:
@@ -296,6 +303,9 @@ The next sections presents the methods and results of these studies, as well as 
 
 ## Individual study by Kriegmair
 
+### Methods
+
+### Results
 
 ## Individual study by Kosanke
 
