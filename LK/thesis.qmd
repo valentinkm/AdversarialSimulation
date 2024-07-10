@@ -284,13 +284,13 @@ These can even be assigned a DOI via Zenodo.
 The structure of this section mirrors our AC procedure.
 I will start presenting the preparations, methods and results of the individual studies and their substantive topics.
 Then, I will integrate the results of these studies to form a substantive conclusion.
-Lastly, I will judge the results of the collaboration and thus answer our main research question.
+Lastly, I will analyze the results of the collaboration and thus answer our main research question.
 
 ## Preparation of the individual studies
 
-For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023. 
+For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023.
 
-As a first step, we agreed on two substantive research questions to depict our disagreement as precisely as possible:
+As a first step, after reading the relevant literature in the field and informing us thoroughly on our side of the argument, we agreed on two substantive research questions to depict our disagreement as precisely as possible:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
 
@@ -298,7 +298,6 @@ As a first step, we agreed on two substantive research questions to depict our d
 
 Next, we started the AC by conducting our individual studies.
 We replicated and in some parts extended on the results of @robitzsch_comparing_2022 and @dhaene_evaluation_2023.
-Our simulation protocols can be accessed in our individual Github-repositories, under releases: <https://github.com/lkosanke/AdversarialSimulation/tree/main/>.
 The next sections presents the methods and results of these studies, as well as their integration.
 
 ## Individual study by Kriegmair
@@ -311,7 +310,7 @@ The next sections presents the methods and results of these studies, as well as 
 
 ### Methods
 
-The structure of this section closely aligns to our agreed upon structure of simulation studies.
+The structure of this section closely aligns to our agreed upon structure of simulation studies in Table 1.
 
 In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.
 This protocol can be accessed here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
@@ -340,29 +339,29 @@ All simulations were conducted using seeds to allow for reproducibility.
 **Experimental Design of simulation procedures**
 
 Overall, 3 different types of factors were varied that can be deducted from Table 1 and are detailed again in the simulation scripts provided.
-Firstly, we varied the Sample Size in all studies, ranging from N = 50 to 100.000.
+Firstly, we varied the sample size in all studies, ranging from N = 50 to 100.000.
 I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
 Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes. 
-Thus, only N=50 and N=100 are present in this study.
-Additionally, the amount of misspecification was varied in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
-In Studies 1b and 4a, some population values for model parameters (phi, beta and/ or lambda) were varied, as well.
-Besides studies 1 and 2, full factorial designs were implemented.
+Thus, only N=50 and N=100 were present in this study.
+Additionally, I variend the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
+In Studies 1b and 4a, I varied some population values for model parameters (phi, beta and/ or lambda), as well.
+Besides studies 1 and 2, I implemented full factorial designs.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
-I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors do not give reasoning for this decision themselves.
-Studies 4 and 4a looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
+I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors did not give reasoning for this decision themselves.
+In Studies 4 and 4a I looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
 These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
 In contrast to the other studies, studies 4 and 4a differed in the way the misspecification variation was labelled in @robitzsch_comparing_2022.
-Instead of varying a factor misspecification as in the previous study, they vary 3 different data-generating mechanisms (DGM's) as a whole.
+Instead of varying a factor misspecification as in the previous study, they varied 3 different data-generating mechanisms (DGM's) as a whole.
 Thus the conditions are labelled differently:
 DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. DGM 3 contained 20 residual correlations that were not modelled in the models.
 I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
-Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor lead to interesting results in the original study.
+Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study.
 
 **Method Selection**
 
 In terms of estimation methods, I used constrained maximum likelihood and unweighted least squares estimation, so that loadings and variance parameters were given the constraints that they had to be positive and larger than 0.01.
 These were implemented in  classical SEM-estimation, as well as both in their LSAM and GSAM variants.
-Exceptions were studies 1b, 4 and 4a, where only LSAM was investigated, as results did not really differ between the two different SAM-methods.
+Exceptions were studies 1b, 4 and 4a, where only LSAM was investigated, as results did not really differ between the two different SAM-methods [@robitzsch_comparing_2022].
 
 **Performance Measures**
 
@@ -370,15 +369,15 @@ I calculated the bias and RMSE of the estimated factor correlations in all studi
 For the type of bias calculated, I oriented on @robitzsch_comparing_2022, besides in Study 1b.
 Thus, I calculated average relative bias in Studies 1, 2 and 3, and average absolute bias in Studies 1b, 4 and 4a.
 In Study 1b, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values.
-In Addition to what was done in @robitzsch_comparing_2022, I calculated confidence intervals for the bias estimates, but omitted them in the results tables for presentation purposes.
+In addition to what was done in @robitzsch_comparing_2022, I calculated confidence intervals for the bias estimates, but omitted them in the results tables for presentation purposes.
 The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the github repository.
 
 I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
-As @robitzsch_comparing_2022 argued in their paper, and was showed already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
+As @robitzsch_comparing_2022 argued in their paper, and was shown already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
 I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimations as a sanity check.
 
-For interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
-For Bias, I interpreted difference of 0.05 or higher as substantial.
+For the interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
+For bias, I interpreted differences of 0.05 or higher as substantial.
 For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
 For RMSE, the same interpretation was used for differences of 0.03 or higher. 
 The simulation was repeated 1500 times for each Study.
@@ -414,13 +413,13 @@ In studies 4 and 4a, an even smaller number of warnings was present, amounting t
 These warnings referred to potential problems with positive definite matrices and model identification.
 In total, these numbers are negligible in size and align with the report of @robitzsch_comparing_2022, that convergence issues were not substantial for my estimations.
 Additionally, a larger number of warnings was present with regards to the computation of fit indices in these final two studies.
-As we were not interest in fit indices in our research question, they are not relevance for us.
-A detailed analysis of all the warnings was conducted in the results.pdf document in my sub-folder of the github repository.
+As we were not interest in fit indices in our research question, they were not relevant for our purposes.
+A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the github repository.
 
 #### Conditions without misspecification
 
 Mainly Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
-Here it became apparent, that in absence of misspecification, none of two estimation methods clearly outperformed the other.
+Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.
 In Study 4, only slight, but no substantial differences could be observed in terms of bias and RMSE between the LSAM- and classical ML-estimation. 
 This is visible in Table 1 for the example of RMSE.
 Here, LSAM-ML appeared to outperform both SEM-estimation methods only in N=50.
@@ -489,8 +488,8 @@ create_styled_table <- function(data, condition) {
 ```
 
 In Study 1, both traditional SEM approaches outperformed all SAM estimators in small to moderate samples of N=50-500. 
-This is true for both relative bias and RMSE, and visible for the former in Table 2.
-Here, SAM's small sample bias is already visible as well.
+This was true for both relative bias and RMSE, and visible for the former in Table 2.
+Here, SAM's negative small sample bias is already visible as well.
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
@@ -524,7 +523,7 @@ create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 
 In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
 
-Table 3 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and cross-loading.
+Table 3 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
 Only from N=100-1000 did SAM outperform SEM.
 
 ```{r eval = TRUE, echo = FALSE}
@@ -576,7 +575,7 @@ In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but 
 With regards to RMSE, results were mixed as well. 
 LSAM appeared to outperform in Table X for DGM 2 of Study 4.
 In other conditions, however, no substantial differences arose in terms of RMSE.
-```{r}
+```{r eval = TRUE, echo = FALSE}
 
 create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
@@ -585,9 +584,9 @@ create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
 #### Small sample bias in LSAM estimation
 
-The small sample Bias of LSAM estimation in Study 1b revealed that in smaller samples, ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
+The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
 
-Table 5 showed this to be especially apparent in a sample size of 50.
+Table 5 shows this was especially apparent in a sample size of 50.
 ```{r eval = TRUE, echo = FALSE}
 #Load processed results
 bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
@@ -612,13 +611,14 @@ Note that absolute values of bias were calculated in my paper.
 Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
 The bias persisted, but to a lesser degree in samples of 100.
 Overall, comparing LSAM-ML and -ULS estimation, results were very similar.
+
 Importantly, differential effects due to lambda and phi were present in Study 1b.
 The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations.
 Also, a new insight is that the bias remained relevant for low values of phi, unlike in the original paper by @robitzsch_comparing_2022.
 In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.
 
 As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
-Table X shows the performance of SEM-ML, whereas Table Y shows the performance of LSAM-ML in DGM 2.
+Table X shows the performance of SEM-ML, whereas Table Y shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
 
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
@@ -673,13 +673,13 @@ In consequence, we did not conduct a joint study and stopped the collaboration a
 ## Results of the collaboration
 
 Going back to the outline of our collaboration framework, we successfully agreed on two research questions, conducted individual studies and integrated their results.
-In consequence, we did not find remaining disagreement or additional scenarios of interest that would warrant to conduct the second part of the joint study.
+In consequence, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure, the joint study.
 This means that we were unable to completely test our framework.
 Still, we have gained some insights with regards to our research question of whether adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
 
 ### Practical applicability
 
-Already the first step of arriving at common research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their studies.
+Already the first step of agreeing on joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their studies.
 We see the main success of the research question formulation in the focus on small to moderate sample sizes.
 This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
 When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
@@ -690,17 +690,17 @@ We also believe that we increased generalizability simply by integrating the fin
 
 With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
 We observed already the possibility to converge on research questions and found our individual simulations to be generally very compatible.
-We believe this to be evidence, that the second part of the collaboration should be practically applicable.
+We believe this to be preliminary evidence, that the second part of the collaboration should be practically applicable as well.
 Still, at the end of the day we could not conduct the second part of our collaboration framework.
 We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
 
 ### Technical feasibility.
 
 Technical feasibility in the collaboration was achieved for the parts we could implement in our case study.
-Utilizing tools like github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual study within the same github repository.
+Utilizing tools like github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual studies within the same github repository.
 We see a lot of potential for these tools to be used in the second part of our collaboration framework as well, to be able to split work within one study, give feedback on each others implementations via pull-requests, and much more.
 Another aspect of technical feasibility was the access to a computing cluster, that we had.
-This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing to much runtime or having to limit the number of repetitions.
+This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing too much runtime or having to limit the number of repetitions.
 Again, as we could not conduct the second part of our collaboration framework, the technical feasibility of the collaborative study can not be judged conclusively.
 
 # Discussion
@@ -736,7 +736,7 @@ Thus, aspects of power have to always be considered and this leads to having to 
 In terms of technical feasibility, we believe that using tools like github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
 Ideally, additional resources like a computing cluster should be present to guarantee a higher limit on computational load, and thus more freedom to include additional conditions to test.
 This, however, should not be a problem for research conducted in universities or institutes that usually have access to computing clusters.
-Still, besides these assumptions and learnings from our first case study, we were unable to actually test the collaboration and can not say that the practical applicability and technical feasibility is given.
+Still, besides these assumptions and learnings from our first case study, we were unable to test the main part of collaboration and can not conclude that the practical applicability and technical feasibility is given.
 
 With regards to limitations there are several aspects to consider.
 First and foremost, we are aware that we tested a very superficial "simulation" of adversariality.
