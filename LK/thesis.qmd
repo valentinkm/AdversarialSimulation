@@ -93,7 +93,8 @@ In the second part, a joint study, including a joint simulation protocol, should
 
 As a first step of the individual studies, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
 These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019.
-To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.
+To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual simulation studies in advance.
+This structure (see Table 1) is based on relevant literature in the field of simulation studies [@paxton_monte_2001; @morris_using_2019; @boomsma_reporting_2013].
 
 **Table 1**
 
@@ -146,7 +147,7 @@ To facilitate a structured comparison and integration of studies throughout the 
 
 : {tbl-colwidths="[5,95]"}
 
-This framework allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
+This structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
 
 ### Part two: Joint study
 
@@ -223,7 +224,7 @@ The evaluation of the diary entry can be conducted in a semi-structured and comp
 
 ## Technical setup
 
-As simulation studies are computationally intensive and require a structured approach to save, share and review code, we propose using Github to ease collaboration.
+As simulation studies are computationally intensive and require a structured approach to save, share and review code, we propose using Github to ease collaboration [@peikert_reproducible_2021].
 Github allows to set up and synchronize multiple repositories to allow both individual and collaborative work.
 After setting up a first repository at one adversaries user account, the other party can fork that repository to have a copy at their own account.
 These forks can be synchronized at any time, but also left seperate.
@@ -231,7 +232,7 @@ This functionality aligns well with the different parts of our procedure:
 For the individual studies, each adversary can work in their own repository.
 For the joint study, both can work in one repository, and synchronize the other one at will.
 Additionally, the Github releases feature allows to align milestones such as the publishing of the simulation protocols or the finished result analysis of all studies.
-These can even be assigned a DOI via Zenodo.
+These can even be assigned a DOI via Zenodo [@zenodo].
 
 # Results
 
@@ -327,7 +328,7 @@ In addition to what was done in @robitzsch_comparing_2022, I calculated confiden
 The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the github repository.
 
 I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
-As @robitzsch_comparing_2022 argued in their paper, and was shown already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
+As @robitzsch_comparing_2022 argued in their paper, and was shown already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples [@ludtke_comparison_2021; @ulitzsch_alleviating_2023].
 I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimations as a sanity check.
 
 **Software**
@@ -737,7 +738,7 @@ Another question is in how far the advantages we observed with regards to increa
 We believe this not to be problematic, as AC and other aspects of open science can complement each very nicely and reinforce positive effects.
 Thus, researchers who are not generally interested in open science, but in collaboration, would still be nudged to work more openly, which we view as a positive outcome.
 
-In the end, we believe that it would be worthwile for future research to conduct another case study like ours.
+In the end, we believe that it would be worthwhile for future research to conduct another case study like ours.
 Science is, in the end, a collaborative effort.
 Exploring the limits of collaboration is thus valuable to investigate opportunities to advance scientific progress.
 
