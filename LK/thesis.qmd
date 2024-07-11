@@ -81,77 +81,56 @@ As a first step of the individual studies, the two adversarial sides have to agr
 These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019.
 To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a framework for conducting our individual simulation studies in advance, that is visible in Table 1.
 
-Table 1: Structure of simulation studies 
-1. Defining aims and objectives / Research Question of Interest. ( = verbal description) 
-o as specific as possible 
-o e.g. examination of goodness-of-fit statistics under varying degrees of 
-misspecification 
-o comparison of the maximum likelihood (ML) to (2SLS) 
-2. Specification of Population Model 
-o Optional and depending on field of simulation 
-Modularities: 
-o Structure: (e.g. CFA or SEM) 
-o Size: number of latents and indicators 
-o Complexity: (cross-loaded indicators, Reciprocal paths, Exogenous 
-predictors) 
-→ select target model for (assumed) general model types 
-3. Data Generation Mechanism 
-o resampling vs. parametric model draw 
-o random number draw for data generation 
-4. Experimental Design Simulation Procedures 
-o Determine what factors to vary, on what levels, and whether fully, or partly 
-factorially or one at a time (factor = scenario in Morris et al., 2019) 
-o e.g. 
-▪ sample size 
-▪ distribution of the observed variables 
-▪ extent of misspecification 
-… 
-5. Method Selection 
-o Varies depending on research question 
-o e.g. 
-▪ type of and number of estimation methods to be compared 
-6. Defining Estimands / Population level values 
-o should reflect values commonly encountered in applied research. 
-o e.g. 
-▪ R2 values the chosen coefficients produce should also be reasonable 
-for applied research. 
-▪ parameters of the model should be statistically significant, even at the 
-smallest sample size of the simulation. 
-▪ consider power issues (e.g.:enough power to detect misspecification, 
-too much power to detect misspecification at all sample sizes?) 
-▪ “bias” in the estimates that will be introduced by the misspecification. 
-7. Performance Measures 
-o Selection and justification of use of e.g. 
-▪ Bias 
-▪ sensitivity/ specificity 
-▪ predictive accuracy 
-o decision on number of simulations for acceptable Monte Carlo SE for these 
-measures 
-8. Software Selection 
-o to run simulation 
-o packages & functions 
-9. Analysis and Interpretation plan 
-o Analysis: descriptive vs. inferential 
-o Interpretation: decision criteria that evaluate performance : e.g. if 1-ß > 90, 
-the method performs well 
+**Table 1**
 
-Before Coding and Execution: Anticipating all critical decision processes (e.g. exclusion 
-criteria for “imperfect” samples) 
-10. Coding and Execution 
-o Amount and content of scripts 
-o include (sanity) checks 
-o setting seeds 
-o troubleshooting & verification 
-11. Analyzing results 
-o descriptive 
-o graphical 
-o inferential 
-o exploration 
-12. Reporting & Presentation 
-o provide rationales for each choice made in the previous steps 
-o publishing code and simulated data 
+*Structure of simulation studies*
 
-End of Table 1 
+| Step | Phase                                                 |
+|------|-------------------------------------------------------|
+| 1    | **Defining Aims and Objectives**                      |
+|      | - Verbal description of the research question, making it specific. |
+|      | - Examples include examining goodness-of-fit statistics and comparing ML to 2SLS. |
+| 2    | **Specification of Population Model**                 |
+|      | - **Optional** and depending on the field. |
+|      | - Modularities include: |
+|      |   - Structure: e.g., CFA or SEM |
+|      |   - Size: number of latents and indicators |
+|      |   - Complexity: cross-loaded indicators, reciprocal paths, exogenous predictors |
+|      | - Selection of target model. |
+| 3    | **Data Generation Mechanism**                         |
+|      | - Resampling vs. parametric model draw. |
+|      | - Random number draw for data generation. |
+| 4    | **Experimental Design Simulation Procedures**         |
+|      | - Determine factors to vary, levels, and whether fully, partly factorially, or one at a time. |
+|      | - Examples include: |
+|      |   - Sample size |
+|      |   - Distribution of the observed variables |
+|      |   - Extent of misspecification |
+| 5    | **Method Selection**                                  |
+|      | - Varies depending on research question. |
+|      | - Examples include type and number of estimation methods to be compared. |
+| 6    | **Defining Estimands / Population Level Values**       |
+|      | - Should reflect values commonly encountered in applied research. |
+|      | - Considerations for power issues and bias due to misspecification. |
+|      | - Example: Parameters should be statistically significant, even at the smallest sample size of the simulation. |
+| 7    | **Performance Measures**                              |
+|      | - Selection and justification of use of measures such as Bias, sensitivity/specificity, predictive accuracy. |
+|      | - Decision on number of simulations for acceptable Monte Carlo SE for these measures. |
+| 8    | **Software Selection**                                |
+|      | - Software to run simulation using specific packages & functions. |
+| 9    | **Analysis and Interpretation Plan**                  |
+|      | - Analysis: descriptive vs. inferential. |
+|      | - Interpretation: decision criteria that evaluate performance (e.g., if 1-ß > 90%, the method performs well). |
+| 10   | **Coding and Execution**                              |
+|      | - Amount and content of scripts. |
+|      | - Include (sanity) checks, setting seeds, troubleshooting & verification. |
+| 11   | **Analyzing Results**                                 |
+|      | - Descriptive, graphical, inferential, and exploration. |
+| 12   | **Reporting & Presentation**                          |
+|      | - Provide rationales for each choice made in previous steps. |
+|      | - Publishing code and simulated data. |
+
+: {tbl-colwidths="[5,95]"}
 
 This framework allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
 
@@ -173,45 +152,22 @@ We are aware that adversarial collaboration has its limitations when it comes to
 In order to mitigate this risk, next to each collaborator publishing their own paper, we propose to conduct the joint study in a structured and formalized manner. 
 To this end, we identified several collaboration techniques presented in Table 2. 
 These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
- 
 
-Table 2: Adversarial Collaboration (AC) Techniques: 
+**Table 2**
 
-At each step of decision making in the Joint Study, any of the following techniques 
+*List of adversarial collaboration techniques*
 
-
-Thesis of: Leonard Kosanke 
-
-can be used, depending on their applicability: 
-
- 
-
-• Core Disagreements: Arrive at clearly defined core disagreements that might be the origin 
-for conflicts. (Clark et al., 2022) 
-
- 
-
-• Assumption check: List, question, and categorize assumptions (Kardos Dexter, 2017) 
-
- 
-
-• Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ 
-approach (Kardos Dexter, 2017) 
-
- 
-
-• Quality of information (Kardos Dexter, 2017): checking the adversaries’ quality of 
-evidence based on literature. 
-
- 
-
-• Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third 
-neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. 
-
- 
-
-End of table 2 
-
+|                                                                                                 |
+|-------------------------------------------------------------------------------------------------|
+| • Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. (Clark et al., 2022) |
+|                                                                                                 |
+| • Assumption check: List, question, and categorize assumptions (Kardos & Dexter, 2017)            |
+|                                                                                                 |
+| • Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ approach (Kardos & Dexter, 2017) |
+|                                                                                                 |
+| • Quality of information (Kardos Dexter, 2017): checking the adversaries’ quality of evidence based on literature. |
+|                                                                                                 |
+| • Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. |
 
 
 #### Documentation - Decision log 
