@@ -333,7 +333,7 @@ I did include, however, a mechanism to track the total number of warnings for ea
 **Software**
 
 All analyses were conducted in R.
-I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
+I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results [@rosseel_lavaan_2012; @purrr; @tidyverse; @furrr; @knitr; @zhu_kableextra_2024] .
 
 **Analysis and Interpretation plan**
 
