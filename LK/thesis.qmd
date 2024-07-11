@@ -378,7 +378,7 @@ create_styled_table <- function(data, condition) {
   kbl(data, 
       col.names = c("Method/Metric", "50", "100", "250",
                     "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
-    kable_styling(full_width = F, position = "left") %>%
+    kable_styling(full_width = T, position = "left") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
@@ -395,8 +395,7 @@ rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 
 ```{r eval = TRUE, echo = FALSE}
 
-create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")%>%
-  kable_styling(full_width = T, position = "left")
+create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
 
