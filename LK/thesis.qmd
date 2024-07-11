@@ -618,21 +618,39 @@ Thus, we can see the negative small sample bias come into play in this study as 
 Results looked very similar with regards to RMSE.
 Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
 
-
-
-
 ## Conclusions from both studies
 
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
 This is because of some central distinctions between the studies.
 Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the estimator.
-The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be taken cautiously.
+Additionally, the performance differences observed disappeared, when accounting for SAM's negative small sample bias.
+
+In alignment with what Kosanke observed in his simulations, Kriegmair's results also hint at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambdas, where the bias is especially pronounced.
+
+The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects.
+This is true for all performance measures, even for coverage, which was not investigated in the study by Kosanke.
+Coverage is a measure that is strongly determined by bias.
+For this reason, results aligned in terms of bias and coverage in the study by Kriegmair.
+Thus, there is no reason to suspect that the choice of performance measure might impact the results observed in the study by Kosanke.
 
 Additionally, the results with regards to negatively valenced unmodelled residual correlations and cross-loading paint a more complete picture of the comparative performance of the two estimation methods.
+Unlike Kosanke, Kriegmair did not include these conditions.
 The apparent performance advantages for traditional SEM in these conditions balance the advantages of SAM in positive conditions.
 In the context of empirical studies, the valence of potential residual correlations and cross-loadings is not known a priori.
 If that would be the case, one could simply turn to an estimator that is biased in the appropriate direction, to compensate this misspecification.
 Thus, achieving unbiased estimates is desirable in application contexts.
+
+Other differences in the individual studies were the additional inclusion of effects with regards to endo- and exogeneity of predictors and the number of measurement blocks.
+Findings were not showing a substantial impact of these conditions on the estimation results.
+
+The difference of observing effects of regression weigths directly in the study by Kosanke, and total variance explained by Kriegmair, are also minor, as both are aimed at modifying the regression weigths and lead to comparable parameter values (PROOOF?).
+But: Different effects! minimal impact of R-squared for Valentin, but effect of beta for me? (only in some conditions) --> What range were the regression values, in the end?
+Additionally, both studies did not find substantial effects of this variation?
+
+Another difference is the inclusion of conditions that examine the misspecification of the regression directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model).
+Here, the same argument as before can be made: Only unconstrained ML-estimation and postive values of misspecified parameters were investigated.
+The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
+
 The results of the individual studies leave us with no imminent call for additional investigation in the joint study.
 What we and others viewed as a disagreement up to the point of contradiction, did not turn out to be one, upon closer examination.
 In consequence, we did not conduct a joint study and stopped the collaboration at this point.
