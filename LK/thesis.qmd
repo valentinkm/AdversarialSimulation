@@ -377,14 +377,12 @@ bias_ci_s4 <- readRDS("SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 create_styled_table <- function(data, condition) {
   kbl(data, 
       col.names = c("Method/Metric", "50", "100", "250",
-                    "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
+                    "500", "1000", "2500", "100000"), booktabs = TRUE) %>%
     kable_styling(full_width = T, position = "left") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     column_spec(1, width = "3.5cm") %>% 
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l",
-                     line = TRUE, italic = TRUE) %>%
     footnote(general = paste("Condition:", condition))
 }
 
@@ -504,13 +502,11 @@ create_styled_table <- function(data, condition) {
   kbl(data, 
       col.names = c("Method/Metric", "50", "100", "250",
                     "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
-    kable_styling(full_width = F, position = "left",
+    kable_styling(full_width = T, position = "left",
                   latex_options ="scale_down") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
-    add_header_above(c("Condition:" = 8), bold = TRUE, align = "l",
-                     line = TRUE, italic = TRUE) %>%
     footnote(general = paste("Condition:", condition))
 }
 
