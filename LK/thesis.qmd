@@ -229,35 +229,19 @@ If this is the case, one might resort to deciding at random.
 Lastly, there might be other reasons that lead to a decision, that can not be anticipated but should still be captured.  
 These four reasons ground decision-making and aim to ease the collaborative process by giving a structure. 
 In some cases, more than one of these reasons can be present. 
-In such cases, we their relevance to a decision could be ranked, if possible. An example is the log entry in figure 1: 
+In such cases, we their relevance to a decision could be ranked, if possible. An example could be the following mock log entry: 
 
-
-Figure 1: Exemplary log entry for deciding for a range of sample sizes 
-
- 
-
+```
 Decision element: factor of sample sizes 
-
- 
 
 Result: c(50, 100, 200) 
 
-
- 
-
 Grounds: Primary - Evidence-based, as per Peikert et al. (2020); 
 
+         Secondary – pragmatic reason, average of individual suggestions. 
+``` 
  
 
-Secondary – pragmatic reason, based on the average of individual suggestions. 
-
- 
-
-Evaluation - Diary entries 
-
- 
-
-End of figure 1 
 
 #### Diary
 
@@ -376,16 +360,19 @@ I did not include a detailed mechanism to capture model convergence as detailed 
 As @robitzsch_comparing_2022 argued in their paper, and was shown already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples.
 I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimations as a sanity check.
 
+**Software**
+
+All analyses were conducted in R.
+I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
+
+**Analysis and Interpretation plan**
+
 For the interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
 For bias, I interpreted differences of 0.05 or higher as substantial.
 For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
 For RMSE, the same interpretation was used for differences of 0.03 or higher. 
 The simulation was repeated 1500 times for each Study.
 
-**Software**
-
-All analyses were conducted in R.
-I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results.
 
 
 ### Results
