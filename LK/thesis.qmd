@@ -26,6 +26,20 @@ library(kableExtra)
 library(tidyverse)
 ```
 
+# Abstract
+
+Previous research has demonstrated the potential of adversarial collaboration (AC) in empirical studies to reduce ambiguity in findings and facilitate a truthful representation of opposing viewpoints.
+In this study, we propose an AC framework specifically designed for Monte Carlo simulation studies to enhance methodological rigor and generalizability in this line of research.
+Our framework involves two parts: conducting independent preliminary studies, followed by a joint study to synthesize and debate the results, utilizing tools to structure, document, and evaluate the AC process.
+To test this framework, we conducted a focused case study comparing iterative structural after measurement (SAM) estimation and traditional structural equation model (SEM) estimation.
+Our approach involved generating individual simulation protocols and conducting independent preliminary studies, followed by an integration of results.
+The findings revealed no substantial disagreements between the studies, demonstrating the feasibility of AC in simulation contexts.
+Our results show that AC can increase transparency, rigor, and epistemic accountability in simulation research.
+Furthermore, our study highlights the practical applicability and technical feasibility of AC, supported by tools like GitHub for collaborative work.
+Although we did not proceed to a joint study due to the lack of unresolved disagreements, our findings suggest that AC holds significant potential for improving the quality and reliability of simulation studies in empirical research.
+Future research should further explore AC in simulations to validate and extend these findings.
+
+
 # Introduction
 
 Monte Carlo simulations are an extensively utilized tool for assessing and comparing statistical methods in quantitative empirical science. 
