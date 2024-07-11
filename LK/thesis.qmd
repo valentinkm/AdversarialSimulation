@@ -380,6 +380,7 @@ create_styled_table <- function(data, condition) {
                     "500", "1000", "2500", "1e+05"), booktabs = TRUE) %>%
     kable_styling(full_width = T, position = "left") %>%
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    column_spec(1, width = "3.5cm") %>% 
     row_spec(0, bold = TRUE) %>%
     kable_classic(full_width = F) %>%
     add_header_above(c("Condition:" = 8), bold = TRUE, align = "l",
