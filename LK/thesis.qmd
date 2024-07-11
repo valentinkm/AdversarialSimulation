@@ -98,6 +98,8 @@ This structure (see Table 1) is based on relevant literature in the field of sim
 
 **Table 1**
 
+\vspace{0.5\baselineskip}
+
 *Structure of simulation studies*
 
 | Step | Phase                                                 |
@@ -116,7 +118,7 @@ This structure (see Table 1) is based on relevant literature in the field of sim
 |      | - Resampling vs. parametric model draw. |
 |      | - Random number draw for data generation. |
 | 4    | **Experimental Design Simulation Procedures**         |
-|      | - Determine factors to vary, levels, and whether fully, partly factorially, or one at a time. |
+|      | - Determine factors to vary, levels, and whether fully, partly factorial, or one at a time. |
 |      | - Examples include: |
 |      |   - Sample size |
 |      |   - Distribution of the observed variables |
@@ -129,7 +131,7 @@ This structure (see Table 1) is based on relevant literature in the field of sim
 |      | - Considerations for power issues and bias due to misspecification. |
 |      | - Example: Parameters should be statistically significant, even at the smallest sample size of the simulation. |
 | 7    | **Performance Measures**                              |
-|      | - Selection and justification of use of measures such as Bias, sensitivity/specificity, predictive accuracy. |
+|      | - Selection and justification of use of measures such as bias, sensitivity/specificity, predictive accuracy. |
 |      | - Decision on number of simulations for acceptable Monte Carlo SE for these measures. |
 | 8    | **Software Selection**                                |
 |      | - Software to run simulation using specific packages & functions. |
@@ -170,6 +172,8 @@ These were also meant to facilitate the evaluation of the adversarial collaborat
 
 **Table 2**
 
+\vspace{0.5\baselineskip}
+
 *List of adversarial collaboration techniques*
 
 |                                                                                                 |
@@ -183,7 +187,6 @@ These were also meant to facilitate the evaluation of the adversarial collaborat
 | • Quality of information (Kardos Dexter, 2017): checking the adversaries’ quality of evidence based on literature. |
 |                                                                                                 |
 | • Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. |
-
 
 #### Documentation - Decision log 
 
@@ -277,7 +280,7 @@ Overall, I conducted 6 simulation studies.
 
 **Population Models and Data Generation Mechanisms**
 
-The most important details with regards to the population models and data-generating mechanisms are visible in Table 1.
+The most important details with regards to the population models and data-generating mechanisms are visible in Table 3.
 
 ```{r schematic 1, eval = TRUE, echo = FALSE, out.width="110%"}
 
@@ -293,7 +296,7 @@ All simulations were conducted using seeds to allow for reproducibility.
 
 **Experimental Design of simulation procedures**
 
-Overall, 3 different types of factors were varied that can be deducted from Table 1 and are detailed again in the simulation scripts provided.
+Overall, 3 different types of factors were varied that can be deducted from Table 3 and are detailed again in the simulation scripts provided.
 Firstly, we varied the sample size in all studies, ranging from N = 50 to 100.000.
 I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
 Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes. 
@@ -379,7 +382,7 @@ A detailed analysis of all the warnings was conducted in the *results.pdf* docum
 Mainly Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.
 In Study 4, only slight, but no substantial differences could be observed in terms of bias and RMSE between the LSAM- and classical ML-estimation. 
-This is visible in Table 1 for the example of RMSE.
+This is visible in Table 4 for the example of RMSE.
 Here, LSAM-ML appeared to outperform both SEM-estimation methods only in N=50.
 For higher N, no differences were present between any of the estimators.
 
@@ -406,18 +409,18 @@ create_styled_table <- function(data, condition) {
 rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 ```
 
-**Table 3**
+**Table 4**
 
 \vspace{0.5\baselineskip}
 
-*Study 4a: RMSE for DGM 1*
+*Study 4a: RMSE for DGM 1.*
 
 ```{r eval = TRUE, echo = FALSE}
 
 create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
-*Note*. Condition: DGM_0
+*Note*. Condition: DGM 1
 
 
 ```{r eval = TRUE, echo = FALSE}
@@ -444,37 +447,55 @@ create_styled_table <- function(data, condition) {
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     column_spec(1, width = "3.5cm") %>% 
     row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = F) %>%
-    footnote(general = paste("Condition:", condition))
+    kable_classic(full_width = F)
 }
 
 ```
 
 In Study 1, both traditional SEM approaches outperformed all SAM estimators in small to moderate samples of N=50-500. 
-This was true for both relative bias and RMSE, and visible for the former in Table 2.
+This was true for both relative bias and RMSE, and visible for the former in Table 5.
 Here, SAM's negative small sample bias is already visible as well.
+
+**Table 5**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Relative bias in conditions without misspecification.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
-
 
 #### Conditions with negatively valenced unmodelled parameters
 
 Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
 In these studies, it became apparent that traditional SEM outperformed SAM estimation.
 
-As can be seen in Table 1, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
+As can be seen in Table 6, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
+
+**Table 6**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Relative bias in conditions with two negative unmodelled residual correlations.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 
 ```
 
+\vspace{0.5\baselineskip}
+
 The same was true in Study 2, in the presence of two negative cross-loadings.
 In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
 
-Importantly, no differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table X for the negative cross-loadings in study 2.
+Importantly, no differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 7 for the negative cross-loadings in study 2.
+
+**Table 7**
+
+\vspace{0.5\baselineskip}
+
+*Study 2: RMSE in conditions with two negative unmodelled cross-loadings.*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -482,12 +503,20 @@ rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
 create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 ```
 
+\vspace{0.5\baselineskip}
+
 #### Conditions with positively valenced unmodelled parameters
 
 In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
 
-Table 3 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
+Table 8 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
 Only from N=100-1000 did SAM outperform SEM.
+
+**Table 8**
+
+\vspace{0.5\baselineskip}
+
+*Study 3: Relative bias in conditions with each one positive unmodelled cross-loading and residual correlation.*
 
 ```{r eval = TRUE, echo = FALSE}
 # Load the relative bias results
@@ -507,6 +536,8 @@ kbl(bias_ci_s3,
     row_spec(0, bold = TRUE)
 ```
 
+\vspace{0.5\baselineskip}
+
 ```{r eval = TRUE, echo = FALSE}
 
 # Load the absolute bias results
@@ -521,8 +552,7 @@ create_styled_table <- function(data, condition) {
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     column_spec(1, width = "3.5cm") %>% 
     row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = F) %>%
-    footnote(general = paste("Condition:", condition))
+    kable_classic(full_width = F)
 }
 
 ```
@@ -530,20 +560,26 @@ create_styled_table <- function(data, condition) {
 In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but only for smaller samples.
 
 With regards to RMSE, results were mixed as well. 
-LSAM appeared to outperform in Table X for DGM 2 of Study 4.
+LSAM appeared to outperform in Table 9 for DGM 2 of Study 4.
 In other conditions, however, no substantial differences arose in terms of RMSE.
+
+**Table 9**
+
+\vspace{0.5\baselineskip}
+
+*Study 4: RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings).*
+
 ```{r eval = TRUE, echo = FALSE}
 
 create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
 ```
 
-
 #### Small sample bias in LSAM estimation
 
 The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
+Table 10 shows this was especially apparent in a sample size of 50.
 
-Table 5 shows this was especially apparent in a sample size of 50.
 ```{r eval = TRUE, echo = FALSE}
 #Load processed results
 bias_ci_s1b <- readRDS("SimulationResultsProcessed/sim1b_abs_bias_ci.rds")
@@ -553,6 +589,12 @@ bias_ci_s1b[["N_50"]][["LSAM_ML"]] <- bias_ci_s1b[["N_50"]][["LSAM_ML"]] %>%
   mutate(lambda = as.character(lambda))
 ```
 
+**Table 10**
+
+\vspace{0.5\baselineskip}
+
+*Study 1b: Absolute Bias of LSAM-ML for N=50*
+
 ```{r eval = TRUE, echo = FALSE}
 #Formatted tables
 kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]], 
@@ -561,10 +603,7 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
   kable_styling(full_width = T, position = "left") %>%
   add_header_above(c(" " = 1, "Phi values" = 5)) %>%
   row_spec(0, bold = TRUE) %>%
-  kable_classic(full_width = F) %>%
-  add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6),
-                   bold = TRUE, align = "l", line = TRUE, italic = FALSE)
-
+  kable_classic(full_width = F)
 ```
 
 \vspace{\baselineskip}
@@ -580,7 +619,7 @@ Also, a new insight is that the bias remained relevant for low values of phi, un
 In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.
 
 As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
-Table X shows the performance of SEM-ML, whereas Table Y shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
+Table 11 shows the performance of SEM-ML, whereas Table 12 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
 
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
@@ -591,6 +630,15 @@ bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["SEM_ML_me
 
 bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] %>% 
   mutate(beta = as.character(beta))
+```
+
+**Table 11**
+
+\vspace{0.5\baselineskip}
+
+*Study 4a: Absolute bias of SEM-ML for DGM 2*
+
+```{r eval = TRUE, echo = FALSE}
 
 # Format tables
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], 
@@ -599,9 +647,18 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]],
   kable_styling(full_width = T, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
-  kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of SEM-ML for DGM 1" = 8),
-                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  kable_classic(full_width = F)
+```
+
+\vspace{0.5\baselineskip}
+
+**Table 12**
+
+\vspace{0.5\baselineskip}
+
+*Study 4a: Absolute bias of LSAM-ML for DGM 2*
+
+```{r eval = TRUE, echo = FALSE}
 
 kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], 
     col.names = c("beta", "50", "100", "250", "500",
@@ -613,6 +670,8 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
   add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 1" = 8),
                    bold = TRUE, align = "l", line = TRUE, italic = TRUE)
 ```
+
+\vspace{0.5\baselineskip}
 
 Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
 Thus, we can see the negative small sample bias come into play in this study as well.
