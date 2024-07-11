@@ -382,8 +382,7 @@ create_styled_table <- function(data, condition) {
     add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
     column_spec(1, width = "3.5cm") %>% 
     row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = F) %>%
-    footnote(general = paste("Condition:", condition))
+    kable_classic(full_width = F)
 }
 
 ```
@@ -392,11 +391,18 @@ create_styled_table <- function(data, condition) {
 rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 ```
 
+**Table 3**
+
+\vspace{0.5\baselineskip}
+
+*Study 4a: RMSE for DGM 1*
+
 ```{r eval = TRUE, echo = FALSE}
 
 create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
+*Note*. Condition: DGM_0
 
 
 ```{r eval = TRUE, echo = FALSE}
@@ -542,9 +548,11 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
   row_spec(0, bold = TRUE) %>%
   kable_classic(full_width = F) %>%
   add_header_above(c("Study 1b: Absolute Bias of LSAM-ML for N=50" = 6),
-                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+                   bold = TRUE, align = "l", line = TRUE, italic = FALSE)
 
 ```
+
+\vspace{\baselineskip}
 
 Note that absolute values of bias were calculated in my paper.
 Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
@@ -562,6 +570,14 @@ Table X shows the performance of SEM-ML, whereas Table Y shows the performance o
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
+#Change type of first coloumn for alignment
+bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]] %>% 
+  mutate(beta = as.character(beta))
+
+bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] %>% 
+  mutate(beta = as.character(beta))
+
+# Format tables
 kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], 
     col.names = c("beta", "50", "100", "250", "500", 
                   "1000", "2500", "100.000"), booktabs = TRUE) %>%
