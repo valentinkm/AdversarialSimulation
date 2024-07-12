@@ -1,13 +1,13 @@
-name: Publish Docker Image
+name: Build and Publish Docker Image
 
 on:
   push:
     branches:
       - main
-      - study-1 
+      - analyze-results
 
 jobs:
-  build-and-push:
+  build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: VK/simulation/Dockerfile
+        context: ./VK
+        file: ./VK/Dockerfile
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/adversarialsimulation:latest
