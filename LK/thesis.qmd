@@ -347,11 +347,10 @@ For SD, I explicitly mentioned percentage reductions of more or equal to 5%.
 For RMSE, the same interpretation was used for differences of 0.03 or higher. 
 The simulation was repeated 1500 times for each Study.
 
-
-
 ### Results
 
 The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
+The repository readme.md contains a detailed explanation of how the analyses were implemented and how they can be reproduced.
 In this section, I will focus on the most important results only.
 For the most part, results from @robitzsch_comparing_2022 have been successfully replicated:
 I did not observe substantial convergence issues in any study.
@@ -746,8 +745,8 @@ For Kosanke's studies 4 and 4a, they were fixed between 0.1-0.4, while they vari
 
 Another difference is the inclusion of conditions that examine the misspecification of the regression directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) in Kriegmair's studies.
 Important to mention here is that we did not observe any clear differences depending on the type of misspecification looking across all studies, and Kriegmairs studies in specific. 
-As the same was true even in the original papers, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified paramer values for misspecification of the regression directionality.
-Here, the same argument as before can be made: Only unconstrained ML-estimation and postive values of misspecified parameters were investigated.
+As the same was true even in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified paramer values for misspecification of the regression directionality [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
+Here, the same argument as before can be made: Only unconstrained ML-estimation and positive values of misspecified parameters were investigated.
 The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
 
 The results of the individual studies leave us with no imminent call for additional investigation in the joint study.
@@ -764,8 +763,10 @@ Still, we have gained some insights with regards to our research question of whe
 ### Practical applicability
 
 Already the first step of agreeing on a joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
-We see the main success of the research question formulation in the focus on small to moderate sample sizes.
+We see the main success of the research question formulation in the focus on small to moderate sample sizes and on a limited number of estimators.
 This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
+Additionally, our general focus was much narrower because of this as well, as we did not include other discussions in the original papers, as for example on whether two-step-estimation is generally desirable as it seperates the definition from the measurement of latent variables [@robitzsch_comparing_2022].
+
 When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
 This increased quality of reporting, rigor and transparency in our individual studies.
 After the individual studies, we integrated our results and looked for disagreement and points for further investigation.
