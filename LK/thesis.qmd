@@ -682,34 +682,59 @@ Note that this trend was less strong, but still present in the conditions of DGM
 
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
 This is because of some central distinctions between the studies.
-Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the estimator.
-Additionally, the performance differences observed disappeared, when accounting for SAM's negative small sample bias.
+Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the unconstrained version of the estimator.
+Additionally, the observed performance differences disappeared, when accounting for SAM's negative small sample bias.
 
-In alignment with what Kosanke observed in his simulations, Kriegmair's results also hint at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambdas, where the bias is especially pronounced.
-
-The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects.
-This is true for all performance measures, even for coverage, which was not investigated in the study by Kosanke.
-Coverage is a measure that is strongly determined by bias.
-For this reason, results aligned in terms of bias and coverage in the study by Kriegmair.
-Thus, there is no reason to suspect that the choice of performance measure might impact the results observed in the study by Kosanke.
-
-Additionally, the results with regards to negatively valenced unmodelled residual correlations and cross-loading paint a more complete picture of the comparative performance of the two estimation methods.
+Secondly, the results with regards to negatively valenced unmodelled residual correlations and cross-loading paint a more complete picture of the comparative performance of the two estimation methods.
 Unlike Kosanke, Kriegmair did not include these conditions.
-The apparent performance advantages for traditional SEM in these conditions balance the advantages of SAM in positive conditions.
+The apparent performance advantages for traditional SEM in these conditions balanced the advantages of SAM in positive conditions.
 In the context of empirical studies, the valence of potential residual correlations and cross-loadings is not known a priori.
 If that would be the case, one could simply turn to an estimator that is biased in the appropriate direction, to compensate this misspecification.
 Thus, achieving unbiased estimates is desirable in application contexts.
 
-Other differences in the individual studies were the additional inclusion of effects with regards to endo- and exogeneity of predictors and the number of measurement blocks.
-Findings were not showing a substantial impact of these conditions on the estimation results.
+The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects, but align with the results by Kosanke, in this light:
+
+This is true for all performance measures, even for coverage, which was not investigated in the study by Kosanke.
+Coverage is a measure that is partly determined by bias.
+Results in the studies by Kriegmair show, that SAM showed overcoverage due to its wider confidence intervals.
+Consequently, SAM was less biased but also less accurate than traditional SEM.
+Thus, SAM only partly outperformed tradional SEM, even in the unconstrained version and the results with regards to coverage do not change our conclusions.
+Kriegmair's results also hinted at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambdas, where the bias was especially pronounced (TABLES???).
+Moreover, in Kriegmairs' study 1, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (TABLE???).
+
+One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of Phi in Kosanke's Study 4a.
+Only traditional SEM seemed to be negatively affected for higher beta values, compared to lower beta values in conditions with unmodelled cross-loadings (DGM 2).
+This showed slightly, but not substantially in conditions with residual correlations as well (DGM3), in the same Study by Kosanke.
+Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (SEE TABLE???).
+Additionally, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
+
+
+Importantly, besides the use of coverage as a performance measure, other differences in the design and implementations were present when comparing our respective studies.
+These have to be adressed:
+
+Unlike Kosanke, Kriegmair investigated additional effects with regards to endo- and exogeneity of predictors.
+Results showed, that the positive Bias of unconstrained SEM is stronger, if misspecification is present in exogenous predictors, if compared to it being present in endogenous and both endo- and exogenous predictors.
+In these latter conditions, SAM performed even worse.
+At the end of the day, all this finding does is limiting the negative impacts of using unconstrained SEM to an even more specific set of model misspecifications.
+Thus, unconstrained SEM can be viewed in an even better light relatively, for the endogenous as well as both endo- and exogenous predictor misspecifications.
+This does not warrant further investigation for our research question.
+
+Furthermore, only Kriegmair investigated the differential effects of using a different number of measurement blocks in LSAM estimation.
+Results were mixed, as for Bias, using less measurement blocks appeared to lead to better performance, while the opposite was true in terms of RMSE.
+In consequence, no clear effect, that would suggest a differential performance of LSAM was present.
+We concluded that these findings have no relevance for our investigations on the relative comparison of SAM vs. SEM.
 
 The difference of observing effects of regression weigths directly in the study by Kosanke, and total variance explained by Kriegmair, are also minor, as both are aimed at modifying the regression weigths and lead to comparable parameter values.
-But: Different effects! minimal impact of R-squared for Valentin, but effect of beta for me? (only in some conditions) --> What range were the regression values, in the end?
-Additionally, both studies did not find substantial effects of this variation?
+For Kosanke's studies 4 and 4a, they were fixed between 0.1-0.4, while they varied between 0.183 and 0.447 in Kriegmair's study 2.
 
-Another difference is the inclusion of conditions that examine the misspecification of the regression directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model).
+Another difference is the inclusion of conditions that examine the misspecification of the regression directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) in Kriegmair's studies.
+Important to mention here is that we did not observe any clear differences depending on the type of misspecification looking across all studies, and Kriegmairs studies in specific. 
+As the same was true even in the original papers, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified paramer values for misspecification of the regression directionality.
 Here, the same argument as before can be made: Only unconstrained ML-estimation and postive values of misspecified parameters were investigated.
 The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
+
+
+
 
 The results of the individual studies leave us with no imminent call for additional investigation in the joint study.
 What we and others viewed as a disagreement up to the point of contradiction, did not turn out to be one, upon closer examination.
