@@ -611,12 +611,16 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
 Note that absolute values of bias were calculated in my paper.
 Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
 The bias persisted, but to a lesser degree in samples of 100.
+Thus, a clear effect of sample size was present.
 Overall, comparing LSAM-ML and -ULS estimation, results were very similar.
 
 Importantly, differential effects due to lambda and phi were present in Study 1b.
 The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations.
 Also, a new insight is that the bias remained relevant for low values of phi, unlike in the original paper by @robitzsch_comparing_2022.
 In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.
+
+Another new insight lied in the presence of what could be called a reversal effect: For higher values of lambda, the bias did not increase for higher values of phi. 
+On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.
 
 As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
 Table 11 shows the performance of SEM-ML, whereas Table 12 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
@@ -666,9 +670,7 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
   kable_styling(full_width = T, position = "left") %>%
   add_header_above(c(" " = 1, "Sample size" = 7)) %>%
   row_spec(0, bold = TRUE) %>%
-  kable_classic(full_width = F) %>%
-  add_header_above(c("Study 4a: Absolute bias of LSAM-ML for DGM 1" = 8),
-                   bold = TRUE, align = "l", line = TRUE, italic = TRUE)
+  kable_classic(full_width = F)
 ```
 
 \vspace{0.5\baselineskip}
@@ -677,6 +679,11 @@ Aligning with the findings of Study 1b, the results suggested an even better rel
 Thus, we can see the negative small sample bias come into play in this study as well.
 Results looked very similar with regards to RMSE.
 Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
+
+One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
+Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
+This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.
+But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), we did not deem it substantial.
 
 ## Conclusions from both studies
 
@@ -702,12 +709,11 @@ Thus, SAM only partly outperformed tradional SEM, even in the unconstrained vers
 Kriegmair's results also hinted at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambdas, where the bias was especially pronounced (TABLES???).
 Moreover, in Kriegmairs' study 1, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (TABLE???).
 
-One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of Phi in Kosanke's Study 4a.
+One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of phi in Kosanke's Study 4a.
 Only traditional SEM seemed to be negatively affected for higher beta values, compared to lower beta values in conditions with unmodelled cross-loadings (DGM 2).
-This showed slightly, but not substantially in conditions with residual correlations as well (DGM3), in the same Study by Kosanke.
+This showed slightly, but not substantially in conditions with residual correlations as well (DGM3), in the same study by Kosanke.
 Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (SEE TABLE???).
 Additionally, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
-
 
 Importantly, besides the use of coverage as a performance measure, other differences in the design and implementations were present when comparing our respective studies.
 These have to be adressed:
@@ -764,7 +770,7 @@ This can be seen as preliminary evidence, that the second part of the collaborat
 Still, at the end of the day we could not conduct the second part of our collaboration framework.
 We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
 
-### Technical feasibility.
+### Technical feasibility
 
 Technical feasibility in the collaboration was achieved for the parts we could implement in our case study.
 Utilizing tools like github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual studies within the same github repository.
