@@ -676,14 +676,25 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
 \vspace{0.5\baselineskip}
 
 Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
-Thus, we can see the negative small sample bias come into play in this study as well.
+Thus, the negative small sample bias came into play in this study as well.
 Results looked very similar with regards to RMSE.
 Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
 
 One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
 Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
 This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.
-But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), we did not deem it substantial.
+But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.
+
+### Summary of results
+
+For the most part, I succesfully replicated the results from @robitzsch_comparing_2022:
+I did not observe substantial convergence issues in any study.
+Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
+SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
+This bias was especially strong for lower lambda and higher phi or beta values.
+Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
+Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
+If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
 
 ## Conclusions from both studies
 
@@ -739,9 +750,6 @@ As the same was true even in the original papers, we saw no reason to suspect th
 Here, the same argument as before can be made: Only unconstrained ML-estimation and postive values of misspecified parameters were investigated.
 The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
 
-
-
-
 The results of the individual studies leave us with no imminent call for additional investigation in the joint study.
 What we and others viewed as a disagreement up to the point of contradiction, did not turn out to be one, upon closer examination.
 In consequence, we did not conduct a joint study and stopped the collaboration at this point.
@@ -749,7 +757,7 @@ In consequence, we did not conduct a joint study and stopped the collaboration a
 ## Results of the collaboration
 
 Going back to the outline of our collaboration framework, we successfully agreed on two research questions, conducted individual studies and integrated their results.
-In consequence, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure, the joint study.
+Consequently, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure, the joint study.
 This means that we were unable to completely test our framework.
 Still, we have gained some insights with regards to our research question of whether adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
 
@@ -818,15 +826,15 @@ This, however, should not be a problem for research conducted in universities or
 Still, besides these assumptions and learnings from our first case study, we were unable to test the main part of collaboration and can not conclude that the practical applicability and technical feasibility is completely given.
 We believe that in the second part of our framework lies potential lies to further promote our intended goals and investigate our research question.
 
-With regards to limitations there are several aspects to consider.
-First and foremost, we are aware that we tested a very superficial "simulation" of adversariality.
+With regards to limitations there are several other aspects to consider.
+We are aware that we tested a very superficial "simulation" of adversariality.
 Neither side had long scientific experience in our substantial field of interest, and thus the stakes were much lower than as if the original authors would have collaborated.
 In that case, collaboration most likely would have been more difficult.
 Still, including the individual studies as a first step, we think we did a good job of priming ourselves to the views of our respective sides of the argument.
 
 Another important aspect to discuss is whether we should have been able to see the lack of disagreement earlier, even before conducting our individual studies.
 As most of our findings were replications of the original papers, we might have been able to see their alignment if our preparation of the substantive topic would have been more in depth.
-To avoid this, a more explicit and detailed evaluation of all the papers of interest could be done before deciding on adversarial collaboration, to make sure that there is actually conflicting evidence present.
+To avoid this, collaborators should invest enough time and attention to detail into the evaluation of all the papers of interest before deciding on adversarial collaboration, to make sure that there is actually conflicting evidence present.
 
 Another question is in how far the advantages we observed with regards to increased rigor, transparency and open access were incremental benefits of adversarial collaboration, over and above the usage of simulation protocols and our open access approach to science.
 We believe this not to be problematic, as AC and other aspects of open science can complement each very well and reinforce positive effects.
