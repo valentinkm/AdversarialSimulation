@@ -703,7 +703,7 @@ Thus, achieving unbiased estimates is desirable in application contexts.
 Other differences in the individual studies were the additional inclusion of effects with regards to endo- and exogeneity of predictors and the number of measurement blocks.
 Findings were not showing a substantial impact of these conditions on the estimation results.
 
-The difference of observing effects of regression weigths directly in the study by Kosanke, and total variance explained by Kriegmair, are also minor, as both are aimed at modifying the regression weigths and lead to comparable parameter values (PROOOF?).
+The difference of observing effects of regression weigths directly in the study by Kosanke, and total variance explained by Kriegmair, are also minor, as both are aimed at modifying the regression weigths and lead to comparable parameter values.
 But: Different effects! minimal impact of R-squared for Valentin, but effect of beta for me? (only in some conditions) --> What range were the regression values, in the end?
 Additionally, both studies did not find substantial effects of this variation?
 
@@ -724,7 +724,7 @@ Still, we have gained some insights with regards to our research question of whe
 
 ### Practical applicability
 
-Already the first step of agreeing on joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their studies.
+Already the first step of agreeing on joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
 We see the main success of the research question formulation in the focus on small to moderate sample sizes.
 This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
 When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
@@ -734,7 +734,7 @@ We achieved a fair and truthful comparison of views and could agree that they we
 We also believe that we increased generalizability simply by integrating the findings of two studies into one conclusion for more data generating scenarios and conditions than one individual study conducted.
 
 With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
-We observed already the possibility to converge on research questions and found our individual simulations to be generally very compatible.
+Applying our framework, we observed the possibility to converge on research questions and found our individual simulations to be generally very compatible.
 We believe this to be preliminary evidence, that the second part of the collaboration should be practically applicable as well.
 Still, at the end of the day we could not conduct the second part of our collaboration framework.
 We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
@@ -781,7 +781,7 @@ Thus, aspects of power have to always be considered and this leads to having to 
 In terms of technical feasibility, we believe that using tools like github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
 Ideally, additional resources like a computing cluster should be present to guarantee a higher limit on computational load, and thus more freedom to include additional conditions to test.
 This, however, should not be a problem for research conducted in universities or institutes that usually have access to computing clusters.
-Still, besides these assumptions and learnings from our first case study, we were unable to test the main part of collaboration and can not conclude that the practical applicability and technical feasibility is given.
+Still, besides these assumptions and learnings from our first case study, we were unable to test the main part of collaboration and can not conclude that the practical applicability and technical feasibility is completely given.
 
 With regards to limitations there are several aspects to consider.
 First and foremost, we are aware that we tested a very superficial "simulation" of adversariality.
