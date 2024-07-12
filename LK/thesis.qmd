@@ -749,7 +749,7 @@ Still, we have gained some insights with regards to our research question of whe
 
 ### Practical applicability
 
-Already the first step of agreeing on joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
+Already the first step of agreeing on a joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
 We see the main success of the research question formulation in the focus on small to moderate sample sizes.
 This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
 When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
@@ -760,7 +760,7 @@ We also believe that we increased generalizability simply by integrating the fin
 
 With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
 Applying our framework, we observed the possibility to converge on research questions and found our individual simulations to be generally very compatible.
-We believe this to be preliminary evidence, that the second part of the collaboration should be practically applicable as well.
+This can be seen as preliminary evidence, that the second part of the collaboration should be practically applicable as well.
 Still, at the end of the day we could not conduct the second part of our collaboration framework.
 We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
 
@@ -768,9 +768,11 @@ We believe that here, a lot of potential lies to further promote our intended go
 
 Technical feasibility in the collaboration was achieved for the parts we could implement in our case study.
 Utilizing tools like github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual studies within the same github repository.
-We see a lot of potential for these tools to be used in the second part of our collaboration framework as well, to be able to split work within one study, give feedback on each others implementations via pull-requests, and much more.
-Another aspect of technical feasibility was the access to a computing cluster, that we had.
+
+Next to these aspects, which we integrated in our AC framework, two other aspect of technical feasibility were present for us while conducting our individual simulation studies.
+Firstly, we had access to a computing cluster.
 This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing too much runtime or having to limit the number of repetitions.
+Additionally, feasibility was facilitated by the use of the furrr package in R, which allowed for parallelisation of the code and significantly reduced the runtime of our simulations [@furrr].
 Again, as we could not conduct the second part of our collaboration framework, the technical feasibility of the collaborative study can not be judged conclusively.
 
 # Discussion
@@ -785,7 +787,7 @@ For the first part of our framework, we found some evidence for practical applic
 We were able to agree on two focused research question, that nudged our individual studies to focus on points of potential disagreement.
 Additionally, we were both able to successfully plan and conduct our individual simulations in a way that allowed integration of our results and to converge on a shared understanding of their consequences. 
 Thus, we achieved a fair and truthful representation of both sides views.
-Technical feasibility was present with the use of github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster allowed us to freely include conditions where we deemed it necessary, in our individual studies.
+Technical feasibility was present with the use of github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster and parallelisation allowed us to freely include conditions where we deemed it necessary, in our individual studies.
 
 For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible.
 Another attempt should be pursued to be able to answer our research question in the second part of our AC framework.
@@ -803,10 +805,12 @@ This allows adversaries to not have to find compromise in all cases, and, if in 
 In empirical studies, there are much more limited resources such as number of participants, money, labs and much more.
 Thus, aspects of power have to always be considered and this leads to having to have much more compromise in AC.
 
-In terms of technical feasibility, we believe that using tools like github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
+In terms of *technical feasibility*, we believe that using tools like github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
+We see a lot of potential for these tools to be used in the second part of our collaboration framework, as they allow to split work within one study, give feedback on each others implementations via pull-requests, and much more.
 Ideally, additional resources like a computing cluster should be present to guarantee a higher limit on computational load, and thus more freedom to include additional conditions to test.
 This, however, should not be a problem for research conducted in universities or institutes that usually have access to computing clusters.
 Still, besides these assumptions and learnings from our first case study, we were unable to test the main part of collaboration and can not conclude that the practical applicability and technical feasibility is completely given.
+We believe that in the second part of our framework lies potential lies to further promote our intended goals and investigate our research question.
 
 With regards to limitations there are several aspects to consider.
 First and foremost, we are aware that we tested a very superficial "simulation" of adversariality.
@@ -819,12 +823,12 @@ As most of our findings were replications of the original papers, we might have 
 To avoid this, a more explicit and detailed evaluation of all the papers of interest could be done before deciding on adversarial collaboration, to make sure that there is actually conflicting evidence present.
 
 Another question is in how far the advantages we observed with regards to increased rigor, transparency and open access were incremental benefits of adversarial collaboration, over and above the usage of simulation protocols and our open access approach to science.
-We believe this not to be problematic, as AC and other aspects of open science can complement each very nicely and reinforce positive effects.
+We believe this not to be problematic, as AC and other aspects of open science can complement each very well and reinforce positive effects.
 Thus, researchers who are not generally interested in open science, but in collaboration, would still be nudged to work more openly, which we view as a positive outcome.
 
 In the end, we believe that it would be worthwhile for future research to conduct another case study like ours.
 Science is, in the end, a collaborative effort.
-Exploring the limits of collaboration is thus valuable to investigate opportunities to advance scientific progress.
+Exploring the limits of collaboration is thus valuable to learn more about opportunities to advance scientific progress.
 
 
 
