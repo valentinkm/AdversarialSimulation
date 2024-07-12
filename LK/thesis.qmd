@@ -277,20 +277,20 @@ The following two sections contain the methods and results for the studies from 
 
 >**Aims, objectives and research questions**
 
->Both studies aimed to evaluate the performance of vanilla SEM compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies
+>Both studies aimed to evaluate the performance of traditional SEM compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies
 
 >**Population Models and Data Generation Mechanisms**
 
 >**Study 1:**
 
->Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4)
+>Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figures 1-4)
 
 >-   Model 1.1: Correctly specified model.
 >-   Model 1.2: Misspecified with cross-loadings ignored in the estimation model.
 >-   Model 1.3: Misspecified with wrong direction of path and omitted correlated residuals.
 >-   Model 1.4: Misspecified with multiple omitted structural paths.
 
->For all models, the population-level values of the structural parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low (λ = 0.3), moderate (λ = 0.5), or high (λ = 0.7).
+>For all models, the population-level values of the structural parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), or high ($\lambda = 0.7$).
 
 ::: {layout="[[40,-20,40],[40,-20,40]]"}
 ![Model 1.1](../VK/figures/model1_1.tex){#fig-model1} Figure 1: Note. Model 1.1: Error terms are not explicitly shown in the figure.
@@ -304,7 +304,7 @@ The following two sections contain the methods and results for the studies from 
 
 >**Study 2:**
 
->Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained (R\^2) by the endogenous factors was set at low (R\^2 = 0.1) or medium (R\^2 = 0.4), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and does not acurately result in said R\^2 values. The aim here was only generally to modulate between lower and higher regression weights. Misspecifications included omitting a residual covariance and a factor cross-loading in either the exogenous or endogenous part of the model, or both (see figure 5-6).
+>Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained ($R^2$) by the endogenous factors was set at low ($R^2$ = 0.1) or medium ($R^2$ = 0.4), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and did not accurately result in said $R^2$ values. The aim here was only generally to modulate between lower and higher regression weights. Misspecifications included omitting a residual covariance and a factor cross-loading in either the exogenous or endogenous part of the model, or both (see figures 5-6).
 
 ::: {layout="[[40,-20,40], [100]]"}
 ![Model 2.1](../VK/figures/model2_1.tex) Figure 5: Note. Model 2.1: Error terms are not explicitly shown in the figure.
@@ -316,25 +316,41 @@ The following two sections contain the methods and results for the studies from 
 
 >**Study 1**
 
->The study varied three main conditions: - Sample sizes: small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$). - Indicator reliability: low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), high ($\lambda = 0.7$). - Model specifications: correctly specified model and misspecified models (1.2, 1.3, and 1.4).
+>The study varied three main conditions: 
+
+>- Sample sizes: small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$). 
+
+>- Indicator reliability: low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), high ($\lambda = 0.7$). 
+
+>- Model specifications: correctly specified model and misspecified models (1.2, 1.3, and 1.4).
 
 >**Study 2**
 
->The study varied five main conditions: - Sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). - Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). - Indicator reliability: low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), and high ($\lambda = 0.7$). - Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. - Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$).
+>The study varied five main conditions: 
+
+>- Sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). 
+
+>- Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). 
+
+>- Indicator reliability: low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), and high ($\lambda = 0.7$). 
+
+>- Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. 
+
+>- Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$).
 
 >Both studies were conducted with 10000 replications for each condition.
 
 >**Method Selection**
 
->**Study 1 and Study 2:** The performance of four estimation methods was compared: - Vanilla SEM. - Global SAM (gSAM). - Local SAM with maximum likelihood (lSAM-ML). - Local SAM with unweighted least squares (lSAM-ULS).
+>**Study 1 and Study 2:** The performance of four estimation methods were compared: Traditional SEM, global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML) and local SAM with unweighted least squares (lSAM-ULS).
 
 >**Performance Measures**
 
->The following performance measures were captured: - Convergence rates. - Empirical relative biases. - Empirical coverage levels of 95% confidence intervals (CIs). - Root Mean Squared Errors (RMSE).
+>The following performance measures were captured: Convergence rates, empirical relative biases, empirical coverage levels of 95% confidence intervals (CIs) and Root Mean Squared Errors (RMSE).
 
 >**Software**
 
->All analyses were conducted in @r_core_team_r_2023. See https://github.com/valentinkm/AdversarialSimulation for more details.
+>All analyses were conducted in R [@r_core_team_r_2023]. See <https://github.com/valentinkm/AdversarialSimulation> for more details.
 
 >**Analysis and Interpretation plan**
 
@@ -345,13 +361,13 @@ The following two sections contain the methods and results for the studies from 
 
 As another reminder, below are the results by Valentin Kriegmair as a direct quotation. This is why they are indended.
 
->In the following the main patterns and trends of the results are reported and only examplary of select conditions are shown for each study to illustrate the main findings. The full results can be found in the supplementary materials.
+>In the following the main patterns and trends of the results are reported and only examplary. The full results can be found in the supplementary materials.
 
 #### Study 1
 
 ##### Convergence Rate
 
->For moderate and large sample sizes (N = 400, 6400), all methods achieved 100% convergence. At a small sample size (N = 100), SEM shows lower convergence rates, especially at lower reliability (0.3), while GSAM, SAM-ML, and SAM-ULS maintain high convergence rates. SEM faces significant convergence drops at the lowest reliability (0.3), particularly with misspecifications present.
+>For moderate and large sample sizes (N = 400, 6400), all methods achieved 100% convergence. At a small sample size (N = 100), SEM showed lower convergence rates, especially at lower reliability (0.3), while GSAM, SAM-ML, and SAM-ULS maintained high convergence rates. SEM faced significant convergence drops at the lowest reliability (0.3), particularly with misspecifications present.
 
 ```{r eval = TRUE, echo = FALSE}
 create_convergence_table_1 <- function(table_number, custom_caption, model_type_value) {
@@ -395,8 +411,8 @@ convergence_table_1_4 <- create_convergence_table_1(0, "Convergence Rates under 
 
 ##### Average Relative Biases
 
->Here this study diverged from the original of @rosseel_structural_2022 by focusing exclusively on the average relative bias under a single type of correctly specified model (model 1), which does not include any cross loadings or correlated residuals. This simplification, allowed to concentrate on the core advantage of SAM over traditional SEM: its more robust estimation of structural parameters, especially when measurement models are misspecified. For the correct model (1.1), SEM showed higher biases at smaller sample sizes and lower reliability, while GSAM, SAM-ML, and SAM-ULS exhibited lower biases. Under omitted cross loadings (model 1.2) and structural missepcifcation (model 1.4) , all methods demonstrated substantial biases, particularly SEM, at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecifcation (1.3), GSAM, SAM-ML, and SAM-ULS showed more negative biases compared to SEM. Overall, GSAM, SAM-ML, and SAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability. \
->Table 1 shows average relative bias percentages for different methods (SEM, GSAM, SAM-ML, SAM-ULS) under varying model specifications and sample sizes under under omitted correlated residuals (model 1.2) and Table 2 under correlated residuals and structural misspeifcation
+>Here this study diverged from the original of @rosseel_structural_2022 by focusing exclusively on the average relative bias under a single type of correctly specified model (model 1), which did not include any cross loadings or correlated residuals. This simplification allowed to concentrate on the core advantage of SAM over traditional SEM: its more robust estimation of structural parameters, especially when measurement models are misspecified. For the correct model (1.1), SEM showed higher biases at smaller sample sizes and lower reliability, while GSAM, SAM-ML, and SAM-ULS exhibited lower biases. Under omitted cross loadings (model 1.2) and structural missepcifcation (model 1.4), all methods demonstrated substantial biases, particularly SEM at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecifcation (1.3), GSAM, SAM-ML, and SAM-ULS showed more negative biases compared to SEM. Overall, GSAM, SAM-ML, and SAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability.
+>Table 1 shows average relative bias percentages for the different estimatinon methods under varying model specifications and sample sizes in presence of omitted correlated residuals (model 1.2) and Table 2 under correlated residuals and structural misspecification.
 
 ```{r eval = TRUE, echo = FALSE}
 create_bias_table <- function(table_number, custom_caption, model_type_value) {
@@ -440,8 +456,8 @@ bias_table_1_4 <- create_bias_table(4, "Average Relative Biases (in Percentages)
 
 ##### Coverage
 
->For the correct model (1.1), SEM exhibited undercoverage at smaller sample sizes and lower reliability, indicating narrow CIs and less reliable estimates. GSAM, SAM-ML, and SAM-ULS showed slight overcoverage, reflecting more conservative estimates. Under the cross loadings model (1.2), all methods had substantial undercoverage, especially SEM. The correlated residuals model (1.3) consistently revealed undercoverage across all methods, with SEM showing the highest negative biases. For the structural model (1.4), SEM suffered from undercoverage at lower sample sizes and reliability, while GSAM, SAM-ML, and SAM-ULS performed better with relatively consistent biases. Overall, GSAM, SAM-ML, and SAM-ULS demonstrated better empirical coverage than SEM but the overcoverage indicates too wide confidence intervals. \
->Table 2 show the average difference between empirical coverage levels of the 95% confidence intervals (CIs) and their nominal level (95%) using each method for different reliability values and sample sizes under omitted cross loadings (model 1.2)
+>For the correct model (1.1), SEM exhibited undercoverage at smaller sample sizes and lower reliability, indicating narrow CIs and less reliable estimates. GSAM, SAM-ML, and SAM-ULS showed slight overcoverage, reflecting more conservative estimates. Under the cross loadings model (1.2), all methods had substantial undercoverage, especially SEM. The correlated residuals model (1.3) consistently revealed undercoverage across all methods, with SEM showing the highest biases. For the structural model (1.4), SEM suffered from undercoverage at lower sample sizes and reliability, while GSAM, SAM-ML, and SAM-ULS performed better with relatively consistent biases. Overall, GSAM, SAM-ML, and SAM-ULS demonstrated better empirical coverage than SEM but the overcoverage indicates too wide confidence intervals.
+>Table 2 show the average difference between empirical coverage levels of the 95% confidence intervals (CIs) and their nominal level (95%) using each method for different reliability values and sample sizes under omitted cross loadings (model 1.2).
 
 ```{r eval = TRUE, echo = FALSE}
 create_coverage_diff_table <- function(table_number, custom_caption, model_type_value) {
@@ -484,7 +500,7 @@ coverage_diff_table_1_4 <- create_coverage_diff_table(4, "Average Coverage Diffe
 
 ##### RMSE
 
->For the correct model (1.1), SEM had higher RMSE values at smaller sample sizes and lower reliability, while GSAM, SAM-ML, and SAM-ULS demonstrated lower RMSE values. Under omitted cross loadings (1.2) and correlated residuals (1.3), SEM showed significantly higher RMSE values, although all methods exhibited increased RMSE under these conditions. The structural model (1.4) revealed SEM had higher RMSE values at lower sample sizes and reliability, whereas GSAM, SAM-ML, and SAM-ULS showed better performance with lower RMSE. Overall, GSAM, SAM-ML, and SAM-ULS demonstrated more robustness with lower RMSE values compared to SEM, particularly in challenging conditions with smaller sample sizes and lower reliability.
+>For the correct model (1.1), SEM had higher RMSE values at smaller sample sizes and lower reliability, while GSAM, SAM-ML, and SAM-ULS demonstrated lower RMSE values. Under omitted cross loadings (1.2) and correlated residuals (1.3), SEM showed significantly higher RMSE values, although all methods exhibited increased RMSE under these conditions. The structural model (1.4) revealed that SEM had higher RMSE values at lower sample sizes and reliability, whereas GSAM, SAM-ML, and SAM-ULS showed better performance with lower RMSE. Overall, GSAM, SAM-ML, and SAM-ULS demonstrated more robustness with lower RMSE values compared to SEM, particularly in challenging conditions with smaller sample sizes and lower reliability.
 
 ```{r eval = TRUE, echo = FALSE}
 create_rmse_table <- function(table_number, custom_caption, model_type_value) {
@@ -527,7 +543,7 @@ rmse_table_1_4 <- create_rmse_table(4, "Average RMSE under Structural Misspecifi
 
 ##### Improper Solutions
 
->Improper solutions occur when parameter estimates fall outside the boundary of the parameter space, such as when variances are estimated to be negative or correlations exceed an absolute value of one. These issues are more likely to arise in smaller sample sizes and can indicate problems with model estimation. \
+>Improper solutions occur when parameter estimates fall outside the boundary of the parameter space, such as when variances are estimated to be negative or correlations exceed an absolute value of one. These issues are more likely to arise in smaller sample sizes and can indicate problems with model estimation.
 >SEM exhibited a significantly higher count of improper solutions compared to GSAM, SAM-ML, and SAM-ULS, particularly in small sample sizes and lower reliability conditions. GSAM, SAM-ML, and SAM-ULS consistently showed minimal improper solutions across all scenarios, highlighting their robustness and reliability in parameter estimation.
 
 ```{r eval = TRUE, echo = FALSE}
@@ -736,16 +752,16 @@ create_relative_bias_table <- function(table_number, custom_caption, model_type_
 }
 
 # Create and display the tables for each model type with custom captions
-relative_bias_table_correct <- create_relative_bias_table(1, "Mean Relative Bias in Percentages for vanilla SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
+relative_bias_table_correct <- create_relative_bias_table(1, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
 # relative_bias_table_correct
 
-relative_bias_table_exo <- create_relative_bias_table(2, "Mean Relative Bias in Percentages for vanilla SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+relative_bias_table_exo <- create_relative_bias_table(2, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
 # relative_bias_table_exo
 
-relative_bias_table_endo <- create_relative_bias_table(3, "Mean Relative Bias in Percentages for vanilla SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+relative_bias_table_endo <- create_relative_bias_table(3, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
 #relative_bias_table_endo
 
-relative_bias_table_both <- create_relative_bias_table(4, "Mean Relative Bias in Percentages for vanilla SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+relative_bias_table_both <- create_relative_bias_table(4, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
 relative_bias_table_both
 ```
 
@@ -804,7 +820,7 @@ relative_bias_table_both
 
 ##### RMSE
 
->For the correctly specified model with low reliability ($\lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed higher RMSE compared to SAM methods. GSAM and SAM-ML had lower RMSEs, while SAM-ULS had a slightly higher RMSE. Increasing regression weights ($R^2$) improved RMSE for both SEM and SAM methods. Under exogenous misspecifications, SEM had higher RMSE compared to SAM methods at low reliability and small sample size. This pattern persisted for endogenous misspecifications and misspecifications in both exogenous and endogenous factors, with GSAM and SAM-ML consistently showing lower RMSEs and SAM-ULS performing slightly worse. RMSE improved for all methods with higher $R^2$.
+>For the correctly specified model with low reliability ($\lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed higher RMSE compared to SAM methods. GSAM and SAM-ML had lower RMSEs, while SAM-ULS had a slightly higher RMSE. Increasing regression weights ($R^2$) improved RMSE for both SEM and SAM methods. Under exogenous misspecifications, SEM had higher RMSE compared to SAM methods at low reliability and small sample size. This pattern persisted for endogenous misspecifications and misspecifications in both exogenous and endogenous factors, as GSAM and SAM-ML consistently showed lower RMSEs and SAM-ULS performed slightly worse. RMSE improved for all methods with higher $R^2$.
 
 ```{r eval = TRUE, echo = FALSE}
 # Function to create a RMSE table for a specific model type with SEM performance included
@@ -835,16 +851,16 @@ create_rmse_table <- function(table_number, custom_caption, model_type_value) {
 }
 
 # Create and display the tables for each model type with custom captions
-rmse_table_correct <- create_rmse_table(1, "Mean Relative RMSE for vanilla SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
+rmse_table_correct <- create_rmse_table(1, "Mean Relative RMSE for traditional SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
 #rmse_table_correct
 
-rmse_table_exo <- create_rmse_table(2, "Mean Relative RMSE for vanilla SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+rmse_table_exo <- create_rmse_table(2, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
 #rmse_table_exo
 
-rmse_table_endo <- create_rmse_table(3, "Mean Relative RMSE for vanilla SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+rmse_table_endo <- create_rmse_table(3, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
 #rmse_table_endo
 
-rmse_table_both <- create_rmse_table(4, "Mean Relative RMSE for vanilla SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+rmse_table_both <- create_rmse_table(4, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
 #rmse_table_both
 
 ```
@@ -1404,6 +1420,7 @@ Still, we have gained some insights with regards to our research question of whe
 Already the first step of agreeing on a joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
 We see the main success of the research question formulation in the focus on small to moderate sample sizes and on a limited number of estimators.
 This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
+For the same reasons, Kriegmair focussed on less correctly specified conditions than the original paper in his study 1 [@rosseel_structural_2022].
 Additionally, our general focus was much narrower because of this as well, as we did not include other discussions in the original papers, as for example on whether two-step-estimation is generally desirable as it seperates the definition from the measurement of latent variables [@robitzsch_comparing_2022].
 
 When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
