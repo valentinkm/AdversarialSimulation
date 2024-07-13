@@ -20,7 +20,7 @@ To reproduce any parts of this project, first follow these steps:
 
 
 3. **Run the install_dependencies.R Script**:
-   - In RStudio, navigate to the repositoryf folder, and then to the LK subfolder.
+   - In RStudio, navigate to the repository folder, and then to the LK subfolder.
    - Open the install_dependencies.R file.
    - Navigate to the Terminal.
    - Depending on your OS, run the following 2 commands in the terminal:
