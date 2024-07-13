@@ -16,6 +16,7 @@ To reproduce any parts of this project, first follow these steps:
 
 3. **Run the install_dependencies.R Script**:
    - Open the R project file.
+   - Navigate to the LK subdirectory folder
    - Run the script:
      ```r
      source("install_packages.R")
