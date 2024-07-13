@@ -62,11 +62,11 @@ Additionally, conducting extensive literature reviews for all parameter values c
 
 Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
 Adversarial collaboration, piloted by @mellers_frequency_2001 and popularized by @kahneman_thinking_2011, is a research method increasingly recognized within the quantitative empirical research community for enhancing scientific rigor. 
-Praised as “The next science reform” adversarial collaboration is the process of disagreeing scholars working jointly to resolve scientific disputes [@clark_adversarial_2021]. 
+Praised as “The next science reform” adversarial collaboration is the process of disagreeing scholars working together to resolve scientific disputes [@clark_adversarial_2021]. 
 An ongoing effort by @melloni_adversarial_2023, for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
 Adversarial Collaboration entails identifying points of empirical disagreement, designing mutually agreed upon studies to test competing hypotheses, and jointly publishing results, irrespective of the outcome. 
 The idea is that in conducting adversarial collaboration, fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. 
-Additionally, juxtaposing and debating competing positions in this way can improve generalizability of results.
+Additionally, juxtaposing and debating competing positions in this way can improve the generalizability of results.
 
 Our goal is to transfer the benefits of adversarial collaboration to simulation studies. 
 To do so, we conducted a focused case study, utilizing an exemplary topic in the literature of simulation studies: comparing a newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
@@ -83,12 +83,12 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 # Methods 
 
 This section contains two parts that represent our proposed AC framework. 
-First, I describe the procedure of the AC with its two parts and the tools it uses.
-Then, I propose a technical setup to facilitate its implementation.
+First, we describe the procedure of the AC with its two parts and the tools it uses.
+Then, we propose a technical setup to facilitate its implementation.
 
 ## Procedure of the Adversarial Collaboration
 
-To answer our research question, we created and followed the following procedure for the adversarial collaboration process: 
+To answer our research question, we created and implemented the following procedure for the adversarial collaboration process: 
 The procedure consists of two parts. 
 In the first part, each researcher conducts an independent preliminary study.
 In the second part, a joint study, including a joint simulation protocol, should be pursued.
@@ -157,7 +157,7 @@ This structure allows for the expected divergences in results of the individual 
 
 ### Part two: Joint study
 
-In the second part, a joint study, including a joint simulation protocol, should be pursued. 
+In the second part, a joint study including a joint simulation protocol should be pursued. 
 This process starts based on the results of Part one.
 Here, the main part of the adversarial collaboration takes place.
 It contains multiple parts I will explain in the following sections:
@@ -202,12 +202,13 @@ In our mind, decision making can be based on four distinct grounds: Evidence-bas
 Firstly, we deem a decision evidence based, if one can find a clear answer for a disagreement, based on empirical evidence or in the literature more general. 
 Secondly, to be able to keep the scope of this project, decisions can be made for pragmatic reasons, as for example in the presence of time constraints. 
 Thirdly, arbitrary reasons could be any agreement where the first too grounds are not present, but still a decision has to be made. 
-Importantly, while this reason does not help in deciding for an option directly, it helps in understanding how often there is no substantive or pragmatic reason for decisions in simulation studies.
+While this reason does not help in deciding for an option directly, it helps in understanding how often there is no substantive or pragmatic reason for decisions in simulation studies.
 If this is the case, one might resort to deciding at random. 
 Lastly, there might be other reasons that lead to a decision, that can not be anticipated but should still be captured.  
 These four reasons ground decision-making and aim to ease the collaborative process by giving a structure. 
 In some cases, more than one of these reasons can be present. 
-In such cases, we their relevance to a decision could be ranked, if possible. An example could be the following mock log entry: 
+In such cases, their relevance to a decision should be ranked, if possible. 
+An example is the following mock log entry: 
 
 ```
 Decision element: factor of sample sizes 
@@ -245,7 +246,7 @@ These can even be assigned a DOI via Zenodo [@zenodo].
 
 The structure of this section mirrors our AC procedure.
 I will start presenting the preparations, methods and results of the individual studies and their substantive topics.
-Then, I will integrate the results of these studies to form a substantive conclusion.
+I will then integrate the results of these studies to form a substantive conclusion.
 Lastly, I will analyze the results of the collaboration and thus answer our main research question.
 
 ## Preparation of the individual studies
@@ -271,7 +272,8 @@ summary_2 <- readRDS("../VK/simulation/results/summary_study2.rds")
 
 ### Methods
 
-The following two sections contain the methods and results for the studies from Valentin Kriegmair. I added them indended, as they are direct quotes.
+The following two sections contain the methods and results for the studies implemented by Valentin Kriegmair. 
+I added them indented, as they are direct quotes.
 
 >The following description of the simulation studies is based on the established structure for simulation studies to coalign with the other conducted studies to facilitate a potential collaboration.
 
@@ -356,10 +358,10 @@ The following two sections contain the methods and results for the studies from 
 
 >The results were interpreted by descriptively comparing the performance measures (bias, MSE, convergence rates) of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications.
 
-
 ### Results
 
-As another reminder, below are the results by Valentin Kriegmair as a direct quotation. This is why they are indended.
+Below are the results by Valentin Kriegmair as a direct quotation. 
+This is why they are indented.
 
 >In the following the main patterns and trends of the results are reported and only examplary. The full results can be found in the supplementary materials.
 
