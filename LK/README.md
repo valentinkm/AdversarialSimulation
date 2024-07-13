@@ -9,7 +9,7 @@ All of these can be reproduced as described below.
 To reproduce any parts of this project, first follow these steps:
 
 1. **Install LaTeX and R**:
-   - Ensure that LaTeX and R are installed on your system.
+   - Ensure that LaTeX and R and RStudio are installed on your system.
   
 2. **Download or clone the repository**
    - The repository root is here: <https://github.com/lkosanke/AdversarialSimulation>
