@@ -22,7 +22,7 @@ To reproduce any parts of this project, first follow these steps:
 
 
 3. **Run the install_dependencies.R Script**:
-   - Open the R project file.
+   - Open the install_dependencies.R file in Rstudio.
    - Navigate to the Terminal
    - Depending on your OS, run the following 2 commands in the terminal:
      
@@ -65,24 +65,26 @@ Next to all individual scripts and markdowns, you can reproduce the entire simul
 
 #### Reproducing the results analysis (only)
 
-In the simulation, the calculation of confidence intervals was off for all studies. Thus, the raw results had to be reprocessed, for the calculations to be correct.
+In the simulation, the calculation of confidence intervals was off for all studies. 
+Thus, the raw results had to be reprocessed, for the calculations to be correct.
 This is explained in detail in the results.pdf file.
+If you want to reproduce this postprocessing as well, start with the first step. Otherwise, you can jump to step 2.
 
 1. Run the postprocess_results.R file.
 
 2. Run the results.qmd file.
 
-3. For reproduction of the final pdf with quarto, make sure quarto is installed and run Render in the results.qmd file.
+3. For reproduction of the final pdf with quarto, run Render in the top panel of Rstudio in the results.qmd file.
 
 #### Reproducing my thesis document (only)
 
 1. Run the thesis.qmd file
 
-2. For reproduction of the final pdf with quarto, make sure quarto is installed and run Render in the thesis.qmd file.
+2. For reproduction of the final pdf with quarto, run Render in the top panel of Rstudio in the thesis.qmd file.
 
 #### Reproducing my simulation protocol (only)
 
 1. Run the simulation_protocol.qmd file
 
-2. For reproduction of the final pdf with quarto, make sure quarto is installed and run Render in the simulation_protocol.qmd file.
+2. For reproduction of the final pdf with quarto, run Render in the top panel of Rstudio in the simulation_protocol.qmd file.
 
