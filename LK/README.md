@@ -47,10 +47,7 @@ To reproduce any parts of this project, first follow these steps:
      Watch the output for password prompts. If one appears, type in your PC password (you won't see the letters when typing) and press Enter.
      
    - Navigate to the LK subdirectory folder
-   - Run the script:
-     ```r
-     source("install_dependencies.R")
-     ```
+   - Run the file install_dependencies.R
 
 4. **Reproduce what you want to reproduce!**:
    - See the specific reproduction guides below
