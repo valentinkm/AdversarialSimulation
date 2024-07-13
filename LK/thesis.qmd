@@ -1,7 +1,4 @@
 ---
-title: "Adversarial Simulation"
-subtitle: "A case study"
-author: "Leonard Kosanke"
 format:
     pdf:
         fontsize: 11pt
@@ -21,9 +18,6 @@ fontsize: 11pt
 bibliography: ../bibliography.bib
 engine: knitr
 ---
-
-
-The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
 ```{r include = FALSE}
 library(here)
@@ -47,6 +41,7 @@ Furthermore, our study provides initial insights into the practical applicabilit
 Although we were unable to test our AC framework in its entirety, our findings suggest that AC holds significant potential for improving the quality of simulation studies.
 Future research should further explore AC in simulations to validate and extend these findings.
 
+\newpage
 
 # Introduction
 
