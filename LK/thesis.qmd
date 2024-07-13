@@ -274,7 +274,7 @@ summary_2 <- readRDS("../VK/simulation/results/summary_study2.rds")
 
 ### Methods
 
-The following two sections contain the methods and results for the studies implemented by Valentin Kriegmair. 
+The following two sections contain the methods and results for the studies implemented by Valentin Kriegmair, including the tables and figures. 
 I added them indented, as they are direct quotes.
 
 >The following description of the simulation studies is based on the established structure for simulation studies to coalign with the other conducted studies to facilitate a potential collaboration.
@@ -362,7 +362,7 @@ I added them indented, as they are direct quotes.
 
 ### Results
 
-Below are the results by Valentin Kriegmair as a direct quotation. 
+Below are the results (including the tables and figures) by Valentin Kriegmair as a direct quotation or copy. 
 This is why they are indented.
 
 >In the following the main patterns and trends of the results are reported and only examplary. The full results can be found in the supplementary materials.
