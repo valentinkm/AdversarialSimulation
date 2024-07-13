@@ -1097,7 +1097,7 @@ rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 
 \vspace{0.5\baselineskip}
 
-*Study 4a: RMSE for DGM 1.*
+*Study 4a (Kosanke): RMSE for DGM 1 (without misspecification).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1144,7 +1144,7 @@ Here, SAM's negative small sample bias is already visible as well.
 
 \vspace{0.5\baselineskip}
 
-*Study 1: Relative bias in conditions without misspecification.*
+*Study 1 (Kosanke): Relative bias in conditions without misspecification.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
@@ -1161,7 +1161,7 @@ As can be seen in Table 10, both SEM estimators outperformed all four SAM estima
 
 \vspace{0.5\baselineskip}
 
-*Study 1: Relative bias in conditions with two negative unmodelled residual correlations.*
+*Study 1 (Kosanke): Relative bias in conditions with two negative unmodelled residual correlations.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
@@ -1179,7 +1179,7 @@ Importantly, no differences between the two approaches arose in these two exampl
 
 \vspace{0.5\baselineskip}
 
-*Study 2: RMSE in conditions with two negative unmodelled cross-loadings.*
+*Study 2 (Kosanke): RMSE in conditions with two negative unmodelled cross-loadings.*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1200,7 +1200,7 @@ Only from N=100-1000 did SAM outperform SEM.
 
 \vspace{0.5\baselineskip}
 
-*Study 3: Relative bias in conditions with each one positive unmodelled cross-loading and residual correlation.*
+*Study 3 (Kosanke): Relative bias in conditions with each one positive unmodelled cross-loading and residual correlation.*
 
 ```{r eval = TRUE, echo = FALSE}
 # Load the relative bias results
@@ -1251,7 +1251,7 @@ In other conditions, however, no substantial differences arose in terms of RMSE.
 
 \vspace{0.5\baselineskip}
 
-*Study 4: RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings).*
+*Study 4 (Kosanke): RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1277,7 +1277,7 @@ bias_ci_s1b[["N_50"]][["LSAM_ML"]] <- bias_ci_s1b[["N_50"]][["LSAM_ML"]] %>%
 
 \vspace{0.5\baselineskip}
 
-*Study 1b: Absolute Bias of LSAM-ML for N=50*
+*Study 1b (Kosanke): Absolute Bias of LSAM-ML for N=50*
 
 ```{r eval = TRUE, echo = FALSE}
 #Formatted tables
@@ -1324,7 +1324,7 @@ bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["LSAM_ML_
 
 \vspace{0.5\baselineskip}
 
-*Study 4a: Absolute bias of SEM-ML for DGM 2*
+*Study 4a (Kosanke): Absolute bias of SEM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings)*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1344,7 +1344,7 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]],
 
 \vspace{0.5\baselineskip}
 
-*Study 4a: Absolute bias of LSAM-ML for DGM 2*
+*Study 4a (Kosanke): Absolute bias of LSAM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings)*
 
 ```{r eval = TRUE, echo = FALSE}
 
