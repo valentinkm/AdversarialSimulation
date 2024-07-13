@@ -6,6 +6,7 @@ format:
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: oneside
         papersize: a4
+        toc: true
         header-includes:
            - \usepackage{float}
            - \floatplacement{table}{H}
@@ -27,6 +28,8 @@ library(tidyverse)
 library(ggplot2)
 library(data.table)
 ```
+
+\newpage
 
 # Abstract
 
