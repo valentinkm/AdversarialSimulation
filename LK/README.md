@@ -49,7 +49,7 @@ This is explained in detail in the results.pdf file.
 
 2. For reproduction of the final pdf with quarto, make sure quarto is installed and run Render in the thesis.qmd file.
 
-#### Reproducing my simulation protocol
+#### Reproducing my simulation protocol (only)
 
 1. Run the simulation_protocol.qmd file
 
