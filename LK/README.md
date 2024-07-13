@@ -11,16 +11,19 @@ To reproduce any parts of this project, first follow these steps:
 1. **Preperation**
    - Ensure you have admin rights on your account. This is necessary for some of the installations (e.g RStudio, LaTex packages).
 
-1. **Install LaTeX and R**:
+2. **Install LaTeX and R**:
    - Ensure that recent versions of LaTeX, R, RStudio and Quarto are installed on your system.
   
-2. **Download or clone the repository**
+3. **Download or clone the repository**
    - The repository root is here: <https://github.com/lkosanke/AdversarialSimulation>.
    - Download or clone the repository.
 
-
-3. **Run the install_dependencies.R Script**:
-   - In RStudio, navigate to the repository folder, and then to the LK subfolder.
+4. **Open folder and set working directory**
+   - In RStudio, navigate to the repository folder.
+   - set the working directory at the root.
+   
+5. **Install all relevant dependencies**:
+   - Navigate to the LK subfolder.
    - Open the install_dependencies.R file.
    - Navigate to the Terminal.
    - Depending on your OS, run the following 2 commands in the terminal:
@@ -48,7 +51,7 @@ To reproduce any parts of this project, first follow these steps:
    - Navigate back to the LK subdirectory folder.
    - Run the file install_dependencies.R
 
-5. **Reproduce what you want to reproduce!**:
+6. **Reproduce what you want to reproduce!**:
    - See the specific reproduction guides below
 
 ### Specific reproduction guides
