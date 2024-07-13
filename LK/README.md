@@ -9,7 +9,8 @@ All of these can be reproduced as described below.
 To reproduce any parts of this project, first follow these steps:
 
 1. **Preperation**
-   - Ensure you have admin rights on your account.
+   - Ensure you have admin rights on your account. This is necessary for the LaTeX package installations.
+   - If you do not have admin rights you need to find a different way to install the packages, other than with tlmgr install (as described below).
 
 1. **Install LaTeX and R**:
    - Ensure that recent versions of LaTeX, R, RStudio and Quarto are installed on your system.
