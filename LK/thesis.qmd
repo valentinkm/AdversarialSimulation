@@ -46,13 +46,13 @@ Future research should further explore AC in simulations to validate and extend 
 
 # Introduction
 
-Monte Carlo simulations are an extensively utilized tool for assessing and comparing statistical methods in quantitative empirical science. 
-They are used to evaluate the performance of estimation and inference methods by analyzing them with knowledge of simulated population models and values.
-Despite the clear insight into the underlying data structures that simulations provide, they are not immune to common pitfalls that thus far have been predominantly associated with the replication crisis in empirical research [@lohmann_its_2022].
-In simulation studies, a key challenge is ensuring that results can be generalized to real-world applications.
-These studies must ensure that the chosen performance metrics, experimental factors, and inference models accurately reflect and test real-world scenarios. 
-Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias:
-The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantive impact on the results.
+Monte Carlo simulations serve as a widely adopted method for evaluating and comparing statistical methods in quantitative science. 
+They are used to assess the performance of estimation and inference methods by analyzing them with knowledge of simulated population models and values.
+Although simulations provide insight into underlying data structures, they are not without flaws and are subject to pitfalls similar to those implicated in the replication crisis of empirical research [@lohmann_its_2022].
+A major challenge in simulation studies is to ensure the generalizability of the results to real-world contexts.
+It is crucial for these studies to use performance metrics, experimental factors, and inference models that accurately mirror and test practical scenarios. 
+Given the impracticality of simulating every conceivable model, method, and use case, these studies necessarily involve numerous decision-making elements that may introduce bias:
+The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results.
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
 An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
@@ -61,19 +61,19 @@ For example, deciding on which papers, or even which models within a paper to se
 Additionally, conducting extensive literature reviews for all parameter values chosen is time-consuming and difficult to apply in practice.
 
 Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
-Adversarial collaboration, piloted by @mellers_frequency_2001 and popularized by @kahneman_thinking_2011, is a research method increasingly recognized within the quantitative empirical research community for enhancing scientific rigor. 
-Praised as “The next science reform” adversarial collaboration is the process of disagreeing scholars working together to resolve scientific disputes [@clark_adversarial_2021]. 
+Initially tested by @mellers_frequency_2001, adversarial collaboration is gaining recognition within the quantitative empirical research community for its potential to enhance scientific rigor.
+Touted as “The next science reform” adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2021]. 
 An ongoing effort by @melloni_adversarial_2023, for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
-Adversarial Collaboration entails identifying points of empirical disagreement, designing mutually agreed upon studies to test competing hypotheses, and jointly publishing results, irrespective of the outcome. 
-The idea is that in conducting adversarial collaboration, fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. 
-Additionally, juxtaposing and debating competing positions in this way can improve the generalizability of results.
+Adversarial Collaboration involves pinpointing empirical disagreements, designing studies that are mutually agreed upon to test competing hypotheses, and jointly publishing the results regardless of the outcome. 
+The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making.
+Moreover, juxtaposing and integrating competing positions in this manner can improve the generalizability of results.
 
-Our goal is to transfer the benefits of adversarial collaboration to simulation studies. 
-To do so, we conducted a focused case study, utilizing an exemplary topic in the literature of simulation studies: comparing a newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
-In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for conducting adversarial collaboration. 
+Our objective is to apply the advantages of adversarial collaboration to simulation studies.
+To achieve this, we design and implement a focused case study, utilizing an exemplary topic in the literature of simulation studies: Comparing the newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
+In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for adversarial collaboration. 
 While @dhaene_evaluation_2023 concluded that SAM estimation generally outperforms non-iterative SEM in small samples, @robitzsch_comparing_2022 did not find the methods to differ. 
 Similarly, whereas the former found SAM to be more robust against model misspecification, the latter argued the opposite to be true. 
-Applying Adversarial Collaboration, we, the authors of this paper, each represented one of these competing positions, as detailed later.
+Applying Adversarial Collaboration, we, the authors of this paper, each represent one of these competing positions, as detailed later.
 
 This allows us to examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
 Thus, this investigation leads us to address the following research question:
