@@ -18,12 +18,14 @@ To reproduce any parts of this project, first follow these steps:
 
   
 2. **Download or clone the repository**
-   - The repository root is here: <https://github.com/lkosanke/AdversarialSimulation>
+   - The repository root is here: <https://github.com/lkosanke/AdversarialSimulation>.
+   - Download or clone the repository.
 
 
 3. **Run the install_dependencies.R Script**:
+   - In the folder, navigate to the LK subfolder.
    - Open the install_dependencies.R file in Rstudio.
-   - Navigate to the Terminal
+   - Navigate to the Terminal.
    - Depending on your OS, run the following 2 commands in the terminal:
      
    - *Windows*
@@ -46,10 +48,10 @@ To reproduce any parts of this project, first follow these steps:
 
      Watch the output for password prompts. If one appears, type in your PC password (you won't see the letters when typing) and press Enter.
      
-   - Navigate to the LK subdirectory folder
+   - Navigate back to the LK subdirectory folder.
    - Run the file install_dependencies.R
 
-4. **Reproduce what you want to reproduce!**:
+5. **Reproduce what you want to reproduce!**:
    - See the specific reproduction guides below
 
 ### Specific reproduction guides
