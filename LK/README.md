@@ -19,7 +19,7 @@ To reproduce any parts of this project, first follow these steps:
    - Navigate to the LK subdirectory folder
    - Run the script:
      ```r
-     source("install_packages.R")
+     source("install_dependencies.R")
      ```
 
 4. **Reproduce what you want to reproduce!**:
