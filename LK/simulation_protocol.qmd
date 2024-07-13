@@ -85,7 +85,7 @@ We estimate the CFA model by allocating the items $X_i$ $(i = 1,2,3)$ to Factor 
 ```{r schematic 1, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 1: Data-generating model. Residual correlations are shown with curved dashed red double arrows."}
 #| label: fig-1
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim1.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim1.pdf")
 ```
 Multiple data-generating scenarios will be simulated. First, with no correlated residuals ($\psi_{X1Y1} = \psi_{X2Y2} = 0$). Secondly, the only non-zero residual correlation will be $\psi_{X1Y1}$, which will be assigned a value of either 0.12 or -0.12. Lastly, both $\psi_{X1Y1}$ and $\psi_{X2Y2}$ are assigned values of either 0.12 or -0.12.
 
@@ -125,7 +125,7 @@ We estimate the CFA model by allocating the items $X_i$ $(i = 1,2,3)$ to Factor 
 ```{r schematic 2, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 2: Data-generating model. Cross-loadings are shown with dashed red arrows."}
 #| label: fig-2
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim2.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim2.pdf")
 ```
 
 Multiple data-generating scenarios will be simulated. First, for one cross-loading, $\delta_{X1}$ will be either set to 0.3 or -0.3 and $\delta_{Y1}$ to 0. For the condition with 2 cross-loadings, both will be set to either 0.3 or -0.3. Again, the condition of having both positive or and negative cross-loadings present, is omitted, similar to Study 1.
@@ -164,7 +164,7 @@ We estimate the CFA model by allocating the items $X_i$ $(i = 1,2,3)$ to Factor 
 ```{r schematic 3, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 3: Data-generating model. Cross-loading is shown with dashed red arrows, residual correlation is shown with curved dashed red double arrow."}
 #| label: fig-3
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim3.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim3.pdf")
 ```
 
 One data-generating scenarios will be simulated, where the cross-loading $\delta_{X1}$ is set to 0.3 and the residual correlation $\phi_{X2Y2}$ to 0.12.
@@ -187,7 +187,7 @@ Item loadings were selected to achieve a reliability coefficient of 0.70, as mea
 ```{r schematic 4, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 4: Data-generating model 1 (DGM1)."}
 #| label: fig-4
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim4.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim4.pdf")
 ```
 
 
@@ -234,7 +234,7 @@ In this model, three cross-loadings are present, each of which are defined as 0.
 ```{r schematic 5, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 4: Data-generating model 2 (DGM2)."}
 #| label: fig-5
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim5.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim5.pdf")
 ```
 
 The structural model is identical to DGM1 as detailed in @eq-4.
@@ -248,7 +248,7 @@ In the third DGM, 20 residual correlations are present, whose values are detaile
 ```{r schematic 6, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 4: Data-generating model 3 (DGM3)."}
 #| label: fig-6
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim6.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim6.pdf")
 ```
 
 
@@ -262,7 +262,7 @@ We will choose the same data-generating parameters as in the original paper: All
 ```{r schematic 7, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 5: Data-generating model with three factors. Factor correlations and cross-loadings are shown."}
 #| label: fig-7
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim7.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim7.pdf")
 ```
 
 The other values are subject to manipulation and will be detailed in the next section.
@@ -276,7 +276,7 @@ We will choose the same data-generating parameters as in the original paper: The
 ```{r schematic 8, eval = TRUE, echo = FALSE, fig.cap="Simulation Study 6: Data-generating model with three factors. Factor correlations and residual correlations are shown."}
 #| label: fig-8
 #| warning: false
-knitr::include_graphics(here::here("LK/images/FigSim8.pdf"), auto_pdf = TRUE)
+knitr::include_graphics("../LK/images/FigSim8.pdf")
 ```
 
 The other values are subject to manipulation and will be detailed in section 4.2.
