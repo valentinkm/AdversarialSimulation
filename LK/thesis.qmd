@@ -4,7 +4,7 @@ subtitle: "A case study"
 author: "Leonard Kosanke"
 format:
     pdf:
-        fontsize: 12pt
+        fontsize: 11pt
         linestretch: 1.5
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: oneside
@@ -14,10 +14,14 @@ format:
            - \floatplacement{table}{H}
            - \usepackage{tikz}
            - \usetikzlibrary{arrows.meta, positioning, calc}
-fontsize: 12pt
+           - \usepackage{helvet} % Use Helvetica font
+           - \renewcommand{\familydefault}{\sfdefault} % Set default family to sans-serif (Helvetica)
+           - \usepackage[T1]{fontenc} % Use T1 encoding for better font quality
+fontsize: 11pt
 bibliography: ../bibliography.bib
 engine: knitr
 ---
+
 
 The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
