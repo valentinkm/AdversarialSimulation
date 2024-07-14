@@ -17,6 +17,7 @@ format:
            - \usepackage[T1]{fontenc} % Use T1 encoding for better font quality
 fontsize: 11pt
 bibliography: ../bibliography.bib
+csl: ../apa.csl
 engine: knitr
 ---
 
@@ -54,7 +55,7 @@ Although simulations provide insight into underlying data structures, they are n
 A major challenge in simulation studies is to ensure the generalizability of the results to real-world contexts [@feinberg_conducting_2016].
 It is crucial for these studies to use performance metrics, experimental factors, and inference models that accurately mirror and test practical scenarios. 
 Given the impracticality of simulating every conceivable model, method, and use case, these studies necessarily involve numerous decision-making elements that may introduce bias:
-The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results[@pawel_pitfalls_2023; @kulinskaya_exploring_2020].
+The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results [@pawel_pitfalls_2023; @kulinskaya_exploring_2020].
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
 
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
@@ -189,7 +190,7 @@ These were also meant to facilitate the evaluation of the adversarial collaborat
 
 |                                                                                                 |
 |-------------------------------------------------------------------------------------------------|
-| • Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. (Clark et al., 2022) |
+| • Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. [@clark_road_2022] |
 |                                                                                                 |
 | • Assumption check: List, question, and categorize assumptions [@kardos_simple_2017]            |
 |                                                                                                 |
