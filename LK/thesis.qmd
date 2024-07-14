@@ -1040,7 +1040,7 @@ All simulations were conducted using seeds to allow for reproducibility.
 
 ```{r schematic 1, eval = TRUE, echo = FALSE, out.width="125%"}
 
-knitr::include_graphics("../LK/images/TableOverviewStudiesLK.pdf")
+knitr::include_graphics("../LK/images/TableOverviewIndividualStudies.pdf")
 
 ```
 \vspace{0.1\baselineskip}
