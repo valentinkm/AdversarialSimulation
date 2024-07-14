@@ -56,8 +56,9 @@ It is crucial for these studies to use performance metrics, experimental factors
 Given the impracticality of simulating every conceivable model, method, and use case, these studies necessarily involve numerous decision-making elements that may introduce bias:
 The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results[@pawel_pitfalls_2023; @kulinskaya_exploring_2020].
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
+
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
-An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
+An example application could be to decide on a simulated sample size, not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
 Even though this idea is fruitful and improves upon the problem of generalizability, the argument with regards to the arbitrariness of decision-making still remains. 
 For example, deciding on which papers, or even which models within a paper to select (and which not), can still be subject to individual bias or simply chance. 
 Additionally, conducting extensive literature reviews for all parameter values chosen is time-consuming and difficult to apply in practice.
@@ -69,7 +70,7 @@ While increasing transparency and accountability in this way is important for re
 Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
 Initially tested by @mellers_frequency_2001, adversarial collaboration is gaining recognition within the quantitative empirical research community for its potential to enhance scientific rigor.
 Touted as “The next science reform” adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2021]. 
-An ongoing effort by @melloni_adversarial_2023, for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
+An ongoing effort by @melloni_adversarial_2023, for example, conducts adversarial collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
 Adversarial Collaboration involves pinpointing empirical disagreements, designing studies that are mutually agreed upon to test competing hypotheses, and jointly publishing the results regardless of the outcome. 
 The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making [@clark_keep_2022].
 Moreover, juxtaposing and integrating competing positions in this manner can improve the generalizability of results.
@@ -79,7 +80,7 @@ To achieve this, we design and implement a focused case study, utilizing an exem
 In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for adversarial collaboration. 
 While @dhaene_evaluation_2023 concluded that SAM estimation generally outperforms non-iterative SEM in small samples, @robitzsch_comparing_2022 did not find the methods to differ. 
 Similarly, whereas the former found SAM to be more robust against model misspecification, the latter argued the opposite to be true. 
-Applying Adversarial Collaboration, we, the authors of this paper, each represent one of these competing positions, as detailed later.
+Applying adversarial collaboration, we, the authors of this paper, each represent one of these competing positions, as detailed later.
 
 This allows us to examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
 Thus, this investigation leads us to address the following research question:
@@ -190,11 +191,11 @@ These were also meant to facilitate the evaluation of the adversarial collaborat
 |-------------------------------------------------------------------------------------------------|
 | • Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. (Clark et al., 2022) |
 |                                                                                                 |
-| • Assumption check: List, question, and categorize assumptions (Kardos & Dexter, 2017)            |
+| • Assumption check: List, question, and categorize assumptions [@kardos_simple_2017]            |
 |                                                                                                 |
-| • Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ approach (Kardos & Dexter, 2017) |
+| • Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ approach [@kardos_simple_2017] |
 |                                                                                                 |
-| • Quality of information (Kardos Dexter, 2017): checking the adversaries’ quality of evidence based on literature. |
+| • Quality of information [@kardos_simple_2017]: checking the adversaries’ quality of evidence based on literature. |
 |                                                                                                 |
 | • Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. |
 
@@ -231,7 +232,7 @@ Grounds: Primary - Evidence-based, as per Peikert et al. (2020);
 #### Diary
 
 The adversarial collaboration in Part 2 (Joint study) can be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries after each step.
-We provided an exemplary diary template that includes questions based on @shah_exploring_2016 in our github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
+We provided an exemplary diary template that includes questions based on @shah_exploring_2016 in our Github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
 The diary has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
 The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration.
@@ -986,21 +987,27 @@ All simulations were conducted using seeds to allow for reproducibility.
 **Experimental Design of simulation procedures**
 
 Overall, 3 different types of factors were varied that can be deducted from Table 7 and are detailed again in the simulation scripts provided.
-Firstly, we varied the sample size in all studies, ranging from N = 50 to 100.000.
+
+Firstly, I varied the sample size in all studies, ranging from N = 50 to 100.000.
 I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
 Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes. 
 Thus, only N=50 and N=100 were present in this study.
-Additionally, I variend the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
-In Studies 1b and 4a, I varied some population values for model parameters ($\phi$, $\beta$ and/ or $\lambda$), as well.
+
+Additionally, I varied the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
+
+Thirdly, in Studies 1b and 4a, I varied the population values for three model parameters ($\phi$, $\beta$ and/ or $\lambda$).
+
 Besides studies 1 and 2, I implemented full factorial designs.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
 I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors did not give reasoning for this decision themselves.
+
 In Studies 4 and 4a I looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
 These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
 In contrast to the other studies, studies 4 and 4a differed in the way the misspecification variation was labelled in @robitzsch_comparing_2022.
 Instead of varying a factor misspecification as in the previous study, they varied 3 different data-generating mechanisms (DGM's) as a whole.
 Thus the conditions are labelled differently:
-DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. DGM 3 contained 20 residual correlations that were not modelled in the models.
+DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. 
+DGM 3 contained 20 residual correlations that were not modelled in the models.
 I extended them to investigate the interaction of $\beta$ and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
 Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study.
 
@@ -1025,7 +1032,7 @@ I did include, however, a mechanism to track the total number of warnings for ea
 
 **Software**
 
-All analyses were conducted in R.
+All analyses were conducted in R [@r_core_team_r_2023].
 I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results [@rosseel_lavaan_2012; @purrr; @tidyverse; @furrr; @knitr; @zhu_kableextra_2024] .
 
 **Analysis and Interpretation plan**
@@ -1108,7 +1115,9 @@ rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
-*Note*. Condition: DGM 1
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweigthed-least-squares estimation, LSAM_ML= Local-SAM-maximum-likelihood estimation.
+
+\vspace{0.5\baselineskip}
 
 
 ```{r eval = TRUE, echo = FALSE}
@@ -1153,6 +1162,9 @@ Here, SAM's negative small sample bias is already visible as well.
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweigthed-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweigthed-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweigthed-least-squares estimation.
+
+\vspace{0.5\baselineskip}
 
 #### Conditions with negatively valenced unmodelled parameters
 
@@ -1171,6 +1183,7 @@ As can be seen in Table 10, both SEM estimators outperformed all four SAM estima
 create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweigthed-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweigthed-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweigthed-least-squares estimation.
 
 \vspace{0.5\baselineskip}
 
@@ -1190,6 +1203,7 @@ Importantly, no differences between the two approaches arose in these two exampl
 rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
 create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweigthed-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweigthed-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweigthed-least-squares estimation.
 
 \vspace{0.5\baselineskip}
 
@@ -1398,7 +1412,7 @@ In the context of empirical studies, the valence of potential residual correlati
 If that would be the case, one could simply turn to an estimator that is biased in the appropriate direction, to compensate this misspecification.
 Thus, achieving unbiased estimates is desirable in application contexts.
 
-The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects, but align with the results by Kosanke, in this light:
+The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects, but align with the results of Kosanke:
 
 This is true for all performance measures, even for coverage, which was not investigated in the study by Kosanke.
 Coverage is a measure that is partly determined by bias.
@@ -1410,7 +1424,7 @@ Moreover, in Kriegmairs' study 1, SAM performed even worse than unconstrained SE
 
 One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of $\phi$ in Kosanke's Study 4a.
 Only traditional SEM seemed to be negatively affected for higher $\beta$ values, compared to lower $\beta$ values in conditions with unmodelled cross-loadings (DGM 2).
-This showed slightly, but not substantially in conditions with residual correlations as well (DGM3), in the same study by Kosanke.
+This showed slightly, but not substantially in conditions with residual correlations as well (DGM 3), in the same study by Kosanke.
 Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (SEE TABLE???).
 Additionally, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
 
@@ -1466,8 +1480,7 @@ We also believe that we increased generalizability simply by integrating the fin
 With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
 Applying our framework, we observed the possibility to converge on research questions and found our individual simulations to be generally very compatible.
 This can be seen as preliminary evidence, that the second part of the collaboration should be practically applicable as well.
-Still, at the end of the day we could not conduct the second part of our collaboration framework.
-We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
+Nevertheless, we were unable to conduct the second part of our collaboration framework.
 
 ### Technical feasibility
 
