@@ -1,30 +1,36 @@
 ---
-title: "Adversarial Simulation"
-subtitle: "A case study"
-author: "Leonard Kosanke"
 format:
     pdf:
-        fontsize: 12pt
+        fontsize: 11pt
         linestretch: 1.5
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: oneside
         papersize: a4
+        toc: true
         header-includes:
            - \usepackage{float}
            - \floatplacement{table}{H}
-fontsize: 12pt
+           - \usepackage{tikz}
+           - \usetikzlibrary{arrows.meta, positioning, calc}
+           - \usepackage{helvet} % Use Helvetica font
+           - \renewcommand{\familydefault}{\sfdefault} % Set default family to sans-serif (Helvetica)
+           - \usepackage[T1]{fontenc} % Use T1 encoding for better font quality
+fontsize: 11pt
 bibliography: ../bibliography.bib
+csl: ../apa.csl
 engine: knitr
 ---
-
-The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
 
 ```{r include = FALSE}
 library(here)
 library(knitr)
 library(kableExtra)
 library(tidyverse)
+library(ggplot2)
+library(data.table)
 ```
+
+\newpage
 
 # Abstract
 
@@ -35,43 +41,49 @@ To test this framework, we conducted a focused case study comparing iterative st
 After conducting our individual studies, we integrated our results.
 The findings revealed no substantial disagreements between the studies, and left us unable to conduct a joint study.
 Still, we found some preliminary evidence that AC can increase transparency, rigor, and epistemic accountability in simulation research.
-Furthermore, our study provides initial insights into the practical applicability and technical feasibility of AC, supported by tools like GitHub for collaborative work.
+Furthermore, our study provides initial insights into the practical applicability and technical feasibility of AC, supported by tools like Github for collaborative work.
 Although we were unable to test our AC framework in its entirety, our findings suggest that AC holds significant potential for improving the quality of simulation studies.
 Future research should further explore AC in simulations to validate and extend these findings.
 
+\newpage
 
 # Introduction
 
-Monte Carlo simulations are an extensively utilized tool for assessing and comparing statistical methods in quantitative empirical science. 
-They are used to evaluate the performance of estimation and inference methods by analyzing them in light of known simulated population models and values.
-Despite the clear insight into the underlying data structures that simulations provide, they are not immune to common pitfalls that thus far have been predominantly associated with the replication crisis in empirical research [@lohmann_its_2022].
-In simulation studies, a key challenge is ensuring that results can be generalized to real-world applications.
-These studies must ensure that the chosen performance metrics, experimental factors, and inference models accurately reflect and test real-world scenarios. 
-Given the impracticality of simulating every possible model, method and use case, these studies inherently involve a multitude of decision-making elements potentially prone to bias.
-For example, the decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantive impact on the results.
+Monte Carlo simulations serve as a widely adopted method for evaluating and comparing statistical methods in quantitative science. 
+They are used to assess the performance of estimation and inference methods by analyzing them with knowledge of simulated population models and values.
+Although simulations provide insight into underlying data structures, they are not without flaws and are subject to pitfalls similar to those implicated in the replication crisis of empirical research [@lohmann_its_2022; @koehler_assessment_2009].
+A major challenge in simulation studies is to ensure the generalizability of the results to real-world contexts [@feinberg_conducting_2016].
+It is crucial for these studies to use performance metrics, experimental factors, and inference models that accurately mirror and test practical scenarios. 
+Given the impracticality of simulating every conceivable model, method, and use case, these studies necessarily involve numerous decision-making elements that may introduce bias:
+The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results [@pawel_pitfalls_2023; @kulinskaya_exploring_2020].
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
+
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
-An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
+An example application could be to decide on a simulated sample size, not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
 Even though this idea is fruitful and improves upon the problem of generalizability, the argument with regards to the arbitrariness of decision-making still remains. 
 For example, deciding on which papers, or even which models within a paper to select (and which not), can still be subject to individual bias or simply chance. 
-Additionally, conducting extensive literature reviews for all parameter values chosen is very time-consuming and difficult to apply in practice.
+Additionally, conducting extensive literature reviews for all parameter values chosen is time-consuming and difficult to apply in practice.
 
-Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
-Adversarial collaboration, piloted by @mellers_frequency_2001 and popularized by @kahneman_thinking_2011, is a research method increasingly recognized within the quantitative empirical research community for enhancing scientific rigor. 
-Praised as “The next science reform” adversarial collaboration is the process of disagreeing scholars working jointly to resolve scientific disputes [@clark_adversarial_2021]. 
-An ongoing effort by @melloni_adversarial_2023, for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
-Adversarial Collaboration entails identifying points of empirical disagreement, designing mutually agreed upon studies to test competing hypotheses, and jointly publishing results, irrespective of the outcome. 
-The idea is that in conducting adversarial collaboration, fair comparison and truthful representation of opposing views can be achieved, thereby enhancing epistemic accountability and reducing research ambiguity in scientific decision-making. 
-Additionally, juxtaposing and debating competing positions in this way can improve generalizability of results.
+Other promising approaches focus on applying well-known concepts of open science to simulation studies: 
+Multiple frameworks propose using preregistration in simulation studies and call for increased transparency in reporting of key aspects of simulation studies [@morris_using_2019; @siepe_simulation_2023; @boulesteix_ten_2015].
+While increasing transparency and accountability in this way is important for reducing research ambiguity, these approaches do not necessarily incline scientists to refrain from choosing values at will, as long as they are preregistered and reported transparently.
 
-Our goal is to transfer the benefits of adversarial collaboration to simulation studies. 
-To do so, we conducted a focused case study, utilizing an exemplary topic in the literature of simulation studies: comparing a newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
-In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for conducting adversarial collaboration. 
+Another approach to tackle these challenges that has been proposed in the empirical context is adversarial collaboration (AC). 
+Initially tested by @mellers_frequency_2001, adversarial collaboration is gaining recognition within the quantitative empirical research community for its potential to enhance scientific rigor.
+Touted as “The next science reform”, adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2023]. 
+An ongoing effort by @melloni_adversarial_2023, for example, conducts adversarial collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
+Adversarial Collaboration involves pinpointing empirical disagreements, designing studies that are mutually agreed upon to test competing hypotheses, and jointly publishing the results regardless of the outcome. 
+The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making [@clark_keep_2022].
+Moreover, juxtaposing and integrating competing positions in this manner can improve the generalizability of results.
+
+Our objective is to apply the advantages of adversarial collaboration to simulation studies.
+To achieve this, we design and implement a focused case study, utilizing an exemplary topic in the literature of simulation studies: Comparing the newly proposed iterative structural after measurement (SAM) approach to structural equation model (SEM) estimation with, non-iterative methods [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
+In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for adversarial collaboration. 
 While @dhaene_evaluation_2023 concluded that SAM estimation generally outperforms non-iterative SEM in small samples, @robitzsch_comparing_2022 did not find the methods to differ. 
 Similarly, whereas the former found SAM to be more robust against model misspecification, the latter argued the opposite to be true. 
-Applying Adversarial Collaboration, we, the authors of this paper, each represented one of these competing positions, as detailed later.
+Applying adversarial collaboration, we, the authors of this paper, each represent one of these competing positions, as detailed later.
 
-This allows us to examine the practical feasibility of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
+This allows us to examine the applicability of adversarial collaboration in Monte Carlo simulation studies as well its potential to enhance methodological rigor and generalizability in this domain of research. 
 Thus, this investigation leads us to address the following research question:
 
 Can adversarial collaboration be applied to simulation studies, in terms of practical applicability and technical feasibility?
@@ -79,22 +91,38 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 # Methods 
 
 This section contains two parts that represent our proposed AC framework. 
-First, I describe the procedure of the AC with its two parts and the tools it uses.
-Then, I propose a technical setup to facilitate its implementation.
+First, we describe the procedure of the AC with its two parts and the tools it contains.
+Then, we propose a technical setup to facilitate its implementation.
 
 ## Procedure of the Adversarial Collaboration
 
-To answer our research question, we created and followed the following procedure for the adversarial collaboration process: 
-The procedure consists of two parts. 
+To answer our research question, we created and implemented the following procedure for the adversarial collaboration process: 
 In the first part, each researcher conducts an independent preliminary study.
 In the second part, a joint study, including a joint simulation protocol, should be pursued.
 
 ### Part one: Individual studies
 
 As a first step of the individual studies, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
-These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019.
-To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual simulation studies in advance.
+These individual studies should include the generation of individual simulation protocols, as suggested by previous work [@morris_using_2019;  @siepe_simulation_2023].
+To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual studies in advance.
 This structure (see Table 1) is based on relevant literature in the field of simulation studies [@paxton_monte_2001; @morris_using_2019; @boomsma_reporting_2013].
+
+The structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
+
+### Part two: Joint study
+
+In the second part, a joint study including a joint simulation protocol should be pursued. 
+This process starts based on the results of the individual studies.
+Here, classical adversarial collaboration takes place.
+It contains multiple tools I will explain in the following sections:
+Each phase of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
+Decisions are made and documented based on the most convincing argument presented, if possible.
+
+If an interest in the evaluation of the collaboration exists, diary entries can be written after each phase.
+In the end, each collaborator reports the results in their own paper.
+If desired, a joint paper can be published as well.
+
+\vspace{0.5\baselineskip}
 
 **Table 1**
 
@@ -149,61 +177,53 @@ This structure (see Table 1) is based on relevant literature in the field of sim
 
 : {tbl-colwidths="[5,95]"}
 
-This structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
-
-### Part two: Joint study
-
-In the second part, a joint study, including a joint simulation protocol, should be pursued. 
-This process starts based on the results of Part one.
-Here, the main part of the adversarial collaboration takes place.
-It contains multiple parts I will explain in the following sections:
-Each step of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
-Decisions are made and documented based on the most convincing argument presented, if possible.
-If an interest in the evaluation of the collaboration exists, diary entries can be written after each step.
-In the end, each collaborator reports the results in their own paper.
-If desired, a joint paper can be published as well.
-
 #### Adversarial collaboration techniques
 
 We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001]. 
 In order to mitigate this risk, next to each collaborator publishing their own paper, we propose to conduct the joint study in a structured and formalized manner. 
 To this end, we identified several collaboration techniques presented in Table 2. 
-These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
+These are also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
+
+#### Documentation - Decision log 
+
+As the number of decisions made and their documentation is high, only the most important results are presented in the respective papers. 
+In addition, the appendix contains a separate decision log with a detailed and complete documentation of all decisions made.
+Here, the summarized results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process can be detailed. 
+
+Another aspect of structuring the collaboration within the decision log, lies in the way decision making is implemented in the joint study of our framework. 
+
+\vspace{\baselineskip}
 
 **Table 2**
 
 \vspace{0.5\baselineskip}
 
-*List of adversarial collaboration techniques*
+*List of adversarial collaboration techniques.*
 
 |                                                                                                 |
 |-------------------------------------------------------------------------------------------------|
-| • Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. (Clark et al., 2022) |
+| - Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. [@clark_road_2022] |
 |                                                                                                 |
-| • Assumption check: List, question, and categorize assumptions (Kardos & Dexter, 2017)            |
+| - Assumption check: List, question, and categorize assumptions [@kardos_simple_2017]            |
 |                                                                                                 |
-| • Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ approach (Kardos & Dexter, 2017) |
+| - Red-Teaming: Generate what if scenarios, to identify limitations of the adversaries’ approach [@kardos_simple_2017] |
 |                                                                                                 |
-| • Quality of information (Kardos Dexter, 2017): checking the adversaries’ quality of evidence based on literature. |
+| - Quality of information [@kardos_simple_2017]: check the adversaries’ quality of evidence based on literature. |
 |                                                                                                 |
-| • Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. |
+| - Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter can be consulted to try to resolve them. |
 
-#### Documentation - Decision log 
-
-As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
-In addition, the appendix should contain a separate decision log with a detailed and complete documentation of all decisions made.
-Here, the summarized results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process should be detailed. 
-Another aspect of structuring the collaboration within the decision log, lies in the way decision making is implemented in the joint study of our framework. 
 In our mind, decision making can be based on four distinct grounds: Evidence-based, pragmatic reasons, arbitrary reasons or other reasons (e.g. personal values, political issues). 
+
 Firstly, we deem a decision evidence based, if one can find a clear answer for a disagreement, based on empirical evidence or in the literature more general. 
 Secondly, to be able to keep the scope of this project, decisions can be made for pragmatic reasons, as for example in the presence of time constraints. 
 Thirdly, arbitrary reasons could be any agreement where the first too grounds are not present, but still a decision has to be made. 
-Importantly, while this reason does not help in deciding for an option directly, it helps in understanding how often there is no substantive or pragmatic reason for decisions in simulation studies.
+While this reason does not help in deciding for an option directly, it helps in understanding how often there is no substantive or pragmatic reason for decisions in simulation studies.
 If this is the case, one might resort to deciding at random. 
 Lastly, there might be other reasons that lead to a decision, that can not be anticipated but should still be captured.  
 These four reasons ground decision-making and aim to ease the collaborative process by giving a structure. 
 In some cases, more than one of these reasons can be present. 
-In such cases, we their relevance to a decision could be ranked, if possible. An example could be the following mock log entry: 
+In such cases, their relevance to a decision should be ranked, if possible. 
+An example is the following mock log entry: 
 
 ```
 Decision element: factor of sample sizes 
@@ -220,7 +240,7 @@ Grounds: Primary - Evidence-based, as per Peikert et al. (2020);
 #### Diary
 
 The adversarial collaboration in Part 2 (Joint study) can be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries after each step.
-We provided an exemplary diary template that includes questions based on @shah_exploring_2016 in our github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
+We provide an exemplary diary template that includes questions based on @shah_exploring_2016 in our Github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
 The diary has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
 The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration.
@@ -235,22 +255,22 @@ This functionality aligns well with the different parts of our procedure:
 For the individual studies, each adversary can work in their own repository.
 For the joint study, both can work in one repository, and synchronize the other one at will.
 Additionally, the Github releases feature allows to align milestones such as the publishing of the simulation protocols or the finished result analysis of all studies.
-These can even be assigned a DOI via Zenodo [@zenodo].
+These can also be assigned a DOI via Zenodo [@zenodo].
 
 # Results
 
 The structure of this section mirrors our AC procedure.
 I will start presenting the preparations, methods and results of the individual studies and their substantive topics.
-Then, I will integrate the results of these studies to form a substantive conclusion.
+I will then integrate the results of these studies to form a substantive conclusion.
 Lastly, I will analyze the results of the collaboration and thus answer our main research question.
 
 ## Preparation of the individual studies
 
-For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated the study by @dhaene_evaluation_2023.
+For our substantic topic of interest, Leonard Kosanke replicated relevant parts of the study by @robitzsch_comparing_2022, and Valentin Kriegmair replicated parts of the studies by @rosseel_structural_2022 and @dhaene_evaluation_2023.
 
-As a first step, after reading the relevant literature in the field and informing us thoroughly on our side of the argument, we agreed on two substantive research questions to depict our disagreement as precisely as possible:
+As a first step, after reading the relevant literature in the field and informing us thoroughly on our side of the argument, we agreed on two substantive research questions to depict the disagreement of the results as precisely as possible:
 
-1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
+1. How do SAM and traditional SEM methods (including maximum-likelihood (ML) and unweighted-least-squares) compare in terms of bias, Root Mean Squared Error (RMSE), and convergence rates in small to moderate samples? 
 
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods? 
 
@@ -260,9 +280,754 @@ The next sections presents the methods and results of these studies, as well as 
 
 ## Individual study by Kriegmair
 
+```{r eval = TRUE, echo = FALSE}
+summary_1 <- readRDS("../VK/simulation/results/summary_study1.rds")
+summary_2 <- readRDS("../VK/simulation/results/summary_study2.rds")
+```
+
 ### Methods
 
+The following two sections contain the methods and results for the studies implemented by Valentin Kriegmair, including the tables and figures. 
+I added them italicized, as they are direct quotes.
+
+*The following description of the simulation studies is based on the established structure for simulation studies to co-align with the other conducted studies to facilitate a potential collaboration.*
+
+**Aims, objectives and research questions**
+
+*Both studies aimed to evaluate the performance of traditional maximum-likelihood SEM (SEM), compared to global SAM (GSAM), local SAM with maximum likelihood (LSAM-ML), and local SAM with unweighted least squares (LSAM-ULS) estimation under various conditions. The two research questions we established prior to conducting the studies served as basis for both studies.*
+
+**Population Models and Data Generation Mechanisms**
+
+**Study 1:**
+
+*Data was generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see Figures 1-2).*
+
+- *Model 1.1: Correctly specified model.*
+
+- *Model 1.2: Misspecified with cross-loadings ignored in the estimation model.*
+
+- *Model 1.3: Misspecified with wrong direction of path and omitted correlated residuals.*
+
+- *Model 1.4: Misspecified with multiple omitted structural paths.*
+
+*For all models, the population-level values of the structural regression parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($lambda = 0.3$), moderate ($lambda = 0.5$), or high ($lambda = 0.7$).*
+
+\vspace{0.5\baselineskip}
+
+**Figure 1**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Models 1.1 (left) and 1.2 (right).*
+
+```{r eval = TRUE, echo = FALSE}
+
+knitr::include_graphics("../LK/images/Figure_VK_1_2.pdf")
+
+```
+*Note*. Error terms are not shown in the figure.
+
+\newpage
+
+**Figure 2**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Models 1.3 (left) and 1.4 (right).*
+
+```{r eval = TRUE, echo = FALSE}
+
+knitr::include_graphics("../LK/images/Figure_VK_3_4.pdf")
+
+```
+*Note*. Error terms are not shown in the figure.
+
+\vspace{0.5\baselineskip}
+
+**Study 2:**
+
+*Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained ($R^2$) by the endogenous factors was set at low ($R^2$ = 0.1) or medium ($R^2$ = 0.4), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and did not accurately result in said $R^2$ values. The aim here was only generally to modulate between lower and higher regression weights.*
+*In study 2, two different models were simulated (see Figure 3).*
+
+- *Model 2.1: Correctly specified model.*
+
+- *Model 2.2: Misspecified in either exogenous or endogenous parts of the model*
+
+*The Misspecifications in Model 2.2 included omitting a residual covariance and a factor cross-loading in either the exogenous or endogenous part of the model, or both. These types of misspecifications resulted in different realizations of model 2.2 when they were modulated as factors as described below.*
+
+\vspace{0.5\baselineskip}
+
+**Figure 3**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Models 2.1 (left) and 2.2 (right).*
+
+```{r eval = TRUE, echo = FALSE}
+
+knitr::include_graphics("../LK/images/Figure_VK_5_6.pdf")
+
+```
+*Note*. Error terms are not shown in the figure. Orange lines represent misspecifications in the exogenous part of the model. Green lines represent misspecifications in the endogenous part of the model.
+
+\vspace{0.5\baselineskip}
+
+**Experimental Design of simulation procedures**
+
+**Study 1**
+
+*The study varied three main conditions:* 
+
+- *Sample sizes: small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$). *
+
+- *Indicator reliability: low ($lambda = 0.3$), moderate ($lambda = 0.5$), high ($lambda = 0.7$).*
+
+- *Model specifications: correctly specified model and misspecified models (1.2, 1.3, and 1.4).*
+
+**Study 2**
+
+*The study varied five main conditions:*
+
+- *Sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$).*
+
+- *Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$).*
+
+- *Indicator reliability: low ($lambda = 0.3$), moderate ($lambda = 0.5$), and high ($lambda = 0.7$).*
+
+- *Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model.*
+
+- *Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$).*
+
+*Both studies were conducted with 10000 replications for each condition.*
+
+**Method Selection**
+
+*In both studies, the performance of four estimation methods was compared: Traditional SEM, GSAM, LSAM-ML and LSAM-ULS estimation.*
+
+**Performance Measures**
+
+*The following performance measures were captured: Convergence rates, empirical relative biases, empirical coverage levels of 95% confidence intervals (CIs) and Root Mean Squared Errors (RMSE).*
+
+**Software**
+
+*All analyses were conducted in R [@r_core_team_r_2023]. See <https://github.com/valentinkm/AdversarialSimulation> for more details.*
+
+**Analysis and Interpretation plan**
+
+*The results were interpreted by descriptively comparing the performance measures (bias, MSE, convergence rates) of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications.*
+
 ### Results
+
+Below are the results (including the tables and figures) by Valentin Kriegmair as a direct quotation or copy. 
+This is why they are italicized.
+
+*In the following the main patterns and trends of the results are reported and only examplary. The full results can be found in the Github repository.*
+
+#### Study 1
+
+##### Convergence Rate
+
+*For moderate and large sample sizes (N = 400, 6400), all methods achieved 100% convergence. At a small sample size (N = 100), SEM showed lower convergence rates, especially at lower reliability (0.3), while GSAM, LSAM-ML, and LSAM-ULS maintained high convergence rates. SEM faced significant convergence drops at the lowest reliability (0.3), particularly with misspecifications present.*
+
+```{r eval = TRUE, echo = FALSE}
+create_convergence_table_1 <- function(table_number, custom_caption, model_type_value) {
+  summary_1 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, method, ConvergenceRate) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `Method` = method,
+      `Convergence Rate` = ConvergenceRate
+    ) %>%
+    mutate(
+      `Convergence Rate` = round(`Convergence Rate`, 3),
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Convergence Rate`) %>%
+    kbl(caption = custom_caption,
+        format = "latex", booktabs = TRUE, escape = FALSE) %>%
+    kable_styling(latex_options = c("striped", "hold_position"))
+}
+
+# Create and display the tables for each model type in Study 1 with custom captions
+convergence_table_1_1 <- create_convergence_table_1(0, "Convergence Rates under correct model specification (Model 1.1)", "1.1")
+#convergence_table_1_1
+
+convergence_table_1_2 <- create_convergence_table_1(0, "Convergence Rates under omitted Cross Loadings (Model 1.2)", "1.2")
+#convergence_table_1_2
+
+convergence_table_1_3 <- create_convergence_table_1(1, "Convergence Rates under omitted Correlated Residuals and structural misspecifcation (Model 1.3)", "1.3")
+#convergence_table_1_3
+
+convergence_table_1_4 <- create_convergence_table_1(0, "Convergence Rates under Structural Misspecification (Model 1.4)", "1.4")
+#convergence_table_1_4
+
+```
+
+##### Average Relative Biases
+
+*Here this study diverged from the original of @rosseel_structural_2022 by focusing exclusively on the average relative bias under a single type of correctly specified model (model 1), which did not include any cross loadings or correlated residuals. This simplification allowed to concentrate on the core advantage of SAM over traditional SEM: its more robust estimation of structural parameters, especially when measurement models are misspecified. For the correct model (1.1), SEM showed higher biases at smaller sample sizes and lower reliability, while GSAM, LSAM-ML, and LSAM-ULS exhibited lower biases.*
+
+*Table 3 shows average relative bias percentages for the different estimation methods under varying model specifications and sample sizes in presence of omitted correlated residuals (model 1.2) and Table 4 under correlated residuals and structural misspecification.*
+*Under omitted cross loadings (model 1.2) and structural misspecification (model 1.4), all methods demonstrated substantial biases, particularly SEM at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecification (1.3), GSAM, LSAM-ML, and LSAM-ULS showed more negative biases compared to SEM. Overall, GSAM, LSAM-ML, and LSAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability.*
+
+##### Coverage
+
+*For the correct model (1.1), SEM exhibited undercoverage at smaller sample sizes and lower reliability, indicating narrow CI's and less reliable estimates. GSAM, LSAM-ML, and LSAM-ULS showed slight overcoverage, reflecting more conservative estimates.*
+*Under the cross loadings model (1.2), all methods had substantial undercoverage, especially SEM. The correlated residuals model (1.3) consistently revealed undercoverage across all methods, with SEM showing the highest biases. For the structural model (1.4), SEM suffered from undercoverage at lower sample sizes and reliability, while GSAM, LSAM-ML, and LSAM-ULS performed better with relatively consistent biases.*
+
+\vspace{0.5\baselineskip}
+
+**Table 3**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Average relative bias (in percentage) under omitted cross-loadings (Model 1.2)*
+```{r eval = TRUE, echo = FALSE}
+create_bias_table <- function(table_number, custom_caption, model_type_value) {
+  summary_1 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, method, MeanRelativeBias) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `Method` = method,
+      `Average Relative Bias (%)` = MeanRelativeBias
+    ) %>%
+    mutate(
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "LSAM-ML", 
+                      lSAM_ULS = "LSAM-ULS"),
+      `Average Relative Bias (%)` = round(`Average Relative Bias (%)` * 100, 3)
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Average Relative Bias (%)`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the bias tables for each model type in Study 1 with custom captions
+bias_table_1_1 <- create_bias_table(1, "Average Relative Biases (in Percentages) under correct model specification (Model 1.1)", "1.1")
+#bias_table_1_1
+
+bias_table_1_2 <- create_bias_table(2, "Average Relative Biases (in Percentages) under omitted Cross Loadings (Model 1.2)", "1.2")
+bias_table_1_2
+
+bias_table_1_3 <- create_bias_table(3, "Average Relative Biases (in Percentages) under omitted Correlated Residuals (Model 1.3)", "1.3")
+#bias_table_1_3
+
+bias_table_1_4 <- create_bias_table(4, "Average Relative Biases (in Percentages) under Structural Misspecification (Model 1.4)", "1.4")
+#bias_table_1_4
+
+```
+*Note.* N = Sample size, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-maximum-likelihood-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
+
+\vspace{0.5\baselineskip}
+
+**Table 4**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Average relative bias (in percentage) under omitted residual correlations (Model 1.3)*
+```{r eval = TRUE, echo = FALSE}
+bias_table_1_3 <- create_bias_table(3, "Average Relative Biases (in Percentages) under omitted Correlated Residuals (Model 1.3)", "1.3")
+bias_table_1_3
+```
+*Note.* N = Sample size, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-maximum-likelihood-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
+
+\vspace{0.5\baselineskip}
+
+*Overall, GSAM, LSAM-ML, and LSAM-ULS demonstrated better empirical coverage than SEM but the overcoverage indicates too wide confidence intervals.*
+*Table 5 show the average difference between empirical coverage levels of the 95% confidence intervals (CIs) and their nominal level (95%) using each method for different reliability values and sample sizes under omitted cross loadings (model 1.2).*
+
+##### RMSE
+
+*For the correct model (1.1), SEM had higher RMSE values at smaller sample sizes and lower reliability, while GSAM, LSAM-ML, and LSAM-ULS demonstrated lower RMSE values. Under omitted cross loadings (1.2) and correlated residuals (1.3), SEM showed significantly higher RMSE values, although all methods exhibited increased RMSE under these conditions. The structural model (1.4) revealed that SEM had higher RMSE values at lower sample sizes and reliability, whereas GSAM, LSAM-ML, and LSAM-ULS showed better performance with lower RMSE. Overall, GSAM, LSAM-ML, and LSAM-ULS demonstrated more robustness with lower RMSE values compared to SEM, particularly in challenging conditions with smaller sample sizes and lower reliability.*
+
+```{r eval = TRUE, echo = FALSE}
+create_rmse_table <- function(table_number, custom_caption, model_type_value) {
+  summary_1 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, method, MeanRelativeRMSE) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `Method` = method,
+      `Average RMSE` = MeanRelativeRMSE
+    ) %>%
+    mutate(
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS"),
+      `Average RMSE` = round(`Average RMSE`, 3)
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Average RMSE`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the RMSE tables for each model type in Study 1 with custom captions
+rmse_table_1_1 <- create_rmse_table(1, "Average RMSE under correct model specification (Model 1.1)", "1.1")
+#rmse_table_1_1
+
+rmse_table_1_2 <- create_rmse_table(2, "Average RMSE under omitted Cross Loadings (Model 1.2)", "1.2")
+#rmse_table_1_2
+
+rmse_table_1_3 <- create_rmse_table(3, "Average RMSE under omitted Correlated Residuals (Model 1.3)", "1.3")
+#rmse_table_1_3
+
+rmse_table_1_4 <- create_rmse_table(4, "Average RMSE under Structural Misspecification (Model 1.4)", "1.4")
+#rmse_table_1_4
+```
+
+\vspace{0.5\baselineskip}
+
+**Table 5**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Average coverage difference (in percentage) under omitted cross-loadings (Model 1.2)*
+```{r eval = TRUE, echo = FALSE}
+create_coverage_diff_table <- function(table_number, custom_caption, model_type_value) {
+  summary_1 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, method, MeanCoverage) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `Method` = method,
+      `Average Coverage Difference (%)` = MeanCoverage
+    ) %>%
+    mutate(
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "LSAM-ML", 
+                      lSAM_ULS = "LSAM-ULS"),
+      `Average Coverage Difference (%)` = round((`Average Coverage Difference (%)` - 0.95) * 100, 3)
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Average Coverage Difference (%)`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the coverage difference tables for each model type in Study 1 with custom captions
+coverage_diff_table_1_1 <- create_coverage_diff_table(1, "Average Coverage Difference (in Percentages) under correct model specification (Model 1.1)", "1.1")
+#coverage_diff_table_1_1
+
+coverage_diff_table_1_2 <- create_coverage_diff_table(2, "Average Coverage Difference (in Percentages) under omitted Cross Loadings (Model 1.2)", "1.2")
+coverage_diff_table_1_2
+
+coverage_diff_table_1_3 <- create_coverage_diff_table(3, "Average Coverage Difference (in Percentages) under omitted Correlated Residuals (Model 1.3)", "1.3")
+#coverage_diff_table_1_3
+
+coverage_diff_table_1_4 <- create_coverage_diff_table(4, "Average Coverage Difference (in Percentages) under Structural Misspecification (Model 1.4)", "1.4")
+#coverage_diff_table_1_4
+```
+*Note.* N = Sample size, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-maximum-likelihood-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
+
+\vspace{0.5\baselineskip}
+
+##### Improper Solutions
+
+*Improper solutions occur when parameter estimates fall outside the boundary of the parameter space, such as when variances are estimated to be negative or correlations exceed an absolute value of one. These issues are more likely to arise in smaller sample sizes and can indicate problems with model estimation.*
+
+*SEM exhibited a significantly higher count of improper solutions compared to GSAM, LSAM-ML, and LSAM-ULS, particularly in small sample sizes and lower reliability conditions. GSAM, LSAM-ML, and LSAM-ULS consistently showed minimal improper solutions across all scenarios, highlighting their robustness and reliability in parameter estimation.*
+
+```{r eval = TRUE, echo = FALSE}
+create_improper_solutions_table <- function(table_number, custom_caption, model_type_value) {
+  summary_1 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, method, ImproperSolutionsCount) %>%
+    mutate(ImproperSolutionsCount = ImproperSolutionsCount / 10000 * 100) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `Improper Solutions Percentage` = ImproperSolutionsCount,
+      `Method` = method
+    ) %>%
+    mutate(
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Improper Solutions Percentage`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the improper solutions tables for each model type in Study 1 with custom captions
+improper_solutions_table_1_1 <- create_improper_solutions_table(1, "Percentage of Improper Solutions under correct model specification (Model 1.1)", "1.1")
+#improper_solutions_table_1_1
+
+improper_solutions_table_1_2 <- create_improper_solutions_table(2, "Percentage of Improper Solutions under omitted Cross Loadings (Model 1.2)", "1.2")
+#improper_solutions_table_1_2
+
+improper_solutions_table_1_3 <- create_improper_solutions_table(3, "Percentage of Improper Solutions under omitted Correlated Residuals (Model 1.3)", "1.3")
+#improper_solutions_table_1_3
+
+improper_solutions_table_1_4 <- create_improper_solutions_table(4, "Percentage of Improper Solutions under Structural Misspecification (Model 1.4)", "1.4")
+#improper_solutions_table_1_4
+
+```
+
+#### Study 2
+
+##### Convergence
+
+*In Study 2, all methods achieved a 100% convergence rate for moderate and large sample sizes (N = 400, 6400). For small sample sizes (N = 100), SEM showed lower convergence rates, especially at lower reliability levels (0.3), while GSAM, LSAM-ML, and LSAM-ULS maintained high convergence rates.*
+
+*R-squared values and measurement block size had minimal impact on convergence rates, indicating robustness of GSAM, LSAM-ML, and LSAM-ULS across various conditions. In contrast, SEM estimation struggled particularly in the conditions with lower reliability and smaller sample sizes.*
+
+```{r eval = TRUE, echo = FALSE}
+create_convergence_table <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, R_squared, b, method, ConvergenceRate) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Measurement Blocks` = b,
+      `Method` = method,
+      `Convergence Rate` = ConvergenceRate
+    ) %>%
+    mutate(
+      `Convergence Rate` = round(`Convergence Rate`, 3),
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Convergence Rate`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the tables for each model type in Study 2 with custom captions
+convergence_table_2_1 <- create_convergence_table(1, "Convergence Rates for correct model specification (Model 2.1)", "2.1")
+#convergence_table_2_1
+
+convergence_table_2_2_exo <- create_convergence_table(2, "Convergence Rates for Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#convergence_table_2_2_exo
+
+convergence_table_2_2_endo <- create_convergence_table(3, "Convergence Rates for Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#convergence_table_2_2_endo
+
+convergence_table_2_2_both <- create_convergence_table(4, "Convergence Rates for Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#convergence_table_2_2_both
+```
+
+##### The Influence of Number of Measurement Blocks on Bias and RMSE
+
+*For low reliability ($lambda = 0.3$) and small sample size ($N = 100$), using 3 measurement blocks generally resulted in less negative bias compared to 5 blocks, although 5 blocks had lower RMSE. As reliability and sample sizes increased, the differences in bias and RMSE between 3 and 5 blocks diminished. Thus, for low reliability and small sample sizes, 3 measurement blocks were preferable for reducing bias, while 5 blocks performed better for RMSE.*
+
+*For subsequent comparisons, we considered LSAM with 3 measurement blocks as this difference was more pronounced especially in low sample size and reliability conditions, which we were most interested in.*
+
+```{r eval = TRUE, echo = FALSE}
+create_relative_bias_table_lSAM <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    filter(method %in% c("lSAM_ML", "lSAM_ULS")) %>%  # Filter for lSAM methods
+    select(N, reliability, R_squared, b, method, MeanRelativeBias) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Measurement Blocks` = b,
+      `Method` = method,
+      `Mean Relative Bias` = MeanRelativeBias
+    ) %>%
+    mutate(
+      `Mean Relative Bias` = round(`Mean Relative Bias` * 100, 2),  # Convert to percentage and round to 2 decimal places
+      Method = recode(Method, 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Mean Relative Bias`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+relative_bias_table_lSAM_correct <- create_relative_bias_table_lSAM(5, "Mean Relative Bias for lSAM methods only under correct model specification (Model 2.1)", "2.1")
+#relative_bias_table_lSAM_correct
+
+relative_bias_table_lSAM_exo <- create_relative_bias_table_lSAM(6, "Mean Relative Bias for lSAM methods only under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#relative_bias_table_lSAM_exo
+
+relative_bias_table_lSAM_endo <- create_relative_bias_table_lSAM(7, "Mean Relative Bias for lSAM methods only under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#relative_bias_table_lSAM_endo
+
+relative_bias_table_lSAM_both <- create_relative_bias_table_lSAM(8, "Mean Relative Bias for lSAM methods only under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#relative_bias_table_lSAM_both
+```
+
+```{r eval = TRUE, echo = FALSE}
+# Function to create an RMSE table for lSAM methods only
+create_rmse_diff_table_lSAM <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    filter(method %in% c("lSAM_ML", "lSAM_ULS")) %>%  # Filter for lSAM methods
+    select(N, reliability, R_squared, b, method, MeanRelativeRMSE) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Measurement Blocks` = b,
+      `Method` = method,
+      `Mean Relative RMSE` = MeanRelativeRMSE
+    ) %>%
+    mutate(
+      `Mean Relative RMSE` = round(`Mean Relative RMSE`, 3),
+      Method = recode(Method, 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Mean Relative RMSE`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+# Create and display the lSAM tables with custom captions
+rmse_diff_table_lSAM_5 <- create_rmse_diff_table_lSAM(13, "Mean Relative RMSE for lSAM methods only under correct model specification (Model 2.1)", "2.1")
+#rmse_diff_table_lSAM_5
+
+rmse_diff_table_lSAM_6 <- create_rmse_diff_table_lSAM(14, "Mean Relative RMSE for lSAM methods only under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#rmse_diff_table_lSAM_6
+
+rmse_diff_table_lSAM_7 <- create_rmse_diff_table_lSAM(15, "Mean Relative RMSE for lSAM methods only under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#rmse_diff_table_lSAM_7
+
+rmse_diff_table_lSAM_8 <- create_rmse_diff_table_lSAM(16, "Mean Relative RMSE for lSAM methods only under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#rmse_diff_table_lSAM_8
+```
+
+##### Average Relative Bias
+
+*For the correctly specified model with low reliability ($lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed a larger average relative bias compared to SAM methods. GSAM and LSAM-ML had small negative biases, while LSAM-ULS had a positive bias in challenging conditions. Higher $R^2$ had little impact on SEM's bias as absolute values, but SAM methods showed increased bias. For higher reliability and sample sizes, biases decreased similarly for all estimation methods.*
+
+*Under misspecification (correlated residuals and crossloadings in the exogenous model), SEM had an even greater positive bias in challenging conditions, while SAM methods showed consistent negative biases, with LSAM-ULS performing best.*
+*In the endogenous misspecification model, SEM exhibited relatively small biases compared to SAM methods, which showed substantial negative biases. SEM's bias got considerably worse with larger sample sizes and lower reliability, while SAM methods' biases remained similarly large and negative.*
+
+*For misspecifications in both endogenous and exogenous parts, SAM methods had consistent negative biases (see Table 6). Here, SEM showed a positive bias with low reliability and sample size, turning negative with increasing sample size and higher $R^2$ values.*
+
+##### RMSE
+
+*For the correctly specified model with low reliability ($lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed higher RMSE compared to SAM methods. GSAM and LSAM-ML had lower RMSEs, while LSAM-ULS had a slightly higher RMSE. Increasing regression weights ($R^2$) improved RMSE for both SEM and SAM methods.*
+
+*Under exogenous misspecifications, SEM had higher RMSE compared to SAM methods at low reliability and small sample size. This pattern persisted for endogenous misspecifications and misspecifications in both exogenous and endogenous factors, as GSAM and LSAM-ML consistently showed lower RMSEs and LSAM-ULS performed slightly worse. RMSE improved for all methods with higher $R^2$.*
+
+```{r eval = TRUE, echo = FALSE}
+# Function to create a RMSE table for a specific model type with SEM performance included
+create_rmse_table <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    filter(b == 3) %>%  # Filter for Measurement Blocks = 3
+    select(N, reliability, R_squared, method, MeanRelativeRMSE) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Method` = method,
+      `Mean Relative RMSE` = MeanRelativeRMSE
+    ) %>%
+    mutate(
+      `Mean Relative RMSE` = round(`Mean Relative RMSE`, 3),
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Mean Relative RMSE`) %>%
+    kbl(caption = custom_caption,
+    format = "latex", booktabs = TRUE, escape = FALSE) %>%
+    kable_styling(latex_options = c("striped", "hold_position"))
+}
+
+# Create and display the tables for each model type with custom captions
+rmse_table_correct <- create_rmse_table(1, "Mean Relative RMSE for traditional SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
+#rmse_table_correct
+
+rmse_table_exo <- create_rmse_table(2, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#rmse_table_exo
+
+rmse_table_endo <- create_rmse_table(3, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#rmse_table_endo
+
+rmse_table_both <- create_rmse_table(4, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#rmse_table_both
+
+```
+
+##### Improper Solutions
+
+*In conditions with small sample sizes ($N = 100$) and lower reliability ($lambda = 0.3$), traditional SEM exhibited a high percentage of improper solutions. GSAM, LSAM-ML, and LSAM-ULS, on the other hand, consistently showed very low or zero improper solutions across all conditions investigated.*
+
+```{r eval = TRUE, echo = FALSE}
+# Function to create an Improper Solutions table for a specific model type
+create_improper_solutions_table <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    group_by(N, reliability, R_squared, b, method) %>%
+    summarise(
+      ImproperSolutionsCount = sum(ImproperSolutionsCount, na.rm = TRUE),
+      .groups = 'drop'
+    ) %>%
+    mutate(
+      ImproperSolutionsPercentage = round((ImproperSolutionsCount / 10000) * 100, 2),
+      R_squared = recode(R_squared, `0.1` = "low", `0.4` = "high")
+    ) %>%
+    select(N, reliability, R_squared, b, method, ImproperSolutionsPercentage) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Measurement Blocks` = b,
+      `Method` = method,
+      `Improper Solutions (%)` = ImproperSolutionsPercentage
+    ) %>%
+    mutate(
+      Method = recode(Method,
+                      SEM = "SEM",
+                      gSAM = "GSAM",
+                      lSAM_ML = "SAM-ML",
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Improper Solutions (%)`) %>%
+    kbl(caption = custom_caption,
+    format = "latex", booktabs = TRUE, escape = FALSE) %>%
+    kable_styling(latex_options = c("striped", "hold_position"))
+}
+
+# Create and display the tables for each model type with custom captions
+improper_solutions_table_1 <- create_improper_solutions_table(1, "Percentage of Improper Solutions for correct model specification (Model 2.1)", "2.1")
+#improper_solutions_table_1
+
+improper_solutions_table_2 <- create_improper_solutions_table(2, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#improper_solutions_table_2
+
+improper_solutions_table_3 <- create_improper_solutions_table(3, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#improper_solutions_table_3
+
+improper_solutions_table_4 <- create_improper_solutions_table(4, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#improper_solutions_table_4
+```
+
+\vspace{0.5\baselineskip}
+
+**Table 6**
+
+\vspace{0.5\baselineskip}
+
+*Study 2: Mean relative bias in percentage under cross-loadings and residual correlations in Exo- and Endogenous factors of the model (Model 2.2-both).*
+
+```{r eval = TRUE, echo = FALSE}
+# Function to create a relative bias table for a specific model type with SEM performance included
+create_relative_bias_table <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    filter(b == 3) %>%  # Filter for Measurement Blocks = 3
+    select(N, reliability, R_squared, method, MeanRelativeBias) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R2` = R_squared,
+      `Method` = method,
+      `Mean Relative Bias` = MeanRelativeBias
+    ) %>%
+    mutate(
+      `Mean Relative Bias` = round(`Mean Relative Bias` * 100, 2),  # Convert to percentage and round to 2 decimal places
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "LSAM-ML", 
+                      lSAM_ULS = "LSAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Mean Relative Bias`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the tables for each model type with custom captions
+relative_bias_table_correct <- create_relative_bias_table(1, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
+# relative_bias_table_correct
+
+relative_bias_table_exo <- create_relative_bias_table(2, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+# relative_bias_table_exo
+
+relative_bias_table_endo <- create_relative_bias_table(3, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#relative_bias_table_endo
+
+relative_bias_table_both <- create_relative_bias_table(4, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+relative_bias_table_both
+```
+*Note.* N = Sample size, R2 = $R^2$, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
+
+\vspace{0.5\baselineskip}
+
+```{r eval = TRUE, echo = FALSE}
+# # Function to create a coverage table for a specific model type with differences to SEM
+# create_coverage_diff_table <- function(model_type_label, model_type_value) {
+#   sem_values <- summary_2 %>%
+#     filter(model_type == model_type_value, method == "SEM") %>%
+#     select(N, reliability, R_squared, b, MeanCoverage) %>%
+#     rename(
+#       Reliability = reliability,
+#       R_Squared = R_squared,
+#       `Measurement Blocks` = b,
+#       SEM_Value = MeanCoverage
+#     )
+#   
+#   summary_2 %>%
+#     filter(model_type == model_type_value, method != "SEM") %>%
+#     select(N, reliability, R_squared, b, method, MeanCoverage) %>%
+#     left_join(sem_values, by = c("N", "reliability" = "Reliability", "R_squared" = "R_Squared", "b" = "Measurement Blocks")) %>%
+#     mutate(Diff_to_SEM = MeanCoverage - SEM_Value) %>%
+#     select(N, reliability, R_squared, b, method, Diff_to_SEM) %>%
+#     rename(
+#       Reliability = reliability,
+#       R_Squared = R_squared,
+#       `Measurement Blocks` = b,
+#       Method = method,
+#       `Difference to SEM` = Diff_to_SEM
+#     ) %>%
+#     mutate(
+#       `Difference to SEM` = round(`Difference to SEM`, 3),
+#       Method = recode(Method, 
+#                       gSAM = "GSAM", 
+#                       lSAM_ML = "SAM-ML", 
+#                       lSAM_ULS = "SAM-ULS")
+#     ) %>%
+#     pivot_wider(names_from = Method, values_from = `Difference to SEM`) %>%
+#     kbl(caption = paste("Difference in Mean Coverage to SEM for (Mis-)Specification (Model):", model_type_label),
+#         format = "html", booktabs = TRUE) %>%
+#     kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+# }
+# 
+# # Create and display the tables for each model type in Study 2
+# coverage_diff_table_2_1 <- create_coverage_diff_table("2.1", "2.1")
+# coverage_diff_table_2_1
+# 
+# coverage_diff_table_2_2_exo <- create_coverage_diff_table("2.2_exo", "2.2_exo")
+# coverage_diff_table_2_2_exo
+# 
+# coverage_diff_table_2_2_endo <- create_coverage_diff_table("2.2_endo", "2.2_endo")
+# coverage_diff_table_2_2_endo
+# 
+# coverage_diff_table_2_2_both <- create_coverage_diff_table("2.2_both", "2.2_both")
+# coverage_diff_table_2_2_both
+```
 
 ## Individual study by Kosanke
 
@@ -280,45 +1045,60 @@ Overall, I conducted 6 simulation studies.
 
 **Population Models and Data Generation Mechanisms**
 
-The most important details with regards to the population models and data-generating mechanisms are visible in Table 3.
+The most important details with regards to the population models and data-generating mechanisms are visible in Table 7.
+With regards to the population models, all factors in all studies loaded onto 3 indicators each.
+I chose the population values to align with the original paper by @robitzsch_comparing_2022.
+The multivariate normally distributed data was generated parametrically, based on a specified population model.
+All simulations were conducted using seeds to allow for the reproducibility of results.
 
-```{r schematic 1, eval = TRUE, echo = FALSE, out.width="110%"}
+For more details on the exact values of each study, see the simulation scripts in the Github repository.
 
-knitr::include_graphics(here::here("LK/images/TableOverviewIndividualStudies.pdf"))
+\vspace{0.5\baselineskip}
+
+**Table 7**
+
+\vspace{0.5\baselineskip}
+
+*Overview of the individual simulation studies by Leonard Kosanke.*
+
+```{r schematic 1, eval = TRUE, echo = FALSE, out.width="125%"}
+
+knitr::include_graphics("../LK/images/TableOverviewIndividualStudies.pdf")
 
 ```
-
-With regards to the population models, all factors in all studies loaded onto 3 indicators each.
-I chose the population values to align to the original paper by @robitzsch_comparing_2022.
-For more details on the exact values of each study, see the simulation scripts in the github repository.
-The multivariate normally distributed data was generated parametrically, based on a specified population model.
-All simulations were conducted using seeds to allow for reproducibility.
+\vspace{\baselineskip}
 
 **Experimental Design of simulation procedures**
 
-Overall, 3 different types of factors were varied that can be deducted from Table 3 and are detailed again in the simulation scripts provided.
-Firstly, we varied the sample size in all studies, ranging from N = 50 to 100.000.
+Overall, 3 different types of factors were varied that can be deduced from Table 7 and are detailed again in the simulation scripts provided.
+
+Firstly, I varied the sample size in all studies, ranging from N = 50 to 100.000.
 I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
 Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes. 
 Thus, only N=50 and N=100 were present in this study.
-Additionally, I variend the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
-In Studies 1b and 4a, I varied some population values for model parameters (phi, beta and/ or lambda), as well.
+
+Additionally, I varied the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
+
+Thirdly, in Studies 1b and 4a, I varied the population values for three model parameters (phi, beta and/ or lambda).
+
 Besides studies 1 and 2, I implemented full factorial designs.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
 I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors did not give reasoning for this decision themselves.
-In Studies 4 and 4a I looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
+
+In Studies 4 and 4a I investigated the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
 These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
 In contrast to the other studies, studies 4 and 4a differed in the way the misspecification variation was labelled in @robitzsch_comparing_2022.
 Instead of varying a factor misspecification as in the previous study, they varied 3 different data-generating mechanisms (DGM's) as a whole.
 Thus the conditions are labelled differently:
-DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. DGM 3 contained 20 residual correlations that were not modelled in the models.
+DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. 
+DGM 3 contained 20 residual correlations that were not modelled in the models.
 I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
 Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study.
 
 **Method Selection**
 
-In terms of estimation methods, I used constrained maximum likelihood and unweighted least squares estimation, so that loadings and variance parameters were given the constraints that they had to be positive and larger than 0.01.
-These were implemented in  classical SEM-estimation, as well as both in their LSAM and GSAM variants.
+In terms of estimation methods, I used constrained SEM maximum-likelihood (SEM-ML) and unweighted-least-squares estimation (SEM-ULS), so that loadings and variance parameters were given the constraints that they had to be positive and larger than 0.01.
+Additionally, I implemented local-SAM (LSAM) and global-SAM (GSAM) estimation, in both maximum-likelihood (LSAM-ML/ GSAM-ML), and unweighted-least-squares estimation (GSAM-ML/ GSAM-ULS) contexts.
 Exceptions were studies 1b, 4 and 4a, where only LSAM was investigated, as results did not really differ between the two different SAM-methods [@robitzsch_comparing_2022].
 
 **Performance Measures**
@@ -328,7 +1108,7 @@ For the type of bias calculated, I oriented on @robitzsch_comparing_2022, beside
 Thus, I calculated average relative bias in Studies 1, 2 and 3, and average absolute bias in Studies 1b, 4 and 4a.
 In Study 1b, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values.
 In addition to what was done in @robitzsch_comparing_2022, I calculated confidence intervals for the bias estimates, but omitted them in the results tables for presentation purposes.
-The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the github repository.
+The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the Github repository.
 
 I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question.
 As @robitzsch_comparing_2022 argued in their paper, and was shown already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples [@ludtke_comparison_2021; @ulitzsch_alleviating_2023].
@@ -336,7 +1116,7 @@ I did include, however, a mechanism to track the total number of warnings for ea
 
 **Software**
 
-All analyses were conducted in R.
+All analyses were conducted in R [@r_core_team_r_2023].
 I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results [@rosseel_lavaan_2012; @purrr; @tidyverse; @furrr; @knitr; @zhu_kableextra_2024] .
 
 **Analysis and Interpretation plan**
@@ -374,16 +1154,16 @@ These warnings referred to potential problems with positive definite matrices an
 In total, these numbers are negligible in size and align with the report of @robitzsch_comparing_2022, that convergence issues were not substantial for my estimations.
 Additionally, a larger number of warnings was present with regards to the computation of fit indices in these final two studies.
 As we were not interest in fit indices in our research question, they were not relevant for our purposes.
-A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the github repository.
+A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the Github repository.
 
 #### Conditions without misspecification
 
-Mainly Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
+Tables 8 and 9 show the most relevant results of Studies 1 and 4 were I investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.
-In Study 4, only slight, but no substantial differences could be observed in terms of bias and RMSE between the LSAM- and classical ML-estimation. 
-This is visible in Table 4 for the example of RMSE.
-Here, LSAM-ML appeared to outperform both SEM-estimation methods only in N=50.
-For higher N, no differences were present between any of the estimators.
+In Study 4a, only slight differences could be observed in terms of bias and RMSE between LSAM- and classical ML-estimation. 
+In Study 1, both SEM outperformed all SAM estimators in samples of N=50-500. 
+This was true for both relative bias and RMSE, and visible for the former in Table 9.
+Here, SAM's negative small sample bias is already visible as well.
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -408,18 +1188,22 @@ create_styled_table <- function(data, condition) {
 rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 ```
 
-**Table 4**
+\vspace{0.5\baselineskip}
+
+**Table 8**
 
 \vspace{0.5\baselineskip}
 
-*Study 4a: RMSE for DGM 1.*
+*Study 4 (Kosanke): RMSE for DGM 1 (without misspecification).*
 
 ```{r eval = TRUE, echo = FALSE}
 
 create_styled_table(rmse_s4[["DGM_0"]], "DGM_0")
 
 ```
-*Note*. Condition: DGM 1
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML= Local-SAM-maximum-likelihood estimation.
+
+\vspace{0.5\baselineskip}
 
 
 ```{r eval = TRUE, echo = FALSE}
@@ -451,71 +1235,74 @@ create_styled_table <- function(data, condition) {
 
 ```
 
-In Study 1, both traditional SEM approaches outperformed all SAM estimators in small to moderate samples of N=50-500. 
-This was true for both relative bias and RMSE, and visible for the former in Table 5.
-Here, SAM's negative small sample bias is already visible as well.
-
-**Table 5**
+**Table 9**
 
 \vspace{0.5\baselineskip}
 
-*Study 1: Relative bias in conditions without misspecification.*
+*Study 1 (Kosanke): Relative bias in conditions without misspecification.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
 #### Conditions with negatively valenced unmodelled parameters
 
 Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
 In these studies, it became apparent that traditional SEM outperformed SAM estimation.
 
-As can be seen in Table 6, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
+As can be seen in Table 10, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
+The same was true in Study 2, in the presence of two negative cross-loadings.
+In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
+Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.
 
-**Table 6**
+#### Conditions with positively valenced unmodelled parameters
+
+In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. 
+Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
+Only from N=100-1000 did SAM outperform SEM.
 
 \vspace{0.5\baselineskip}
 
-*Study 1: Relative bias in conditions with two negative unmodelled residual correlations.*
+**Table 10**
+
+\vspace{0.5\baselineskip}
+
+*Study 1 (Kosanke): Relative bias in conditions with two negative unmodelled residual correlations.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
 
-The same was true in Study 2, in the presence of two negative cross-loadings.
-In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
-
-Importantly, no differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 7 for the negative cross-loadings in study 2.
-
-**Table 7**
+**Table 11**
 
 \vspace{0.5\baselineskip}
 
-*Study 2: RMSE in conditions with two negative unmodelled cross-loadings.*
+*Study 2 (Kosanke): RMSE in conditions with two negative unmodelled cross-loadings.*
 
 ```{r eval = TRUE, echo = FALSE}
 
 rmse_s2 <- readRDS("SimulationResults/sim2_rmse.rds")
+
+#Reformat row-names
+rmse_s2[["2_-0.3"]] <- rmse_s2[["2_-0.3"]] %>%
+  mutate(method_metric = str_replace(method_metric, "_rmse$", ""))
+
 create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
 
-#### Conditions with positively valenced unmodelled parameters
-
-In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
-
-Table 8 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
-Only from N=100-1000 did SAM outperform SEM.
-
-**Table 8**
+**Table 12**
 
 \vspace{0.5\baselineskip}
 
-*Study 3: Relative bias in conditions with each one positive unmodelled cross-loading and residual correlation.*
+*Study 3 (Kosanke): Relative bias in conditions with each one positive unmodelled cross-loading and residual correlation.*
 
 ```{r eval = TRUE, echo = FALSE}
 # Load the relative bias results
@@ -523,7 +1310,8 @@ bias_ci_s3 <- readRDS("SimulationResultsProcessed/sim3_rel_bias_ci.rds")
 
 # Round all numeric values to 3 digits
 bias_ci_s3 <- bias_ci_s3 %>%
-  mutate(across(where(is.numeric), ~ round(., 3)))
+  mutate(across(where(is.numeric), ~ round(., 3))) %>%
+  mutate(name = str_replace(name, "_rel_bias$", ""))
 
 #Format table for results
 kbl(bias_ci_s3,
@@ -534,6 +1322,7 @@ kbl(bias_ci_s3,
     column_spec(1, width = "4cm") %>% 
     row_spec(0, bold = TRUE)
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
 
@@ -559,25 +1348,30 @@ create_styled_table <- function(data, condition) {
 In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but only for smaller samples.
 
 With regards to RMSE, results were mixed as well. 
-LSAM appeared to outperform in Table 9 for DGM 2 of Study 4.
+LSAM appeared to outperform in Table 13 for DGM 2 of Study 4.
 In other conditions, however, no substantial differences arose in terms of RMSE.
 
-**Table 9**
+#### Small sample bias in LSAM estimation
+
+The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
+Table 14 shows this was especially apparent in a sample size of 50.
 
 \vspace{0.5\baselineskip}
 
-*Study 4: RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings).*
+**Table 13**
+
+\vspace{0.5\baselineskip}
+
+*Study 4 (Kosanke): RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings).*
 
 ```{r eval = TRUE, echo = FALSE}
 
 create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 
 ```
+*Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation.
 
-#### Small sample bias in LSAM estimation
-
-The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
-Table 10 shows this was especially apparent in a sample size of 50.
+\vspace{0.5\baselineskip}
 
 ```{r eval = TRUE, echo = FALSE}
 #Load processed results
@@ -588,11 +1382,11 @@ bias_ci_s1b[["N_50"]][["LSAM_ML"]] <- bias_ci_s1b[["N_50"]][["LSAM_ML"]] %>%
   mutate(lambda = as.character(lambda))
 ```
 
-**Table 10**
+**Table 14**
 
 \vspace{0.5\baselineskip}
 
-*Study 1b: Absolute Bias of LSAM-ML for N=50*
+*Study 1b (Kosanke): Absolute Bias of LSAM-ML for N=50.*
 
 ```{r eval = TRUE, echo = FALSE}
 #Formatted tables
@@ -607,10 +1401,10 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
 
 \vspace{\baselineskip}
 
-Note that absolute values of bias were calculated in my paper.
+Note that the absolute values of bias were calculated in this study.
 Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
 The bias persisted, but to a lesser degree in samples of 100.
-Thus, a clear effect of sample size was present.
+Thus, as expected, a clear effect of sample size was present.
 Overall, comparing LSAM-ML and -ULS estimation, results were very similar.
 
 Importantly, differential effects due to lambda and phi were present in Study 1b.
@@ -622,7 +1416,14 @@ Another new insight lied in the presence of what could be called a reversal effe
 On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.
 
 As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
-Table 11 shows the performance of SEM-ML, whereas Table 12 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
+Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
+
+Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
+Thus, the negative small sample bias came into play in this study as well.
+Results looked very similar with regards to RMSE.
+Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
+
+\vspace{0.5\baselineskip}
 
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
@@ -635,11 +1436,11 @@ bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["LSAM_ML_
   mutate(beta = as.character(beta))
 ```
 
-**Table 11**
+**Table 15**
 
 \vspace{0.5\baselineskip}
 
-*Study 4a: Absolute bias of SEM-ML for DGM 2*
+*Study 4a (Kosanke): Absolute bias of SEM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -653,13 +1454,13 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]],
   kable_classic(full_width = F)
 ```
 
+\vspace{\baselineskip}
+
+**Table 16**
+
 \vspace{0.5\baselineskip}
 
-**Table 12**
-
-\vspace{0.5\baselineskip}
-
-*Study 4a: Absolute bias of LSAM-ML for DGM 2*
+*Study 4a (Kosanke): Absolute bias of LSAM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -672,12 +1473,7 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
   kable_classic(full_width = F)
 ```
 
-\vspace{0.5\baselineskip}
-
-Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
-Thus, the negative small sample bias came into play in this study as well.
-Results looked very similar with regards to RMSE.
-Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
+\vspace{\baselineskip}
 
 One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
 Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
@@ -698,7 +1494,7 @@ If there was no misspecification or unmodelled negative cross-loadings and resid
 ## Conclusions from both studies
 
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
-This is because of some central distinctions between the studies.
+This is due to some central distinctions between the studies.
 Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the unconstrained version of the estimator.
 Additionally, the observed performance differences disappeared, when accounting for SAM's negative small sample bias.
 
@@ -709,29 +1505,30 @@ In the context of empirical studies, the valence of potential residual correlati
 If that would be the case, one could simply turn to an estimator that is biased in the appropriate direction, to compensate this misspecification.
 Thus, achieving unbiased estimates is desirable in application contexts.
 
-The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects, but align with the results by Kosanke, in this light:
-
+The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects, but align with the results of Kosanke:
 This is true for all performance measures, even for coverage, which was not investigated in the study by Kosanke.
 Coverage is a measure that is partly determined by bias.
-Results in the studies by Kriegmair show, that SAM showed overcoverage due to its wider confidence intervals.
+Results in the studies by Kriegmair showed, that SAM had overcoverage due to its wider confidence intervals.
 Consequently, SAM was less biased but also less accurate than traditional SEM.
-Thus, SAM only partly outperformed tradional SEM, even in the unconstrained version and the results with regards to coverage do not change our conclusions.
-Kriegmair's results also hinted at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambdas, where the bias was especially pronounced (TABLES???).
-Moreover, in Kriegmairs' study 1, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (TABLE???).
+Hence, SAM only partly outperformed traditional SEM, even in the unconstrained version. 
 
-One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of phi in Kosanke's Study 4a.
+Kriegmair's results also hinted at the presence of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability (i.e lambda) and N, where the bias was especially pronounced (see Table 3).
+Moreover, in some conditions of Kriegmairs' studies, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (see Tables 4 and 6).
+
+One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of phi in Kosanke's Study 4a (see Tables 15-16).
 Only traditional SEM seemed to be negatively affected for higher beta values, compared to lower beta values in conditions with unmodelled cross-loadings (DGM 2).
-This showed slightly, but not substantially in conditions with residual correlations as well (DGM3), in the same study by Kosanke.
-Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (SEE TABLE???).
-Additionally, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
+This showed slightly, but not substantially in conditions with residual correlations as well (DGM 3), in the same study by Kosanke.
+Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. 
+Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (see Table 6).
+All together, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
 
 Importantly, besides the use of coverage as a performance measure, other differences in the design and implementations were present when comparing our respective studies.
 These have to be adressed:
 
 Unlike Kosanke, Kriegmair investigated additional effects with regards to endo- and exogeneity of predictors.
-Results showed, that the positive Bias of unconstrained SEM is stronger, if misspecification is present in exogenous predictors, if compared to it being present in endogenous and both endo- and exogenous predictors.
+Results showed, that the positive bias of unconstrained SEM was stronger, if misspecification was present in exogenous predictors, if compared to it being present in endogenous and both endo- and exogenous predictors.
 In these latter conditions, SAM performed even worse.
-At the end of the day, all this finding does is limiting the negative impacts of using unconstrained SEM to an even more specific set of model misspecifications.
+Interestingly, this finding suggests that the negative impacts of using unconstrained SEM-ML are limited to an even more specific set of model misspecifications, than initially suggested [@dhaene_evaluation_2023]. 
 Thus, unconstrained SEM can be viewed in an even better light relatively, for the endogenous as well as both endo- and exogenous predictor misspecifications.
 This does not warrant further investigation for our research question.
 
@@ -743,9 +1540,9 @@ We concluded that these findings have no relevance for our investigations on the
 The difference of observing effects of regression weigths directly in the study by Kosanke, and total variance explained by Kriegmair, are also minor, as both are aimed at modifying the regression weigths and lead to comparable parameter values.
 For Kosanke's studies 4 and 4a, they were fixed between 0.1-0.4, while they varied between 0.183 and 0.447 in Kriegmair's study 2.
 
-Another difference is the inclusion of conditions that examine the misspecification of the regression directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) in Kriegmair's studies.
-Important to mention here is that we did not observe any clear differences depending on the type of misspecification looking across all studies, and Kriegmairs studies in specific. 
-As the same was true even in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified paramer values for misspecification of the regression directionality [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
+Another difference is the inclusion of conditions that examine misspecifications of the structural regression coefficient, both in terms of directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) and by omitting them in Kriegmair's studies.
+We want to highlight that we did not observe any clear differences depending on the type of misspecification looking across all studies, and Kriegmairs studies in specific. 
+As the same was true in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified parameter values [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
 Here, the same argument as before can be made: Only unconstrained ML-estimation and positive values of misspecified parameters were investigated.
 The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
 
@@ -756,18 +1553,19 @@ In consequence, we did not conduct a joint study and stopped the collaboration a
 ## Results of the collaboration
 
 Going back to the outline of our collaboration framework, we successfully agreed on two research questions, conducted individual studies and integrated their results.
-Consequently, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure, the joint study.
+Consequently, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure.
 This means that we were unable to completely test our framework.
 Still, we have gained some insights with regards to our research question of whether adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
 
 ### Practical applicability
 
-Already the first step of agreeing on a joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
-We see the main success of the research question formulation in the focus on small to moderate sample sizes and on a limited number of estimators.
-This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
-Additionally, our general focus was much narrower because of this as well, as we did not include other discussions in the original papers, as for example on whether two-step-estimation is generally desirable as it seperates the definition from the measurement of latent variables [@robitzsch_comparing_2022].
+The first step of agreeing on a joint research questions is already a collaborative effort that requires to change perspective, and to understand more deeply what the adversaries did in their previous studies.
+We see its main success in the focus on small to moderate sample sizes and on a limited number of estimators.
+This allowed us to focus on specific parts of our replications and led me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
+For the same reasons, Kriegmair focussed on less correctly specified conditions than the original paper in his study 1 [@rosseel_structural_2022].
+Because of this our general focus became much narrow, as we did not include other discussions in the original papers, as for example on whether two-step-estimation is generally desirable as it seperates the definition from the measurement of latent variables [@robitzsch_comparing_2022].
 
-When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
+When conducting the individual studies, we knew that we would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
 This increased quality of reporting, rigor and transparency in our individual studies.
 After the individual studies, we integrated our results and looked for disagreement and points for further investigation.
 We achieved a fair and truthful comparison of views and could agree that they were not opposing each other.
@@ -776,24 +1574,22 @@ We also believe that we increased generalizability simply by integrating the fin
 With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
 Applying our framework, we observed the possibility to converge on research questions and found our individual simulations to be generally very compatible.
 This can be seen as preliminary evidence, that the second part of the collaboration should be practically applicable as well.
-Still, at the end of the day we could not conduct the second part of our collaboration framework.
-We believe that here, a lot of potential lies to further promote our intended goals and investigate our research question.
 
 ### Technical feasibility
 
 Technical feasibility in the collaboration was achieved for the parts we could implement in our case study.
-Utilizing tools like github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual studies within the same github repository.
+Utilizing tools like Github with its functionalities to review code and jointly work on the same project allowed us to conduct simulations collaboratively in terms of comparing results, giving feedback and having access to the adversaries individual studies within the same Github repository.
 
 Next to these aspects, which we integrated in our AC framework, two other aspect of technical feasibility were present for us while conducting our individual simulation studies.
 Firstly, we had access to a computing cluster.
 This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing too much runtime or having to limit the number of repetitions.
-Additionally, feasibility was facilitated by the use of the furrr package in R, which allowed for parallelisation of the code and significantly reduced the runtime of our simulations [@furrr].
+Additionally, feasibility was facilitated by the use of the furrr package in R, which allowed for parallelisation of the simulations and significantly reduced their runtime [@furrr].
 Again, as we could not conduct the second part of our collaboration framework, the technical feasibility of the collaborative study can not be judged conclusively.
 
 # Discussion
 
 In this focused case study, we aimed to conduct adversarial collaboration to investigate the question if adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
-To do so, we created and tested a collaboration framework that start with each adversary conducting an individual study, before collaborating in a joint study.
+To do so, we created and tested a collaboration framework that starts with each adversary conducting an individual study, before collaborating in a joint study.
 For this, we agreed on two substantial research questions to judge the comparative performance of traditional SEM vs. SAM estimation in small to moderate samples and under misspecifications.
 After finishing our individual studies, the supposed disagreement turned out not to be one, as results aligned well.
 Thus, we did not conduct a joint study and were only partly able to answer our research question.
@@ -801,37 +1597,34 @@ Thus, we did not conduct a joint study and were only partly able to answer our r
 For the first part of our framework, we found some evidence for practical applicability and technical feasibility:
 We were able to agree on two focused research question, that nudged our individual studies to focus on points of potential disagreement.
 Additionally, we were both able to successfully plan and conduct our individual simulations in a way that allowed integration of our results and to converge on a shared understanding of their consequences. 
-Thus, we achieved a fair and truthful representation of both sides views.
-Technical feasibility was present with the use of github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster and parallelisation allowed us to freely include conditions where we deemed it necessary, in our individual studies.
+Hence, we achieved a fair and truthful representation of both sides views.
+Technical feasibility was present with the use of Github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster and parallelisation allowed us to freely include conditions where we deemed it necessary, in our individual studies.
 
 For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible.
 Another attempt should be pursued to be able to answer our research question in the second part of our AC framework.
-
-Even though we did not get to the point of direct collaboration in the second part of our framework, we are confident that it should be practically applicable and technically feasible:
 Facilitating advancement in discussion between adversaries with the structured use of the tools we presented, we are confident that the necessary convergence for a joint study is achievable.
-This should be even more so the case, because of some key differences between empirical and simulation studies:
+This is underlined by the fact that there are some key differences between empirical and simulation studies:
 Firstly, opposing opinions in simulation studies are less incomensurable in terms of testing.
-In empirical studies, opposing theories might have completely different paradigms, measures and even construct definitions to answer the same research question.
-In simulation studies, these differences are much smaller.
-There is much more consensus on what data generating scenarios of interest could be, how performance is measured, and what the opposing methods are.
+In empirical studies, opposing theories might have completely different paradigms, measures and even construct definitions to answer the same research question [@rakow_adversarial_2022].
+In simulation studies, these differences are smaller.
+There is more consensus on what data generating scenarios of interest could be, how performance is measured, and what the opposing methods are.
 Another difference is the luxury of simulation studies to have much fewer resource restrictions.
 The main resources are time and computation power, which usually are not too limited.
 This allows adversaries to not have to find compromise in all cases, and, if in doubt, just include all conditions that might be relevant.
 In empirical studies, there are much more limited resources such as number of participants, money, labs and much more.
-Thus, aspects of power have to always be considered and this leads to having to have much more compromise in AC.
+In consequence, aspects of power have to always be considered and this leads to a need of more compromise in AC.
 
-In terms of *technical feasibility*, we believe that using tools like github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
+In terms of technical feasibility, we believe that using tools like Github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
 We see a lot of potential for these tools to be used in the second part of our collaboration framework, as they allow to split work within one study, give feedback on each others implementations via pull-requests, and much more.
 Ideally, additional resources like a computing cluster should be present to guarantee a higher limit on computational load, and thus more freedom to include additional conditions to test.
 This, however, should not be a problem for research conducted in universities or institutes that usually have access to computing clusters.
 Still, besides these assumptions and learnings from our first case study, we were unable to test the main part of collaboration and can not conclude that the practical applicability and technical feasibility is completely given.
-We believe that in the second part of our framework lies potential lies to further promote our intended goals and investigate our research question.
 
 With regards to limitations there are several other aspects to consider.
 We are aware that we tested a very superficial "simulation" of adversariality.
 Neither side had long scientific experience in our substantial field of interest, and thus the stakes were much lower than as if the original authors would have collaborated.
 In that case, collaboration most likely would have been more difficult.
-Still, including the individual studies as a first step, we think we did a good job of priming ourselves to the views of our respective sides of the argument.
+Nevertheless, including the individual studies as a first step we think we succeeded priming ourselves to the views of our respective sides of the argument.
 
 Another important aspect to discuss is whether we should have been able to see the lack of disagreement earlier, even before conducting our individual studies.
 As most of our findings were replications of the original papers, we might have been able to see their alignment if our preparation of the substantive topic would have been more in depth.
@@ -841,7 +1634,7 @@ Another question is in how far the advantages we observed with regards to increa
 We believe this not to be problematic, as AC and other aspects of open science can complement each very well and reinforce positive effects.
 Thus, researchers who are not generally interested in open science, but in collaboration, would still be nudged to work more openly, which we view as a positive outcome.
 
-In the end, we believe that it would be worthwhile for future research to conduct another case study like ours.
+We believe that it would be worthwhile for future research to conduct another case study like ours.
 Science is, in the end, a collaborative effort.
 Exploring the limits of collaboration is thus valuable to learn more about opportunities to advance scientific progress.
 
