@@ -1421,7 +1421,7 @@ If there was no misspecification or unmodelled negative cross-loadings and resid
 ## Conclusions from both studies
 
 Comparing the result from both individual studies, it became evident that they are at no point contradictory or in disagreement.
-This is because of some central distinctions between the studies.
+This is due to some central distinctions between the studies.
 Firstly, same as in @robitzsch_comparing_2022, the use of constrained ML estimation solves both the convergence issues in small samples, as well as the positive small sample bias of the unconstrained version of the estimator.
 Additionally, the observed performance differences disappeared, when accounting for SAM's negative small sample bias.
 
@@ -1435,9 +1435,10 @@ Thus, achieving unbiased estimates is desirable in application contexts.
 The evident performance differences observed between traditional SEM and SAM estimation in the study by Kriegmair are thus to be interpreted differently for all effects, but align with the results of Kosanke:
 This is true for all performance measures, even for coverage, which was not investigated in the study by Kosanke.
 Coverage is a measure that is partly determined by bias.
-Results in the studies by Kriegmair show, that SAM showed overcoverage due to its wider confidence intervals.
+Results in the studies by Kriegmair showed, that SAM had overcoverage due to its wider confidence intervals.
 Consequently, SAM was less biased but also less accurate than traditional SEM.
-Thus, SAM only partly outperformed tradional SEM, even in the unconstrained version and the results with regards to coverage do not change our conclusions.
+Hence, SAM only partly outperformed traditional SEM, even in the unconstrained version. 
+
 Kriegmair's results also hinted at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e $\lambda$, where the bias was especially pronounced (TABLES???).
 Moreover, in Kriegmairs' study 1, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (TABLE???).
 
@@ -1484,13 +1485,13 @@ Still, we have gained some insights with regards to our research question of whe
 
 ### Practical applicability
 
-Already the first step of agreeing on a joint research questions is a collaborative effort that requires to change perspective, and more deeply understand what the adversaries did in their previous studies.
-We see the main success of the research question formulation in the focus on small to moderate sample sizes and on a limited number of estimators.
-This allowed us to focus on specific parts of our replications and lead me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
+The first step of agreeing on a joint research questions is already a collaborative effort that requires to change perspective, and to understand more deeply what the adversaries did in their previous studies.
+We see its main success in the focus on small to moderate sample sizes and on a limited number of estimators.
+This allowed us to focus on specific parts of our replications and led me, for example, to include an additional sample size in all my studies, as well as omit studies 5 and 6 that were conducted on the population level in the paper by @robitzsch_comparing_2022.
 For the same reasons, Kriegmair focussed on less correctly specified conditions than the original paper in his study 1 [@rosseel_structural_2022].
-Additionally, our general focus was much narrower because of this as well, as we did not include other discussions in the original papers, as for example on whether two-step-estimation is generally desirable as it seperates the definition from the measurement of latent variables [@robitzsch_comparing_2022].
+Because of this our general focus became much narrow, as we did not include other discussions in the original papers, as for example on whether two-step-estimation is generally desirable as it seperates the definition from the measurement of latent variables [@robitzsch_comparing_2022].
 
-When conducting the individual studies, we knew that we would have would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
+When conducting the individual studies, we knew that we would have to be completely transparent with our results and had to give explanations for our decisions, as they would be scrutinized by the adversary later on.
 This increased quality of reporting, rigor and transparency in our individual studies.
 After the individual studies, we integrated our results and looked for disagreement and points for further investigation.
 We achieved a fair and truthful comparison of views and could agree that they were not opposing each other.
@@ -1523,24 +1524,22 @@ Thus, we did not conduct a joint study and were only partly able to answer our r
 For the first part of our framework, we found some evidence for practical applicability and technical feasibility:
 We were able to agree on two focused research question, that nudged our individual studies to focus on points of potential disagreement.
 Additionally, we were both able to successfully plan and conduct our individual simulations in a way that allowed integration of our results and to converge on a shared understanding of their consequences. 
-Thus, we achieved a fair and truthful representation of both sides views.
+Hence, we achieved a fair and truthful representation of both sides views.
 Technical feasibility was present with the use of Github for sharing and accessing our own and the adversaries results. Additionally, usage of a computing cluster and parallelisation allowed us to freely include conditions where we deemed it necessary, in our individual studies.
 
 For the second part of our framework, it remains unclear whether collaboration would be applicable and technically feasible.
 Another attempt should be pursued to be able to answer our research question in the second part of our AC framework.
-
-Even though we did not get to the point of direct collaboration in the second part of our framework, we are confident that it should be practically applicable and technically feasible:
 Facilitating advancement in discussion between adversaries with the structured use of the tools we presented, we are confident that the necessary convergence for a joint study is achievable.
-This should be even more so the case, because of some key differences between empirical and simulation studies:
+This is underlined by the fact that there are some key differences between empirical and simulation studies:
 Firstly, opposing opinions in simulation studies are less incomensurable in terms of testing.
 In empirical studies, opposing theories might have completely different paradigms, measures and even construct definitions to answer the same research question [@rakow_adversarial_2022].
-In simulation studies, these differences are much smaller.
-There is much more consensus on what data generating scenarios of interest could be, how performance is measured, and what the opposing methods are.
+In simulation studies, these differences are smaller.
+There is more consensus on what data generating scenarios of interest could be, how performance is measured, and what the opposing methods are.
 Another difference is the luxury of simulation studies to have much fewer resource restrictions.
 The main resources are time and computation power, which usually are not too limited.
 This allows adversaries to not have to find compromise in all cases, and, if in doubt, just include all conditions that might be relevant.
 In empirical studies, there are much more limited resources such as number of participants, money, labs and much more.
-Thus, aspects of power have to always be considered and this leads to having to have much more compromise in AC.
+In consequence, aspects of power have to always be considered and this leads to a need of more compromise in AC.
 
 In terms of technical feasibility, we believe that using tools like Github with its functionalities to review code and jointly work on the same project, should allow to conduct simulations collaboratively.
 We see a lot of potential for these tools to be used in the second part of our collaboration framework, as they allow to split work within one study, give feedback on each others implementations via pull-requests, and much more.
@@ -1552,7 +1551,7 @@ With regards to limitations there are several other aspects to consider.
 We are aware that we tested a very superficial "simulation" of adversariality.
 Neither side had long scientific experience in our substantial field of interest, and thus the stakes were much lower than as if the original authors would have collaborated.
 In that case, collaboration most likely would have been more difficult.
-Still, including the individual studies as a first step, we think we succeeded priming ourselves to the views of our respective sides of the argument.
+Nevertheless, including the individual studies as a first step we think we succeeded priming ourselves to the views of our respective sides of the argument.
 
 Another important aspect to discuss is whether we should have been able to see the lack of disagreement earlier, even before conducting our individual studies.
 As most of our findings were replications of the original papers, we might have been able to see their alignment if our preparation of the substantive topic would have been more in depth.
@@ -1562,7 +1561,7 @@ Another question is in how far the advantages we observed with regards to increa
 We believe this not to be problematic, as AC and other aspects of open science can complement each very well and reinforce positive effects.
 Thus, researchers who are not generally interested in open science, but in collaboration, would still be nudged to work more openly, which we view as a positive outcome.
 
-In the end, we believe that it would be worthwhile for future research to conduct another case study like ours.
+We believe that it would be worthwhile for future research to conduct another case study like ours.
 Science is, in the end, a collaborative effort.
 Exploring the limits of collaboration is thus valuable to learn more about opportunities to advance scientific progress.
 
