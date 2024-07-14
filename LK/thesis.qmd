@@ -1403,10 +1403,10 @@ kbl(bias_ci_s1b[["N_50"]][["LSAM_ML"]],
 
 \vspace{\baselineskip}
 
-Note that absolute values of bias were calculated in my paper.
+Note that the absolute values of bias were calculated in this study.
 Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
 The bias persisted, but to a lesser degree in samples of 100.
-Thus, a clear effect of sample size was present.
+Thus, as expected, a clear effect of sample size was present.
 Overall, comparing LSAM-ML and -ULS estimation, results were very similar.
 
 Importantly, differential effects due to lambda and phi were present in Study 1b.
@@ -1419,6 +1419,13 @@ On the contrary, absolute bias values decreased for higher phi values, when look
 
 As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
 Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
+
+Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
+Thus, the negative small sample bias came into play in this study as well.
+Results looked very similar with regards to RMSE.
+Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
+
+\vspace{0.5\baselineskip}
 
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
@@ -1435,7 +1442,7 @@ bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["LSAM_ML_
 
 \vspace{0.5\baselineskip}
 
-*Study 4a (Kosanke): Absolute bias of SEM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings)*
+*Study 4a (Kosanke): Absolute bias of SEM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1449,13 +1456,13 @@ kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]],
   kable_classic(full_width = F)
 ```
 
-\vspace{0.5\baselineskip}
+\vspace{\baselineskip}
 
 **Table 16**
 
 \vspace{0.5\baselineskip}
 
-*Study 4a (Kosanke): Absolute bias of LSAM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings)*
+*Study 4a (Kosanke): Absolute bias of LSAM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1468,12 +1475,7 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
   kable_classic(full_width = F)
 ```
 
-\vspace{0.5\baselineskip}
-
-Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
-Thus, the negative small sample bias came into play in this study as well.
-Results looked very similar with regards to RMSE.
-Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
+\vspace{\baselineskip}
 
 One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
 Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
