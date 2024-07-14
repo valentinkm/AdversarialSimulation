@@ -70,7 +70,7 @@ While increasing transparency and accountability in this way is important for re
 
 Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
 Initially tested by @mellers_frequency_2001, adversarial collaboration is gaining recognition within the quantitative empirical research community for its potential to enhance scientific rigor.
-Touted as “The next science reform” adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2021]. 
+Touted as “The next science reform” adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2023]. 
 An ongoing effort by @melloni_adversarial_2023, for example, conducts adversarial collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
 Adversarial Collaboration involves pinpointing empirical disagreements, designing studies that are mutually agreed upon to test competing hypotheses, and jointly publishing the results regardless of the outcome. 
 The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making [@clark_keep_2022].
