@@ -68,16 +68,16 @@ Other promising approaches focus on applying well-known concepts of open science
 Multiple frameworks propose using preregistration in simulation studies and call for increased transparency in reporting of key aspects of simulation studies [@morris_using_2019; @siepe_simulation_2023; @boulesteix_ten_2015].
 While increasing transparency and accountability in this way is important for reducing research ambiguity, these approaches do not necessarily incline scientists to refrain from choosing values at will, as long as they are preregistered and reported transparently.
 
-Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
+Another approach to tackle these challenges that has been proposed in the empirical context is adversarial collaboration (AC). 
 Initially tested by @mellers_frequency_2001, adversarial collaboration is gaining recognition within the quantitative empirical research community for its potential to enhance scientific rigor.
-Touted as “The next science reform” adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2023]. 
+Touted as “The next science reform”, adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2023]. 
 An ongoing effort by @melloni_adversarial_2023, for example, conducts adversarial collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
 Adversarial Collaboration involves pinpointing empirical disagreements, designing studies that are mutually agreed upon to test competing hypotheses, and jointly publishing the results regardless of the outcome. 
 The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making [@clark_keep_2022].
 Moreover, juxtaposing and integrating competing positions in this manner can improve the generalizability of results.
 
 Our objective is to apply the advantages of adversarial collaboration to simulation studies.
-To achieve this, we design and implement a focused case study, utilizing an exemplary topic in the literature of simulation studies: Comparing the newly proposed iterative structural after measurement (SAM) estimation approach to structural equation model (SEM) estimation with traditional, non-iterative SEM estimation [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
+To achieve this, we design and implement a focused case study, utilizing an exemplary topic in the literature of simulation studies: Comparing the newly proposed iterative structural after measurement (SAM) approach to structural equation model (SEM) estimation with, non-iterative methods [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022]. 
 In their respective simulations, the authors' results differed up to the point of contradiction, providing us with ideal grounds for adversarial collaboration. 
 While @dhaene_evaluation_2023 concluded that SAM estimation generally outperforms non-iterative SEM in small samples, @robitzsch_comparing_2022 did not find the methods to differ. 
 Similarly, whereas the former found SAM to be more robust against model misspecification, the latter argued the opposite to be true. 
@@ -91,13 +91,12 @@ Can adversarial collaboration be applied to simulation studies, in terms of prac
 # Methods 
 
 This section contains two parts that represent our proposed AC framework. 
-First, we describe the procedure of the AC with its two parts and the tools it uses.
+First, we describe the procedure of the AC with its two parts and the tools it contains.
 Then, we propose a technical setup to facilitate its implementation.
 
 ## Procedure of the Adversarial Collaboration
 
 To answer our research question, we created and implemented the following procedure for the adversarial collaboration process: 
-The procedure consists of two parts. 
 In the first part, each researcher conducts an independent preliminary study.
 In the second part, a joint study, including a joint simulation protocol, should be pursued.
 
@@ -105,19 +104,23 @@ In the second part, a joint study, including a joint simulation protocol, should
 
 As a first step of the individual studies, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
 These individual studies should include the generation of individual simulation protocols, as suggested by previous work [@morris_using_2019;  @siepe_simulation_2023].
-To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual simulation studies in advance.
+To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual studies in advance.
 This structure (see Table 1) is based on relevant literature in the field of simulation studies [@paxton_monte_2001; @morris_using_2019; @boomsma_reporting_2013].
 
-This structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
+The structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
 
 ### Part two: Joint study
 
 In the second part, a joint study including a joint simulation protocol should be pursued. 
-This process starts based on the results of Part one.
-Here, the main part of the adversarial collaboration takes place.
-It contains multiple parts I will explain in the following sections:
-Each step of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
+This process starts based on the results of the individual studies.
+Here, classical adversarial collaboration takes place.
+It contains multiple tools I will explain in the following sections:
+Each phase of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
 Decisions are made and documented based on the most convincing argument presented, if possible.
+
+If an interest in the evaluation of the collaboration exists, diary entries can be written after each phase.
+In the end, each collaborator reports the results in their own paper.
+If desired, a joint paper can be published as well.
 
 \vspace{0.5\baselineskip}
 
@@ -174,24 +177,22 @@ Decisions are made and documented based on the most convincing argument presente
 
 : {tbl-colwidths="[5,95]"}
 
-
-If an interest in the evaluation of the collaboration exists, diary entries can be written after each step.
-In the end, each collaborator reports the results in their own paper.
-If desired, a joint paper can be published as well.
-
 #### Adversarial collaboration techniques
 
 We are aware that adversarial collaboration has its limitations when it comes to decision making in joint studies, and has lead to unresolvable disagreements in previous studies [@cowan_how_2020; @mellers_frequency_2001]. 
 In order to mitigate this risk, next to each collaborator publishing their own paper, we propose to conduct the joint study in a structured and formalized manner. 
 To this end, we identified several collaboration techniques presented in Table 2. 
-These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
+These are also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
 
 #### Documentation - Decision log 
 
-As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
-In addition, the appendix should contain a separate decision log with a detailed and complete documentation of all decisions made.
+As the number of decisions made and their documentation is high, only the most important results are presented in the respective papers. 
+In addition, the appendix contains a separate decision log with a detailed and complete documentation of all decisions made.
+Here, the summarized results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process can be detailed. 
 
-\vspace{0.5\baselineskip}
+Another aspect of structuring the collaboration within the decision log, lies in the way decision making is implemented in the joint study of our framework. 
+
+\vspace{\baselineskip}
 
 **Table 2**
 
@@ -201,21 +202,18 @@ In addition, the appendix should contain a separate decision log with a detailed
 
 |                                                                                                 |
 |-------------------------------------------------------------------------------------------------|
-| • Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. [@clark_road_2022] |
+| - Core Disagreements: Arrive at clearly defined core disagreements that might be the origin for conflicts. [@clark_road_2022] |
 |                                                                                                 |
-| • Assumption check: List, question, and categorize assumptions [@kardos_simple_2017]            |
+| - Assumption check: List, question, and categorize assumptions [@kardos_simple_2017]            |
 |                                                                                                 |
-| • Red-Teaming: Generating what if scenarios, to identify limitations of the adversaries’ approach [@kardos_simple_2017] |
+| - Red-Teaming: Generate what if scenarios, to identify limitations of the adversaries’ approach [@kardos_simple_2017] |
 |                                                                                                 |
-| • Quality of information [@kardos_simple_2017]: checking the adversaries’ quality of evidence based on literature. |
+| - Quality of information [@kardos_simple_2017]: check the adversaries’ quality of evidence based on literature. |
 |                                                                                                 |
-| • Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. |
+| - Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter can be consulted to try to resolve them. |
 
-
-Here, the summarized results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process should be detailed. 
-
-Another aspect of structuring the collaboration within the decision log, lies in the way decision making is implemented in the joint study of our framework. 
 In our mind, decision making can be based on four distinct grounds: Evidence-based, pragmatic reasons, arbitrary reasons or other reasons (e.g. personal values, political issues). 
+
 Firstly, we deem a decision evidence based, if one can find a clear answer for a disagreement, based on empirical evidence or in the literature more general. 
 Secondly, to be able to keep the scope of this project, decisions can be made for pragmatic reasons, as for example in the presence of time constraints. 
 Thirdly, arbitrary reasons could be any agreement where the first too grounds are not present, but still a decision has to be made. 
@@ -242,7 +240,7 @@ Grounds: Primary - Evidence-based, as per Peikert et al. (2020);
 #### Diary
 
 The adversarial collaboration in Part 2 (Joint study) can be documented and evaluated from each collaborators subjective perspective using semi-structured diary entries after each step.
-We provided an exemplary diary template that includes questions based on @shah_exploring_2016 in our Github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
+We provide an exemplary diary template that includes questions based on @shah_exploring_2016 in our Github repository under this link: <https://github.com/lkosanke/AdversarialSimulation/blob/main/diary-template.md>.
 The diary has the purpose of accumulating data for the evaluation of the AC and the collaboration procedure we propose. 
 In our case, collecting this qualitative data was supposed to help us answer our research question. 
 The evaluation of the diary entry can be conducted in a semi-structured and comparative manner, resorting for example to analysis of quantity of words to identify common themes of the collaboration.
@@ -257,7 +255,7 @@ This functionality aligns well with the different parts of our procedure:
 For the individual studies, each adversary can work in their own repository.
 For the joint study, both can work in one repository, and synchronize the other one at will.
 Additionally, the Github releases feature allows to align milestones such as the publishing of the simulation protocols or the finished result analysis of all studies.
-These can even be assigned a DOI via Zenodo [@zenodo].
+These can also be assigned a DOI via Zenodo [@zenodo].
 
 # Results
 
@@ -329,7 +327,7 @@ knitr::include_graphics("../LK/images/Figure_VK_1_2.pdf")
 ```
 *Note*. Error terms are not shown in the figure.
 
-\vspace{0.5\baselineskip}
+\newpage
 
 **Figure 2**
 
@@ -1049,7 +1047,7 @@ Overall, I conducted 6 simulation studies.
 
 The most important details with regards to the population models and data-generating mechanisms are visible in Table 7.
 With regards to the population models, all factors in all studies loaded onto 3 indicators each.
-I chose the population values to align to the original paper by @robitzsch_comparing_2022.
+I chose the population values to align with the original paper by @robitzsch_comparing_2022.
 The multivariate normally distributed data was generated parametrically, based on a specified population model.
 All simulations were conducted using seeds to allow for the reproducibility of results.
 
@@ -1087,7 +1085,7 @@ Besides studies 1 and 2, I implemented full factorial designs.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
 I hypothesize that this was done in @robitzsch_comparing_2022 to avoid cancellation of biases, but the authors did not give reasoning for this decision themselves.
 
-In Studies 4 and 4a I looked at the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
+In Studies 4 and 4a I investigated the differential performance of the estimators in a model that included a non-saturated structural model (i.e. regressions between some of the factors).
 These studies were replications not only of the paper by @robitzsch_comparing_2022, but of the first paper on the SAM approach by @rosseel_structural_2022.
 In contrast to the other studies, studies 4 and 4a differed in the way the misspecification variation was labelled in @robitzsch_comparing_2022.
 Instead of varying a factor misspecification as in the previous study, they varied 3 different data-generating mechanisms (DGM's) as a whole.
@@ -1256,11 +1254,11 @@ In these studies, it became apparent that traditional SEM outperformed SAM estim
 As can be seen in Table 10, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
 The same was true in Study 2, in the presence of two negative cross-loadings.
 In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
-Importantly, no differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.
+Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.
 
 #### Conditions with positively valenced unmodelled parameters
 
-In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
+In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. 
 Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
 Only from N=100-1000 did SAM outperform SEM.
 
@@ -1514,7 +1512,7 @@ Results in the studies by Kriegmair showed, that SAM had overcoverage due to its
 Consequently, SAM was less biased but also less accurate than traditional SEM.
 Hence, SAM only partly outperformed traditional SEM, even in the unconstrained version. 
 
-Kriegmair's results also hinted at the presence of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambda, where the bias was especially pronounced (see Table 3).
+Kriegmair's results also hinted at the presence of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability (i.e lambda) and N, where the bias was especially pronounced (see Table 3).
 Moreover, in some conditions of Kriegmairs' studies, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (see Tables 4 and 6).
 
 One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of phi in Kosanke's Study 4a (see Tables 15-16).
@@ -1528,7 +1526,7 @@ Importantly, besides the use of coverage as a performance measure, other differe
 These have to be adressed:
 
 Unlike Kosanke, Kriegmair investigated additional effects with regards to endo- and exogeneity of predictors.
-Results showed, that the positive Bias of unconstrained SEM is stronger, if misspecification is present in exogenous predictors, if compared to it being present in endogenous and both endo- and exogenous predictors.
+Results showed, that the positive bias of unconstrained SEM was stronger, if misspecification was present in exogenous predictors, if compared to it being present in endogenous and both endo- and exogenous predictors.
 In these latter conditions, SAM performed even worse.
 Interestingly, this finding suggests that the negative impacts of using unconstrained SEM-ML are limited to an even more specific set of model misspecifications, than initially suggested [@dhaene_evaluation_2023]. 
 Thus, unconstrained SEM can be viewed in an even better light relatively, for the endogenous as well as both endo- and exogenous predictor misspecifications.
@@ -1544,7 +1542,7 @@ For Kosanke's studies 4 and 4a, they were fixed between 0.1-0.4, while they vari
 
 Another difference is the inclusion of conditions that examine misspecifications of the structural regression coefficient, both in terms of directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) and by omitting them in Kriegmair's studies.
 We want to highlight that we did not observe any clear differences depending on the type of misspecification looking across all studies, and Kriegmairs studies in specific. 
-As the same was true even in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified parameter values [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
+As the same was true in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified parameter values [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
 Here, the same argument as before can be made: Only unconstrained ML-estimation and positive values of misspecified parameters were investigated.
 The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
 
@@ -1555,7 +1553,7 @@ In consequence, we did not conduct a joint study and stopped the collaboration a
 ## Results of the collaboration
 
 Going back to the outline of our collaboration framework, we successfully agreed on two research questions, conducted individual studies and integrated their results.
-Consequently, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure, the joint study.
+Consequently, we did not find remaining disagreement or additional scenarios of interest that warranted the implementation of the second part of our AC procedure.
 This means that we were unable to completely test our framework.
 Still, we have gained some insights with regards to our research question of whether adversarial collaboration can be applied to simulation studies, in terms of practical applicability and technical feasibility.
 
@@ -1576,7 +1574,6 @@ We also believe that we increased generalizability simply by integrating the fin
 With regards to the practical applicability of the collaboration of the second part, we want to emphasize that the reason for not conducting the second part was not that it was not practically applicable, but that there was no substantial reason to do it.
 Applying our framework, we observed the possibility to converge on research questions and found our individual simulations to be generally very compatible.
 This can be seen as preliminary evidence, that the second part of the collaboration should be practically applicable as well.
-Nevertheless, we were unable to conduct the second part of our collaboration framework.
 
 ### Technical feasibility
 
@@ -1586,7 +1583,7 @@ Utilizing tools like Github with its functionalities to review code and jointly 
 Next to these aspects, which we integrated in our AC framework, two other aspect of technical feasibility were present for us while conducting our individual simulation studies.
 Firstly, we had access to a computing cluster.
 This allowed a higher limit on computational complexity, and thus more freedom to include additional conditions to test, without fearing too much runtime or having to limit the number of repetitions.
-Additionally, feasibility was facilitated by the use of the furrr package in R, which allowed for parallelisation of the code and significantly reduced the runtime of our simulations [@furrr].
+Additionally, feasibility was facilitated by the use of the furrr package in R, which allowed for parallelisation of the simulations and significantly reduced their runtime [@furrr].
 Again, as we could not conduct the second part of our collaboration framework, the technical feasibility of the collaborative study can not be judged conclusively.
 
 # Discussion
