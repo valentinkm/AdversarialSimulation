@@ -185,7 +185,7 @@ These were also meant to facilitate the evaluation of the adversarial collaborat
 
 \vspace{0.5\baselineskip}
 
-*List of adversarial collaboration techniques*
+*List of adversarial collaboration techniques.*
 
 |                                                                                                 |
 |-------------------------------------------------------------------------------------------------|
@@ -293,7 +293,7 @@ I added them italicized, as they are direct quotes.
 
 **Study 1:**
 
-*Data was generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figures 1-4).*
+*Data was generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see Figures 1-2).*
 
 - *Model 1.1: Correctly specified model.*
 
@@ -305,25 +305,65 @@ I added them italicized, as they are direct quotes.
 
 *For all models, the population-level values of the structural regression parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($lambda = 0.3$), moderate ($lambda = 0.5$), or high ($lambda = 0.7$).*
 
-::: {layout="[[40,-20,40],[40,-20,40]]"}
-![Model 1.1](../VK/figures/model1_1.tex){#fig-model1} Figure 1: Note. Model 1.1: Error terms are not explicitly shown in the figure.
+\vspace{0.5\baselineskip}
 
-![Model 1.2](../VK/figures/model1_2.tex){#fig-model2} Figure 2: Note. Model 1.2: Error terms are not explicitly shown in the figure.
+**Figure 1**
 
-![Model 1.3](../VK/figures/model1_3.tex){#fig-model3} Figure 3: Note. Model 1.3: Error terms are not explicitly shown in the figure.
+\vspace{0.5\baselineskip}
 
-![Model 1.4](../VK/figures/model1_4.tex){#fig-model4} Figure 4: Note. Model 1.4: Error terms are not explicitly shown in the figure.
-:::
+*Study 1: Models 1.1 (left) and 1.2 (right).*
+
+```{r eval = TRUE, echo = FALSE}
+
+knitr::include_graphics("../LK/images/Figure_VK_1_2.pdf")
+
+```
+*Note*. Error terms are not shown in the figure.
+
+\vspace{0.5\baselineskip}
+
+**Figure 2**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Models 1.3 (left) and 1.4 (right).*
+
+```{r eval = TRUE, echo = FALSE}
+
+knitr::include_graphics("../LK/images/Figure_VK_3_4.pdf")
+
+```
+*Note*. Error terms are not shown in the figure.
+
+\vspace{0.5\baselineskip}
 
 **Study 2:**
 
-*Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained ($R^2$) by the endogenous factors was set at low ($R^2$ = 0.1) or medium ($R^2$ = 0.4), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and did not accurately result in said $R^2$ values. The aim here was only generally to modulate between lower and higher regression weights. Misspecifications included omitting a residual covariance and a factor cross-loading in either the exogenous or endogenous part of the model, or both (see figures 5-6).*
+*Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained ($R^2$) by the endogenous factors was set at low ($R^2$ = 0.1) or medium ($R^2$ = 0.4), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and did not accurately result in said $R^2$ values. The aim here was only generally to modulate between lower and higher regression weights.*
+*In study 2, two different models were simulated (see Figure 3).*
 
-::: {layout="[[40,-20,40], [100]]"}
-![Model 2.1](../VK/figures/model2_1.tex) Figure 5: Note. Model 2.1: Error terms are not explicitly shown in the figure.
+- *Model 2.1: Correctly specified model.*
 
-![Model 2.2](../VK/figures/model2_2.tex) Figure 6: Note. Model 2.2: Error terms are not explicitly shown in the figure Orange lines represent misspecifications in the endogenous part of the model. Green lines represent misspecifications in the exogenous part of the model. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
-:::
+- *Model 2.2: Misspecified in either exogenous or endogenous parts of the model*
+
+*The Misspecifications in Model 2.2 included omitting a residual covariance and a factor cross-loading in either the exogenous or endogenous part of the model, or both. These types of misspecifications resulted in different realizations of model 2.2 when they were modulated as factors as described below.*
+
+\vspace{0.5\baselineskip}
+
+**Figure 3**
+
+\vspace{0.5\baselineskip}
+
+*Study 1: Models 2.1 (left) and 2.2 (right).*
+
+```{r eval = TRUE, echo = FALSE}
+
+knitr::include_graphics("../LK/images/Figure_VK_5_6.pdf")
+
+```
+*Note*. Error terms are not shown in the figure. Orange lines represent misspecifications in the exogenous part of the model. Green lines represent misspecifications in the endogenous part of the model.
+
+\vspace{0.5\baselineskip}
 
 **Experimental Design of simulation procedures**
 
@@ -428,6 +468,8 @@ convergence_table_1_4 <- create_convergence_table_1(0, "Convergence Rates under 
 
 *Table 3 shows average relative bias percentages for the different estimation methods under varying model specifications and sample sizes in presence of omitted correlated residuals (model 1.2) and Table 4 under correlated residuals and structural misspecification.*
 *Under omitted cross loadings (model 1.2) and structural misspecification (model 1.4), all methods demonstrated substantial biases, particularly SEM at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecification (1.3), GSAM, LSAM-ML, and LSAM-ULS showed more negative biases compared to SEM. Overall, GSAM, LSAM-ML, and LSAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability.*
+
+\vspace{0.5\baselineskip}
 
 **Table 3**
 
@@ -776,7 +818,7 @@ create_relative_bias_table <- function(table_number, custom_caption, model_type_
     rename(
       `N` = N,
       `Reliability` = reliability,
-      `R²` = R_squared,
+      `R2` = R_squared,
       `Method` = method,
       `Mean Relative Bias` = MeanRelativeBias
     ) %>%
@@ -806,7 +848,7 @@ relative_bias_table_endo <- create_relative_bias_table(3, "Mean Relative Bias in
 relative_bias_table_both <- create_relative_bias_table(4, "Mean Relative Bias in Percentages for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
 relative_bias_table_both
 ```
-*Note.* N = Sample size, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
+*Note.* N = Sample size, R2 = $R^2$, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
 
