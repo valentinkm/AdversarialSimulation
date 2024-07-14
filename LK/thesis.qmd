@@ -641,6 +641,7 @@ coverage_diff_table_1_4 <- create_coverage_diff_table(4, "Average Coverage Diffe
 ##### Improper Solutions
 
 *Improper solutions occur when parameter estimates fall outside the boundary of the parameter space, such as when variances are estimated to be negative or correlations exceed an absolute value of one. These issues are more likely to arise in smaller sample sizes and can indicate problems with model estimation.*
+
 *SEM exhibited a significantly higher count of improper solutions compared to GSAM, LSAM-ML, and LSAM-ULS, particularly in small sample sizes and lower reliability conditions. GSAM, LSAM-ML, and LSAM-ULS consistently showed minimal improper solutions across all scenarios, highlighting their robustness and reliability in parameter estimation.*
 
 ```{r eval = TRUE, echo = FALSE}
@@ -686,7 +687,9 @@ improper_solutions_table_1_4 <- create_improper_solutions_table(4, "Percentage o
 
 ##### Convergence
 
-*In Study 2, all methods achieved a 100% convergence rate for moderate and large sample sizes (N = 400, 6400). For small sample sizes (N = 100), SEM showed lower convergence rates, especially at lower reliability levels (0.3), while GSAM, LSAM-ML, and LSAM-ULS maintained high convergence rates. R-squared values and measurement block size had minimal impact on convergence rates, indicating robustness of GSAM, LSAM-ML, and LSAM-ULS across various conditions, whereas SEM struggled particularly with lower reliability and smaller sample sizes.*
+*In Study 2, all methods achieved a 100% convergence rate for moderate and large sample sizes (N = 400, 6400). For small sample sizes (N = 100), SEM showed lower convergence rates, especially at lower reliability levels (0.3), while GSAM, LSAM-ML, and LSAM-ULS maintained high convergence rates.*
+
+*R-squared values and measurement block size had minimal impact on convergence rates, indicating robustness of GSAM, LSAM-ML, and LSAM-ULS across various conditions. In contrast, SEM estimation struggled particularly in the conditions with lower reliability and smaller sample sizes.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_convergence_table <- function(table_number, custom_caption, model_type_value) {
@@ -730,7 +733,9 @@ convergence_table_2_2_both <- create_convergence_table(4, "Convergence Rates for
 
 ##### The Influence of Number of Measurement Blocks on Bias and RMSE
 
-*For low reliability ($lambda = 0.3$) and small sample size ($N = 100$), using 3 measurement blocks generally resulted in less negative bias compared to 5 blocks, although 5 blocks had lower RMSE. As reliability and sample sizes increased, the differences in bias and RMSE between 3 and 5 blocks diminished. Thus, for low reliability and small sample sizes, 3 measurement blocks were preferable for reducing bias, while 5 blocks performed better for RMSE. For subsequent comparisons, we considered lSAM with 3 measurement blocks as this difference was more pronounced especially in low sample size and reliability conditions.*
+*For low reliability ($lambda = 0.3$) and small sample size ($N = 100$), using 3 measurement blocks generally resulted in less negative bias compared to 5 blocks, although 5 blocks had lower RMSE. As reliability and sample sizes increased, the differences in bias and RMSE between 3 and 5 blocks diminished. Thus, for low reliability and small sample sizes, 3 measurement blocks were preferable for reducing bias, while 5 blocks performed better for RMSE.*
+
+*For subsequent comparisons, we considered LSAM with 3 measurement blocks as this difference was more pronounced especially in low sample size and reliability conditions, which we were most interested in.*
 
 ```{r eval = TRUE, echo = FALSE}
 create_relative_bias_table_lSAM <- function(table_number, custom_caption, model_type_value) {
@@ -811,10 +816,117 @@ rmse_diff_table_lSAM_8 <- create_rmse_diff_table_lSAM(16, "Mean Relative RMSE fo
 
 ##### Average Relative Bias
 
-*For the correctly specified model with low reliability ($lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed a larger average relative bias compared to SAM methods. GSAM and LSAM-ML had small negative biases, while LSAM-ULS had a positive bias in challenging conditions. Higher $R^2$ had little impact on SEMs bias as absolute values, but SAM methods showed increased bias. For higher reliability and sample sizes, biases decreased for all methods.*
+*For the correctly specified model with low reliability ($lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed a larger average relative bias compared to SAM methods. GSAM and LSAM-ML had small negative biases, while LSAM-ULS had a positive bias in challenging conditions. Higher $R^2$ had little impact on SEM's bias as absolute values, but SAM methods showed increased bias. For higher reliability and sample sizes, biases decreased similarly for all estimation methods.*
+
 *Under misspecification (correlated residuals and crossloadings in the exogenous model), SEM had an even greater positive bias in challenging conditions, while SAM methods showed consistent negative biases, with LSAM-ULS performing best.*
-*In the endogenous misspecification model, SEM exhibited relatively small biases compared to SAM methods, which showed substantial negative biases. SEM's bias worsened with larger sample sizes and lower reliability, while SAM methods' biases remained similarly large and negative.*
+*In the endogenous misspecification model, SEM exhibited relatively small biases compared to SAM methods, which showed substantial negative biases. SEM's bias got considerably worse with larger sample sizes and lower reliability, while SAM methods' biases remained similarly large and negative.*
+
 *For misspecifications in both endogenous and exogenous parts, SAM methods had consistent negative biases (see Table 6). Here, SEM showed a positive bias with low reliability and sample size, turning negative with increasing sample size and higher $R^2$ values.*
+
+##### RMSE
+
+*For the correctly specified model with low reliability ($lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed higher RMSE compared to SAM methods. GSAM and LSAM-ML had lower RMSEs, while LSAM-ULS had a slightly higher RMSE. Increasing regression weights ($R^2$) improved RMSE for both SEM and SAM methods.*
+
+*Under exogenous misspecifications, SEM had higher RMSE compared to SAM methods at low reliability and small sample size. This pattern persisted for endogenous misspecifications and misspecifications in both exogenous and endogenous factors, as GSAM and LSAM-ML consistently showed lower RMSEs and LSAM-ULS performed slightly worse. RMSE improved for all methods with higher $R^2$.*
+
+```{r eval = TRUE, echo = FALSE}
+# Function to create a RMSE table for a specific model type with SEM performance included
+create_rmse_table <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    filter(b == 3) %>%  # Filter for Measurement Blocks = 3
+    select(N, reliability, R_squared, method, MeanRelativeRMSE) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Method` = method,
+      `Mean Relative RMSE` = MeanRelativeRMSE
+    ) %>%
+    mutate(
+      `Mean Relative RMSE` = round(`Mean Relative RMSE`, 3),
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Mean Relative RMSE`) %>%
+    kbl(caption = custom_caption,
+    format = "latex", booktabs = TRUE, escape = FALSE) %>%
+    kable_styling(latex_options = c("striped", "hold_position"))
+}
+
+# Create and display the tables for each model type with custom captions
+rmse_table_correct <- create_rmse_table(1, "Mean Relative RMSE for traditional SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
+#rmse_table_correct
+
+rmse_table_exo <- create_rmse_table(2, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#rmse_table_exo
+
+rmse_table_endo <- create_rmse_table(3, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#rmse_table_endo
+
+rmse_table_both <- create_rmse_table(4, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#rmse_table_both
+
+```
+
+##### Improper Solutions
+
+*In conditions with small sample sizes ($N = 100$) and lower reliability ($lambda = 0.3$), traditional SEM exhibited a high percentage of improper solutions. GSAM, LSAM-ML, and LSAM-ULS, on the other hand, consistently showed very low or zero improper solutions across all conditions investigated.*
+
+```{r eval = TRUE, echo = FALSE}
+# Function to create an Improper Solutions table for a specific model type
+create_improper_solutions_table <- function(table_number, custom_caption, model_type_value) {
+  summary_2 %>%
+    filter(model_type == model_type_value) %>%
+    group_by(N, reliability, R_squared, b, method) %>%
+    summarise(
+      ImproperSolutionsCount = sum(ImproperSolutionsCount, na.rm = TRUE),
+      .groups = 'drop'
+    ) %>%
+    mutate(
+      ImproperSolutionsPercentage = round((ImproperSolutionsCount / 10000) * 100, 2),
+      R_squared = recode(R_squared, `0.1` = "low", `0.4` = "high")
+    ) %>%
+    select(N, reliability, R_squared, b, method, ImproperSolutionsPercentage) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `R²` = R_squared,
+      `Measurement Blocks` = b,
+      `Method` = method,
+      `Improper Solutions (%)` = ImproperSolutionsPercentage
+    ) %>%
+    mutate(
+      Method = recode(Method,
+                      SEM = "SEM",
+                      gSAM = "GSAM",
+                      lSAM_ML = "SAM-ML",
+                      lSAM_ULS = "SAM-ULS")
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Improper Solutions (%)`) %>%
+    kbl(caption = custom_caption,
+    format = "latex", booktabs = TRUE, escape = FALSE) %>%
+    kable_styling(latex_options = c("striped", "hold_position"))
+}
+
+# Create and display the tables for each model type with custom captions
+improper_solutions_table_1 <- create_improper_solutions_table(1, "Percentage of Improper Solutions for correct model specification (Model 2.1)", "2.1")
+#improper_solutions_table_1
+
+improper_solutions_table_2 <- create_improper_solutions_table(2, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
+#improper_solutions_table_2
+
+improper_solutions_table_3 <- create_improper_solutions_table(3, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
+#improper_solutions_table_3
+
+improper_solutions_table_4 <- create_improper_solutions_table(4, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
+#improper_solutions_table_4
+```
+
+\vspace{0.5\baselineskip}
 
 **Table 6**
 
@@ -917,107 +1029,6 @@ relative_bias_table_both
 # 
 # coverage_diff_table_2_2_both <- create_coverage_diff_table("2.2_both", "2.2_both")
 # coverage_diff_table_2_2_both
-```
-
-##### RMSE
-
-*For the correctly specified model with low reliability ($lambda = 0.3$) and small sample size ($N = 100$), traditional SEM showed higher RMSE compared to SAM methods. GSAM and LSAM-ML had lower RMSEs, while LSAM-ULS had a slightly higher RMSE. Increasing regression weights ($R^2$) improved RMSE for both SEM and SAM methods. Under exogenous misspecifications, SEM had higher RMSE compared to SAM methods at low reliability and small sample size. This pattern persisted for endogenous misspecifications and misspecifications in both exogenous and endogenous factors, as GSAM and LSAM-ML consistently showed lower RMSEs and LSAM-ULS performed slightly worse. RMSE improved for all methods with higher $R^2$.*
-
-```{r eval = TRUE, echo = FALSE}
-# Function to create a RMSE table for a specific model type with SEM performance included
-create_rmse_table <- function(table_number, custom_caption, model_type_value) {
-  summary_2 %>%
-    filter(model_type == model_type_value) %>%
-    filter(b == 3) %>%  # Filter for Measurement Blocks = 3
-    select(N, reliability, R_squared, method, MeanRelativeRMSE) %>%
-    rename(
-      `N` = N,
-      `Reliability` = reliability,
-      `R²` = R_squared,
-      `Method` = method,
-      `Mean Relative RMSE` = MeanRelativeRMSE
-    ) %>%
-    mutate(
-      `Mean Relative RMSE` = round(`Mean Relative RMSE`, 3),
-      Method = recode(Method, 
-                      SEM = "SEM", 
-                      gSAM = "GSAM", 
-                      lSAM_ML = "SAM-ML", 
-                      lSAM_ULS = "SAM-ULS")
-    ) %>%
-    pivot_wider(names_from = Method, values_from = `Mean Relative RMSE`) %>%
-    kbl(caption = custom_caption,
-    format = "latex", booktabs = TRUE, escape = FALSE) %>%
-    kable_styling(latex_options = c("striped", "hold_position"))
-}
-
-# Create and display the tables for each model type with custom captions
-rmse_table_correct <- create_rmse_table(1, "Mean Relative RMSE for traditional SEM and different SAM methods under correct model specification (Model 2.1)", "2.1")
-#rmse_table_correct
-
-rmse_table_exo <- create_rmse_table(2, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
-#rmse_table_exo
-
-rmse_table_endo <- create_rmse_table(3, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
-#rmse_table_endo
-
-rmse_table_both <- create_rmse_table(4, "Mean Relative RMSE for traditional SEM and different SAM methods under Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
-#rmse_table_both
-
-```
-
-##### Improper Solutions
-
-*For small sample sizes ($N = 100$) and lower reliability ($lambda = 0.3$), SEM exhibited a high percentage of improper solutions, while GSAM, LSAM-ML, and LSAM-ULS consistently showed very low or zero improper solutions across all conditions.*
-
-```{r eval = TRUE, echo = FALSE}
-# Function to create an Improper Solutions table for a specific model type
-create_improper_solutions_table <- function(table_number, custom_caption, model_type_value) {
-  summary_2 %>%
-    filter(model_type == model_type_value) %>%
-    group_by(N, reliability, R_squared, b, method) %>%
-    summarise(
-      ImproperSolutionsCount = sum(ImproperSolutionsCount, na.rm = TRUE),
-      .groups = 'drop'
-    ) %>%
-    mutate(
-      ImproperSolutionsPercentage = round((ImproperSolutionsCount / 10000) * 100, 2),
-      R_squared = recode(R_squared, `0.1` = "low", `0.4` = "high")
-    ) %>%
-    select(N, reliability, R_squared, b, method, ImproperSolutionsPercentage) %>%
-    rename(
-      `N` = N,
-      `Reliability` = reliability,
-      `R²` = R_squared,
-      `Measurement Blocks` = b,
-      `Method` = method,
-      `Improper Solutions (%)` = ImproperSolutionsPercentage
-    ) %>%
-    mutate(
-      Method = recode(Method,
-                      SEM = "SEM",
-                      gSAM = "GSAM",
-                      lSAM_ML = "SAM-ML",
-                      lSAM_ULS = "SAM-ULS")
-    ) %>%
-    pivot_wider(names_from = Method, values_from = `Improper Solutions (%)`) %>%
-    kbl(caption = custom_caption,
-    format = "latex", booktabs = TRUE, escape = FALSE) %>%
-    kable_styling(latex_options = c("striped", "hold_position"))
-}
-
-# Create and display the tables for each model type with custom captions
-improper_solutions_table_1 <- create_improper_solutions_table(1, "Percentage of Improper Solutions for correct model specification (Model 2.1)", "2.1")
-#improper_solutions_table_1
-
-improper_solutions_table_2 <- create_improper_solutions_table(2, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous Factors of the Model (Model 2.2-exo)", "2.2_exo")
-#improper_solutions_table_2
-
-improper_solutions_table_3 <- create_improper_solutions_table(3, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Endogenous Factors of the Model (Model 2.2-endo)", "2.2_endo")
-#improper_solutions_table_3
-
-improper_solutions_table_4 <- create_improper_solutions_table(4, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
-#improper_solutions_table_4
 ```
 
 ## Individual study by Kosanke
