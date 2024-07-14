@@ -1050,9 +1050,10 @@ Overall, I conducted 6 simulation studies.
 The most important details with regards to the population models and data-generating mechanisms are visible in Table 7.
 With regards to the population models, all factors in all studies loaded onto 3 indicators each.
 I chose the population values to align to the original paper by @robitzsch_comparing_2022.
-For more details on the exact values of each study, see the simulation scripts in the Github repository.
 The multivariate normally distributed data was generated parametrically, based on a specified population model.
-All simulations were conducted using seeds to allow for reproducibility.
+All simulations were conducted using seeds to allow for the reproducibility of results.
+
+For more details on the exact values of each study, see the simulation scripts in the Github repository.
 
 \vspace{0.5\baselineskip}
 
@@ -1067,7 +1068,7 @@ All simulations were conducted using seeds to allow for reproducibility.
 knitr::include_graphics("../LK/images/TableOverviewIndividualStudies.pdf")
 
 ```
-\vspace{0.1\baselineskip}
+\vspace{\baselineskip}
 
 **Experimental Design of simulation procedures**
 
@@ -1159,12 +1160,12 @@ A detailed analysis of all the warnings was conducted in the *results.pdf* docum
 
 #### Conditions without misspecification
 
-Mainly Studies 1 and 4 investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
+Tables 8 and 9 show the most relevant results of Studies 1 and 4 were I investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.
-In Study 4, only slight, but no substantial differences could be observed in terms of bias and RMSE between the LSAM- and classical ML-estimation. 
-This is visible in Table 8 for the example of RMSE.
-Here, LSAM-ML appeared to outperform both SEM-estimation methods only in N=50.
-For higher N, no differences were present between any of the estimators.
+In Study 4a, only slight differences could be observed in terms of bias and RMSE between LSAM- and classical ML-estimation. 
+In Study 1, both SEM outperformed all SAM estimators in samples of N=50-500. 
+This was true for both relative bias and RMSE, and visible for the former in Table 9.
+Here, SAM's negative small sample bias is already visible as well.
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1189,11 +1190,13 @@ create_styled_table <- function(data, condition) {
 rmse_s4 <- readRDS("SimulationResults/sim4_rmse.rds")
 ```
 
+\vspace{0.5\baselineskip}
+
 **Table 8**
 
 \vspace{0.5\baselineskip}
 
-*Study 4a (Kosanke): RMSE for DGM 1 (without misspecification).*
+*Study 4 (Kosanke): RMSE for DGM 1 (without misspecification).*
 
 ```{r eval = TRUE, echo = FALSE}
 
@@ -1234,10 +1237,6 @@ create_styled_table <- function(data, condition) {
 
 ```
 
-In Study 1, both traditional SEM approaches outperformed all SAM estimators in small to moderate samples of N=50-500. 
-This was true for both relative bias and RMSE, and visible for the former in Table 9.
-Here, SAM's negative small sample bias is already visible as well.
-
 **Table 9**
 
 \vspace{0.5\baselineskip}
@@ -1249,14 +1248,23 @@ create_styled_table(bias_ci_s1[["0_0.12"]], "0_0.12")
 ```
 *Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
-\vspace{0.5\baselineskip}
-
 #### Conditions with negatively valenced unmodelled parameters
 
 Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
 In these studies, it became apparent that traditional SEM outperformed SAM estimation.
 
 As can be seen in Table 10, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
+The same was true in Study 2, in the presence of two negative cross-loadings.
+In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
+Importantly, no differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.
+
+#### Conditions with positively valenced unmodelled parameters
+
+In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
+Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
+Only from N=100-1000 did SAM outperform SEM.
+
+\vspace{0.5\baselineskip}
 
 **Table 10**
 
@@ -1271,11 +1279,6 @@ create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 *Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
-
-The same was true in Study 2, in the presence of two negative cross-loadings.
-In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
-
-Importantly, no differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.
 
 **Table 11**
 
@@ -1296,13 +1299,6 @@ create_styled_table(rmse_s2[["2_-0.3"]], "2_-0.3")
 *Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation, LSAM_ULS = Local-SAM-unweighted-least-squares estimation, GSAM_ML = Global-SAM-maximum-likelihood estimation, GSAM-ULS = Global-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
-
-#### Conditions with positively valenced unmodelled parameters
-
-In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to slightly outperform traditional SEM estimation, but not in all scenarios. 
-
-Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
-Only from N=100-1000 did SAM outperform SEM.
 
 **Table 12**
 
@@ -1357,6 +1353,13 @@ With regards to RMSE, results were mixed as well.
 LSAM appeared to outperform in Table 13 for DGM 2 of Study 4.
 In other conditions, however, no substantial differences arose in terms of RMSE.
 
+#### Small sample bias in LSAM estimation
+
+The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
+Table 14 shows this was especially apparent in a sample size of 50.
+
+\vspace{0.5\baselineskip}
+
 **Table 13**
 
 \vspace{0.5\baselineskip}
@@ -1371,12 +1374,6 @@ create_styled_table(rmse_s4[["DGM_1"]], "DGM_1")
 *Note*. SEM_ML = Maximum-likelihood estimation, SEM_ULS = Unweighted-least-squares estimation, LSAM_ML = Local-SAM-maximum-likelihood estimation.
 
 \vspace{0.5\baselineskip}
-
-
-#### Small sample bias in LSAM estimation
-
-The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
-Table 14 shows this was especially apparent in a sample size of 50.
 
 ```{r eval = TRUE, echo = FALSE}
 #Load processed results
