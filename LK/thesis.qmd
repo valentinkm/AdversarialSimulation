@@ -182,6 +182,13 @@ In order to mitigate this risk, next to each collaborator publishing their own p
 To this end, we identified several collaboration techniques presented in Table 2. 
 These were also meant to facilitate the evaluation of the adversarial collaboration with regards to our main research question. 
 
+#### Documentation - Decision log 
+
+As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
+In addition, the appendix should contain a separate decision log with a detailed and complete documentation of all decisions made.
+
+\vspace{0.5\baselineskip}
+
 **Table 2**
 
 \vspace{0.5\baselineskip}
@@ -200,10 +207,7 @@ These were also meant to facilitate the evaluation of the adversarial collaborat
 |                                                                                                 |
 | • Third neutral arbiter: In case of fundamentally unresolvable disagreements, a third neutral arbiter (Aaron Peikert) will be consulted to try to resolve them. |
 
-#### Documentation - Decision log 
 
-As the number of decisions made and their documentation is large, only the most important results should be presented in the respective papers. 
-In addition, the appendix should contain a separate decision log with a detailed and complete documentation of all decisions made.
 Here, the summarized results of the AC-techniques used for each step of the simulation study, as well as their consequence for the decision-making process should be detailed. 
 
 Another aspect of structuring the collaboration within the decision log, lies in the way decision making is implemented in the joint study of our framework. 
