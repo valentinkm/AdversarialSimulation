@@ -50,11 +50,11 @@ Future research should further explore AC in simulations to validate and extend 
 
 Monte Carlo simulations serve as a widely adopted method for evaluating and comparing statistical methods in quantitative science. 
 They are used to assess the performance of estimation and inference methods by analyzing them with knowledge of simulated population models and values.
-Although simulations provide insight into underlying data structures, they are not without flaws and are subject to pitfalls similar to those implicated in the replication crisis of empirical research [@lohmann_its_2022].
-A major challenge in simulation studies is to ensure the generalizability of the results to real-world contexts.
+Although simulations provide insight into underlying data structures, they are not without flaws and are subject to pitfalls similar to those implicated in the replication crisis of empirical research [@lohmann_its_2022; @koehler_assessment_2009].
+A major challenge in simulation studies is to ensure the generalizability of the results to real-world contexts [@feinberg_conducting_2016].
 It is crucial for these studies to use performance metrics, experimental factors, and inference models that accurately mirror and test practical scenarios. 
 Given the impracticality of simulating every conceivable model, method, and use case, these studies necessarily involve numerous decision-making elements that may introduce bias:
-The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results.
+The decisions of selecting evaluation criteria for competing methods (for example absolute versus relative bias of performance), selecting which models or methods to compare in the first place, and which simulation specifications to run (for example deciding which sample sizes to simulate), can have substantial impact on the results[@pawel_pitfalls_2023; @kulinskaya_exploring_2020].
 Evidently, many issues of open science in the empirical realm are present in the context of simulation studies as well. 
 One approach that addresses these issues at the level of value selection suggests to sample all relevant values from existing results published in the empirical literature of interest [@bollmann_what_2015]. 
 An example application could be to decide on a simulated sample size not just based on a hunch or prior experience, but based on previous empirical studies conducted in the field. 
@@ -62,12 +62,16 @@ Even though this idea is fruitful and improves upon the problem of generalizabil
 For example, deciding on which papers, or even which models within a paper to select (and which not), can still be subject to individual bias or simply chance. 
 Additionally, conducting extensive literature reviews for all parameter values chosen is time-consuming and difficult to apply in practice.
 
+Other promising approaches focus on applying well-known concepts of open science to simulation studies: 
+Multiple frameworks propose using preregistration in simulation studies and call for increased transparency in reporting of key aspects of simulation studies [@morris_using_2019; @siepe_simulation_2023; @boulesteix_ten_2015].
+While increasing transparency and accountability in this way is important for reducing research ambiguity, these approaches do not necessarily incline scientists to refrain from choosing values at will, as long as they are preregistered and reported transparently.
+
 Another approach to tackle these challenges that has been proposed in the empirical context is Adversarial Collaboration (AC). 
 Initially tested by @mellers_frequency_2001, adversarial collaboration is gaining recognition within the quantitative empirical research community for its potential to enhance scientific rigor.
 Touted as “The next science reform” adversarial collaboration involves scholars with opposing viewpoints working together to resolve scientific disputes [@clark_adversarial_2021]. 
 An ongoing effort by @melloni_adversarial_2023, for example, conducts Adversarial Collaboration between proponents of two different theories on the relationship between consciousness and brain activity, hoping to advance research in this field. 
 Adversarial Collaboration involves pinpointing empirical disagreements, designing studies that are mutually agreed upon to test competing hypotheses, and jointly publishing the results regardless of the outcome. 
-The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making.
+The goal is to ensure fair comparison and truthful representation of opposing views, thereby enhancing epistemic accountability and reducing ambiguity in scientific decision-making [@clark_keep_2022].
 Moreover, juxtaposing and integrating competing positions in this manner can improve the generalizability of results.
 
 Our objective is to apply the advantages of adversarial collaboration to simulation studies.
@@ -98,7 +102,7 @@ In the second part, a joint study, including a joint simulation protocol, should
 ### Part one: Individual studies
 
 As a first step of the individual studies, the two adversarial sides have to agree on one or more research questions that should be as specific as possible and directly tackle the disagreement.
-These individual studies should include the generation of individual simulation protocols, as suggested by @morris_using_2019.
+These individual studies should include the generation of individual simulation protocols, as suggested by previous work [@morris_using_2019;  @siepe_simulation_2023].
 To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual simulation studies in advance.
 This structure (see Table 1) is based on relevant literature in the field of simulation studies [@paxton_monte_2001; @morris_using_2019; @boomsma_reporting_2013].
 
@@ -1497,7 +1501,7 @@ Even though we did not get to the point of direct collaboration in the second pa
 Facilitating advancement in discussion between adversaries with the structured use of the tools we presented, we are confident that the necessary convergence for a joint study is achievable.
 This should be even more so the case, because of some key differences between empirical and simulation studies:
 Firstly, opposing opinions in simulation studies are less incomensurable in terms of testing.
-In empirical studies, opposing theories might have completely different paradigms, measures and even construct definitions to answer the same research question.
+In empirical studies, opposing theories might have completely different paradigms, measures and even construct definitions to answer the same research question [@rakow_adversarial_2022].
 In simulation studies, these differences are much smaller.
 There is much more consensus on what data generating scenarios of interest could be, how performance is measured, and what the opposing methods are.
 Another difference is the luxury of simulation studies to have much fewer resource restrictions.
