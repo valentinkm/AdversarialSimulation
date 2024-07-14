@@ -108,6 +108,19 @@ These individual studies should include the generation of individual simulation 
 To facilitate a structured comparison and integration of studies throughout the collaboration process, we agreed on a structure for conducting our individual simulation studies in advance.
 This structure (see Table 1) is based on relevant literature in the field of simulation studies [@paxton_monte_2001; @morris_using_2019; @boomsma_reporting_2013].
 
+This structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
+
+### Part two: Joint study
+
+In the second part, a joint study including a joint simulation protocol should be pursued. 
+This process starts based on the results of Part one.
+Here, the main part of the adversarial collaboration takes place.
+It contains multiple parts I will explain in the following sections:
+Each step of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
+Decisions are made and documented based on the most convincing argument presented, if possible.
+
+\vspace{0.5\baselineskip}
+
 **Table 1**
 
 \vspace{0.5\baselineskip}
@@ -161,16 +174,7 @@ This structure (see Table 1) is based on relevant literature in the field of sim
 
 : {tbl-colwidths="[5,95]"}
 
-This structure allows for the expected divergences in results of the individual simulations, but at the same time provides a basis for systematic comparison and synthesis for the joint simulation.
 
-### Part two: Joint study
-
-In the second part, a joint study including a joint simulation protocol should be pursued. 
-This process starts based on the results of Part one.
-Here, the main part of the adversarial collaboration takes place.
-It contains multiple parts I will explain in the following sections:
-Each step of the individual simulation studies in Table 1 (from the substantive research question up until the interpretation of the results) is scrutinized and debated between collaborators, using adversarial collaboration techniques.
-Decisions are made and documented based on the most convincing argument presented, if possible.
 If an interest in the evaluation of the collaboration exists, diary entries can be written after each step.
 In the end, each collaborator reports the results in their own paper.
 If desired, a joint paper can be published as well.
