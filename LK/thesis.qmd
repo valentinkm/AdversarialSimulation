@@ -303,7 +303,7 @@ I added them italicized, as they are direct quotes.
 
 - *Model 1.4: Misspecified with multiple omitted structural paths.*
 
-*For all models, the population-level values of the structural parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($lambda = 0.3$), moderate ($lambda = 0.5$), or high ($lambda = 0.7$).*
+*For all models, the population-level values of the structural regression parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($lambda = 0.3$), moderate ($lambda = 0.5$), or high ($lambda = 0.7$).*
 
 ::: {layout="[[40,-20,40],[40,-20,40]]"}
 ![Model 1.1](../VK/figures/model1_1.tex){#fig-model1} Figure 1: Note. Model 1.1: Error terms are not explicitly shown in the figure.
@@ -424,9 +424,10 @@ convergence_table_1_4 <- create_convergence_table_1(0, "Convergence Rates under 
 
 ##### Average Relative Biases
 
-*Here this study diverged from the original of @rosseel_structural_2022 by focusing exclusively on the average relative bias under a single type of correctly specified model (model 1), which did not include any cross loadings or correlated residuals. This simplification allowed to concentrate on the core advantage of SAM over traditional SEM: its more robust estimation of structural parameters, especially when measurement models are misspecified. For the correct model (1.1), SEM showed higher biases at smaller sample sizes and lower reliability, while GSAM, LSAM-ML, and LSAM-ULS exhibited lower biases. Under omitted cross loadings (model 1.2) and structural misspecification (model 1.4), all methods demonstrated substantial biases, particularly SEM at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecification (1.3), GSAM, LSAM-ML, and LSAM-ULS showed more negative biases compared to SEM. Overall, GSAM, LSAM-ML, and LSAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability.*
+*Here this study diverged from the original of @rosseel_structural_2022 by focusing exclusively on the average relative bias under a single type of correctly specified model (model 1), which did not include any cross loadings or correlated residuals. This simplification allowed to concentrate on the core advantage of SAM over traditional SEM: its more robust estimation of structural parameters, especially when measurement models are misspecified. For the correct model (1.1), SEM showed higher biases at smaller sample sizes and lower reliability, while GSAM, LSAM-ML, and LSAM-ULS exhibited lower biases.*
 
 *Table 3 shows average relative bias percentages for the different estimation methods under varying model specifications and sample sizes in presence of omitted correlated residuals (model 1.2) and Table 4 under correlated residuals and structural misspecification.*
+*Under omitted cross loadings (model 1.2) and structural misspecification (model 1.4), all methods demonstrated substantial biases, particularly SEM at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecification (1.3), GSAM, LSAM-ML, and LSAM-ULS showed more negative biases compared to SEM. Overall, GSAM, LSAM-ML, and LSAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability.*
 
 **Table 3**
 
@@ -1439,14 +1440,15 @@ Results in the studies by Kriegmair showed, that SAM had overcoverage due to its
 Consequently, SAM was less biased but also less accurate than traditional SEM.
 Hence, SAM only partly outperformed traditional SEM, even in the unconstrained version. 
 
-Kriegmair's results also hinted at the present of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e $\lambda$, where the bias was especially pronounced (TABLES???).
-Moreover, in Kriegmairs' study 1, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (TABLE???).
+Kriegmair's results also hinted at the presence of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e $\lambda$, where the bias was especially pronounced (see Table 3).
+Moreover, in some conditions of Kriegmairs' studies, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (see Tables 4 and 6).
 
-One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of $\phi$ in Kosanke's Study 4a.
+One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of $\phi$ in Kosanke's Study 4a (see Tables 15-16).
 Only traditional SEM seemed to be negatively affected for higher $\beta$ values, compared to lower $\beta$ values in conditions with unmodelled cross-loadings (DGM 2).
 This showed slightly, but not substantially in conditions with residual correlations as well (DGM 3), in the same study by Kosanke.
-Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (SEE TABLE???).
-Additionally, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
+Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. 
+Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (see Table 6).
+All together, having in mind the differential effects for conditions of negative unmodelled parameters as well, we do not assume SAM to be consistently preferrable in this specific context.
 
 Importantly, besides the use of coverage as a performance measure, other differences in the design and implementations were present when comparing our respective studies.
 These have to be adressed:
@@ -1466,9 +1468,9 @@ We concluded that these findings have no relevance for our investigations on the
 The difference of observing effects of regression weigths directly in the study by Kosanke, and total variance explained by Kriegmair, are also minor, as both are aimed at modifying the regression weigths and lead to comparable parameter values.
 For Kosanke's studies 4 and 4a, they were fixed between 0.1-0.4, while they varied between 0.183 and 0.447 in Kriegmair's study 2.
 
-Another difference is the inclusion of conditions that examine the misspecification of the regression directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) in Kriegmair's studies.
+Another difference is the inclusion of conditions that examine misspecifications of the structural regression coefficient, both in terms of directionality (i.e. switching predictor and outcome variable incorrectly in the estimation model) and by omitting them in Kriegmair's studies.
 We want to highlight that we did not observe any clear differences depending on the type of misspecification looking across all studies, and Kriegmairs studies in specific. 
-As the same was true even in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified paramer values for misspecification of the regression directionality [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
+As the same was true even in the original papers for our estimators of interest, we saw no reason to suspect that results should be different if looking at constrained ML and negative misspecified parameter values [@dhaene_evaluation_2023; @robitzsch_comparing_2022; @rosseel_structural_2022].
 Here, the same argument as before can be made: Only unconstrained ML-estimation and positive values of misspecified parameters were investigated.
 The observed effects should disappear when accounting for this as well as the negative small sample bias of SAM.
 
