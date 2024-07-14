@@ -423,7 +423,7 @@ knitr::include_graphics("../LK/images/Figure_VK_5_6.pdf")
 Below are the results (including the tables and figures) by Valentin Kriegmair as a direct quotation or copy. 
 This is why they are italicized.
 
-*In the following the main patterns and trends of the results are reported and only examplary. The full results can be found in the supplementary materials.*
+*In the following the main patterns and trends of the results are reported and only examplary. The full results can be found in the Github repository.*
 
 #### Study 1
 
@@ -477,6 +477,11 @@ convergence_table_1_4 <- create_convergence_table_1(0, "Convergence Rates under 
 
 *Table 3 shows average relative bias percentages for the different estimation methods under varying model specifications and sample sizes in presence of omitted correlated residuals (model 1.2) and Table 4 under correlated residuals and structural misspecification.*
 *Under omitted cross loadings (model 1.2) and structural misspecification (model 1.4), all methods demonstrated substantial biases, particularly SEM at smaller sample sizes and lower reliability. With omitted correlated residuals and structural misspecification (1.3), GSAM, LSAM-ML, and LSAM-ULS showed more negative biases compared to SEM. Overall, GSAM, LSAM-ML, and LSAM-ULS were more robust with lower biases compared to SEM, especially under challenging conditions with smaller sample sizes and lower reliability.*
+
+##### Coverage
+
+*For the correct model (1.1), SEM exhibited undercoverage at smaller sample sizes and lower reliability, indicating narrow CI's and less reliable estimates. GSAM, LSAM-ML, and LSAM-ULS showed slight overcoverage, reflecting more conservative estimates.*
+*Under the cross loadings model (1.2), all methods had substantial undercoverage, especially SEM. The correlated residuals model (1.3) consistently revealed undercoverage across all methods, with SEM showing the highest biases. For the structural model (1.4), SEM suffered from undercoverage at lower sample sizes and reliability, while GSAM, LSAM-ML, and LSAM-ULS performed better with relatively consistent biases.*
 
 \vspace{0.5\baselineskip}
 
@@ -540,10 +545,52 @@ bias_table_1_3
 
 \vspace{0.5\baselineskip}
 
-##### Coverage
-
-*For the correct model (1.1), SEM exhibited undercoverage at smaller sample sizes and lower reliability, indicating narrow CIs and less reliable estimates. GSAM, LSAM-ML, and LSAM-ULS showed slight overcoverage, reflecting more conservative estimates. Under the cross loadings model (1.2), all methods had substantial undercoverage, especially SEM. The correlated residuals model (1.3) consistently revealed undercoverage across all methods, with SEM showing the highest biases. For the structural model (1.4), SEM suffered from undercoverage at lower sample sizes and reliability, while GSAM, LSAM-ML, and LSAM-ULS performed better with relatively consistent biases. Overall, GSAM, LSAM-ML, and LSAM-ULS demonstrated better empirical coverage than SEM but the overcoverage indicates too wide confidence intervals.*
+*Overall, GSAM, LSAM-ML, and LSAM-ULS demonstrated better empirical coverage than SEM but the overcoverage indicates too wide confidence intervals.*
 *Table 5 show the average difference between empirical coverage levels of the 95% confidence intervals (CIs) and their nominal level (95%) using each method for different reliability values and sample sizes under omitted cross loadings (model 1.2).*
+
+##### RMSE
+
+*For the correct model (1.1), SEM had higher RMSE values at smaller sample sizes and lower reliability, while GSAM, LSAM-ML, and LSAM-ULS demonstrated lower RMSE values. Under omitted cross loadings (1.2) and correlated residuals (1.3), SEM showed significantly higher RMSE values, although all methods exhibited increased RMSE under these conditions. The structural model (1.4) revealed that SEM had higher RMSE values at lower sample sizes and reliability, whereas GSAM, LSAM-ML, and LSAM-ULS showed better performance with lower RMSE. Overall, GSAM, LSAM-ML, and LSAM-ULS demonstrated more robustness with lower RMSE values compared to SEM, particularly in challenging conditions with smaller sample sizes and lower reliability.*
+
+```{r eval = TRUE, echo = FALSE}
+create_rmse_table <- function(table_number, custom_caption, model_type_value) {
+  summary_1 %>%
+    filter(model_type == model_type_value) %>%
+    select(N, reliability, method, MeanRelativeRMSE) %>%
+    rename(
+      `N` = N,
+      `Reliability` = reliability,
+      `Method` = method,
+      `Average RMSE` = MeanRelativeRMSE
+    ) %>%
+    mutate(
+      Method = recode(Method, 
+                      SEM = "SEM", 
+                      gSAM = "GSAM", 
+                      lSAM_ML = "SAM-ML", 
+                      lSAM_ULS = "SAM-ULS"),
+      `Average RMSE` = round(`Average RMSE`, 3)
+    ) %>%
+    pivot_wider(names_from = Method, values_from = `Average RMSE`) %>%
+    kbl(booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left")
+}
+
+# Create and display the RMSE tables for each model type in Study 1 with custom captions
+rmse_table_1_1 <- create_rmse_table(1, "Average RMSE under correct model specification (Model 1.1)", "1.1")
+#rmse_table_1_1
+
+rmse_table_1_2 <- create_rmse_table(2, "Average RMSE under omitted Cross Loadings (Model 1.2)", "1.2")
+#rmse_table_1_2
+
+rmse_table_1_3 <- create_rmse_table(3, "Average RMSE under omitted Correlated Residuals (Model 1.3)", "1.3")
+#rmse_table_1_3
+
+rmse_table_1_4 <- create_rmse_table(4, "Average RMSE under Structural Misspecification (Model 1.4)", "1.4")
+#rmse_table_1_4
+```
+
+\vspace{0.5\baselineskip}
 
 **Table 5**
 
@@ -590,48 +637,6 @@ coverage_diff_table_1_4 <- create_coverage_diff_table(4, "Average Coverage Diffe
 *Note.* N = Sample size, SEM = Maximum-likelihood estimation, GSAM = Global-SAM-maximum-likelihood-estimation, LSAM-ML = Local-SAM-maximum-likelihood-estimation, LSAM-ULS = Local-SAM-unweighted-least-squares estimation.
 
 \vspace{0.5\baselineskip}
-
-##### RMSE
-
-*For the correct model (1.1), SEM had higher RMSE values at smaller sample sizes and lower reliability, while GSAM, LSAM-ML, and LSAM-ULS demonstrated lower RMSE values. Under omitted cross loadings (1.2) and correlated residuals (1.3), SEM showed significantly higher RMSE values, although all methods exhibited increased RMSE under these conditions. The structural model (1.4) revealed that SEM had higher RMSE values at lower sample sizes and reliability, whereas GSAM, LSAM-ML, and LSAM-ULS showed better performance with lower RMSE. Overall, GSAM, LSAM-ML, and LSAM-ULS demonstrated more robustness with lower RMSE values compared to SEM, particularly in challenging conditions with smaller sample sizes and lower reliability.*
-
-```{r eval = TRUE, echo = FALSE}
-create_rmse_table <- function(table_number, custom_caption, model_type_value) {
-  summary_1 %>%
-    filter(model_type == model_type_value) %>%
-    select(N, reliability, method, MeanRelativeRMSE) %>%
-    rename(
-      `N` = N,
-      `Reliability` = reliability,
-      `Method` = method,
-      `Average RMSE` = MeanRelativeRMSE
-    ) %>%
-    mutate(
-      Method = recode(Method, 
-                      SEM = "SEM", 
-                      gSAM = "GSAM", 
-                      lSAM_ML = "SAM-ML", 
-                      lSAM_ULS = "SAM-ULS"),
-      `Average RMSE` = round(`Average RMSE`, 3)
-    ) %>%
-    pivot_wider(names_from = Method, values_from = `Average RMSE`) %>%
-    kbl(booktabs = TRUE) %>%
-    kable_styling(full_width = T, position = "left")
-}
-
-# Create and display the RMSE tables for each model type in Study 1 with custom captions
-rmse_table_1_1 <- create_rmse_table(1, "Average RMSE under correct model specification (Model 1.1)", "1.1")
-#rmse_table_1_1
-
-rmse_table_1_2 <- create_rmse_table(2, "Average RMSE under omitted Cross Loadings (Model 1.2)", "1.2")
-#rmse_table_1_2
-
-rmse_table_1_3 <- create_rmse_table(3, "Average RMSE under omitted Correlated Residuals (Model 1.3)", "1.3")
-#rmse_table_1_3
-
-rmse_table_1_4 <- create_rmse_table(4, "Average RMSE under Structural Misspecification (Model 1.4)", "1.4")
-#rmse_table_1_4
-```
 
 ##### Improper Solutions
 
