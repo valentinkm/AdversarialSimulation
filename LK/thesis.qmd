@@ -1023,22 +1023,30 @@ Overall, I conducted 6 simulation studies.
 **Population Models and Data Generation Mechanisms**
 
 The most important details with regards to the population models and data-generating mechanisms are visible in Table 7.
-
-```{r schematic 1, eval = TRUE, echo = FALSE, out.width="110%"}
-
-knitr::include_graphics("../LK/images/TableOverviewIndividualStudies.pdf")
-
-```
-
 With regards to the population models, all factors in all studies loaded onto 3 indicators each.
 I chose the population values to align to the original paper by @robitzsch_comparing_2022.
 For more details on the exact values of each study, see the simulation scripts in the Github repository.
 The multivariate normally distributed data was generated parametrically, based on a specified population model.
 All simulations were conducted using seeds to allow for reproducibility.
 
+\vspace{0.5\baselineskip}
+
+**Table 7**
+
+\vspace{0.5\baselineskip}
+
+*Overview of the individual simulation studies by Leonard Kosanke.*
+
+```{r schematic 1, eval = TRUE, echo = FALSE, out.width="125%"}
+
+knitr::include_graphics("../LK/images/TableOverviewStudiesLK.pdf")
+
+```
+\vspace{0.1\baselineskip}
+
 **Experimental Design of simulation procedures**
 
-Overall, 3 different types of factors were varied that can be deducted from Table 7 and are detailed again in the simulation scripts provided.
+Overall, 3 different types of factors were varied that can be deduced from Table 7 and are detailed again in the simulation scripts provided.
 
 Firstly, I varied the sample size in all studies, ranging from N = 50 to 100.000.
 I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail.
@@ -1047,7 +1055,7 @@ Thus, only N=50 and N=100 were present in this study.
 
 Additionally, I varied the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.
 
-Thirdly, in Studies 1b and 4a, I varied the population values for three model parameters ($\phi$, $\beta$ and/ or $\lambda$).
+Thirdly, in Studies 1b and 4a, I varied the population values for three model parameters (phi, beta and/ or lambda).
 
 Besides studies 1 and 2, I implemented full factorial designs.
 In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present.
@@ -1060,7 +1068,7 @@ Instead of varying a factor misspecification as in the previous study, they vari
 Thus the conditions are labelled differently:
 DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. 
 DGM 3 contained 20 residual correlations that were not modelled in the models.
-I extended them to investigate the interaction of $\beta$ and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
+I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions.
 Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study.
 
 **Method Selection**
@@ -1074,7 +1082,7 @@ Exceptions were studies 1b, 4 and 4a, where only LSAM was investigated, as resul
 I calculated the bias and RMSE of the estimated factor correlations in all studies, as well as the standard deviation of the one factor correlation present in Studies 1,2 and 3.
 For the type of bias calculated, I oriented on @robitzsch_comparing_2022, besides in Study 1b.
 Thus, I calculated average relative bias in Studies 1, 2 and 3, and average absolute bias in Studies 1b, 4 and 4a.
-In Study 1b, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower  $\phi$ values.
+In Study 1b, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values.
 In addition to what was done in @robitzsch_comparing_2022, I calculated confidence intervals for the bias estimates, but omitted them in the results tables for presentation purposes.
 The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the Github repository.
 
@@ -1104,8 +1112,8 @@ For the most part, results from @robitzsch_comparing_2022 have been successfully
 I did not observe substantial convergence issues in any study.
 Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
 SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias was especially strong for lower $\lambda$ and higher $\phi$ or $\beta$ values.
-Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower $\phi$ or $\beta$ values.
+This bias was especially strong for lower lambda and higher phi or beta values.
+Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
 If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
 
@@ -1379,13 +1387,13 @@ The bias persisted, but to a lesser degree in samples of 100.
 Thus, a clear effect of sample size was present.
 Overall, comparing LSAM-ML and -ULS estimation, results were very similar.
 
-Importantly, differential effects due to $\lambda$ and $\phi$ were present in Study 1b.
-The small sample bias was especially strong for lower $\lambda$ and higher $\phi$ values, thus in contexts of low reliability and high factor correlations.
-Also, a new insight is that the bias remained relevant for low values of $\phi$, unlike in the original paper by @robitzsch_comparing_2022.
+Importantly, differential effects due to lambda and phi were present in Study 1b.
+The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations.
+Also, a new insight is that the bias remained relevant for low values of phi, unlike in the original paper by @robitzsch_comparing_2022.
 In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.
 
-Another new insight lied in the presence of what could be called a reversal effect: For higher values of $\lambda$, the bias did not increase for higher values of $\phi$. 
-On the contrary, absolute bias values decreased for higher $\phi$ values, when looking at the conditions with $\lambda = 0.7-0.8$.
+Another new insight lied in the presence of what could be called a reversal effect: For higher values of lambda, the bias did not increase for higher values of phi. 
+On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.
 
 As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
 Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
@@ -1440,13 +1448,13 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
 
 \vspace{0.5\baselineskip}
 
-Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher $\beta$.
+Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
 Thus, the negative small sample bias came into play in this study as well.
 Results looked very similar with regards to RMSE.
 Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
 
-One aspect to mention is that $\lambda$ values were quite high in study 4a ($\lambda=0.7$).
-Matching the results from Study 1b, SAM's bias did not increase for higher values of $\beta$, unlike SEM's.
+One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
+Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
 This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.
 But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.
 
@@ -1456,8 +1464,8 @@ For the most part, I succesfully replicated the results from @robitzsch_comparin
 I did not observe substantial convergence issues in any study.
 Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
 SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias was especially strong for lower $\lambda$ and higher $\phi$ or $\beta values$.
-Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower $\phi$ or $\beta$ values.
+This bias was especially strong for lower lambda and higher phi or beta values.
+Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
 If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
 
@@ -1482,11 +1490,11 @@ Results in the studies by Kriegmair showed, that SAM had overcoverage due to its
 Consequently, SAM was less biased but also less accurate than traditional SEM.
 Hence, SAM only partly outperformed traditional SEM, even in the unconstrained version. 
 
-Kriegmair's results also hinted at the presence of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e $\lambda$, where the bias was especially pronounced (see Table 3).
+Kriegmair's results also hinted at the presence of SAM's negative small sample bias, as the largest performance differences were observed in conditions of low reliability, i.e lambda, where the bias was especially pronounced (see Table 3).
 Moreover, in some conditions of Kriegmairs' studies, SAM performed even worse than unconstrained SEM for conditions of low reliability and sample size (see Tables 4 and 6).
 
-One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of $\phi$ in Kosanke's Study 4a (see Tables 15-16).
-Only traditional SEM seemed to be negatively affected for higher $\beta$ values, compared to lower $\beta$ values in conditions with unmodelled cross-loadings (DGM 2).
+One set of findings, that hinted towards the possibility of SAM outperforming SEM was the slightly stronger robustness of SAM over constrained SEM for misspecifications along higher values of phi in Kosanke's Study 4a (see Tables 15-16).
+Only traditional SEM seemed to be negatively affected for higher beta values, compared to lower beta values in conditions with unmodelled cross-loadings (DGM 2).
 This showed slightly, but not substantially in conditions with residual correlations as well (DGM 3), in the same study by Kosanke.
 Kriegmair's study 2 showed this finding to not be consistent in the end, as in his conditions for model 2.2 in the endogenous conditions, for low sample size and reliability, the opposite trend was visible. 
 Here, SEM performed better, even in the unconstrained version in the presence of both cross-loadings and residual correlations (see Table 6).
