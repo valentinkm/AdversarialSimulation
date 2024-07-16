@@ -1,0 +1,98 @@
+---
+title: "Methods"
+format:
+    pdf:
+        fontsize: 12pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes:
+           - \usepackage{float}
+           - \floatplacement{table}{H}
+           - \usepackage{tikz}
+           - \usetikzlibrary{arrows.meta, positioning, calc}
+           - \usepackage{geometry}
+           - \geometry{margin=1in}
+fontsize: 12pt
+engine: knitr
+bibliography: ../bibliography.bib
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+```
+
+The following description of the simulation studies is based on the established structure for simulation studies to coalign with the other conducted studies to facilitate a potential collaboration.
+
+### Aims, objectives and research questions
+
+Both studies aimed to evaluate the performance of vanilla SEM compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies.
+
+### Population Models and Data Generation Mechanisms
+
+#### Study 1:
+
+Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4):
+
+-   Model 1.1: Correctly specified model.
+
+-   Model 1.2: Misspecified with cross-loadings ignored in the estimation model.
+
+-   Model 1.3: Misspecified with omitted correlated residuals and a reversed structural path between the third and fourth latent factors.
+
+-   Model 1.4: Misspecified with a recursive structural relation between factors 3 and 4 specified as only one directional.
+
+For all models, the population-level values of the structural parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), or high ($\lambda = 0.7$).
+
+::: {layout="[[40,-20,40],[40,-20,40]]"}
+![Model 1.1](figures/model1_1.tex){#fig-model1} Figure 1: Note. Model 1.1: Error terms are not explicitly shown in the figure.
+
+![Model 1.2](figures/model1_2.tex){#fig-model2} Figure 2: Note. Model 1.2: Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
+
+![Model 1.3](figures/model1_3.tex){#fig-model3} Figure 3: Note. Model 1.3: Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
+
+![Model 1.4](figures/model1_4.tex){#fig-model4} Figure 4: Note. Model 1.4: Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
+:::
+
+**Study 2:**
+
+Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained ($R^2$) by the endogenous factors was set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The resulting population models resulted in the following model types with respective misspecification in relation to the estimation model:
+
+-   Model 2.1: structural misspecifcation with falsely specified paths in the estimation model not present in the population model (Figure 5)
+
+-   Model 2.2: covariance and a factor cross-loading in either the exogenous (Model 2.2-exo), endogenous (Model 2.2-endo) part of the model or both (Model 2.2-both) with falsely specified paths in the estimation model not present in the population model (see figure 5-6).
+
+::: {layout="[[40,-20,40], [100]]"}
+![Model 2.1](figures/model2_1.tex) Figure 5: Note. Model 2.1: Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model.
+
+![Model 2.2](figures/model2_2.tex) Figure 6: Note. Model 2.2: Error terms are not explicitly shown in the figure Orange lines represent misspecifications in the exogenous part of the model. Green lines represent misspecifications in the endogenous part of the model. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here. Dotted paths represent relations specified in the estimation model not present in the population model.
+:::
+
+**Experimental Design of simulation procedures**
+
+**Study 1**
+
+The study varied three main conditions: (1) sample sizes of small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$); (2) Indicator reliability of low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), high ($\lambda = 0.7$); (3) Model specifications: correctly specified model and misspecified with not specified cross loadings in the population model (see figure 2), misspecified with not specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model (see figure 3) and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see figure 4). \newpage
+
+**Study 2**
+
+The study varied five main conditions: Sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). Indicator reliability: low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), and high ($\lambda = 0.7$). - Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. - Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$).
+
+Both studies were conducted with 10000 replications for each condition.
+
+**Method Selection**
+
+**Study 1 and Study 2:** The performance of four estimation methods was compared: Vanilla SEM with maximum likelihood (ML), Global SAM (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).
+
+**Performance Measures**
+
+The following performance measures were captured: - Convergence rates. - Empirical relative biases. - Empirical coverage levels of 95% confidence intervals (CIs). - Root Mean Squared Errors (RMSE).
+
+**Software**
+
+All analyses were conducted in @r_core_team_r_2023. See <https://github.com/valentinkm/AdversarialSimulation> for more details.
+
+**Analysis and Interpretation plan**
+
+The results were interpreted by descriptively comparing the performance measures (bias, MSE, convergence rates) of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications.
