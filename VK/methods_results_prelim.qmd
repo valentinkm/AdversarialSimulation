@@ -34,8 +34,6 @@ summary_1 <- readRDS("simulation/results/summary_study1.rds")
 summary_2 <- readRDS("simulation/results/summary_study2.rds")
 ```
 
-# 
-
 # Methods
 
 The following description of the simulation studies is based on the established structure for simulation studies to coalign with the other conducted studies to facilitate a potential collaboration.
