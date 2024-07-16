@@ -131,22 +131,38 @@ lav_matrix_diag_idx <- function(n) {
 }
 
 
-# Test the function with different models and return the matrices
-# test_models <- function(R_squared) {
-#   models <- c("2.1", "2.2_exo", "2.2_endo", "2.2_both")
+# Test the function with models 1.1 to 1.4 and return the matrices
+# test_models_study1 <- function() {
+#   models <- c("1.1", "1.2", "1.3", "1.4")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
 #     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
 #                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.80,
-#                      rho = 0.80, R_squared = R_squared)
+#                      rho = 0.80, R_squared = 0.1)
+#     cat("Lambda matrix:\n")
+#     print(MLIST$lambda)
+#     cat("Theta matrix:\n")
+#     print(MLIST$theta)
+#     cat("Psi matrix:\n")
+#     print(MLIST$psi)
+#     cat("Beta matrix:\n")
 #     print(MLIST$beta)
 #   }
 # }
 # 
-# test_models(R_squared = 0.4)
+# test_models_study1()
 # 
-# test_models(R_squared = 0.1)
-
-
-
+# test_all_models_2 <- function() {
+#   models <- c("2.1", "2.2_exo", "2.2_endo", "2.2_both")
+#   for (model in models) {
+#     cat("Testing model:", model, "\n")
+#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
+#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.70,
+#                      rho = 0.80, R_squared = 0.4)
+#     cat("Beta matrix:\n")
+#     print(MLIST$beta)
+#   }
+# }
+# 
+# test_all_models_2()
 
