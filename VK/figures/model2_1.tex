@@ -45,13 +45,17 @@
     \draw[<-] (y11) -- (f4);
     \draw[<-] (y12) -- (f4);
     
-    % Regression paths from B matrix
+    % Regression
     \draw[->] (f1) -- (f4);
     \draw[->] (f2) -- (f4);
-    \draw[->] (f4) -- (f5);
-    
+    \draw[->] (f2) -- (f5);
     \draw[->] (f3) -- (f5);
-    
+    \draw[->] (f4) -- (f5);
+
+    % Additional paths only in estimation model
+    \draw[dotted, ->] (f1) -- (f3);
+    \draw[dotted, ->] (f2) -- (f3);
+    \draw[dotted, ->] (f3) -- (f4);
 
     
     % Curved arrow from f1 to f5

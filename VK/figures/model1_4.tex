@@ -38,10 +38,11 @@
     \draw[<-] (y14) -- (f5);
     \draw[<-] (y15) -- (f5);
     \draw[->] (f1) -- (f3);
-    \draw[->] (f1) -- (f4);
     \draw[->] (f3) -- (f5);
-    \draw[->] (f2) -- (f4);
-    \draw[dashed, <-] (f3) -- (f4);
+    \draw[->] (f1) -- (f4);  
+    \draw[->] (f2) -- (f4);  
+    \draw[->] (f4) -- (f3);
+    \draw[->, dashed, bend left] (f3) to (f4);
     \draw[->] (f4) -- (f5);
     \draw[->] (f2) -- (f3);
     \draw[<-] (y4) -- (f2);
