@@ -1,0 +1,126 @@
+---
+title: "Errors & Warnings"
+format:
+    pdf:
+        fontsize: 12pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes:
+           - \usepackage{float}
+           - \floatplacement{table}{H}
+           - \usepackage{tikz}
+           - \usetikzlibrary{arrows.meta, positioning, calc}
+           - \usepackage{geometry}
+           - \geometry{margin=1in}
+           - \usepackage{microtype}
+           - \usepackage{ragged2e}
+           - \usepackage[singlelinecheck=false, labelfont=bf]{caption}
+           - \captionsetup{justification=raggedright,singlelinecheck=false, labelfont=bf}
+
+fontsize: 12pt
+engine: knitr
+bibliography: ../../bibliography.bib
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+```
+
+```{r}
+library(dplyr)
+library(purrr)
+library(knitr)
+library(kableExtra)
+library(stringr)
+```
+
+In the following all different warning and error messages raised during the studies are listed (see Table 1) and shown how often they occurred under various fitting conditions (see Table 2).
+
+```{r}
+df <- readRDS("../simulation/results/simulation_results_study1.rda")
+detailed_results <- df$DetailedResults
+
+```
+
+```{r}
+unique_warnings <- unique(detailed_results$Warnings)
+unique_errors <- unique(detailed_results$Errors)
+
+unique_warnings <- unique_warnings[unique_warnings != ""]
+unique_errors <- na.omit(unique_errors)
+
+combined_list <- tibble(
+  ID = seq_along(c(unique_warnings, unique_errors)),
+  Message = c(unique_warnings, unique_errors)
+)
+
+combined_list <- combined_list %>%
+  mutate(Message = str_wrap(Message, width = 80))
+
+# mapping warnings and errors to IDs
+id_map <- setNames(combined_list$ID, c(unique_warnings, unique_errors))
+
+combined_list %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, 
+        caption = "List of Unique Warnings and Errors",
+        align = c('c', 'l')) %>%
+  kable_styling(latex_options = c("repeat_header", "hold_position"),
+                full_width = TRUE,
+                font_size = 10,
+                position = "left") %>%
+  column_spec(1, width = "1cm") %>%
+  column_spec(2, width = "14cm") %>%
+  row_spec(0, bold = TRUE, align = "c") %>%
+  footnote(general = "This table lists all unique warnings and errors encountered during the simulation study.",
+           general_title = "Note.",
+           threeparttable = TRUE,
+           escape = FALSE,
+           footnote_as_chunk = TRUE)
+
+```
+
+```{r}
+combined_summary <- detailed_results %>%
+  mutate(MessageID = ifelse(!is.na(Warnings), id_map[Warnings], id_map[Errors])) %>%
+  filter(!is.na(MessageID)) %>%
+  mutate(
+    method = case_when(
+      str_detect(method, "lSAM_ULS") ~ "lSAM-ULS",
+      TRUE ~ method
+    )
+  ) %>%
+  group_by(model_type, N, reliability, method, MessageID) %>%
+  summarise(count = n(), .groups = 'drop') %>%
+  arrange(desc(count)) %>%
+  rename(
+    `Model Type` = model_type,
+    `Message ID` = MessageID,
+    `Reliability` = reliability,
+    `Method` = method,
+    `Count` = count
+  )
+
+
+combined_summary %>%
+  kable("latex", booktabs = TRUE, longtable = TRUE, 
+        caption = "Summary of Warnings and Errors by Condition with ID",
+        align = c('c', 'c', 'c', 'c', 'c', 'c')) %>%
+  kable_styling(latex_options = c("repeat_header", "hold_position"), 
+                full_width = FALSE, 
+                font_size = 10,
+                position = "left") %>%
+  column_spec(1, width = "2.5cm") %>%  # Model Type
+  column_spec(2, width = "1cm") %>%    # N
+  column_spec(3, width = "2cm") %>%    # reliability
+  column_spec(4, width = "1.5cm") %>%  # method
+  column_spec(5, width = "2.5cm") %>%  # Message ID
+  column_spec(6, width = "1.5cm") %>%  # count
+  row_spec(0, bold = TRUE, align = "c") %>%
+  kableExtra::footnote(general = "This table summarizes the count of warnings and errors for each condition in simulation study 1 with the respective ID number corresponding to table 1.",
+                       general_title = "Note.",
+                       threeparttable = TRUE,
+                       escape = FALSE,
+                       footnote_as_chunk = TRUE)
+```
