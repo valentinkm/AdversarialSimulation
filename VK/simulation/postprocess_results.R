@@ -136,7 +136,7 @@ library(R.utils)  # For withTimeout
 
 options(dplyr.summarise.inform = FALSE)
 
-study_2 <- readRDS("../simulation/results/simulation_results_study2.rda")
+# study_2 <- readRDS("../simulation/results/simulation_results_study2.rda")
 
 source("gen_mat.R")
 
@@ -203,8 +203,8 @@ process_row <- function(row) {
       parameter = NA_character_,
       true_value = NA_real_,
       estimated_value = NA_real_,
-      relative_bias = NA_real_,
-      relative_rmse = NA_real_
+      bias = NA_real_,
+      rmse = NA_real_
     ))
   }
   
@@ -212,6 +212,7 @@ process_row <- function(row) {
   estimated_paths <- row$EstimatedPaths
   
   all_params <- names(true_values)
+  misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
   
   tibble(
     model_type = row$model_type,
@@ -225,8 +226,12 @@ process_row <- function(row) {
     estimated_value = estimated_paths[all_params]
   ) %>%
     mutate(
-      relative_bias = (estimated_value - true_value) / pmax(abs(true_value), 1e-6),
-      relative_rmse = ((estimated_value - true_value) / pmax(abs(true_value), 1e-6))^2
+      bias = ifelse(parameter %in% misspecified_paths,
+                    abs(estimated_value - true_value),  # Use absolute bias for misspecified paths
+                    (estimated_value - true_value) / abs(true_value)),  # Use relative bias for correctly specified paths
+      rmse = ifelse(parameter %in% misspecified_paths,
+                    (estimated_value - true_value)^2,  # Use absolute RMSE for misspecified paths
+                    ((estimated_value - true_value) / abs(true_value))^2)  # Use relative RMSE for correctly specified paths
     )
 }
 
@@ -260,10 +265,10 @@ for (i in 1:n_chunks) {
         group_by(model_type, N, reliability, R_squared, method, b, parameter) %>%
         summarise(
           n = n(),
-          sum_bias = sum(relative_bias, na.rm = TRUE),
-          sum_bias_squared = sum(relative_bias^2, na.rm = TRUE),
-          sum_rmse = sum(relative_rmse, na.rm = TRUE),
-          sum_rmse_squared = sum(relative_rmse, na.rm = TRUE),
+          sum_bias = sum(bias, na.rm = TRUE),
+          sum_bias_squared = sum(bias^2, na.rm = TRUE),
+          sum_rmse = sum(rmse, na.rm = TRUE),
+          sum_rmse_squared = sum(rmse^2, na.rm = TRUE),
           .groups = 'drop'
         )
       
@@ -294,6 +299,7 @@ for (i in 1:n_chunks) {
   cat(sprintf("Chunk %d processed in %.2f seconds\n", i, chunk_duration))
 }
 
+
 # Combine results
 cat("Combining results...\n")
 combined_results <- bind_rows(all_aggregated)
@@ -306,20 +312,22 @@ summary_stats <- combined_results %>%
     n = sum(n),
     total_cases = sum(total_cases),
     included_cases = sum(included_cases),
-    MeanRelativeBias = sum(sum_bias) / n,
-    MeanRelativeRMSE = sqrt(sum(sum_rmse_squared) / n),
-    MCSE_RelativeBias = sqrt(abs((sum(sum_bias_squared) - (sum(sum_bias)^2 / n)) / (n * (n - 1)))),
-    MCSE_RelativeRMSE = sqrt(abs((sum(sum_rmse_squared) - (sum(sum_rmse)^2 / n)) / (n * (n - 1)))),
+    MeanBias = sum(sum_bias) / n,
+    MeanRMSE = sqrt(sum(sum_rmse_squared) / n),
+    MCSE_Bias = sqrt(abs((sum(sum_bias_squared) - (sum(sum_bias)^2 / n)) / (n * (n - 1)))),
+    MCSE_RMSE = sqrt(abs((sum(sum_rmse_squared) - (sum(sum_rmse)^2 / n)) / (n * (n - 1)))),
     .groups = 'drop'
   ) %>%
   mutate(
     InclusionRate = included_cases / total_cases,
-    CI_RelativeBias_Lower = MeanRelativeBias - 1.96 * MCSE_RelativeBias,
-    CI_RelativeBias_Upper = MeanRelativeBias + 1.96 * MCSE_RelativeBias,
-    CI_RMSE_Lower = pmax(0, MeanRelativeRMSE - 1.96 * MCSE_RelativeRMSE),
-    CI_RMSE_Upper = MeanRelativeRMSE + 1.96 * MCSE_RelativeRMSE
+    CI_Bias_Lower = MeanBias - 1.96 * MCSE_Bias,
+    CI_Bias_Upper = MeanBias + 1.96 * MCSE_Bias,
+    CI_RMSE_Lower = pmax(0, MeanRMSE - 1.96 * MCSE_RMSE),
+    CI_RMSE_Upper = MeanRMSE + 1.96 * MCSE_RMSE
   ) %>%
   arrange(model_type, N, reliability, R_squared, method, b, parameter)
+
+
 
 # Save the final results
 cat("Saving final results...\n")
