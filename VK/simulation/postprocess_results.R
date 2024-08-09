@@ -60,6 +60,9 @@ calculate_summary_study2 <- function(detailed_results) {
   # Define the paths in the estimation model
   estimation_model_paths <- c("f3~f1", "f3~f2", "f4~f1", "f4~f2", "f4~f3", "f5~f3", "f5~f4", "f5~f2")
   
+  # Define the misspecified paths
+  misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
+  
   # Process each row
   processed_results <- detailed_results %>%
     rowwise() %>%
@@ -71,6 +74,7 @@ calculate_summary_study2 <- function(detailed_results) {
           true_value = ifelse(parameter %in% names(true_values), true_values[parameter], 0),
           estimated_value = ifelse(parameter %in% names(EstimatedPaths), EstimatedPaths[parameter], NA)
         ) %>%
+          filter(!parameter %in% misspecified_paths) %>%  # Exclude misspecified paths
           mutate(
             relative_bias = (estimated_value - true_value) / pmax(abs(true_value), 1e-6),
             relative_rmse = sqrt((estimated_value - true_value)^2) / pmax(abs(true_value), 1e-6)
@@ -105,6 +109,7 @@ calculate_summary_study2 <- function(detailed_results) {
   return(summary)
 }
 
+
 # ----------------- Study 1 ---------------------
 study_1 <- readRDS("../simulation/results/simulation_results_study1.rda")
 
@@ -131,7 +136,7 @@ library(R.utils)  # For withTimeout
 
 options(dplyr.summarise.inform = FALSE)
 
-# study_2 <- readRDS("../simulation/results/simulation_results_study2.rda")
+study_2 <- readRDS("../simulation/results/simulation_results_study2.rda")
 
 source("gen_mat.R")
 
@@ -332,73 +337,15 @@ cat(sprintf("Chunk size: %d\n", chunk_size))
 cat(sprintf("Number of chunks: %d\n", n_chunks))
 cat(sprintf("Total processing time: %.2f hours\n", as.numeric(difftime(Sys.time(), chunk_start_time, units = "hours"))))
 
-####################################################################
 
-params <- readRDS("results/parameter_wise_summary_study2_full.rds")
 
-params1 <- readRDS("results/chunk_aggregated_1.rds")
-unique(params1$parameter)
 
-unique(params$parameter)
 
-View(params1)
 
-library(ggplot2)
-library(dplyr)
-library(tidyr)
 
-# Define misspecified paths
-misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
 
-# Filter and prepare the data
-plot_data <- summary_stats %>%
-  filter(R_squared == 0.4, b == 5, model_type == "2.1") %>%
-  select(N, reliability, method, parameter, MeanRelativeBias) %>%
-  mutate(
-    N = factor(N, levels = c("100", "400", "6400")),
-    reliability = factor(reliability, levels = c("0.3", "0.5", "0.7")),
-    method = factor(method, levels = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")),
-    path_type = ifelse(parameter %in% misspecified_paths, "Misspecified", "Correctly specified")
-  ) %>%
-  # Reorder parameters to group correctly specified and misspecified paths
-  arrange(path_type, parameter) %>%
-  mutate(parameter = factor(parameter, levels = unique(parameter)))
 
-# Create the plot
-ggplot(plot_data, aes(x = method, y = parameter)) +
-  geom_tile(aes(fill = MeanRelativeBias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", MeanRelativeBias)), size = 3) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
-                       limits = c(-1, 1), oob = scales::squish) +
-  facet_grid(
-    rows = vars(N, reliability),
-    cols = vars(method),
-    scales = "free",
-    space = "free"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
-    axis.text.y = element_text(size = 8, 
-                               color = ifelse(levels(plot_data$parameter) %in% misspecified_paths, "red", "black")),
-    strip.text = element_text(size = 10),
-    panel.spacing = unit(0.3, "lines"),
-    legend.position = "bottom"
-  ) +
-  # Add a rectangle to separate correctly specified and misspecified paths
-  geom_rect(data = data.frame(ymin = which(plot_data$path_type == "Misspecified")[1] - 0.5,
-                              ymax = Inf,
-                              xmin = -Inf,
-                              xmax = Inf),
-            aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-            fill = "gray90", alpha = 0.5, inherit.aes = FALSE) +
-  # Ensure the tiles and text are on top of the rectangle
-  geom_tile(aes(fill = MeanRelativeBias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", MeanRelativeBias)), size = 3) +
-  labs(
-    title = "Mean Relative Bias by Parameter, Condition, and Method",
-    subtitle = "Model Type 2.1, R-squared = 0.4, 5 measurement blocks\nMisspecified paths (in red) shown with gray background",
-    x = "Method",
-    y = "Parameter",
-    fill = "Mean Relative Bias"
-  )
+
+
+
+
