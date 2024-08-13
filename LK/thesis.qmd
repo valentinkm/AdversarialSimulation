@@ -1,44 +1,24 @@
 ---
-title: "Evaluation of master thesis"
-subtitle: "handed in by Leo Kosanke, evaluated by Dr. Aaron Peikert"
-author: "Aaron Peikert"
 format:
-  pdf: 
-    geometry:
-      - left=50mm
-      - right=20mm
-      - heightrounded
-    mainfont: LibertinusSerif-Regular
-    sansfont: LibertinusSans-Regular
-    classoption: "fontsize=11"
-    linestretch: 1.25
-    colorlinks: true
-    papersize: a4
-    number-sections: true
-    block-headings: false
-    keep-tex: true
-    include-in-header:
-      - text: |
-          \setkomafont{sectioning}{\sffamily}
-          \setkomafont{title}{\raggedright\sffamily}
-          \setkomafont{author}{\raggedright\sffamily}
-          \renewcommand{\author}[1]{}
-          \raggedbottom
-          \RedeclareSectionCommand[
-            runin=false,
-            beforeskip=-.25\baselineskip,
-            afterskip=-.25\baselineskip
-          ]{subsubsection}
-          \RedeclareSectionCommand[
-            runin=false,
-            beforeskip=-.25\baselineskip,
-            afterskip=-.25\baselineskip
-          ]{subsection}
-          \RedeclareSectionCommand[
-            runin=false,
-            beforeskip=-.25\baselineskip,
-            afterskip=-.25\baselineskip
-          ]{section}
+    pdf:
+        fontsize: 11pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        toc: true
+        header-includes:
+           - \usepackage{float}
+           - \floatplacement{table}{H}
+           - \usepackage{tikz}
+           - \usetikzlibrary{arrows.meta, positioning, calc}
+           - \usepackage{helvet} % Use Helvetica font
+           - \renewcommand{\familydefault}{\sfdefault} % Set default family to sans-serif (Helvetica)
+           - \usepackage[T1]{fontenc} % Use T1 encoding for better font quality
+fontsize: 11pt
+bibliography: ../bibliography.bib
+csl: ../apa.csl
+engine: knitr
 ---
 
 ```{r include = FALSE}
