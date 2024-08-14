@@ -27,7 +27,7 @@ parallel_seeds <- function(n, seed = NULL) {
 }
 
 # Generate parameters grid with seeds for Study 2
-n_reps <- 10000
+n_reps <- 10
 params <- expand.grid(
   seed = parallel_seeds(n_reps, seed = 42), # seed position in grid is essential or reorder results later - implicit repetition parameter
   model_type = c("2.1", "2.2_exo", "2.2_endo", "2.2_both"),
@@ -105,8 +105,6 @@ simulate_inner <- function(model_type, N, reliability, R_squared, method, b) {
       Converged = 1, NonConverged = 0,
       EstimatedPaths = list(estimated_paths),
       SanityCheck = list(sanity_check_estimates),
-      MaxSanityCheckDifference = sanity_check_results$MaxDifference,
-      SanityCheckAlarm = sanity_check_results$Alarm,
       Coverage = coverage,
       RelativeBias = relative_bias,
       RelativeRMSE = relative_rmse,
@@ -122,8 +120,6 @@ simulate_inner <- function(model_type, N, reliability, R_squared, method, b) {
       Converged = 0, NonConverged = 1,
       EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
       SanityCheck = list(sanity_check_estimates),
-      MaxSanityCheckDifference = sanity_check_results$MaxDifference,
-      SanityCheckAlarm = sanity_check_results$Alarm,
       Coverage = NA,
       RelativeBias = NA,
       RelativeRMSE = NA,
@@ -167,8 +163,6 @@ run_study_2 <- function(params) {
       Errors = map_chr(results, ~ .x$Errors),
       EstimatedPaths = map(results, ~ .x$EstimatedPaths[[1]]),
       SanityCheck = map(results, ~ .x$SanityCheck[[1]]),
-      MaxSanityCheckDifference = map_dbl(results, ~ .x$MaxSanityCheckDifference),
-      SanityCheckAlarm = map_lgl(results, ~ .x$SanityCheckAlarm),
       Coverage = map_dbl(results, ~ .x$Coverage),
       RelativeBias = map_dbl(results, ~ .x$RelativeBias),
       RelativeRMSE = map_dbl(results, ~ .x$RelativeRMSE),
@@ -191,8 +185,6 @@ run_study_2 <- function(params) {
       ConvergenceRate = mean(Converged),
       NonConvergenceCount = sum(NonConverged),
       n_converged = sum(Converged),
-      MeanMaxSanityCheckDifference = mean(MaxSanityCheckDifference, na.rm = TRUE),
-      SanityCheckAlarmCount = sum(SanityCheckAlarm, na.rm = TRUE),
       MeanCoverage = mean(Coverage, na.rm = TRUE),
       MeanRelativeBias = mean(RelativeBias, na.rm = TRUE),
       MeanRelativeRMSE = mean(RelativeRMSE, na.rm = TRUE),

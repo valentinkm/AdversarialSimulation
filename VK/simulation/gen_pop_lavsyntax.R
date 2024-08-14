@@ -15,7 +15,6 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
   PSI    <- MLIST$psi
   BETA   <- MLIST$beta
   
-  # Check prefix
   if (ov.prefix == lv.prefix) {
     stop("lavaan ERROR: ov.prefix can not be the same as lv.prefix")
   }
@@ -27,10 +26,9 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     IDXV <- row(LAMBDA)[(LAMBDA != 0)]
     IDXF <- col(LAMBDA)[(LAMBDA != 0)]
     
-    
     unique_factors <- unique(IDXF)
     IDXV <- as.integer(unlist(sapply(unique_factors, function(j) {
-      ji <- IDXV[which(IDXF == j)]  # non-zero loadings for factor j
+      ji <- IDXV[which(IDXF == j)]
       j1 <- which(abs(LAMBDA[ji, j] - 1) < .Machine$double.eps)
       if (length(j1) > 0) {
         ji[c(1, j1)] <- ji[c(j1, 1)]
@@ -40,17 +38,14 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     
     IDXF <- rep(unique_factors, times = sapply(unique_factors, function(j) length(which(IDXF == j))))
     
-    
     nel <- length(IDXF)
     lambda.txt <- character(nel)
     for (i in seq_len(nel)) {
+      value <- LAMBDA[IDXV[i], IDXF[i]]
       if (include.values) {
-        lambda.txt[i] <- paste0(paste0(lv.prefix, IDXF[i]), " =~ ",
-                                round_three(LAMBDA[IDXV[i], IDXF[i]]), "*",
-                                paste0(ov.prefix, IDXV[i]))
+        lambda.txt[i] <- sprintf("%s%d =~ %s*%s%d", lv.prefix, IDXF[i], round_three(value), ov.prefix, IDXV[i])
       } else {
-        lambda.txt[i] <- paste0(paste0(lv.prefix, IDXF[i]), " =~ ",
-                                paste0(ov.prefix, IDXV[i]))
+        lambda.txt[i] <- sprintf("%s%d =~ %s%d", lv.prefix, IDXF[i], ov.prefix, IDXV[i])
       }
     }
   } else {
@@ -64,13 +59,11 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     nel <- length(IDX1)
     theta.txt <- character(nel)
     for (i in seq_len(nel)) {
+      value <- THETA[IDX1[i], IDX2[i]]
       if (include.values) {
-        theta.txt[i] <- paste0(paste0(ov.prefix, IDX1[i]), " ~~ ",
-                               round_three(THETA[IDX1[i], IDX2[i]]), "*",
-                               paste0(ov.prefix, IDX2[i]))
+        theta.txt[i] <- sprintf("%s%d ~~ %s*%s%d", ov.prefix, IDX1[i], round_three(value), ov.prefix, IDX2[i])
       } else {
-        theta.txt[i] <- paste0(paste0(ov.prefix, IDX1[i]), " ~~ ",
-                               paste0(ov.prefix, IDX2[i]))
+        theta.txt[i] <- sprintf("%s%d ~~ %s%d", ov.prefix, IDX1[i], ov.prefix, IDX2[i])
       }
     }
   } else {
@@ -84,13 +77,11 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     nel <- length(IDX1)
     psi.txt <- character(nel)
     for (i in seq_len(nel)) {
+      value <- PSI[IDX1[i], IDX2[i]]
       if (include.values) {
-        psi.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~~ ",
-                             round_three(PSI[IDX1[i], IDX2[i]]), "*",
-                             paste0(lv.prefix, IDX2[i]))
+        psi.txt[i] <- sprintf("%s%d ~~ %s*%s%d", lv.prefix, IDX1[i], round_three(value), lv.prefix, IDX2[i])
       } else {
-        psi.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~~ ",
-                             paste0(lv.prefix, IDX2[i]))
+        psi.txt[i] <- sprintf("%s%d ~~ %s%d", lv.prefix, IDX1[i], lv.prefix, IDX2[i])
       }
     }
   } else {
@@ -104,13 +95,11 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
     nel <- length(IDX1)
     beta.txt <- character(nel)
     for (i in seq_len(nel)) {
+      value <- BETA[IDX1[i], IDX2[i]]
       if (include.values) {
-        beta.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~ ",
-                              round_three(BETA[IDX1[i], IDX2[i]]), "*",
-                              paste0(lv.prefix, IDX2[i]))
+        beta.txt[i] <- sprintf("%s%d ~ %s*%s%d", lv.prefix, IDX1[i], round_three(value), lv.prefix, IDX2[i])
       } else {
-        beta.txt[i] <- paste0(paste0(lv.prefix, IDX1[i]), " ~ ",
-                              paste0(lv.prefix, IDX2[i]))
+        beta.txt[i] <- sprintf("%s%d ~ %s%d", lv.prefix, IDX1[i], lv.prefix, IDX2[i])
       }
     }
   } else {
@@ -126,27 +115,29 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
 
 # Test the function with different models
 # test_models <- function() {
-#   models <- c("1.1", "1.2", "1.3", "1.4", "2.1", "2.2_exo", "2.2_endo", "2.2_both")
+#     models <- c("1.1", "1.2", "1.3", "1.4")
+#   # models <- c(2.1", "2.2_exo", "2.2_endo", "2.2_both")
+#   # models <- c("3.1","3.2", "3.1_negative", "3.2_negative")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
-#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70, 
-#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
+#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
+#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.7,
 #                      rho = 0.80, R_squared = 0.1)
 #     syntax <- gen_pop_model_syntax(MLIST)
 #     cat(syntax, "\n\n")
 #   }
 # }
 # test_models()
-# 
-# # get model 2.1 syntax for low and medium R-squared:
-# MLIST <- gen_mat("2.1", nfactors = 5, nvar.factor = 3, lambda = 0.70, 
-#                  beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
+
+# # # get model 2.1 syntax for low and medium R-squared:
+# MLIST <- gen_mat("2.1", nfactors = 5, nvar.factor = 3, lambda = 0.70,
+#                  beta_value = 0.1, psi.cor = 0.3, reliability = 0.80,
 #                  rho = 0.80, R_squared = 0.1)
 # syntax <- gen_pop_model_syntax(MLIST)
 # cat(syntax, "\n\n")
 # 
-# MLIST <- gen_mat("2.1", nfactors = 5, nvar.factor = 3, lambda = 0.70, 
-#                  beta_value = 0.1, psi.cor = 0.3, reliability = 0.80, 
+# MLIST <- gen_mat("2.1", nfactors = 5, nvar.factor = 3, lambda = 0.70,
+#                  beta_value = 0.1, psi.cor = 0.3, reliability = 0.80,
 #                  rho = 0.80, R_squared = 0.4)
 # syntax <- gen_pop_model_syntax(MLIST)
 # cat(syntax, "\n\n")
