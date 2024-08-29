@@ -2,8 +2,8 @@
 
 # Load necessary scripts and libraries
 source("gen_pop_data.R")
-source("calc_metrics.R")  # Ensure this file contains the updated metric calculation functions
-source("run_analysis.R")  # Source the helper functions
+source("calc_metrics.R")
+source("run_analysis.R")
 library(furrr)
 library(parallel)
 library(dplyr)
@@ -23,9 +23,9 @@ parallel_seeds <- function(n, seed = NULL) {
 }
 
 # Generate parameters grid with seeds
-n_reps <- 10
+n_reps <- 2
 params <- expand.grid(
-  seed = parallel_seeds(n_reps, seed = 42), # seed position in grid is essential or reorder results later - implicit repetition parameter
+  seed = parallel_seeds(n_reps, seed = 42),
   model_type = c("1.1", "1.2", "1.3", "1.4"),
   N = c(100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),

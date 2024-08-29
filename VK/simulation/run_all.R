@@ -12,4 +12,4 @@ source("study_1.R")
 source("study_2.R")
 
 # Run Study 3
-source("sutdy_3.R")
+source("study_3.R")

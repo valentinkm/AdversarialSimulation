@@ -2,8 +2,8 @@
 
 # Load necessary scripts and libraries
 source("gen_pop_data.R")
-source("calc_metrics.R")  # Ensure this file contains the updated metric calculation functions
-source("run_analysis.R")  # Source the helper functions
+source("calc_metrics.R")
+source("run_analysis.R")
 library(furrr)
 library(parallel)
 library(dplyr)
@@ -23,10 +23,10 @@ parallel_seeds <- function(n, seed = NULL) {
 }
 
 # Generate parameters grid with seeds
-n_reps <- 10
+n_reps <- 2
 params <- expand.grid(
   seed = parallel_seeds(n_reps, seed = 42),
-  models <- c("3.1", "3.2_negative"),
+  model_type = c("3.1", "3.2", "3.1_negative", "3.2_negative"),
   N = c(50, 100, 250, 400),
   reliability = c(0.3, 0.5, 0.7),
   method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")
@@ -37,13 +37,11 @@ params <- expand.grid(
 B_true <- c(
   'f3~f1' = 0.1, 'f3~f2' = 0.1, 'f3~f4' = 0.1,
   'f4~f1' = 0.1, 'f4~f2' = 0.1,
-  'f5~f3' = 0.1, 'f5~f4' = 0.1
-  )
-
+  'f5~f3' = 0.1, 'f5~f4' = 0.1, "f5~f1" = 0.1
+)
 true_values <- list(
   B = B_true
-  )
-
+)
 
 sam_model_syntax <- "
     # Measurement 
@@ -59,96 +57,77 @@ sam_model_syntax <- "
     f5 ~ f3 + f4 + f1
 "
 
-model_syntax_study3 <- "
-    # Measurement 
-    f1 =~ y1 + y2 + y3
-    f2 =~ y4 + y5 + y6
-    f3 =~ y7 + y8 + y9
-    f4 =~ y10 + y11 + y12
-    f5 =~ y13 + y14 + y15
-    
-    # Structural 
-    f3 ~ f1 + f2 + f4
-    f4 ~ f1 + f2
-    f5 ~ f3 + f4 + f1
-    
-    y1 ~~ v1*y1
-    y2 ~~ v2*y2
-    y3 ~~ v3*y3
-    y4 ~~ v4*y4
-    y5 ~~ v5*y5
-    y6 ~~ v6*y6
-    y7 ~~ v7*y7
-    y8 ~~ v8*y8
-    y9 ~~ v9*y9
-    y10 ~~ v10*y10
-    y11 ~~ v11*y11
-    y12 ~~ v12*y12
-    y13 ~~ v13*y13
-    y14 ~~ v14*y14
-    y15 ~~ v15*y15
-    
-    v1 > 0.01
-    v2 > 0.01
-    v3 > 0.01
-    v4 > 0.01
-    v5 > 0.01
-    v6 > 0.01
-    v7 > 0.01
-    v8 > 0.01
-    v9 > 0.01
-    v10 > 0.01
-    v11 > 0.01
-    v12 > 0.01
-    v13 > 0.01
-    v14 > 0.01
-    v15 > 0.01
+sem_model_syntax <- "
+  # Structural 
+  f1 =~ y1 + y2 + y3
+  f2 =~ y4 + y5 + y6
+  f3 =~ y7 + y8 + y9
+  f4 =~ y10 + y11 + y12
+  f5 =~ y13 + y14 + y15
+  
+  # lower bound factor variances:
+  f1 ~~ v_f1*f1
+  f2 ~~ v_f2*f2
+  f3 ~~ v_f3*f3
+  f4 ~~ v_f4*f4
+  f5 ~~ v_f5*f5
+  
+  v_f1 > 0.01
+  v_f2 > 0.01
+  v_f3 > 0.01
+  v_f4 > 0.01
+  v_f5 > 0.01
+  
+  # Measurement 
+  f3 ~ f1 + f2 + f4
+  f4 ~ f1 + f2
+  f5 ~ f3 + f4 + f1
+  
+  # lower bound residual variances:
+  y1 ~~ v1*y1
+  y2 ~~ v2*y2
+  y3 ~~ v3*y3
+  y4 ~~ v4*y4
+  y5 ~~ v5*y5
+  y6 ~~ v6*y6
+  y7 ~~ v7*y7
+  y8 ~~ v8*y8
+  y9 ~~ v9*y9
+  y10 ~~ v10*y10
+  y11 ~~ v11*y11
+  y12 ~~ v12*y12
+  y13 ~~ v13*y13
+  y14 ~~ v14*y14
+  y15 ~~ v15*y15
+  
+  v1 > 0.01
+  v2 > 0.01
+  v3 > 0.01
+  v4 > 0.01
+  v5 > 0.01
+  v6 > 0.01
+  v7 > 0.01
+  v8 > 0.01
+  v9 > 0.01
+  v10 > 0.01
+  v11 > 0.01
+  v12 > 0.01
+  v13 > 0.01
+  v14 > 0.01
+  v15 > 0.01
 "
 
 
 # Study function
 simulate_inner <- function(model_type, N, reliability, method) {
-  
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
-  
   data <- gen_pop_model_data(model_type, N, reliability)$data
   
-  # Check if the data is in the expected format
-  if (!is.data.frame(data)) {
-    stop("Generated data is not a data frame. Check gen_pop_model_data function.")
-  }
-  
   # Choose the appropriate model syntax based on the method
-  model_syntax <- if(method == "SEM") model_syntax_study3 else sam_model_syntax
+  model_syntax <- if(method == "SEM") sem_model_syntax else sam_model_syntax
   
-  # Run the analysis and capture the result
   fit_result <- safe_quiet_run_analysis(data, model_syntax, method)
-  
-  # Check the structure of the result
-  if (!is.null(fit_result$error)) {
-    warning("Error in run_analysis: ", toString(fit_result$error$message),
-            "\nModel Type: ", model_type, 
-            "\nN: ", N, 
-            "\nReliability: ", reliability, 
-            "\nMethod: ", method)
-    return(list(
-      Converged = 0, NonConverged = 1,
-      EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
-      Coverage = NA,
-      RelativeBias = NA,
-      RelativeRMSE = NA,
-      RelativeBiasList = list(NA),
-      RelativeRMSEList = list(NA),
-      ImproperSolution = NA,
-      Warnings = NA,
-      Messages = NA,
-      Errors = toString(fit_result$error$message)
-    ))
-  }
-  
-  if (!"result" %in% names(fit_result)) {
-    stop("fit_result does not contain 'result'. Check run_analysis function.")
-  }
+  sanity_check_estimates <- run_sanity_check(model_type, model_syntax)
   
   warnings_detected <- fit_result$result$warnings
   improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
@@ -163,9 +142,10 @@ simulate_inner <- function(model_type, N, reliability, method) {
     relative_bias <- calculate_relative_bias(estimated_paths, true_values)
     relative_rmse <- calculate_relative_rmse(estimated_paths, true_values)
     
-    list(
+    return(list(
       Converged = 1, NonConverged = 0,
       EstimatedPaths = list(estimated_paths),
+      SanityCheckEstimates = list(sanity_check_estimates),
       Coverage = coverage,
       RelativeBias = relative_bias,
       RelativeRMSE = relative_rmse,
@@ -175,11 +155,12 @@ simulate_inner <- function(model_type, N, reliability, method) {
       Warnings = toString(fit_result$result$warnings),
       Messages = toString(fit_result$result$messages),
       Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
-    )
+    ))
   } else {
-    list(
+    return(list(
       Converged = 0, NonConverged = 1,
       EstimatedPaths = list(setNames(rep(NA, length(true_values$B)), names(true_values$B))),
+      SanityCheckEstimates = list(sanity_check_estimates),
       Coverage = NA,
       RelativeBias = NA,
       RelativeRMSE = NA,
@@ -189,9 +170,10 @@ simulate_inner <- function(model_type, N, reliability, method) {
       Warnings = toString(fit_result$result$warnings),
       Messages = toString(fit_result$result$messages),
       Errors = if (is.null(fit_result$error)) NA_character_ else toString(fit_result$error$message)
-    )
+    ))
   }
 }
+
 
 
 simulate_mid <- function(seed, design) {
@@ -203,9 +185,7 @@ simulate_outer <- function(chunk, chunk_params) {
   future_pmap(chunk_params, simulate_mid,
               .options = furrr_options(seed = NULL, scheduling = 1))
 }
-
 run_study_3 <- function(params, true_values) {
-  
   # Run the simulations and analysis in parallel
   results_df <- params %>%
     mutate(chunk = row_number() %% 100) %>%
@@ -221,6 +201,7 @@ run_study_3 <- function(params, true_values) {
       Messages = map_chr(results, ~ .x$Messages),
       Errors = map_chr(results, ~ .x$Errors),
       EstimatedPaths = map(results, ~ .x$EstimatedPaths[[1]]),
+      SanityCheck = map(results, ~ .x$SanityCheckEstimates[[1]]),
       Coverage = map_dbl(results, ~ .x$Coverage),
       RelativeBias = map_dbl(results, ~ .x$RelativeBias),
       RelativeRMSE = map_dbl(results, ~ .x$RelativeRMSE),
@@ -256,23 +237,24 @@ run_study_3 <- function(params, true_values) {
     ) %>%
     arrange(model_type, N, reliability, method)
   
-  # Return summary statistics and detailed results
+
   list(Summary = summary_stats, DetailedResults = results_df)
 }
 
-# Run complete simulation study
 cat("Starting simulation study 3...\n")
-simulation_results <- run_study_3(params, true_values)
+execution_time <- system.time({
+  simulation_results <- run_study_3(params, true_values)
+})
 cat("Simulation study completed. Saving results...\n")
+
+# Print execution time
+print(execution_time)
 
 # Save with timestamp
 timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
-filename <- paste0("simulation_results_study3_", timestamp, ".rda")
+filename <- paste0("simulation_results_study3r", timestamp, ".rda")
 save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
-
-
-
 
