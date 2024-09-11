@@ -4,7 +4,6 @@ subtitle: "Strucutral after Measurement vs. vanilla SEM estimation - a case stud
 fig-cap-location: top
 format:
   revealjs:
-    css: custom.css
     center: true
     theme: default
     slide-number: c/t
@@ -247,6 +246,42 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
 ![](tables/aggregated_bias_study1.png)
 
 <span style="font-size: 20px;">absolute bias values aggregated across parameters, in all conditions</span>
+
+## Bias <span style="font-size: 20px;"> E.g.: Kosanke Study 1:</span>
+::: {.r-fit-text}
+```{r eval = TRUE, echo = FALSE}
+
+# Load the relative bias results
+bias_ci_s1 <- readRDS("../../LK/SimulationResultsProcessed/sim1_rel_bias_ci.rds")
+
+shorten_names <- function(df) {
+  df$method_metric <- sub("_rel_bias", "", df$method_metric)
+  return(df)
+}
+
+# Function to create a styled table for each condition
+create_styled_table <- function(data, condition) {
+  data <- shorten_names(data)
+  data <- data %>%
+    mutate(across(where(is.numeric), ~ round(., 3)))
+  
+  # Format table
+  kbl(data,
+      col.names = c("Method", "50", "100", "250", "500", 
+                    "1000", "2500", "100000"), booktabs = TRUE) %>%
+    kable_styling(full_width = T, position = "left") %>%
+    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
+    column_spec(1, width = "3.5cm") %>% 
+    row_spec(0, bold = TRUE) %>%
+    kable_classic(full_width = F) %>%
+    gsub("_", " ", .)
+}
+create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
+```
+
+<span style="font-size: 25px;">Relative bias in conditions with two negative unmodelled residual correlations in a 2-factor-CFA</span>
+
+:::
 
 ## Collaboration
 <div class="scrollable-table">
