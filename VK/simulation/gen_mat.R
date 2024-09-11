@@ -124,10 +124,11 @@ gen_mat <- function(model_type, nfactors = 5, nvar.factor = 3, lambda = 0.70,
     
     if (model_type %in% c("1.3", "3.2", "3.2_negative")) {
       pairs <- cbind(c(2, 5, 8, 11, 14), c(3, 6, 9, 12, 15))
+      sign_value <- ifelse(model_type == "3.2_negative", -1, 1)
       for (pair in 1:nrow(pairs)) {
         i <- pairs[pair, 1]
         j <- pairs[pair, 2]
-        THETA[i, j] <- THETA[j, i] <- -0.6 * min(theta_diag[c(i, j)])
+        THETA[i, j] <- THETA[j, i] <- sign_value * 0.6 * min(theta_diag[c(i, j)])
       }
     }
   }
@@ -144,7 +145,7 @@ lav_matrix_diag_idx <- function(n) {
 
 # # Test the function with models 1.1 to 1.4, 3.1, 3.2, and return the matrices
 # test_models_study1 <- function() {
-#   models <- c("1.1", "1.2", "1.3", "1.4", "3.1", "3.2", "3.1_negative", "3.2_negative")
+#   models <- c("1.3", "3.2", "3.2_negative")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
 #     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
@@ -161,7 +162,7 @@ lav_matrix_diag_idx <- function(n) {
 #     cat("\n")
 #   }
 # }
-# 
+
 # test_models_study1()
 
 # Uncomment the following to test study 2 models

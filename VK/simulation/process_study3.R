@@ -1,8 +1,8 @@
 source("utils.R")
 
-process_study3 <- function() {
+process_study3 <- function(file_path) {
   print("Reading results file")
-  study_3 <- readRDS("../simulation/results/simulation_results_study3.rda")
+  study_3 <- readRDS(file_path)
   detailed_results_3 <- study_3$DetailedResults
   rm(study_3)
   gc()
@@ -11,26 +11,9 @@ process_study3 <- function() {
   print("Processing warnings and errors")
   summary_warnings_3 <- process_study_warnings(detailed_results_3, 3)
   
-  # Adjust improper solutions and track estimation general issues
-  print("Adjust improper solutions and track estimation general issues")
-  detailed_results_3 <- detailed_results_3 %>%
-    mutate(ImproperSolution = case_when(
-      grepl("variances are negative", Warnings, fixed = TRUE) ~ 1,
-      TRUE ~ as.numeric(ImproperSolution)
-    ),
-    OtherEstimationIssue = case_when(
-      is.na(Warnings) | Warnings == "" ~ 0,
-      grepl("variances are negative", Warnings, fixed = TRUE) ~ 0,
-      TRUE ~ 1
-    )
-    )
-  
-  detailed_results_3 <- detailed_results_3 %>%
-    filter(
-      ImproperSolution != 1,
-      Converged != 0,
-      OtherEstimationIssue != 1
-    )
+  # Filter and summarize
+  print("computing convergence rate and filtering")
+  detailed_results_3 <- filter_and_summarize(detailed_results_3, 3)
   
   # Calculate parameter-wise metrics
   print("Calculate parameter-wise metrics")
@@ -43,9 +26,9 @@ process_study3 <- function() {
   # Save results
   saveRDS(study3_paramwise, file = "../simulation/results/parameter_wise_summary_study3.rds")
   saveRDS(study3_aggregated, file = "../simulation/results/aggregated_summary_study3.rds")
-  cat("study 1 results saved to: \n
+  cat("study 3 results saved to: \n
       /simulation/results/parameter_wise_summary_study3.rds \n
-      /simulation/results/parameter_wise_summary_study3.rd")
+      /simulation/results/aggregated_summary_study3.rds")
   
   rm(detailed_results_3, study3_paramwise, study3_aggregated)
   gc()

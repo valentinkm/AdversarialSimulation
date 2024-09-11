@@ -55,6 +55,59 @@ process_study_warnings <- function(detailed_results, study_number) {
   return(warnings_summary)
 }
 
+# ----
+library(dplyr)
+
+filter_and_summarize <- function(detailed_results, study_number) {
+  
+  # Ensure variables are logical and properly handle ImproperSolution and OtherEstimationIssue
+  detailed_results <- detailed_results %>% 
+    mutate(
+      Converged = as.logical(Converged),
+      ImproperSolution = case_when(
+        grepl("variances are negative", Warnings, fixed = TRUE) ~ TRUE,
+        TRUE ~ as.logical(ImproperSolution)
+      ),
+      OtherEstimationIssue = case_when(
+        is.na(Warnings) | Warnings == "" ~ FALSE,
+        grepl("variances are negative", Warnings, fixed = TRUE) ~ FALSE,
+        TRUE ~ TRUE
+      )
+    )
+  
+  # Determine grouping variables based on study number
+  if (study_number %in% c(1, 3)) {
+    grouping_vars <- c("model_type", "N", "reliability", "method")
+  } else if (study_number == 2) {
+    grouping_vars <- c("model_type", "N", "reliability", "R_squared", "method")
+  }
+  
+  # Summarize the data
+  results_summary <- detailed_results %>%
+    group_by(across(all_of(grouping_vars))) %>%
+    summarise(
+      ConvergedCount = sum(Converged),
+      NotConvergedCount = sum(!Converged),
+      ImproperSolutionCount = sum(Converged & ImproperSolution),
+      .groups = "drop"
+    )
+  
+  # Save summary
+  saveRDS(results_summary, file = sprintf("../simulation/results/convergence_rate%d.rds", study_number))
+  
+  # Filter out improper and not converged rows
+  filtered_results <- detailed_results %>%
+    filter(
+      Converged == TRUE,
+      ImproperSolution == FALSE,
+      OtherEstimationIssue == FALSE
+    )
+  
+  return(filtered_results)
+}
+
+
+
 # ------------------- Helper functions for metric calculation-------------------
 
 get_true_values <- function(study, model_type, R_squared = NULL, for_aggregation = FALSE) {
@@ -112,7 +165,8 @@ process_row <- function(row, study_number) {
       parameter = names(estimated_paths),
       true_value = true_values[names(estimated_paths)],
       estimated_value = unlist(estimated_paths),
-      is_misspecified = FALSE
+      is_misspecified = FALSE,
+      Coverage = row$Coverage  # Add this line
     )
   } else if (study_number == 2) {
     if (row$ImproperSolution || row$Converged == 0) {
@@ -126,7 +180,8 @@ process_row <- function(row, study_number) {
         parameter = NA_character_,
         true_value = NA_real_,
         estimated_value = NA_real_,
-        is_misspecified = NA
+        is_misspecified = NA,
+        Coverage = NA_real_  # Add this line
       ))
     }
     
@@ -144,7 +199,8 @@ process_row <- function(row, study_number) {
       parameter = names(true_values),
       true_value = true_values,
       estimated_value = estimated_paths[names(true_values)],
-      is_misspecified = parameter %in% misspecified_paths
+      is_misspecified = parameter %in% misspecified_paths,
+      Coverage = row$Coverage  # Add this line
     )
   }
 }
@@ -196,29 +252,6 @@ calculate_metrics <- function(group, study_number) {
   results
 }
 
-# Main function to process all results
-process_study_aggregated <- function(data, study_number) {
-  # Process each row
-  processed_data <- data %>%
-    rowwise() %>%
-    do(process_row(., study_number))
-  
-  # Group by condition combinations and parameter
-  if (study_number %in% c(1, 3)) {
-    grouped_data <- processed_data %>%
-      group_by(model_type, N, reliability, method, parameter)
-  } else if (study_number == 2) {
-    grouped_data <- processed_data %>%
-      group_by(model_type, N, reliability, R_squared, method, b, parameter)
-  }
-  
-  # Calculate metrics for each group
-  results <- grouped_data %>%
-    do(calculate_metrics(., study_number))
-  
-  results
-}
-
 # --------------------- Parameter-wise metrics computation ---------------------
 
 process_study_parameterwise <- function(study_data, study_number, chunk_size = 100000) {
@@ -244,6 +277,7 @@ process_study_parameterwise <- function(study_data, study_number, chunk_size = 1
         TrueValue = first(true_value),
         SumEstimate = sum(estimated_value, na.rm = TRUE),
         SumSquaredEstimate = sum(estimated_value^2, na.rm = TRUE),
+        MeanCoverage = mean(Coverage, na.rm = TRUE),
         .groups = 'drop'
       )
     
@@ -280,6 +314,7 @@ process_study_parameterwise <- function(study_data, study_number, chunk_size = 1
         TrueValue = first(TrueValue),
         SumEstimate = sum(SumEstimate),
         SumSquaredEstimate = sum(SumSquaredEstimate),
+        MeanCoverage = mean(MeanCoverage, na.rm = TRUE),  # Add this line
         .groups = 'drop'
       )
   }
@@ -296,53 +331,83 @@ process_study_parameterwise <- function(study_data, study_number, chunk_size = 1
       RelativeBias = if_else(abs(TrueValue) > 1e-10, Bias / TrueValue, NA_real_),
       RelativeRMSE = if_else(abs(TrueValue) > 1e-10, RMSE / abs(TrueValue), NA_real_),
       MCSE_RelativeBias = if_else(abs(TrueValue) > 1e-10, MCSE_Bias / abs(TrueValue), NA_real_),
-      MCSE_RelativeRMSE = if_else(abs(TrueValue) > 1e-10, MCSE_RMSE / abs(TrueValue), NA_real_)
+      MCSE_RelativeRMSE = if_else(abs(TrueValue) > 1e-10, MCSE_RMSE / abs(TrueValue), NA_real_),
+      Coverage = MeanCoverage
     ) %>%
-    select(-SumEstimate, -SumSquaredEstimate)
+    select(-SumEstimate, -SumSquaredEstimate, -MeanCoverage)
   
   return(final_results)
 }
 
 # ------------------ Aggregated across parameter metric computation ------------
-
 aggregate_results <- function(paramwise_results, study_number) {
   # Determine grouping variables based on study number
   if (study_number %in% c(1, 3)) {
     grouping_vars <- c("model_type", "N", "reliability", "method")
+    correctly_specified_params <- c("f3~f1", "f3~f2", "f4~f1", "f4~f2", "f5~f3", "f5~f4", "f5~f1")
   } else if (study_number == 2) {
-    grouping_vars <- c("model_type", "N", "reliability", "R_squared", "method")
+    grouping_vars <- c("model_type", "N", "reliability", "R_squared", "method", "b")
+    correctly_specified_params <- c("f4~f1", "f4~f2", "f5~f3", "f5~f4", "f5~f2")
   } else {
     stop("Invalid study number")
   }
   
-  # Get the names of numeric columns to aggregate
-  numeric_cols <- names(paramwise_results)[sapply(paramwise_results, is.numeric)]
+  # Filter to only include correctly specified parameters
+  filtered_results <- paramwise_results %>%
+    filter(parameter %in% correctly_specified_params)
   
-  # Remove grouping variables from numeric_cols
-  numeric_cols <- setdiff(numeric_cols, grouping_vars)
+  # Apply Study 2-specific filtering
+  if (study_number == 2) {
+    filtered_results <- filtered_results %>%
+      filter(!(b == 3 & method %in% c("SEM", "gSAM")))
+  }
+  
+  exclude_from_mean <- c("n", "total_cases", "included_cases", "TrueValue")
+  
+  # Get the names of numeric columns to aggregate
+  numeric_cols <- names(filtered_results)[sapply(filtered_results, is.numeric)]
+  
+  # Remove grouping variables and excluded variables from numeric_cols
+  numeric_cols <- setdiff(numeric_cols, c(grouping_vars, exclude_from_mean))
   
   # Create a list of summary expressions
-  summary_exprs <- lapply(numeric_cols, function(col) {
-    if (col %in% c("n", "total_cases", "included_cases")) {
-      expr(sum(!!sym(col), na.rm = TRUE))
-    } else {
-      expr(mean(!!sym(col), na.rm = TRUE))
+  summary_exprs <- list()
+  
+  # Add expressions for excluded variables
+  for (col in exclude_from_mean) {
+    if (col %in% names(filtered_results)) {
+      summary_exprs[[col]] <- expr(first(!!sym(col)))
     }
-  })
-  names(summary_exprs) <- paste0("mean_", numeric_cols)
+  }
+  
+  # Add mean expressions for numeric columns
+  for (col in numeric_cols) {
+    if (col %in% c("Bias", "RelativeBias")) {
+      # Use mean of absolute values for Bias and RelativeBias
+      summary_exprs[[paste0("mean_", col)]] <- expr(mean(abs(!!sym(col)), na.rm = TRUE))
+    } else {
+      summary_exprs[[paste0("mean_", col)]] <- expr(mean(!!sym(col), na.rm = TRUE))
+    }
+  }
   
   # Add n_parameters to summary expressions
   summary_exprs$n_parameters <- expr(n())
   
   # Aggregate results
-  aggregated_results <- paramwise_results %>%
+  aggregated_results <- filtered_results %>%
     group_by(across(all_of(grouping_vars))) %>%
     summarise(!!!summary_exprs, .groups = "drop")
   
   # Calculate overall_InclusionRate if possible
   if (all(c("included_cases", "total_cases") %in% names(aggregated_results))) {
     aggregated_results <- aggregated_results %>%
-      mutate(overall_InclusionRate = mean_included_cases / mean_total_cases)
+      mutate(overall_InclusionRate = included_cases / total_cases)
+  }
+  
+  # Rename mean_Coverage to average_coverage for studies 1 and 3
+  if (study_number %in% c(1, 3)) {
+    aggregated_results <- aggregated_results %>%
+      rename(average_coverage = mean_Coverage)
   }
   
   return(aggregated_results)

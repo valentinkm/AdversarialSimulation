@@ -1,11 +1,8 @@
 source("utils.R")
 
-process_study1 <- function() {
-  
-  # Read file
+process_study1 <- function(file_path) {
   print("Reading results file")
-  
-  study_1 <- readRDS("../simulation/results/simulation_results_study1.rda")
+  study_1 <- readRDS(file_path)
   detailed_results_1 <- study_1$DetailedResults
   rm(study_1)
   gc()
@@ -13,27 +10,9 @@ process_study1 <- function() {
   # Process warnings and errors
   summary_warnings_1 <- process_study_warnings(detailed_results_1, 1)
   
-  # Adjust improper solutions and track estimation general issues
-  print("Adjust improper solutions and track estimation general issues")
-  
-  detailed_results_1 <- detailed_results_1 %>%
-    mutate(ImproperSolution = case_when(
-      grepl("variances are negative", Warnings, fixed = TRUE) ~ 1,
-      TRUE ~ as.numeric(ImproperSolution)
-    ),
-    OtherEstimationIssue = case_when(
-      is.na(Warnings) | Warnings == "" ~ 0,
-      grepl("variances are negative", Warnings, fixed = TRUE) ~ 0,
-      TRUE ~ 1
-    )
-    )
-  
-  detailed_results_1 <- detailed_results_1 %>%
-    filter(
-      ImproperSolution != 1,
-      Converged != 0,
-      OtherEstimationIssue != 1
-    )
+  # Filter and summarize
+  print("computing convergence rate and filtering")
+  detailed_results_1 <- filter_and_summarize(detailed_results_1, 1)
   
   # Calculate parameter-wise metrics
   print("Calculate parameter-wise metrics")

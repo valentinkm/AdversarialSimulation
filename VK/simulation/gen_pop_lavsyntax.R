@@ -112,12 +112,12 @@ gen_pop_model_syntax <- function(MLIST, ov.prefix = "y", lv.prefix = "f", includ
   
   return(syntax)
 }
-
+# 
 # Test the function with different models
 # test_models <- function() {
-#     models <- c("1.1", "1.2", "1.3", "1.4")
+#     # models <- c("1.1", "1.2", "1.3", "1.4")
 #   # models <- c(2.1", "2.2_exo", "2.2_endo", "2.2_both")
-#   # models <- c("3.1","3.2", "3.1_negative", "3.2_negative")
+#   models <- c("3.2", "3.2_negative")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
 #     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,

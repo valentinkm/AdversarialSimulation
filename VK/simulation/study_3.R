@@ -21,9 +21,9 @@ parallel_seeds <- function(n, seed = NULL) {
   purrr::accumulate(seq_len(n - 1), function(s, x) parallel::nextRNGStream(s), 
                     .init = .Random.seed)
 }
-
+  
 # Generate parameters grid with seeds
-n_reps <- 2
+n_reps <- 5000
 params <- expand.grid(
   seed = parallel_seeds(n_reps, seed = 42),
   model_type = c("3.1", "3.2", "3.1_negative", "3.2_negative"),
