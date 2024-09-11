@@ -26,8 +26,7 @@ bibliography: ../../bibliography.bib
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
-knitr::opts_knit$set(root.dir = "/Users/admin/Desktop/AdversarialSimulation/VK/thesis")
-setwd("/Users/admin/Desktop/AdversarialSimulation/VK/thesis")
+knitr::opts_knit$set(root.dir = "../../")
 ```
 
 ```{r}
@@ -36,20 +35,13 @@ library(purrr)
 library(knitr)
 library(kableExtra)
 library(stringr)
-getwd()
 ```
 
 In the following all different warning and error messages raised during the studies are listed (see Table 1) and shown how often they occurred under various fitting conditions (see Table 2).
 
 ```{r}
-setwd("/Users/admin/Desktop/AdversarialSimulation/VK/thesis")
-getwd()
-warning_errors <- load("../simulation/results/warning_errors.rda")
-
-
-
-combined_list <- warning_errors$combined_list
-combined_summary <- warning_errors$combined_summary
+combined_list <- readRDS("VK/simulation/results/list_messages.rds")
+combined_summary <- readRDS("VK/simulation/results/summary_messages.rds")
 
 combined_list %>%
   kable("latex", booktabs = TRUE, longtable = TRUE, 

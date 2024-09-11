@@ -4,6 +4,7 @@ subtitle: "Strucutral after Measurement vs. vanilla SEM estimation - a case stud
 fig-cap-location: top
 format:
   revealjs:
+    css: custom.css
     center: true
     theme: default
     slide-number: c/t
@@ -78,8 +79,6 @@ library(ggh4x)
 ## SAM vs SEM
 
 ## Collaboration and Results
-- Round 1: Individual Studies
-- Round 2: Merged Study
 
 ## Round 1: Individual Studies 
 | Kriegmair | Kosanke |
@@ -97,25 +96,28 @@ library(ggh4x)
 :::
 
 ::: {.column width="60%"}
+
+#### Population Models
+
 ::: {layout="[[1,1], [1,1]]" layout-valign="top"}
 
 ::: {.column width="50%" .fragment}
-#### No Misspecifications
+No Misspecifications
 ![](figures/model1_1.svg){width="60%"}
 :::
 
 ::: {.column width="50%" .fragment}
-#### Cross Loadings
+Cross Loadings
 ![](figures/model1_2.svg){width="60%"}
 :::
 
 ::: {.column width="50%" .fragment}
-#### Correlated Residuals
+Correlated Residuals
 ![](figures/model1_3.svg){width="80%"}
 :::
 
 ::: {.column width="50%" .fragment}
-#### Structural Misspecification
+Structural Misspecification
 ![](figures/model1_4.svg){width="60%"}
 :::
 :::
@@ -134,10 +136,10 @@ library(ggh4x)
 - Local SAM
 - Local SAM with unweighted least squares
 
-### Performance Metrics:
-- Bias of path estimates (parameterwise and total)
-- RMSE of path estimates (parameterwise and total)
-- Coverage of 95% confidence intervals
+#### Performance Metrics:
+- Bias of path estimates
+- RMSE of path estimates
+- Coverage of 95% CI for path estimates
 
 :::
 :::
@@ -211,87 +213,184 @@ library(ggh4x)
 ::: {.r-fit-text}
 | | Kriegmair | Kosanke |
 |---------------------|-----------|---------|
-| Result|low convergence rate of SEM| no convergence issues |
-|Method|un-bounded ML SEM |bounded ML SEM |
+| Verbal Dispute |low convergence rate of SEM| no convergence issues |
+|Method selection|un-bounded ML SEM |bounded ML SEM |
 |Analysis| condition-wise rates | global rate |
 || direct:<br>`lavInspect(fit, "converged")` | indirect:<br>`quietly(safely(simulation_study_))`|
 :::
 
 ## Convergence Rate <span style="font-size: 20px;"> E.g.: Kriegmair Study 1:</span>
 
-unbound-ML SEM estimation
-```{r}
-# Convergence Rate
-conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
-conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
-conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
-```
+![](tables/convergence_rate_study1.png)
 
 
-```{r, .cho=FALSE, fig.width=12, fig.height=6.5}
-# convergence rate plot for study 1
 
-conv_rate1 <- conv_rate_study_1 %>%
-  mutate(
-    ConvergenceRate = ConvergedCount / (ConvergedCount + NotConvergedCount + ImproperSolutionCount),
-    ProperSolutionRate = 1 - (ImproperSolutionCount / ConvergedCount),
-    CombinedLabel = paste(sprintf("%.1f", ConvergenceRate), "\n(", sprintf("%.1f", ProperSolutionRate), ")", sep = "")
-  ) %>%
-  select(model_type, N, reliability, method, ConvergenceRate, ProperSolutionRate, CombinedLabel)
-
-
-# Create the heatmap with labeled metrics and heatmap fill
-p_convergence_heatmap <- conv_rate1 %>%
-  ggplot(aes(x = factor(N, labels = paste("N =", c(100, 400, 6400))), y = model_type)) +
-  geom_tile(aes(fill = ConvergenceRate), color = "white") +
-  geom_text(aes(label = CombinedLabel), size = 2.5, color = "black") + # Display both metrics with labels
-  scale_fill_gradient2(low = "#ff6f61", mid = "#ffa500", high = "#7fc97f", midpoint = 0.5, 
-                       limits = c(0, 1), oob = scales::squish, name = "Convergence Rate (%)") +
-  ggh4x::facet_nested(factor(reliability, labels = paste("r =", c(0.3, 0.5, 0.7))) ~ method, 
-                      scales = "free", space = "free", switch = "y") +
-  theme_bw() +
-  theme(
-    text = element_text(size = 8),
-    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 7),
-    legend.position = "right", 
-    legend.title = element_text(size = 8),
-    legend.text = element_text(size = 7),
-    strip.text.y = element_text(size = 7),
-    strip.text.x = element_text(size = 7),
-    panel.grid = element_blank(),
-    axis.title.x = element_blank(),
-    axis.title.y = element_blank()
-  ) +
-  labs(
-    x = "Sample Size",
-    y = "Model Type"
-  ) +
-  scale_y_discrete(expand = c(0, 0), position = "right")
-
-# Print the convergence heatmap
-print(p_convergence_heatmap)
-```
-
-## Performance Metrics
-
-## Collaboration Based on individual Studies
+## Bias
 ::: {.r-fit-text}
-|                     | Round 1       | Round 2      | Round 1           |
-|---------------------|:---------------:|:---------------------:|:---------------------:|
-| Steps               | Kriegmair       |    Jooint Study                   | Kosanke           |
-| 1. Research Question|                 |    Agreed upon prior to Round 1                   |  |
-| 2. Population Model | 5-factor-SEM    |                       | 2-CFA & 5-factor-SEM  |
-| 3. Data Generation  | parametric & normally distributed |                       | parametric & normally distributed |
-| 4. Experimental Design| Misspecifications <br> N: 100 - 6400 <br> Reliability via $\Theta$|                       | Misspecifications <br> N: 50 - 100000 <br> Reliability via $\lambda$ |
-| 5. Method Selection |                 |                       |                       |
-| 6. Estimands        |                 |                       |                       |
-| 7. Performance Metrics|               |                       |                       |
-| 8. Software         |                 |                       |                       |
+| | Kriegmair | Kosanke |
+|------|-----------|---------|
+| Verbal Dispute |"SEM performes worse than SAM in low reliability x low sample size x misspecification"| "SAM generally did not outperform traditional SEM in small to moderate samples." <br> <br> "[under] unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM"|
+|4. Experimental Design| N:100-6400 <br> Reliability via Θ <br> Positive misspecifications| N:50-100000 <br> Reliability via $\lambda$ <br> Negative misspecification (only in CFA)|
+|5. Population Model |5-factor-SEM | 2-factor CFA & 5-factor SEM |
+|6. Analysis |aggregated absolute values and parameter-wise | aggregated absolute values & aggregated relative bias |
 :::
+:::{.notes}
+In Kosanke’s results, SAM appears to perform worse than traditional SEM under unmodeled negative cross-loadings and residual correlations. This happens because of bias cancellation in LSAM, particularly in small samples.
+
+LSAM tends to have a negative small-sample bias, and when you ignore positive residual correlations, that introduces a positive bias. These two biases can accidentally cancel each other out, making LSAM seem more accurate than it really is.
+
+However, this is a false perception of robustness, as LSAM performs inconsistently across different conditions, and in cases like unmodeled negative correlations, it actually does worse than SEM. Kosanke's study shows that SAM doesn’t generally outperform traditional SEM in small to moderate samples, especially when negative biases are present.
+:::
+
+## Bias <span style="font-size: 20px;"> E.g.: Kriegmair Study 1:</span>
+
+![](tables/aggregated_bias_study1.png)
+
+<span style="font-size: 20px;">absolute bias values aggregated across parameters, in all conditions</span>
+
+## Collaboration
+<div class="scrollable-table">
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Round 1</th>
+      <th>Round 2</th>
+      <th>Round 1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Steps</strong></td>
+      <td>Kriegmair</td>
+      <td>Joint Study</td>
+      <td>Kosanke</td>
+    </tr>
+    <tr>
+      <td><strong>1. Research Question</strong></td>
+      <td></td>
+      <td class="fragment round-2" data-fragment-index="0">Jointly agreed upon prior to round 1</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><strong>2. Population Model</strong></td>
+      <td class="round-1" data-round="2"><span>5-factor-SEM</span></td>
+      <td class="fragment round-2" data-fragment-index="1">5-factor-SEM</td>
+      <td class="round-1" data-round="2"><span>5-factor-SEM</span> <span class="fragment fade-grey" data-fragment-index="1">2-factor-CFA</span></td>
+    </tr>
+    <tr>
+      <td><strong>3. Data Generation</strong></td>
+      <td class="round-1" data-round="3"><span>parametric & normally distributed</span></td>
+      <td class="fragment round-2" data-fragment-index="2">parametric & normally distributed</td>
+      <td class="round-1" data-round="3"><span>parametric & normally distributed</span></td>
+    </tr>
+    <tr>
+      <td><strong>4. Experimental Design</strong></td>
+      <td class="round-1" data-round="4">Misspecifications <br> N: 100 - 6400 <br> <span>Reliability via Θ</span></td>
+      <td class="fragment round-2" data-fragment-index="3">Misspecifications <br> N: 50 - 100000 <br> Reliability via λ</td>
+      <td class="round-1" data-round="4">Misspecifications <br> N: 50 - 100000 <br> Reliability via λ</td>
+    </tr>
+    <tr>
+      <td><strong>5. Method Selection</strong></td>
+      <td class="round-1" data-round="5">SEM, gSAM, lSAM <br> <span>(all ML)</span></td>
+      <td class="fragment round-2" data-fragment-index="4">SEM, gSAM, lSAM <br> (ML & ULS)</td>
+      <td class="round-1" data-round="5">SEM, gSAM, lSAM <br> (ML & ULS)</td>
+    </tr>
+    <tr>
+      <td><strong>6. Estimands</strong></td>
+      <td class="round-1" data-round="6"><span>β: Fixed at 0.1 or varied via R²</span></td>
+      <td class="fragment round-2" data-fragment-index="5">β or φ: Fixed at 0.1 <br> or varied between 0.1 and 0.8</td>
+      <td class="round-1" data-round="6">β or φ: Fixed at 0.1 <br> or varied between 0.1 and 0.8</td>
+    </tr>
+    <tr>
+      <td><strong>7. Performance Metrics</strong></td>
+      <td class="round-1" data-round="7"><span>Absolute & relative bias <br> RMSE</span> <span>95% CI coverage <br> Convergence & <br> Improper Solutions</span></td>
+      <td class="fragment round-2" data-fragment-index="6">Absolute & relative bias <br> RMSE</td>
+      <td class="round-1" data-round="7">Absolute & relative bias <br> RMSE</td>
+    </tr>
+    <tr>
+      <td><strong>8. Software</strong></td>
+      <td class="round-1" data-round="8"><span>lavaan::simulateData()</span></td>
+      <td class="fragment round-2" data-fragment-index="7">lavaan::simulateData()</td>
+      <td class="round-1" data-round="8">lavaan::simulateData()</td>
+    </tr>
+    <tr>
+      <td><strong>9. Analysis</strong></td>
+      <td class="round-1" data-round="9"><span>parameter-wise & <br> aggregated across parameters, heatmaps</span></td>
+      <td class="fragment round-2" data-fragment-index="8">aggregated across, <br> tables, decision criteria</td>
+      <td class="round-1" data-round="9">aggregated across, <br> tables, decision criteria</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<style>
+  .scrollable-table {
+    max-height: 70vh;
+    overflow-y: auto;
+    font-size: 0.7em;
+  }
+  .scrollable-table table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .scrollable-table th, .scrollable-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  .scrollable-table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+  }
+  .fade-grey {
+    color: #888;
+    transition: color 0.5s ease;
+  }
+  .fade-bold {
+    font-weight: bold;
+    transition: font-weight 0.5s ease;
+  }
+  .hidden {
+    display: none;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+  let round1Elements = document.querySelectorAll('.round-1');
+  let round2Elements = document.querySelectorAll('.round-2');
+
+  round1Elements.forEach((element, index) => {
+    element.addEventListener('click', () => {
+      let round = element.getAttribute('data-round');
+
+      // Show corresponding Round 2 element
+      round2Elements.forEach((round2Element) => {
+        if (round2Element.getAttribute('data-fragment-index') === round) {
+          round2Element.classList.remove('hidden');
+        }
+      });
+
+      // Update the styling of Round 1 text (bold or grey)
+      round1Elements.forEach((el) => {
+        if (el.getAttribute('data-round') === round) {
+          el.querySelectorAll('span').forEach(span => span.classList.add('fade-bold'));
+        } else {
+          el.querySelectorAll('span').forEach(span => span.classList.add('fade-grey'));
+        }
+      });
+    });
+  });
+});
+</script>
 :::{.notes}
 Adjusting the $\Theta$ matrix directly controls reliability by manipulating measurement error, aligning with its definition as the proportion of variance explained by the latent factor. Modulating $\lambda$ indirectly affects reliability but conflates factor strength with error variance, making it less precise in controlling reliability by definition.
 :::
+
+
+
 
 
 ## References
