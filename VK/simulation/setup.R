@@ -38,7 +38,8 @@ if (is_on_tardis()) {
     tweak(multisession, workers=cores_per_job)
   ))
 } else {
-  plan(multisession, workers = detectCores() - 1) 
+  plan(multisession, workers = detectCores() - 1)
+  #plan(sequential)
 }
 
 # Generate seeds

@@ -64,16 +64,22 @@ gen_mat <- function(model_type, nfactors = 5, nvar.factor = 3, lambda = 0.70,
       THETA[14, 15] <- THETA[15, 14] <- 0.6 * min(diag(THETA)[c(14, 15)])
     }
   } else {
-    # For study 1 models
+    # For study 1 and 3 models
     # 1. LAMBDA
     fac <- matrix(c(1, rep(lambda, times = (nvar.factor - 1L))), nvar.factor, 1L)
     LAMBDA <- bdiag(rep(list(fac), nfactors))
     
-    if (model_type == "1.2") {
+    if (model_type %in% c("1.2", "3.1")) {
       # misspecification in the measurement part: cross-loadings
       i.cross <- (0:(nfactors-1)) * nvar.factor + ceiling(nvar.factor / 2)
       for (j in 1:ncol(LAMBDA)) {
         LAMBDA[i.cross[j], c(2:nfactors, 1)[j]] <- rho * lambda
+      }
+    } else if (model_type == "3.1_negative") {
+      # model with negative cross-loadings
+      i.cross <- (0:(nfactors-1)) * nvar.factor + ceiling(nvar.factor / 2)
+      for (j in 1:ncol(LAMBDA)) {
+        LAMBDA[i.cross[j], c(2:nfactors, 1)[j]] <- -rho * lambda
       }
     }
     
@@ -81,15 +87,21 @@ gen_mat <- function(model_type, nfactors = 5, nvar.factor = 3, lambda = 0.70,
     
     # 2. BETA
     BETA <- matrix(0, nrow = nfactors, ncol = nfactors)
-    BETA[3:5, 1] <- BETA[3:4, 2] <- BETA[5, 3] <- BETA[c(3, 5), 4] <- beta_value
-    if (model_type == "1.4") {
-      # misspecification in the structural part for model 1.4
-      BETA[4, c(1, 2, 3)] <- 0.1
-    } else if (model_type == "1.3") {
-      # misspecification in the structural part for model 1.3
-      BETA[4, 3] <- BETA[3, 4]
-      BETA[3, 4] <- 0
+    BETA[3:5, 1] <- BETA[3:4, 2] <- BETA[5, 3] <- BETA[3, 4] <- beta_value
+    
+    # Add the new paths as per your requirements
+    if (model_type %in% c("1.1", "1.2", "1.3", "1.4", "3.1", "3.2", "3.1_negative", "3.2_negative")) {
+      BETA[5, 4] <- beta_value  # Additional path from f4 to f5
     }
+    if (model_type == "1.3") {
+      BETA[4, 3] <- beta_value  # Path from f3 to f4 instead of f4 to f3
+      BETA[3, 4] <- 0           # Ensure the path f4 to f3 is removed
+    }
+    if (model_type == "1.4") {
+      BETA[4, 3] <- beta_value  # Path from f3 to f4
+      BETA[3, 4] <- beta_value  # Path from f4 to f3
+    }
+    
     BETA.model <- BETA  # Structural part to be fitted
     VAL <- BETA[BETA != 0]  # true values
     
@@ -110,12 +122,13 @@ gen_mat <- function(model_type, nfactors = 5, nvar.factor = 3, lambda = 0.70,
     THETA <- matrix(0, nrow(LAMBDA), nrow(LAMBDA))
     diag(THETA) <- theta_diag
     
-    if (model_type == "1.3") {
+    if (model_type %in% c("1.3", "3.2", "3.2_negative")) {
       pairs <- cbind(c(2, 5, 8, 11, 14), c(3, 6, 9, 12, 15))
+      sign_value <- ifelse(model_type == "3.2_negative", -1, 1)
       for (pair in 1:nrow(pairs)) {
         i <- pairs[pair, 1]
         j <- pairs[pair, 2]
-        THETA[i, j] <- THETA[j, i] <- 0.6 * min(theta_diag[c(i, j)])
+        THETA[i, j] <- THETA[j, i] <- sign_value * 0.6 * min(theta_diag[c(i, j)])
       }
     }
   }
@@ -130,10 +143,9 @@ lav_matrix_diag_idx <- function(n) {
   return(seq(1, n^2, by = n + 1))
 }
 
-
-# Test the function with models 1.1 to 1.4 and return the matrices
+# # Test the function with models 1.1 to 1.4, 3.1, 3.2, and return the matrices
 # test_models_study1 <- function() {
-#   models <- c("1.1", "1.2", "1.3", "1.4")
+#   models <- c("1.3", "3.2", "3.2_negative")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
 #     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
@@ -147,13 +159,15 @@ lav_matrix_diag_idx <- function(n) {
 #     print(MLIST$psi)
 #     cat("Beta matrix:\n")
 #     print(MLIST$beta)
+#     cat("\n")
 #   }
 # }
-# 
+
 # test_models_study1()
-# 
+
+# Uncomment the following to test study 2 models
 # test_all_models_2 <- function() {
-#   models <- c("2.1", "2.2_exo", "2.2_endo", "2.2_both")
+#   # models <- c("2.1", "2.2_exo", "2.2_endo", "2.2_both")
 #   for (model in models) {
 #     cat("Testing model:", model, "\n")
 #     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
@@ -161,8 +175,8 @@ lav_matrix_diag_idx <- function(n) {
 #                      rho = 0.80, R_squared = 0.4)
 #     cat("Beta matrix:\n")
 #     print(MLIST$beta)
+#     cat("\n")
 #   }
 # }
-# 
+# # 
 # test_all_models_2()
-

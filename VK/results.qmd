@@ -1,19 +1,26 @@
 ---
 title: "Results"
+fig-cap-location: top
 format:
-    pdf:
-        fontsize: 12pt
-        linestretch: 1.5
-        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
-        classoption: oneside
-        papersize: a4
-        header-includes:
-           - \usepackage{float}
-           - \floatplacement{table}{H}
-           - \usepackage{tikz}
-           - \usetikzlibrary{arrows.meta, positioning, calc}
-           - \usepackage{geometry}
-           - \geometry{margin=1in}
+  pdf:
+    fontsize: 12pt
+    linestretch: 1.5
+    geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+    classoption: oneside
+    papersize: a4
+    header-includes:
+      - \usepackage{float}
+      - \floatplacement{table}{H}
+      - \usepackage{tikz}
+      - \usetikzlibrary{arrows.meta, positioning, calc}
+      - \usepackage{geometry}
+      - \geometry{margin=1in}
+      - \usepackage{pdflscape}
+      - \usepackage{afterpage}
+      - \usepackage{lscape}
+      - \newcommand{\blandscape}{\begin{landscape}}
+      - \newcommand{\elandscape}{\end{landscape}}
+
 fontsize: 12pt
 engine: knitr
 bibliography: ../bibliography.bib
@@ -29,6 +36,8 @@ library(tidyr)
 library(kableExtra)
 library(ggplot2)
 library(data.table)
+library(dplyr)
+library(tidyr)
 summary_1 <- readRDS("simulation/results/summary_study1.rds")
 summary_2 <- readRDS("simulation/results/summary_study2.rds")
 ```
@@ -36,6 +45,9 @@ summary_2 <- readRDS("simulation/results/summary_study2.rds")
 # Results
 
 In the following the main patterns and trends of the results are reported and only examplary of select conditions are shown for each study to illustrate the main findings. The full results can be found in the supplementary materials.
+
+## Warnings and Errors
+
 
 ## Study 1
 
@@ -592,3 +604,156 @@ improper_solutions_table_3 <- create_improper_solutions_table(3, "Percentage of 
 improper_solutions_table_4 <- create_improper_solutions_table(4, "Percentage of Improper Solutions for Model Misspecifications (cross loadings and correlated residuals) in Exogenous and Endogenous Factors of the Model (Model 2.2-both)", "2.2_both")
 #improper_solutions_table_4
 ```
+
+```{r, echo=FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(ggh4x)
+
+summary_stats <- readRDS("simulation/results/parameter_wise_summary_study2_full.rds")
+
+misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
+
+
+summary_stats <- summary_stats %>%
+  mutate(
+    MeanRelativeBias = ifelse(parameter %in% misspecified_paths, MeanRelativeBias / 1e6, MeanRelativeBias),
+    MeanRelativeRMSE = ifelse(parameter %in% misspecified_paths, MeanRelativeRMSE / 1e6, MeanRelativeRMSE),
+    CI_RelativeBias_Lower = ifelse(parameter %in% misspecified_paths, CI_RelativeBias_Lower / 1e6, CI_RelativeBias_Lower),
+    CI_RelativeBias_Upper = ifelse(parameter %in% misspecified_paths, CI_RelativeBias_Upper / 1e6, CI_RelativeBias_Upper),
+    CI_RMSE_Lower = ifelse(parameter %in% misspecified_paths, CI_RMSE_Lower / 1e6, CI_RMSE_Lower),
+    CI_RMSE_Upper = ifelse(parameter %in% misspecified_paths, CI_RMSE_Upper / 1e6, CI_RMSE_Upper)
+  )
+
+summary_stats <- summary_stats %>%
+  rename(
+    MeanBias = MeanRelativeBias,
+    MeanRMSE = MeanRelativeRMSE,
+    MeanCI_Bias_Lower = CI_RelativeBias_Lower,
+    MeanCI_Bias_Upper = CI_RelativeBias_Upper,
+    MeanCI_RMSE_Lower = CI_RMSE_Lower,
+    MeanCI_RMSE_Upper = CI_RMSE_Upper
+  )
+
+plot_data_study_2 <- summary_stats %>%
+  filter(R_squared == 0.4, b == 5) %>%
+  select(N, reliability, method, parameter, MeanBias, model_type) %>%
+  mutate(
+    N = factor(N, levels = c("100", "400", "6400")),
+    reliability = factor(reliability, levels = c("0.3", "0.5", "0.7")),
+    method = factor(method, levels = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")),
+    model_type = factor(model_type, levels = c("2.1", "2.2_exo", "2.2_endo", "2.2_both")),
+    ) %>%
+  mutate(
+    method = case_when(
+      method == "lSAM_ML" ~ "lSAM-ML",
+      method == "lSAM_ULS" ~ "lSAM-ULS",
+      TRUE ~ method
+    ),
+    model_type = case_when(
+      model_type == "2.1" ~ "no measurement MP",
+      model_type == "2.2_exo" ~ "exogenous MP",
+      model_type == "2.2_endo" ~ "endogenous MP",
+      model_type == "2.2_both" ~ "endogenous & exogenous MP",
+      TRUE ~ model_type
+    ),
+    reliability = factor(paste("r =", reliability), levels = paste("r =", c("0.3", "0.5", "0.7"))),
+  ) %>% 
+  arrange(parameter) %>%
+  mutate(parameter = factor(parameter, levels = unique(parameter)))
+
+```
+
+\blandscape
+::: {#tbl-rel-bias-parameterwise-study2}
+```{r, echo=FALSE, fig.width=12, fig.height=8}
+# Assuming plot_data_1 is already prepared
+data_plot1 <- plot_data_study_2 %>%
+  filter(!parameter %in% misspecified_paths)
+    # MeanBias = MeanBias * 100  # Convert to percentage
+
+# Create the plot with the specified changes
+p <- data_plot1 %>%
+  ggplot(aes(x = N, y = parameter)) +
+  geom_tile(aes(fill = MeanBias), color = "white") +
+  geom_text(aes(label = sprintf("%.2f", MeanBias)), size = 2, show.legend = FALSE) +
+  scale_fill_distiller(palette = 'RdBu', direction = -1, guide = "colourbar", 
+                       limits = c(-1.5, 1.5)) +  # Adjust color scale to -25% to 25%
+  ggh4x::facet_nested(model_type + reliability ~ method, scales = "free", space = "free", switch="y") +
+  theme_bw() +
+  theme(
+    text = element_text(size = 10),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 8),
+    legend.position = "top", 
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    strip.text.y = element_text(size = 7),
+    strip.text.x = element_text(size = 7),
+    legend.key.width = unit(1.4, "cm"),
+    panel.grid = element_line(linewidth = 0.01, color = "gray98"),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +
+  guides(fill = guide_colorbar(title.position = "top", title.hjust = 0.5, barheight = 0.3)) +
+  labs(
+    x = "\n Sample Size",
+    y = "Parameter \n",
+    fill = "Mean Relative Bias"
+  ) +
+  scale_y_discrete(expand = c(0,0), position = "right") +
+  scale_x_discrete(expand = c(0,0))
+print(p)
+```
+
+*Note.* This figure shows the
+
+Relative Average Bias of correctly specified Regression Parameters (Study 2)
+:::
+
+::: {#tbl-abs-bias-parameterwise-study2}
+```{r, echo=FALSE, fig.width=12, fig.height=8}
+# Assuming plot_data_1 is already prepared
+data_plot2 <- plot_data_study_2 %>%
+  filter(parameter %in% misspecified_paths)
+
+# Create the plot with the specified changes
+p <- data_plot2 %>%
+  ggplot(aes(x = N, y = parameter)) +
+  geom_tile(aes(fill = MeanBias), color = "white") +
+  geom_text(aes(label = sprintf("%.2f", MeanBias)), size = 2.5, show.legend = FALSE) +
+  scale_fill_distiller(palette = 'RdBu', direction = -1, guide = "colourbar", 
+                       limits = c(-0.25, 0.25)) + 
+  ggh4x::facet_nested(model_type + reliability ~ method, scales = "free", space = "free", switch="y") +
+  theme_bw() +
+  theme(
+    text = element_text(size = 10),
+    axis.text.x = element_text(size = 6),
+    axis.text.y = element_text(size = 8),
+    legend.position = "top", 
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 8),
+    strip.text.y = element_text(size = 7),
+    strip.text.x = element_text(size = 7),
+    legend.key.width = unit(1.4, "cm"),
+    panel.grid = element_line(linewidth = 0.01, color = "gray98"),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +
+  guides(fill = guide_colorbar(title.position = "top", title.hjust = 0.5, barheight = 0.3)) +
+  labs(
+    x = "\n Sample Size",
+    y = "Parameter \n",
+    fill = "Mean Absolute Bias"
+  ) +
+  scale_y_discrete(expand = c(0,0), position = "right") +
+  scale_x_discrete(expand = c(0,0))
+print(p)
+```
+
+*Note.* This figure shows the 
+
+Absolute Average Bias of Regression Parameters not Present in the Population Model (Study 2)
+:::
+\elandscape

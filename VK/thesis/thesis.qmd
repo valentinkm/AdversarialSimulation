@@ -1,0 +1,35 @@
+---
+Title: "Thesis"
+author: "Valentin Kriegmair"
+fig-cap-location: top
+format:
+    pdf:
+        fontsize: 12pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes:
+           - \usepackage{float}
+           - \floatplacement{table}{H}
+           - \usepackage{tikz}
+           - \usetikzlibrary{arrows.meta, positioning, calc}
+           - \usepackage{geometry}
+           - \geometry{margin=1in}
+fontsize: 12pt
+engine: knitr
+bibliography: ../bibliography.bib
+---
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+```
+
+The git hash is: `{r} suppressWarnings(system2("git", c("rev-parse", "--short=5", "HEAD"), stdout = TRUE, stderr = TRUE))`
+
+# Methods
+
+{{< include methods.qmd >}}
+
+# Results
+
+{{< include results.qmd >}}

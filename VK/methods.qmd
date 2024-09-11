@@ -1,5 +1,6 @@
 ---
 title: "Methods"
+fig-cap-location: top
 format:
     pdf:
         fontsize: 12pt
@@ -23,61 +24,107 @@ bibliography: ../bibliography.bib
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
-The following description of the simulation studies is based on the established structure for simulation studies to coalign with the other conducted studies to facilitate a potential collaboration.
+The following description of the simulation studies is based on the established structure for simulation studies coaligned with the other conducted studies to facilitate a potential collaboration:
 
 ### Aims, objectives and research questions
 
-Both studies aimed to evaluate the performance of vanilla SEM compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies.
+Both studies aimed to evaluate the performance of vanilla SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies:
+
+1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
+2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
+
+The first two studies represent a conceptual replication of the studies conducted by @rosseel_structural_2022 and @dhaene_evaluation_2023. However, these studies just served as a basis for the design and several adjustments were made as described below. The third study was conducted as a result of the collaboration with Kosanke and the respective studies conducted.
 
 ### Population Models and Data Generation Mechanisms
 
 #### Study 1:
 
-Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4):
+Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4). In line with @rosseel_structural_2022 this model design was chosen to represent a realistic model with sufficient complexity to pose a challange for the estimation methods, especially in the presence of misspecifications:
 
 -   Model 1.1: Correctly specified model.
+-   Model 1.2: Misspecified with cross-loadings in the population model that are ignored in the estimation model (model 1.1)
+-   Model 1.3: Misspecified with correlated residuals and a reversed structural path between the third and fourth latent factors in the population model that are ignored in the estimation model (model 1.1)
+-   Model 1.4: Misspecified with a bidirectional structural relation between factors 3 and 4 specified as only one directional
 
--   Model 1.2: Misspecified with cross-loadings ignored in the estimation model.
+To investigate additioanl possible and realisitic scenarios beyond the ones studied by @rosseel_structural_2022  model 1.3 here included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications and model 1.4 included a (not modelled) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1. Factor loadings were fixed across all reliability conditions, with the first indicator of each factor serving as the scaling indicator ($\lambda$ = 1.0), and the other two indicators having loadings of 0.7. Indicator reliability levels were manipulated by adjusting the measurement error variances in the $\Theta$ matrix. Specifically, the a reliability value was set at different levels (low = 0.3, moderate = 0.5 or high = 0.7) to compute the respective error variances on the diagonal of $\Theta$: $\Theta^{*} = \text{Var}(\eta)\Lambda^{T} \times \frac{1}{r - 1}$.
 
--   Model 1.3: Misspecified with omitted correlated residuals and a reversed structural path between the third and fourth latent factors.
+::: {figure-container}
+```{r}
+#| label: fig-models
+#| fig-cap: "Four Population Model Variations of Study 1. *Note*. Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model."
+#| fig-subcap:
+#|   - "Model 1.1"
+#|   - "Model 1.2"
+#|   - "Model 1.3"
+#|   - "Model 1.4."
+#| layout: "[[1,1], [1.2,0.9]]"
+#| out.width: "100%"
 
--   Model 1.4: Misspecified with a recursive structural relation between factors 3 and 4 specified as only one directional.
+knitr::include_graphics(c("figures/model1_1.tex", 
+                          "figures/model1_2.tex", 
+                          "figures/model1_3.tex", 
+                          "figures/model1_4.tex"))
+```
 
-For all models, the population-level values of the structural parameters were set to 0.1. Indicator reliability levels were manipulated with factor loadings set at low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), or high ($\lambda = 0.7$).
+Note. Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
+:::
 
-::: {layout="[[40,-20,40],[40,-20,40]]"}
-![Model 1.1](figures/model1_1.tex){#fig-model1} Figure 1: Note. Model 1.1: Error terms are not explicitly shown in the figure.
-
-![Model 1.2](figures/model1_2.tex){#fig-model2} Figure 2: Note. Model 1.2: Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
-
-![Model 1.3](figures/model1_3.tex){#fig-model3} Figure 3: Note. Model 1.3: Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
-
-![Model 1.4](figures/model1_4.tex){#fig-model4} Figure 4: Note. Model 1.4: Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.
+**Note.** Dashed lines represent relations omitted in the estimation model present in the population model. Error terms are not explicitly displayed.
 :::
 
 **Study 2:**
 
-Data were generated based on a 5-factor population structural model with 3 indicators for each factor, similar to Study 1, but with the additional condition of varying variance explained ($R^2$) by the endogenous factors was set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$), so that the regression weights were either between 0.183 and 0.224 (low) or between 0.365 and 0.447 (medium). Note however that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The resulting population models resulted in the following model types with respective misspecification in relation to the estimation model:
+Data were generated based on a 5-factor population structural model with 3 indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained ($R^2$) by the endogenous factors set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$). Note however that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The resulting population models resulted in the following model types with respective misspecification in relation to the estimation model:
 
 -   Model 2.1: structural misspecifcation with falsely specified paths in the estimation model not present in the population model (Figure 5)
 
 -   Model 2.2: covariance and a factor cross-loading in either the exogenous (Model 2.2-exo), endogenous (Model 2.2-endo) part of the model or both (Model 2.2-both) with falsely specified paths in the estimation model not present in the population model (see figure 5-6).
 
-::: {layout="[[40,-20,40], [100]]"}
-![Model 2.1](figures/model2_1.tex) Figure 5: Note. Model 2.1: Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model.
+```{r}
+#| label: fig-combined-models
+#| fig-cap: "Population Model Variations of Study 2. *Note*. Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For Model 2.2, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part of the model. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here."
+#| fig-subcap:
+#|   - "Model 2.1"
+#|   - "Model 2.2"
+#| layout: "[[1,1]]"
+#| out.width: "100%"
 
-![Model 2.2](figures/model2_2.tex) Figure 6: Note. Model 2.2: Error terms are not explicitly shown in the figure Orange lines represent misspecifications in the exogenous part of the model. Green lines represent misspecifications in the endogenous part of the model. These types of misspecifications result in different realisations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here. Dotted paths represent relations specified in the estimation model not present in the population model.
-:::
+knitr::include_graphics(c("figures/model2_1.tex", 
+                          "figures/model2_2.tex"))
+```
+
+
+
+**Study 3**
+
+After examining the studies conducted by Kosanke and study 1 and 2 we did not jointly arrive at the conclusion that a collaborative simulation study is warrented (see Discussion for more detail). However I identified several arguments for setting up another simulation.
+
+As in study 1 and 2 data were generated based on a 5-factor population structural model with 3 indicators for each factor. Two different population models were simulated that resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in Study 1. The omitted crossloadings (see figure 7) could either be all positive or negative and were set to be 10% lower in absolute values than the factor loadings. Correlated residuals were also either all positive or all negative and were set to not exceed a factor of 0.6 of the residual variances of the indicators.
+
+```{r}
+#| label: fig-combined-models3
+#| fig-cap: "Model 3.1 and Model 3.2. *Note*. Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. Unspecified crossloadings and correlated residuals could be either positive or negative resulting in 2 modulations of model 3.1 and 3.2 in the study."
+#| fig-subcap:
+#|   - "Model 3.1"
+#|   - "Model 3.2"
+#| layout: "[[1,1]]"
+#| out.width: "100%"
+
+knitr::include_graphics(c("figures/model3_1.tex", 
+                          "figures/model3_2.tex"))
+```
 
 **Experimental Design of simulation procedures**
 
 **Study 1**
 
-The study varied three main conditions: (1) sample sizes of small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$); (2) Indicator reliability of low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), high ($\lambda = 0.7$); (3) Model specifications: correctly specified model and misspecified with not specified cross loadings in the population model (see figure 2), misspecified with not specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model (see figure 3) and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see figure 4). \newpage
+The study varied three main conditions: (1) sample sizes of small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$); (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$), high ($= 0.7$); (3) Model specifications: correctly specified model and misspecified with not specified cross loadings in the population model (see figure 2), misspecified with not specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model (see figure 3) and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see figure 4).
 
 **Study 2**
 
-The study varied five main conditions: Sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). Indicator reliability: low ($\lambda = 0.3$), moderate ($\lambda = 0.5$), and high ($\lambda = 0.7$). - Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. - Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$).
+The study varied five main conditions: Sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). Indicator reliability: low ($0.3$), moderate ($0.5$), and high ($0.7$). - Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. - Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$).
+
+**Study 3**
 
 Both studies were conducted with 10000 replications for each condition.
 

@@ -1,4 +1,4 @@
-# study_1.R
+# study_3.R
 
 # Load necessary scripts and libraries
 source("gen_pop_data.R")
@@ -23,11 +23,12 @@ parallel_seeds <- function(n, seed = NULL) {
 }
 
 # Generate parameters grid with seeds
-n_reps <- 2
+n_reps <- 10
 params <- expand.grid(
-  seed = parallel_seeds(n_reps, seed = 42),
-  model_type = c("1.1", "1.2", "1.3", "1.4"),
-  N = c(100, 400, 6400),
+  seed = parallel_seeds(n_reps, seed = 42), # seed position in grid is essential or reorder results later - implicit repetition parameter
+  # model_type = c("1.1", "1.2", "1.3", "1.4"),
+  model_type = c("3.1", "3.2", "3.1_negative", "3.2_negative"),
+  N = c(50, 100, 250, 400),
   reliability = c(0.3, 0.5, 0.7),
   method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")
 )
@@ -37,33 +38,97 @@ params <- expand.grid(
 B_true <- c(
   'f3~f1' = 0.1, 'f3~f2' = 0.1, 'f3~f4' = 0.1,
   'f4~f1' = 0.1, 'f4~f2' = 0.1,
-  'f5~f3' = 0.1, 'f5~f4' = 0.1, 'f5~f1' = 0.1
+  'f5~f3' = 0.1, 'f5~f4' = 0.1, "f5~f1" = 0.1
 )
 true_values <- list(
   B = B_true
 )
 
-model_syntax_study1 <- "    
+sam_model_syntax <- "
+    # Measurement 
     f1 =~ y1 + y2 + y3
     f2 =~ y4 + y5 + y6
     f3 =~ y7 + y8 + y9
     f4 =~ y10 + y11 + y12
     f5 =~ y13 + y14 + y15
     
+    # Structural 
     f3 ~ f1 + f2 + f4
     f4 ~ f1 + f2
     f5 ~ f3 + f4 + f1
 "
 
+sem_model_syntax <- "
+  # Structural 
+  f1 =~ y1 + y2 + y3
+  f2 =~ y4 + y5 + y6
+  f3 =~ y7 + y8 + y9
+  f4 =~ y10 + y11 + y12
+  f5 =~ y13 + y14 + y15
+  
+  # lower bound factor variances:
+  f1 ~~ v_f1*f1
+  f2 ~~ v_f2*f2
+  f3 ~~ v_f3*f3
+  f4 ~~ v_f4*f4
+  f5 ~~ v_f5*f5
+  
+  v_f1 > 0.01
+  v_f2 > 0.01
+  v_f3 > 0.01
+  v_f4 > 0.01
+  v_f5 > 0.01
+  
+  # Measurement 
+  f3 ~ f1 + f2 + f4
+  f4 ~ f1 + f2
+  f5 ~ f3 + f4 + f1
+  
+  # lower bound residual variances:
+  y1 ~~ v1*y1
+  y2 ~~ v2*y2
+  y3 ~~ v3*y3
+  y4 ~~ v4*y4
+  y5 ~~ v5*y5
+  y6 ~~ v6*y6
+  y7 ~~ v7*y7
+  y8 ~~ v8*y8
+  y9 ~~ v9*y9
+  y10 ~~ v10*y10
+  y11 ~~ v11*y11
+  y12 ~~ v12*y12
+  y13 ~~ v13*y13
+  y14 ~~ v14*y14
+  y15 ~~ v15*y15
+  
+  v1 > 0.01
+  v2 > 0.01
+  v3 > 0.01
+  v4 > 0.01
+  v5 > 0.01
+  v6 > 0.01
+  v7 > 0.01
+  v8 > 0.01
+  v9 > 0.01
+  v10 > 0.01
+  v11 > 0.01
+  v12 > 0.01
+  v13 > 0.01
+  v14 > 0.01
+  v15 > 0.01
+"
+
+
 # Study function
 simulate_inner <- function(model_type, N, reliability, method) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   data <- gen_pop_model_data(model_type, N, reliability)$data
-  fit_result <- safe_quiet_run_analysis(data, model_syntax_study1, method)
-  sanity_check_estimates <- run_sanity_check(model_type, model_syntax_study1)
   
-  # Add sanity check comparison
-  sanity_check_results <- check_sanity(sanity_check_estimates, true_values)
+  # Choose the appropriate model syntax based on the method
+  model_syntax <- if(method == "SEM") sem_model_syntax else sam_model_syntax
+  
+  fit_result <- safe_quiet_run_analysis(data, model_syntax, method)
+  sanity_check_estimates <- run_sanity_check(model_type, model_syntax)
   
   warnings_detected <- fit_result$result$warnings
   improper_solution <- any(grepl("some estimated ov variances are negative", warnings_detected))
@@ -110,6 +175,8 @@ simulate_inner <- function(model_type, N, reliability, method) {
   }
 }
 
+
+
 simulate_mid <- function(seed, design) {
   future_pmap(design, simulate_inner,
               .options = furrr_options(seed = rep.int(list(seed), nrow(design))))
@@ -119,8 +186,7 @@ simulate_outer <- function(chunk, chunk_params) {
   future_pmap(chunk_params, simulate_mid,
               .options = furrr_options(seed = NULL, scheduling = 1))
 }
-
-run_study_1 <- function(params, true_values) {
+run_study_3 <- function(params, true_values) {
   # Run the simulations and analysis in parallel
   results_df <- params %>%
     mutate(chunk = row_number() %% 100) %>%
@@ -136,7 +202,7 @@ run_study_1 <- function(params, true_values) {
       Messages = map_chr(results, ~ .x$Messages),
       Errors = map_chr(results, ~ .x$Errors),
       EstimatedPaths = map(results, ~ .x$EstimatedPaths[[1]]),
-      SanityCheckEstimates = map(results, ~ .x$SanityCheckEstimates[[1]]),
+      SanityCheck = map(results, ~ .x$SanityCheckEstimates[[1]]),
       Coverage = map_dbl(results, ~ .x$Coverage),
       RelativeBias = map_dbl(results, ~ .x$RelativeBias),
       RelativeRMSE = map_dbl(results, ~ .x$RelativeRMSE),
@@ -146,6 +212,7 @@ run_study_1 <- function(params, true_values) {
     )
   
   print('Parallel computation done')
+  #browser()
   
   # Remove NAs from the lists before calculating MCSE
   relative_bias_list <- unlist(results_df$RelativeBiasList)
@@ -166,7 +233,7 @@ run_study_1 <- function(params, true_values) {
       MeanRelativeRMSE = mean(RelativeRMSE, na.rm = TRUE),
       MCSE_RelativeBias = calculate_mcse_bias(relative_bias_list),
       MCSE_RelativeRMSE = calculate_mcse_rmse(relative_rmse_list),
-      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),
+      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),  # Update to count
       .groups = 'drop'
     ) %>%
     arrange(model_type, N, reliability, method)
@@ -175,14 +242,26 @@ run_study_1 <- function(params, true_values) {
   list(Summary = summary_stats, DetailedResults = results_df)
 }
 
-# Run complete simulation study
-cat("Starting simulation study 1...\n")
-simulation_results <- run_study_1(params, true_values)
+cat("Starting simulation study 3...\n")
+execution_time <- system.time({
+  simulation_results <- run_study_3(params, true_values)
+})
 cat("Simulation study completed. Saving results...\n")
+
+# Print execution time
+print(execution_time)
+
+# Calculate estimated time for 10,000 repetitions
+current_reps <- n_reps
+time_per_rep <- execution_time["elapsed"] / current_reps
+estimated_time_10000 <- time_per_rep * 10000
+
+cat("Estimated time for 10,000 repetitions:", estimated_time_10000, "seconds\n")
+cat("(Approximately", round(estimated_time_10000 / 3600, 2), "hours)\n")
 
 # Save with timestamp
 timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
-filename <- paste0("simulation_results_study1r", timestamp, ".rda")
+filename <- paste0("simulation_results_study3r", timestamp, ".rda")
 save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
