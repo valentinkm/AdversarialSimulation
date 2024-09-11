@@ -1,0 +1,297 @@
+---
+title: "Adversarial Simulation"
+subtitle: "Strucutral after Measurement vs. vanilla SEM estimation - a case study on adversarial collaboration for simulation studies"
+fig-cap-location: top
+format:
+  revealjs:
+    center: true
+    theme: default
+    slide-number: c/t
+    font-size: 12pt
+engine: knitr
+bibliography: ../../bibliography.bib
+---
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+library(ggplot2)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggh4x)
+
+
+```
+
+
+## Outline {auto-animate=true}
+1. "Angry Science"
+2. What is Adversarial Collaboration?
+3. An Adversarial Simulation Framework
+
+4. SAM vs. SEM
+5. Collaboration and Results
+
+## Angry Science
+
+
+## Adversarial Collaboration
+
+
+## An Adversarial Simulation Framework
+
+::: {.r-fit-text}
+| Steps of a Simulation Study | Content |
+|-----------------|-----------------|
+| <span class="fragment">1. Research Question</span>    | <span class="fragment">Verbal description of research goal (jointly)</span>    |
+| <span class="fragment">2. Population Model</span>   | <span class="fragment">Type, size, complexity</span> |
+| <span class="fragment">3. Data Generation</span>    | <span class="fragment">E.g. resampling vs. parametric draw</span>    |
+| <span class="fragment">4. Experimental Design</span>    | <span class="fragment">Specifiy conditions (e.g. sample size)</span>    |
+| <span class="fragment">5. Method Selection</span>   | <span class="fragment">Type, implementation, number</span>    |
+| <span class="fragment">6. Estimands</span>    | <span class="fragment">Population level parameter values</span>    |
+| <span class="fragment">7. Performance Metrics</span>    | <span class="fragment">E.g. Bias, Coverage etc.</span>  |
+| <span class="fragment">8. Software</span>    | <span class="fragment">Applies to steps 2-7</span>    |
+| <span class="fragment">9. Analysis</span>    | <span class="fragment">Decision criteria, graphical display etc.</span>  |
+:::
+
+## An Adversarial Simulation Framework
+
+::: {.r-fit-text}
+|                     | Round 1         | Round 2               | Round 1         |
+|---------------------|:---------------:|:---------------------:|:---------------:|
+| Steps         | Collaborator 1  | Joint Study           | Collaborator 2  |
+| 1. Research Question|                |  Agreed upon prior to Round 1 |                |
+| 2. Population Model |→                |                       |←                |
+| 3. Data Generation  |→                |                       |←                |
+| 4. Experimental Design|→              |                       |←                |
+| 5. Method Selection |→                |                       |←                |
+| 6. Estimands        |→                |                       |←                |
+| 7. Performance Metrics|→             |                       |←                |
+| 8. Software         |→                |                       |←                |
+| 9. Analysis         |→                |                       |←                |
+:::
+
+
+## SAM vs SEM
+
+## Collaboration and Results
+- Round 1: Individual Studies
+- Round 2: Merged Study
+
+## Round 1: Individual Studies 
+| Kriegmair | Kosanke |
+|-----------------|-----------------|
+| based on @rosseel_structural_2022 and @dhaene_evaluation_2023 | based on @robitzsch_comparing_2022  |
+
+## Studies by Kriegmair
+
+## Study 1 <span style="font-size: 20px;">based on @rosseel_structural_2022</span>
+
+::: {.r-fit-text}
+::: {layout="[20,60,20]"}
+
+::: {.column width="0%"}
+:::
+
+::: {.column width="60%"}
+::: {layout="[[1,1], [1,1]]" layout-valign="top"}
+
+::: {.column width="50%" .fragment}
+#### No Misspecifications
+![](figures/model1_1.svg){width="60%"}
+:::
+
+::: {.column width="50%" .fragment}
+#### Cross Loadings
+![](figures/model1_2.svg){width="60%"}
+:::
+
+::: {.column width="50%" .fragment}
+#### Correlated Residuals
+![](figures/model1_3.svg){width="80%"}
+:::
+
+::: {.column width="50%" .fragment}
+#### Structural Misspecification
+![](figures/model1_4.svg){width="60%"}
+:::
+:::
+:::
+
+::: {.column width="35%" .fragment}
+#### Other Conditions:
+
+- N: 100, 400, 6400
+- Indicator reliability: 0.3, 0.5, 0.7
+
+#### Methods:
+
+- Vanilla SEM
+- Global SAM
+- Local SAM
+- Local SAM with unweighted least squares
+
+### Performance Metrics:
+- Bias of path estimates (parameterwise and total)
+- RMSE of path estimates (parameterwise and total)
+- Coverage of 95% confidence intervals
+
+:::
+:::
+:::
+
+## Study 2 <span style="font-size: 20px;">based on @dhaene_evaluation_2023</span>
+
+::: {.r-fit-text}
+::: {layout="[[45,10,10,35]]" layout-align="top"}
+
+::: {.column width="45%"}
+::: {layout="[[1,1]]" layout-valign="top"}
+
+::: {.column width="50%" .fragment}
+#### 2.1:
+
+- No measurement misspecifications
+- estimated paths absent in population
+
+![](figures/model2_1.svg){width="100%"}
+:::
+
+::: {.column width="50%" .fragment}
+#### 2.2:
+
+- Estimated paths absent in population
+- <span style="color: orange;">In exogenous analysis model</span>
+- <span style="color: green;">In endogenous analysis model
+![](figures/model2_2.svg){width="100%"}
+:::
+:::
+:::
+::: {.column width="7%"}
+<!-- Empty column for space -->
+:::
+
+::: {.column width="35%"}
+::: {.fragment}
+#### Other Conditions:
+
+- N: 100, 400, 6400
+- Indicator reliability: 0.3, 0.5, 0.7
+- **$R^2$: 0.1, 0.4**
+- **Measurement blocks: 3, 5**
+:::
+
+
+:::{.fragment}
+#### Methods:
+
+- Vanilla SEM
+- Global SAM
+- Local SAM
+- Local SAM with unweighted least squares
+
+### Repetitions: 
+- 10000
+:::
+
+:::
+:::
+:::
+
+## Studies by Kosanke <span style="font-size: 20px;">based on @robitzsch_comparing_2022</span>
+
+![](figures/kosanke_studies_overview.png)
+
+# Results of individual studies:
+
+## Convergence Rate
+::: {.r-fit-text}
+| | Kriegmair | Kosanke |
+|---------------------|-----------|---------|
+| Result|low convergence rate of SEM| no convergence issues |
+|Method|un-bounded ML SEM |bounded ML SEM |
+|Analysis| condition-wise rates | global rate |
+|| direct:<br>`lavInspect(fit, "converged")` | indirect:<br>`quietly(safely(simulation_study_))`|
+:::
+
+## Convergence Rate <span style="font-size: 20px;"> E.g.: Kriegmair Study 1:</span>
+
+unbound-ML SEM estimation
+```{r}
+# Convergence Rate
+conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
+conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
+conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
+```
+
+
+```{r, .cho=FALSE, fig.width=12, fig.height=6.5}
+# convergence rate plot for study 1
+
+conv_rate1 <- conv_rate_study_1 %>%
+  mutate(
+    ConvergenceRate = ConvergedCount / (ConvergedCount + NotConvergedCount + ImproperSolutionCount),
+    ProperSolutionRate = 1 - (ImproperSolutionCount / ConvergedCount),
+    CombinedLabel = paste(sprintf("%.1f", ConvergenceRate), "\n(", sprintf("%.1f", ProperSolutionRate), ")", sep = "")
+  ) %>%
+  select(model_type, N, reliability, method, ConvergenceRate, ProperSolutionRate, CombinedLabel)
+
+
+# Create the heatmap with labeled metrics and heatmap fill
+p_convergence_heatmap <- conv_rate1 %>%
+  ggplot(aes(x = factor(N, labels = paste("N =", c(100, 400, 6400))), y = model_type)) +
+  geom_tile(aes(fill = ConvergenceRate), color = "white") +
+  geom_text(aes(label = CombinedLabel), size = 2.5, color = "black") + # Display both metrics with labels
+  scale_fill_gradient2(low = "#ff6f61", mid = "#ffa500", high = "#7fc97f", midpoint = 0.5, 
+                       limits = c(0, 1), oob = scales::squish, name = "Convergence Rate (%)") +
+  ggh4x::facet_nested(factor(reliability, labels = paste("r =", c(0.3, 0.5, 0.7))) ~ method, 
+                      scales = "free", space = "free", switch = "y") +
+  theme_bw() +
+  theme(
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 7),
+    legend.position = "right", 
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 7),
+    strip.text.y = element_text(size = 7),
+    strip.text.x = element_text(size = 7),
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +
+  labs(
+    x = "Sample Size",
+    y = "Model Type"
+  ) +
+  scale_y_discrete(expand = c(0, 0), position = "right")
+
+# Print the convergence heatmap
+print(p_convergence_heatmap)
+```
+
+## Performance Metrics
+
+## Collaboration Based on individual Studies
+::: {.r-fit-text}
+|                     | Round 1       | Round 2      | Round 1           |
+|---------------------|:---------------:|:---------------------:|:---------------------:|
+| Steps               | Kriegmair       |    Jooint Study                   | Kosanke           |
+| 1. Research Question|                 |    Agreed upon prior to Round 1                   |  |
+| 2. Population Model | 5-factor-SEM    |                       | 2-CFA & 5-factor-SEM  |
+| 3. Data Generation  | parametric & normally distributed |                       | parametric & normally distributed |
+| 4. Experimental Design| Misspecifications <br> N: 100 - 6400 <br> Reliability via $\Theta$|                       | Misspecifications <br> N: 50 - 100000 <br> Reliability via $\lambda$ |
+| 5. Method Selection |                 |                       |                       |
+| 6. Estimands        |                 |                       |                       |
+| 7. Performance Metrics|               |                       |                       |
+| 8. Software         |                 |                       |                       |
+:::
+:::{.notes}
+Adjusting the $\Theta$ matrix directly controls reliability by manipulating measurement error, aligning with its definition as the proportion of variance explained by the latent factor. Modulating $\lambda$ indirectly affects reliability but conflates factor strength with error variance, making it less precise in controlling reliability by definition.
+:::
+
+
+## References
