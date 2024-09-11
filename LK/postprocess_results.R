@@ -1,3 +1,16 @@
+# Specify the libraries to load
+libraries <- c("lavaan", "purrr", "tidyverse", "furrr")
+# Set the R mirror to the cloud mirror of RStudio
+options(repos = "https://cloud.r-project.org/")
+
+# Load the libraries
+for (library_name in libraries) {
+  if (!require(library_name, character.only = TRUE)) {
+    install.packages(library_name)
+    library(library_name, character.only = TRUE)
+  }
+}
+
 # Study 1
 
 #Load raw results
@@ -66,26 +79,21 @@ extract_results <- function(results_df_raw){
 
 report_bias <- function(metrics_list) {
   # Define a list to store results
-  bias_ci <- list()
+  bias_list <- list()
   
   # Iterate over each condition in metrics_list
   for (condition in names(metrics_list)) {
-    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    # Extract rel_bias for the current condition
     rel_bias <- metrics_list[[condition]]$rel_bias
-    ci_lower <- metrics_list[[condition]]$ci_lower
-    ci_upper <- metrics_list[[condition]]$ci_upper
     
-    # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- rel_bias %>%
-      mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                            ~sprintf("%.2f [%.2f-%.2f]", ..1, ..2, ..3)),
-                    .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_rel_bias_formatted$", "", .))
+    # Create the bias table for the current condition and store it in the list
+    bias_list[[condition]] <- rel_bias %>%
+      mutate(across(`50`:`1e+05`, ~sprintf("%.3f", .)))
   }
   
-  return(bias_ci)
+  return(bias_list)
 }
+
 
 #Apply changed function
 metrics_list <- extract_results(results_df_raw)
@@ -162,7 +170,7 @@ report_bias <- function(metrics_list) {
         phi_results <- map_dfc(unique_phis, function(phi_val) {
           metrics <- filtered_lambda_data %>% filter(phi == phi_val) %>% pull(estimator)
           metrics <- metrics[[1]]
-          formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+          formatted_bias <- sprintf("%.3f", metrics$abs_bias)
           set_names(formatted_bias, paste("phi", phi_val, sep = "_"))
         })
         
@@ -270,25 +278,19 @@ extract_results <- function(results_df_raw){
 
 report_bias <- function(metrics_list) {
   # Define a list to store results
-  bias_ci <- list()
+  bias_list <- list()
   
   # Iterate over each condition in metrics_list
   for (condition in names(metrics_list)) {
-    # Extract rel_bias, ci_lower, and ci_upper for the current condition
+    # Extract rel_bias for the current condition
     rel_bias <- metrics_list[[condition]]$rel_bias
-    ci_lower <- metrics_list[[condition]]$ci_lower
-    ci_upper <- metrics_list[[condition]]$ci_upper
     
-    # Create the bias_ci table for the current condition and store it in the list
-    bias_ci[[condition]] <- rel_bias %>%
-      mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                            ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-                    .names = "{.col}_formatted")) %>%
-      select(method_metric, ends_with("formatted")) %>%
-      rename_all(~sub("_formatted$", "", .))
+    # Create the bias table for the current condition and store it in the list
+    bias_list[[condition]] <- rel_bias %>%
+      mutate(across(`50`:`1e+05`, ~sprintf("%.3f", .)))
   }
   
-  return(bias_ci)
+  return(bias_list)
 }
 
 #Apply changed function
@@ -355,22 +357,16 @@ extract_results <- function(results_df_raw){
 
 # Report bias
 
-
 report_bias <- function(metrics_list) {
   # Define a list to store results
   bias_ci <- list()
   
-  # Iterate over each condition in metrics_list
-  # Extract rel_bias, ci_lower, and ci_upper for the current condition
+  # Extract rel_bias
   rel_bias <- metrics_list$rel_bias
-  ci_lower <- metrics_list$ci_lower
-  ci_upper <- metrics_list$ci_upper
   
-  # Create the bias_ci table for the current condition and store it in the list
+  # Create the bias_ci table and store it in the list
   bias_ci <- rel_bias %>%
-    mutate(across(`50`:`1e+05`, ~pmap_chr(list(rel_bias[[cur_column()]], ci_lower[[cur_column()]], ci_upper[[cur_column()]]),
-                                          ~sprintf("%.3f [%.3f-%.3f]", ..1, ..2, ..3)),
-                  .names = "{.col}"))
+    mutate(across(`50`:`1e+05`, ~sprintf("%.3f", .)))
   
   return(bias_ci)
 }
@@ -446,7 +442,7 @@ report_bias <- function(metrics_list) {
       # Map each N to create formatted bias strings
       n_results <- map_dfc(set_names(unique(filtered_data$N)), ~{
         metrics <- estimator_data[[which(filtered_data$N == .x)]]
-        formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+        formatted_bias <- sprintf("%.3f", metrics$abs_bias)
         set_names(formatted_bias, paste("N", .x, sep = "_"))
       })
       
@@ -455,7 +451,7 @@ report_bias <- function(metrics_list) {
     })
     
     # Name the dataframe with the current N value
-    rename(estimator_results, set_names(names(estimator_results[-1]),paste("N", unique(filtered_data$N), sep = "_")))
+    rename(estimator_results, set_names(names(estimator_results[-1]), paste("N", unique(filtered_data$N), sep = "_")))
   }, .options = furrr_options(seed = TRUE))  # Ensure reproducibility with seeds
   
   # Return a list of dataframes, one for each DGM
@@ -541,7 +537,7 @@ report_bias <- function(metrics_list) {
         n_results <- map_dfc(unique_ns, function(n_val) {
           metrics <- filtered_beta_data %>% filter(N == n_val) %>% pull(estimator)
           metrics <- metrics[[1]]
-          formatted_bias <- sprintf("%.3f [%.3f, %.3f]", metrics$abs_bias, metrics$ci_lower, metrics$ci_upper)
+          formatted_bias <- sprintf("%.3f", metrics$abs_bias)
           set_names(formatted_bias, paste("N", n_val, sep = "_"))
         })
         
