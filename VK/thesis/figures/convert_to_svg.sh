@@ -2,6 +2,8 @@
 
 pdf_file="convert_tikz_to_svg.pdf"
 model_names=(
+    "model0"
+    "model0_1"
     "model1_1"
     "model1_2"
     "model1_3"

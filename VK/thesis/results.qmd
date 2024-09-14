@@ -414,20 +414,19 @@ Absolute Average Bias of Regression Parameters (Study 1)
 p_heatmap <- plot_data_aggregated_study1 %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_Bias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", mean_Bias)), size = 2.5, color = "black") +
+  geom_text(aes(label = sprintf("%.2f", mean_Bias)), size = 3.5, color = "black") + 
   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
                        limits = c(0, 0.5), oob = scales::squish) +
   ggh4x::facet_nested(reliability ~ method, scales = "free", space = "free", switch = "y") +
   theme_bw() +
   theme(
-    text = element_text(size = 8),
-    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 7),
-    legend.position = "right", 
-    legend.title = element_text(size = 8),
-    legend.text = element_text(size = 7),
-    strip.text.y = element_text(size = 7),
-    strip.text.x = element_text(size = 7),
+    text = element_text(size = 12), 
+    axis.text.y = element_text(size = 12),  
+    legend.position = "none", 
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 12),  
+    strip.text.y = element_text(size = 12), 
+    strip.text.x = element_text(size = 12), 
     legend.key.width = unit(0.8, "cm"),
     panel.grid = element_blank(),
     axis.title.x = element_blank(),

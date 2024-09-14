@@ -1,0 +1,39 @@
+\begin{tikzpicture}[>=Stealth, node distance=2cm]
+
+    % Nodes
+    \node[draw, circle] (f1) {$f_1$};
+    \node[draw, circle, below right=1.5cm and 2cm of f1] (f2) {$f_2$};
+    \node[draw, circle, below left=1.5cm and 2cm of f1] (f3) {$f_3$};
+
+    % Indicators for f1 (placed above)
+    \node[draw, rectangle, above=0.8cm of f1] (y1) {$y_1$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f1] (y2) {$y_2$};
+    \node[draw, rectangle, above right=0.5cm and 0.5cm of f1] (y3) {$y_3$};
+
+    % Indicators for f2
+    \node[draw, rectangle, right=0.8cm of f2] (y4) {$y_4$};
+    \node[draw, rectangle, above right=0.5cm and 0.5cm of f2] (y5) {$y_5$};
+    \node[draw, rectangle, below right=0.5cm and 0.5cm of f2] (y6) {$y_6$};
+
+    % Indicators for f3
+    \node[draw, rectangle, left=0.8cm of f3] (y7) {$y_7$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f3] (y8) {$y_8$};
+    \node[draw, rectangle, below left=0.5cm and 0.5cm of f3] (y9) {$y_9$};
+
+    % Arrows
+    \draw[<-] (y1) -- (f1);
+    \draw[<-] (y2) -- (f1);
+    \draw[<-] (y3) -- (f1);
+    \draw[<-] (y4) -- (f2);
+    \draw[<-] (y5) -- (f2);
+    \draw[<-] (y6) -- (f2);
+    \draw[<-] (y7) -- (f3);
+    \draw[<-] (y8) -- (f3);
+    \draw[<-] (y9) -- (f3);
+
+    % Relationships between latent variables
+    \draw[->] (f1) -- (f2);
+    \draw[->] (f2) -- (f3);
+    \draw[->] (f1) -- (f3);
+    
+\end{tikzpicture}

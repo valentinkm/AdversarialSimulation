@@ -1,0 +1,39 @@
+\begin{tikzpicture}[>=Stealth, node distance=2cm]
+
+    % Nodes
+    \node[draw, circle] (f1) {$f_1$};
+    \node[draw, circle, below right=1.5cm and 2cm of f1] (f2) {$f_2$};
+    \node[draw, circle, below left=1.5cm and 2cm of f1] (f3) {$f_3$};
+
+    % Indicators for f1 (red)
+    \node[draw, rectangle, above=0.8cm of f1, red] (y1) {$y_1$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f1, red] (y2) {$y_2$};
+    \node[draw, rectangle, above right=0.5cm and 0.5cm of f1, red] (y3) {$y_3$};
+    
+    % Indicators for f2 (red)
+    \node[draw, rectangle, right=0.8cm of f2, red] (y4) {$y_4$};
+    \node[draw, rectangle, above right=0.5cm and 0.5cm of f2, red] (y5) {$y_5$};
+    \node[draw, rectangle, below right=0.5cm and 0.5cm of f2, red] (y6) {$y_6$};
+
+    % Indicators for f3 (red)
+    \node[draw, rectangle, left=0.8cm of f3, red] (y7) {$y_7$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f3, red] (y8) {$y_8$};
+    \node[draw, rectangle, below left=0.5cm and 0.5cm of f3, red] (y9) {$y_9$};
+
+    % Arrows measurement 
+    \draw[<-, red] (y1) -- (f1);
+    \draw[<-, red] (y2) -- (f1);
+    \draw[<-, red] (y3) -- (f1);
+    \draw[<-, red] (y4) -- (f2);
+    \draw[<-, red] (y5) -- (f2);
+    \draw[<-, red] (y6) -- (f2);
+    \draw[<-, red] (y7) -- (f3);
+    \draw[<-, red] (y8) -- (f3);
+    \draw[<-, red] (y9) -- (f3);
+
+    % Structural paths 
+    \draw[->, blue] (f1) -- (f2);
+    \draw[->, blue] (f2) -- (f3);
+    \draw[->, blue] (f1) -- (f3);
+
+\end{tikzpicture}
