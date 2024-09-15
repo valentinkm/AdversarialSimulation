@@ -31,9 +31,9 @@ library(ggh4x)
 
 ::: {.r-fit-text style="font-size: 0.8em;"}
 ## Outline {auto-animate=true}
-1. **Problem**: "Angry Science"
-2. **Solution**: What is Adversarial Collaboration?
-3. **Method**: An Adversarial Simulation Framework
+1. "Angry Science" and the Generalizability Challenge
+2. Adversarial Collaboration as one Remedy
+3. An Adversarial Simulation Framework
 <br>
 <br>
 <span style="color: grey;">Time for questions</span>
@@ -48,10 +48,191 @@ library(ggh4x)
 
 :::
 
-## Angry Science
+
+## 1. The Generalizability Challenge {auto-animate=true}
+:::{.columns}
+::: {.column width="0%"}
+::: {.r-fit-text}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+:::
+:::
+::: {.column width="50%"}
+::: {.r-fit-text}
+```{dot}
+digraph circular_process {
+    // Use 'neato' layout for positioning
+    layout=neato;
+    overlap=false;
+    splines=true;
+
+    // Define global node attributes
+    node [shape=plaintext, fontsize=12];
+
+    // Define nodes with positions to form a circle
+    hypothesize [label="Hypothesize", pos="0,1!"];
+    operationalize [label="Operationalize", pos="-0.866,-0.5!"];
+    gather_data [label="Gather Data", pos="0.866,-0.5!"];
+
+    // Define edges to create a circular process
+    hypothesize -> operationalize;
+    operationalize -> gather_data;
+    gather_data -> hypothesize;
+}
+```
+
+:::
+:::
+:::
 
 
-## Adversarial Collaboration
+## 1. The Generalizability Challenge {auto-animate=true}
+
+:::{.columns}
+::: {.column width="25%"}
+::: {.r-fit-text}
+
+<br>
+general & verbal
+<br>
+<br>
+<br>
+<br>
+<br>
+researchers degrees of freedom
+<br>
+<br>
+<br>
+<br>
+<br>
+specific & empirical
+:::
+:::
+::: {.column width="50%"}
+::: {.r-fit-text}
+```{dot}
+digraph circular_process {
+    // Use 'neato' layout for positioning
+    layout=neato;
+    overlap=false;
+    splines=true;
+
+    // Define global node attributes
+    node [shape=plaintext, fontsize=12];
+
+    // Define nodes with positions to form a circle
+    hypothesize [label="Hypothesize", pos="0,1!"];
+    operationalize [label=< <font color="red">Operationalize</font> >, pos="-0.866,-0.5!"];
+    gather_data [label=< <font color="red">Gather Data</font> >, pos="0.866,-0.5!"];
+
+    // Define edges to create a circular process
+    hypothesize -> operationalize;
+    operationalize -> gather_data;
+    gather_data -> hypothesize;
+}
+```
+:::
+:::
+:::
+
+
+## 1. The Generalizability Challenge {auto-animate=true}
+
+:::{.columns}
+::: {.column width="25%"}
+::: {.r-fit-text}
+
+<br>
+general & verbal
+<br>
+<br>
+<br>
+<br>
+<br>
+researchers degree of freedom
+<br>
+<br>
+<br>
+<br>
+<br>
+specific & empirical
+:::
+:::
+::: {.column width="50%"}
+::: {.r-fit-text}
+```{dot}
+digraph circular_process {
+    // Use 'neato' layout for positioning
+    layout=neato;
+    overlap=false;
+    splines=true;
+
+    // Define global node attributes
+    node [shape=plaintext, fontsize=12];
+
+    // Define nodes with positions to form a circle
+    hypothesize [label="Method A over B?", pos="0,1!"];
+    operationalize [label=< <font color="red">Population Model X etc.</font> >, pos="-0.866,-0.5!"];
+    gather_data [label=< <font color="red">Simulate</font> >, pos="0.866,-0.5!"];
+
+    // Define edges to create a circular process
+    hypothesize -> operationalize;
+    operationalize -> gather_data;
+    gather_data -> hypothesize;
+}
+```
+:::
+:::
+:::
+
+## 2. Adversarial Collaboration as one Remedy {auto-animate=true}
+:::{.r-fit-text}
+:::{.columns}
+::: {.column width="50%"}
+### The Mapping Challenge
+- Science is **communicated** through **general verbal descriptions**.
+- Empirical research, however, requires **precise operationalization** on the empirical plane.
+- Conflicts arise when **verbal descriptions** do not neatly map onto operationalized data.
+- This leads to **persistent disagreements** and **ambiguity** in scientific discourse.
+
+**Adversarial Collaboration** steps in to **bridge this gap**:
+:::
+
+::: {.column width="50%"}
+### How Adversarial Collaboration Works
+#### 1. Identifying the Disagreement
+- Scholars with opposing views **jointly identify** where their verbal descriptions and empirical evidence diverge.
+
+#### 2. Creating a Shared Language
+- **Translate** general verbal descriptions into mutually agreed **operational definitions**.
+- This **mapping** is key: aligning theoretical concepts with empirical measures.
+
+#### 3. Designing Mutual Tests
+- Develop **agreed-upon methods** to test competing hypotheses, focusing on points of empirical disagreement.
+- Tests must capture both the **nuances** of verbal claims and the **rigor** of empirical standards.
+
+#### 4. Joint Interpretation of Results
+- Both sides **collaborate** in interpreting the findings, ensuring that conclusions **respect the initial verbal intentions** while reflecting **empirical reality**.
+
+:::
+
+:::{.column width="100%"}
+### Addressing the Challenge
+- **Unveils Ambiguity**: Forces researchers to clarify verbal claims through precise, shared operational definitions.
+- **Promotes Accountability**: Mutual design and interpretation prevent biases stemming from unclear mappings.
+- **Strengthens Generalizability**: By rigorously debating and aligning verbal-empirical mappings, findings gain broader applicability.
+
+*“Adversarial Collaboration acts as a translator between science's verbal world and its empirical reality.”*
+:::
+:::
+:::
 
 
 ## Creating an Adversarial Simulation <span style="color:#4682B4;">Framework</span>{auto-animate=true}
@@ -103,7 +284,7 @@ library(ggh4x)
 ::: {.r-fit-text}
 ::: {.fragment .fade-in-then-out}
 -  e.g. normal theory-based maximum likelihood (ML) discrepancy function
-- System-wide parameter ($\vartheta$) optimization, requiring large sample sizes for optimal statistical properties.
+- System-wide parameter ($\vartheta$) optimization
 - Assumes multivariate normal distribution
 :::
 :::{.fragment .fade-in}
@@ -112,6 +293,7 @@ Problems:
 - non-convergence issues 
 - improper solutions
 - bias due to local measurement misspecifications propagating to all model parameters
+- requiring large sample sizes for optimal statistical properties.
 :::
 :::
 ::::
@@ -130,12 +312,16 @@ Problems:
 
 1. <span style="color: red;">$\vartheta_1$: Measurement model</span> <br>
     <span class="fragment">**Local SAM (lSAM):**</span> <br>
-    <span class="fragment">Latent summary statistics and mapping matrix;</span> <br>
     <span class="fragment">Separate "measurement blocks"</span><br>
+    <span class="fragment">Latent summary statistics and mapping matrix;</span> <br>
     <span class="fragment">**Global SAM (gSAM):** Fixed measurement parameters for the entire measurement model.</span>
+
+:::{.fragment}
 <br>
  → 
 <br>
+
+:::
 2. <span style="color: blue;">$\vartheta_2$: Structural model</span>
 :::
 ::::
@@ -148,16 +334,44 @@ Problems:
 :::
 
 
-## SAM vs. SEM: Disagreeing Reports
-table with 2 columns:
+## SAM vs. SEM: <br> Disagreeing Reports {auto-animate="true"}
+::: {.r-fit-text}
+| @rosseel_structural_2022, @dhaene_evaluation_2023 | @robitzsch_comparing_2022 |
+|------------------------------|---------------------------|
+| - SAM outperformed SEM in terms of convergence, bias & RMSE in small samples x low item reliability, especially under misspecifications <br> | - SAM did not generally outperform traditional SEM in challenging conditions. <br> - SAM appears better: general negative small sample bias of SAM cancels out positive bias from positive misspecifications. |
+<br>
+<br>
 
-|  | SEM |
-|-----|-----|
+:::{.fragment}
+<div style="text-align: center;">
+**→ Basis for a case study on adversarial collaboration**
+</div>
+
+:::
+
+:::
+
+## SAM vs. SEM: <br> an <span style="color: #4682B4;"> Adversarial Simulation </span> {auto-animate="true"}
+::: {.r-fit-text}
+| @rosseel_structural_2022, @dhaene_evaluation_2023 | @robitzsch_comparing_2022 |
+|------------------------------|---------------------------|
+| - SAM outperformed SEM in terms of convergence, bias & RMSE in small samples x low item reliability, especially under misspecifications <br> | - SAM did not generally outperform traditional SEM in challenging conditions. <br> - SAM appears better: general negative small sample bias of SAM cancels out positive bias from positive misspecifications. |
+| <span style="color: #4682B4;">**Replication by Kriegmair**</span> | <span style="color: #4682B4;">**Replication by Kosanke**</span>|
+<br>
+<br>
 
 
+<div style="text-align: center;">
+**→ Basis for a case study on adversarial collaboration**
+</div>
 
+:::
 
-## Collaboration and Results
+## 5. Findings of the Case Study
+
+Replication Results
+<br>
+Adversarial Collaboration
 
 ## Round 1: Individual Studies 
 | Kriegmair | Kosanke |
