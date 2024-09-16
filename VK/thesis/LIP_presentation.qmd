@@ -434,6 +434,11 @@ Problems:
 
 :::
 
+## Research Questions <span style="font-size: 20px;">agreed upon prior to individual studies</span>
+
+1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
+2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
+
 ## 5. Findings of the Case Study
 
 Replication Results
@@ -552,9 +557,6 @@ Adversarial Collaboration
 - Global SAM
 - Local SAM
 - Local SAM with unweighted least squares
-
-### Repetitions: 
-- 10000
 :::
 
 :::
@@ -941,15 +943,6 @@ digraph circular_process {
 SAM outperforms SEM despite of negative bias under cross loadings, small sample size and small to moderate reliability
 :::
 
-## 6. Evaluation
-Identified: verbal dispute & divergent operationalizations:
-
-1. Method: bounded vs. unbounded ML SEM <br>
-2. Model: CFA vs. SEM <br>
-3. Reliability: $\Theta$ vs. $\Lambda$
-
-
-
 ## Limitations and Future Directions
 
 - "Toy" case study for AC<br>
@@ -963,9 +956,9 @@ Identified: verbal dispute & divergent operationalizations:
 ## Discussion
 
 1. Is the setteling of a verbal disputes through unified operationalizations really increasing generalizability?
+2. Are individual studies in prior to adversarial collaboration benfeficial?
+3. How could an incentive structure be designed to encourage adversarial collaboration?
+4. Could adversarial collaboration be implemented in the peer review process?
 
-2. How could an incentive structure be designed to encourage adversarial collaboration?
-
-3. Could adversarial collaboration be implemented in the peer review process?
 
 ## References
