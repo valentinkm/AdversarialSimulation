@@ -1,7 +1,8 @@
 ---
 title: "Adversarial Simulation"
-subtitle: "Structural after Measurement vs. vanilla SEM estimation - a case study on adversarial collaboration for simulation studies"
+subtitle: "Structural after Measurement vs. vanilla SEM estimation - a Case Study on Adversarial Collaboration for Simulation Studies"
 fig-cap-location: top
+author: "Valentin Kriegmair"
 format:
   revealjs:
     center: true
@@ -31,8 +32,8 @@ library(ggh4x)
 
 ::: {.r-fit-text style="font-size: 0.8em;"}
 ## Outline {auto-animate=true}
-1. "Angry Science" and the Generalizability Challenge
-2. Adversarial Collaboration as one Remedy
+1. The Generalizability Challenge
+2. Adversarial Collaboration as Remedy
 3. An Adversarial Simulation Framework
 <br>
 <br>
@@ -93,26 +94,37 @@ digraph circular_process {
 :::
 
 
-## 1. The Generalizability Challenge {auto-animate=true}
+## 1. The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
 :::{.columns}
 ::: {.column width="25%"}
 ::: {.r-fit-text}
 
 <br>
-general & verbal
+<span style="color:blue">general & verbal</span>
 <br>
 <br>
 <br>
 <br>
+
+
+::: {.fragment}
+
+<span style="color: red;">researchers degrees of freedom</span> <br>
+:::
+
+::: {.fragment}
+
+<span style="color: red;">→ ambiguity</span> <br> 
+<span style="color: red;">→ **persistant disagreement**</span>
+
+
+:::
+
 <br>
-researchers degrees of freedom
 <br>
 <br>
-<br>
-<br>
-<br>
-specific & empirical
+<span style="color: green;">specific & empirical</span>
 :::
 :::
 ::: {.column width="50%"}
@@ -128,110 +140,165 @@ digraph circular_process {
     node [shape=plaintext, fontsize=12];
 
     // Define nodes with positions to form a circle
-    hypothesize [label="Hypothesize", pos="0,1!"];
-    operationalize [label=< <font color="red">Operationalize</font> >, pos="-0.866,-0.5!"];
-    gather_data [label=< <font color="red">Gather Data</font> >, pos="0.866,-0.5!"];
+        hypothesize [label=< <font color="blue">Hypothesize</font> >, pos="0,1!"];
+        operationalize [label=< <font color="green">Operationalize</font> >, pos="-0.866,-0.5!"];
+        gather_data [label=< <font color="green">Gather Data</font> >, pos="0.866,-0.5!"];
 
     // Define edges to create a circular process
-    hypothesize -> operationalize;
-    operationalize -> gather_data;
-    gather_data -> hypothesize;
+    hypothesize -> operationalize [color="red"];
+    operationalize -> gather_data [color="red"];
+    gather_data -> hypothesize [color="red"];
 }
 ```
 :::
 :::
 :::
 
-
-## 1. The Generalizability Challenge {auto-animate=true}
-
-:::{.columns}
-::: {.column width="25%"}
-::: {.r-fit-text}
-
-<br>
-general & verbal
-<br>
-<br>
-<br>
-<br>
-<br>
-researchers degree of freedom
-<br>
-<br>
-<br>
-<br>
-<br>
-specific & empirical
-:::
-:::
-::: {.column width="50%"}
-::: {.r-fit-text}
-```{dot}
-digraph circular_process {
-    // Use 'neato' layout for positioning
-    layout=neato;
-    overlap=false;
-    splines=true;
-
-    // Define global node attributes
-    node [shape=plaintext, fontsize=12];
-
-    // Define nodes with positions to form a circle
-    hypothesize [label="Method A over B?", pos="0,1!"];
-    operationalize [label=< <font color="red">Population Model X etc.</font> >, pos="-0.866,-0.5!"];
-    gather_data [label=< <font color="red">Simulate</font> >, pos="0.866,-0.5!"];
-
-    // Define edges to create a circular process
-    hypothesize -> operationalize;
-    operationalize -> gather_data;
-    gather_data -> hypothesize;
-}
-```
-:::
-:::
-:::
-
-## 2. Adversarial Collaboration as one Remedy {auto-animate=true}
-:::{.r-fit-text}
-:::{.columns}
-::: {.column width="50%"}
-### The Mapping Challenge
+:::{.notes}
 - Science is **communicated** through **general verbal descriptions**.
 - Empirical research, however, requires **precise operationalization** on the empirical plane.
 - Conflicts arise when **verbal descriptions** do not neatly map onto operationalized data.
 - This leads to **persistent disagreements** and **ambiguity** in scientific discourse.
-
-**Adversarial Collaboration** steps in to **bridge this gap**:
 :::
 
-::: {.column width="50%"}
-### How Adversarial Collaboration Works
-#### 1. Identifying the Disagreement
-- Scholars with opposing views **jointly identify** where their verbal descriptions and empirical evidence diverge.
+## 1. The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
-#### 2. Creating a Shared Language
+in Simulation Studies
+
+:::{.columns}
+::: {.column width="25%"}
+::: {.r-fit-text}
+
+<br>
+<span style="color:blue">general & verbal</span>
+<br>
+<br>
+<br>
+<br>
+<span style="color: red;">researchers degrees of freedom</span> <br>
+<span style="color: red;">→ ambiguity</span> <br>
+
+::: {data-id="text1" auto-animate-delay="0"}
+
+<span style="color: red;">→ **persistant disagreement**</span>
+
+:::
+
+<br>
+<br>
+<br>
+<br>
+<span style="color: green;">specific & empirical</span>
+:::
+:::
+::: {.column width="50%"}
+::: {.r-fit-text}
+```{dot}
+digraph circular_process {
+    // Use 'neato' layout for positioning
+    layout=neato;
+    overlap=false;
+    splines=true;
+
+    // Define global node attributes
+    node [shape=plaintext, fontsize=12];
+
+    // Define nodes with positions to form a circle
+    hypothesize [label=< <font color="blue">Method A vs. B</font> >, pos="0,1!"];
+    operationalize [label=<
+        <table border="0" cellborder="0" cellspacing="0">
+            <tr><td><font color="green">Model,<br/> Estimands,<br/> Metrics etc.</font></td></tr>
+        </table>
+    >, pos="-0.866,-0.5!", color="green"];
+    gather_data [label=< <font color="green">Simulate</font> >, pos="0.866,-0.5!", color="green"];
+
+    // Define edges to create a circular process
+    hypothesize -> operationalize [color="red"];
+    operationalize -> gather_data [color="red"];
+    gather_data -> hypothesize [color="red"];
+}
+```
+:::
+:::
+:::
+
+## 2. Adversarial Collaboration (AC) as a Remedy?{auto-animate=true 
+auto-animate-easing="ease-in-out"}
+
+:::{.r-fit-text}
+
+Pioneered by @mellers_frequency_2001:
+![](figures/paper1.png){width="70%"}
+
+Recognized in empirical research @melloni_adversarial_2023 @clark_adversarial_2021
+
+:::
+
+
+## Adversarial Collaboration (AC){auto-animate=true auto-animate-easing="ease-in-out"}
+
+:::{.columns}
+::: {.column width="25%"}
+::: {.r-fit-text}
+
+:::{.fragment fragment-index=1}
+<br>
+<span style="color:blue">Identify general & verbal Disagreement</span>
+<br>
+:::
+:::{.fragment fragment-index=2}
+        
+<span style="color: red;">Agree on:
+<br>  - Operationalizations <br> - Test Design <br> - Interpretation 
+:::
+:::{.fragment fragment-index=3}
+</span>
+<span style="color: black;">→ Reduce ambiguity<br>→ Increase generalizability  </span>
+:::
+
+<br>
+
+:::{.fragment fragment-index=2}
+<span style="color: green;">unify</span>
+:::
+:::
+:::
+::: {.column width="50%"}
+::: {.r-fit-text}
+```{dot}
+digraph circular_process {
+    // Use 'neato' layout for positioning
+    layout=neato;
+    overlap=false;
+    splines=true;
+
+    // Define global node attributes
+    node [shape=plaintext, fontsize=12];
+
+    // Define nodes with positions to form a circle
+    hypothesize [label=< <font color="blue">Verbal Dispute</font> >, pos="0,1!"];
+    operationalize [label=< <font color="green">Operationalizations</font> >, pos="-0.866,-0.5!", color="green"];
+    gather_data [label=< <font color="green">Gather Data</font> >, pos="0.866,-0.5!", color="green"];
+
+    // Define edges to create a circular process
+    hypothesize -> operationalize [color="red"];
+    operationalize -> gather_data [color="red"];
+    gather_data -> hypothesize [color="red"];
+}
+```
+:::
+:::
+:::
+
+:::{.notes}
+- Scholars with opposing views **jointly identify** where their verbal descriptions and empirical evidence diverge.
 - **Translate** general verbal descriptions into mutually agreed **operational definitions**.
 - This **mapping** is key: aligning theoretical concepts with empirical measures.
-
-#### 3. Designing Mutual Tests
 - Develop **agreed-upon methods** to test competing hypotheses, focusing on points of empirical disagreement.
 - Tests must capture both the **nuances** of verbal claims and the **rigor** of empirical standards.
-
-#### 4. Joint Interpretation of Results
+- Develop **agreed-upon methods** to test competing hypotheses, focusing on points of empirical disagreement.
+- Tests must capture both the **nuances** of verbal claims and the **rigor** of empirical standards.
 - Both sides **collaborate** in interpreting the findings, ensuring that conclusions **respect the initial verbal intentions** while reflecting **empirical reality**.
-
-:::
-
-:::{.column width="100%"}
-### Addressing the Challenge
-- **Unveils Ambiguity**: Forces researchers to clarify verbal claims through precise, shared operational definitions.
-- **Promotes Accountability**: Mutual design and interpretation prevent biases stemming from unclear mappings.
-- **Strengthens Generalizability**: By rigorously debating and aligning verbal-empirical mappings, findings gain broader applicability.
-
-*“Adversarial Collaboration acts as a translator between science's verbal world and its empirical reality.”*
-:::
-:::
 :::
 
 
@@ -252,6 +319,8 @@ digraph circular_process {
 | <span class="fragment">8. Software</span>    | <span class="fragment">Applies to steps 2-7</span>    |
 | <span class="fragment">9. Analysis</span>    | <span class="fragment">Decision criteria, graphical display etc.</span>  |
 :::
+
+<span style="font-size: 20px;"> @siepe_simulation_2023, @paxton_monte_2001, @morris_using_2019</span>
 
 ## A <span style="color:#4682B4;">Structured</span> Adversarial Simulation <span style="color:#4682B4;">Framework</span> {auto-animate=true}
 
@@ -326,6 +395,8 @@ Problems:
 :::
 ::::
 :::
+
+<span style="font-size: 20px;">@rosseel_structural_2022</span>
 
 :::{.notes}
 1. **Local SAM (lSAM):** Constructs the latent variable mean vector and variance-covariance matrix using observed data, measurement parameters, and a mapping matrix to inform the structural model estimation.
@@ -498,7 +569,7 @@ Adversarial Collaboration
 
 ![](figures/kosanke_studies_overview.png)
 
-# Results of individual studies:
+# Results of individual studies <span style="font-size: 20px;"> (examplatory) </span>
 
 ## Convergence Rate
 ::: {.r-fit-text}
@@ -662,10 +733,10 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
         SEM-ML, gSAM, lSAM (ULS & ML)
       </td>
       <td class="fragment" data-fragment-index="5">
-        SEM-ML, gSAM, lSAM (ULS & ML)
+        bounded SEM-ML, gSAM, lSAM (ULS & ML)
       </td>
       <td>
-        SEM (<span class="strike fragment" data-fragment-index="5">ML</span> & ULS), gSAM, lSAM (ULS & ML)
+        bounded SEM (<span class="strike fragment" data-fragment-index="5">ULS</span> & ML), gSAM, lSAM (ULS & ML)
       </td>
     </tr>
     <!-- Step 6 -->
@@ -786,5 +857,119 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
 :::{.notes}
 Adjusting the $\Theta$ matrix directly controls reliability by manipulating measurement error, aligning with its definition as the proportion of variance explained by the latent factor. Modulating $\lambda$ indirectly affects reliability but conflates factor strength with error variance, making it less precise in controlling reliability by definition.
 :::
+
+## Convergence Rate <span style="font-size: 20px;"> after collaboration (with bounded-ML SEM) </span>
+
+![](tables/convergence_rate_study3.png)
+
+
+## Bias - parameter-wise <span style="font-size: 20px;"> after collaboration </span>
+
+![](tables/abs_bias_parameterwise_study3.png)
+
+## Bias - aggregated <span style="font-size: 20px;"> after collaboration </span>
+
+![](tables/aggregated_bias_study3.png)
+
+##
+
+SAM has no convergence rate advantage over bounded ML SEM
+<br>
+<br>
+SAM outperforms SEM despite of negative bias under positive and negative cross loadings in small samples and small to moderate reliability
+
+
+
+## Evaluation {auto-animate=true auto-animate-easing="ease-in-out"}
+
+:::{.columns}
+::: {.column width="25%"}
+::: {.r-fit-text}
+<br>
+<br>
+
+:::{.fragment fragment-index=2}
+        
+<span style="color: red;">Diverging operationalizations:</span>
+<br> <span style="color: red;"> - Method </span> <br> <span style="color: red;"> - Design </span> <br> <span style="color: red;"> - Reliability etc. </span>
+
+:::
+
+:::{.fragment fragment-index=3}
+</span>
+<span style="color: black;">→ Reduced ambiguity
+
+:::
+
+:::{.fragment fragment-index=4}
+
+→ Increased generalizability?  </span>
+
+:::
+
+<br>
+
+:::{.fragment fragment-index=2}
+<span style="color: green;">unified</span>
+:::
+:::
+:::
+::: {.column width="50%"}
+::: {.r-fit-text}
+```{dot}
+digraph circular_process {
+    // Use 'neato' layout for positioning
+    layout=neato;
+    overlap=false;
+    splines=true;
+
+    // Define global node attributes
+    node [shape=plaintext, fontsize=12];
+
+    // Define nodes with positions to form a circle
+    hypothesize [label=< <font color="blue">Reformulated Verbal Claim</font> >, pos="0,1!"];
+    operationalize [label=< <font color="green">Operationalizations</font> >, pos="-0.866,-0.5!", color="green"];
+    gather_data [label=< <font color="green">Gather Data</font> >, pos="0.866,-0.5!", color="green"];
+
+    // Define edges to create a circular process
+    hypothesize -> operationalize [color="red"];
+    operationalize -> gather_data [color="red"];
+    gather_data -> hypothesize [color="red"];
+}
+```
+:::
+:::
+:::
+
+:::{.notes}
+SAM outperforms SEM despite of negative bias under cross loadings, small sample size and small to moderate reliability
+:::
+
+## 6. Evaluation
+Identified: verbal dispute & divergent operationalizations:
+
+1. Method: bounded vs. unbounded ML SEM <br>
+2. Model: CFA vs. SEM <br>
+3. Reliability: $\Theta$ vs. $\Lambda$
+
+
+
+## Limitations and Future Directions
+
+- "Toy" case study for AC<br>
+  low stakes & no "real" adversaries <br>
+  partly resolvable by thorough review <br>
+  <br>
+- Increased Generalizability? <br>
+  still limited to specific (somewhat less) arbitrary choices for simulation<br>
+  → empirically ground simulations by sampling models (and data) from the literature (Taxonomy.jl)
+
+## Discussion
+
+1. Is the setteling of a verbal disputes through unified operationalizations really increasing generalizability?
+
+2. How could an incentive structure be designed to encourage adversarial collaboration?
+
+3. Could adversarial collaboration be implemented in the peer review process?
 
 ## References
