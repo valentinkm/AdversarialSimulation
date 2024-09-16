@@ -93,7 +93,7 @@ print(p_convergence_heatmap)
 ggsave("tables/convergence_rate_study1.png", plot = p_convergence_heatmap, width = 12, height = 6.5)
 ```
 
-*Note* This figure shows the convergence rate and the rate of improper solutions for the different methods and conditions in simulation study 1.
+*Note* This figure shows the convergence rate and the rate of proper solutions for the different methods and conditions in simulation study 1.
 
 Convergence Rate and Rate of Improper Solutions (Study 1)
 
@@ -228,16 +228,12 @@ plot_data_study_1 <- param_summary_study_1 %>%
     N = factor(N, levels = c(100, 400, 6400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
     method = factor(method, levels = unique(method)), 
-    method = case_when(
-      method == "lSAM-ML" ~ "lSAM_ML",
-      method == "lSAM-ULS" ~ "lSAM_ULS",
-      TRUE ~ method
-    ),
+    method <- gsub("_", " ", method),
     model_type = case_when(
       model_type == "1.1" ~ "no measurement MP",
-      model_type == "1.2" ~ "cross loadings MP",
-      model_type == "1.3" ~ "correlated errors & reversed path MP",
-      model_type == "1.4" ~ "bidirectional path MP",
+      model_type == "1.2" ~ "cross loadings",
+      model_type == "1.3" ~ "correlated errors & reversed path",
+      model_type == "1.4" ~ "bidirectional path",
       TRUE ~ model_type 
     ),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
@@ -252,16 +248,12 @@ plot_data_aggregated_study1 <- aggr_summary_study_1 %>%
     N = factor(N, levels = c(100, 400, 6400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
     method = factor(method, levels = unique(method)),
-    method = case_when(
-      method == "lSAM-ML" ~ "lSAM_ML",
-      method == "lSAM-ULS" ~ "lSAM_ULS",
-      TRUE ~ method
-    ),
+    method = gsub("_", " ", method),
     model_type = case_when(
       model_type == "1.1" ~ "no measurement MP",
-      model_type == "1.2" ~ "cross loadings MP",
-      model_type == "1.3" ~ "correlated errors & reversed path MP",
-      model_type == "1.4" ~ "bidirectional path MP",
+      model_type == "1.2" ~ "cross loadings",
+      model_type == "1.3" ~ "correlated errors & reversed path",
+      model_type == "1.4" ~ "bidirectional path",
       TRUE ~ model_type
     ),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
@@ -270,7 +262,6 @@ plot_data_aggregated_study1 <- aggr_summary_study_1 %>%
 
 # Prepare data for study 2 parameterwise bias plot:
 misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
-
 plot_data_study_2 <- param_summary_study_2 %>%
   filter(R_squared == 0.4, b == 3) %>% 
   select(N, reliability, method, parameter, Bias, model_type) %>%
@@ -278,16 +269,12 @@ plot_data_study_2 <- param_summary_study_2 %>%
     N = factor(N, levels = c(100, 400, 6400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
     method = factor(method, levels = unique(method)), 
-    method = case_when(
-      method == "lSAM-ML" ~ "lSAM_ML",
-      method == "lSAM-ULS" ~ "lSAM_ULS",
-      TRUE ~ method
-    ),
+    method = gsub("_", " ", method),
     model_type = case_when(
       model_type == "2.1" ~ "no measurement MP",
-      model_type == "2.2_exo" ~ "exogenous MP",
-      model_type == "2.2_endo" ~ "endogenous MP",
-      model_type == "2.2_both" ~ "endo- & exogenous MP",
+      model_type == "2.2_exo" ~ "exogenous",
+      model_type == "2.2_endo" ~ "endogenous",
+      model_type == "2.2_both" ~ "endo- & exogenous",
       TRUE ~ model_type
     ),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
@@ -303,18 +290,15 @@ plot_data_study_3 <- param_summary_study_3 %>%
     N = factor(N, levels = c(50, 100, 250, 400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
     method = factor(method, levels = unique(method)), 
-    method = case_when(
-      method == "lSAM-ML" ~ "lSAM_ML",
-      method == "lSAM-ULS" ~ "lSAM_ULS",
-      TRUE ~ method
-    ),
+    method = gsub("_", " ", method),
     model_type = case_when(
-      model_type == "3.1" ~ "cross loadings MP",
-      model_type == "3.2" ~ "correlated errors MP",
-      model_type == "3.1_negative" ~ "negative cross loadings MP",
-      model_type == "3.2_negative" ~ "negative correlated errors MP",
+      model_type == "3.1" ~ "positive CL",
+      model_type == "3.2" ~ "positive CR",
+      model_type == "3.1_negative" ~ "negative CL",
+      model_type == "3.2_negative" ~ "negative CR",
       TRUE ~ model_type
     ),
+    model_type = factor(model_type, levels = c("positive CL", "negative CL", "positive CR", "negative CR")),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
   ) %>%
   arrange(parameter) %>%
@@ -327,18 +311,15 @@ plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
     N = factor(N, levels = c(50, 100, 250, 400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
     method = factor(method, levels = unique(method)),
-    method = case_when(
-      method == "lSAM-ML" ~ "lSAM_ML",
-      method == "lSAM-ULS" ~ "lSAM_ULS",
-      TRUE ~ method
-    ),
+    method = gsub("_", " ", method),
     model_type = case_when(
-      model_type == "3.1" ~ "cross loadings MP",
-      model_type == "3.2" ~ "correlated errors MP",
-      model_type == "3.1_negative" ~ "negative cross loadings MP",
-      model_type == "3.2_negative" ~ "negative correlated errors MP",
+      model_type == "3.1" ~ "positive CL",
+      model_type == "3.2" ~ "positive CR",
+      model_type == "3.1_negative" ~ "negative CL",
+      model_type == "3.2_negative" ~ "negative CR",
       TRUE ~ model_type
     ),
+    model_type = factor(model_type, levels = c("positive CL", "negative CL", "positive CR", "negative CR")),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
   )
 
@@ -374,9 +355,9 @@ p3 <- data_plot3 %>%
   ggh4x::facet_nested(model_type + reliability ~ method, scales = "free", space = "free", switch="y") +
   theme_bw() +
   theme(
-    text = element_text(size = 8),  # Reduced overall text size
-    axis.text.x = element_text(size = 5),  # Smaller x-axis text
-    axis.text.y = element_text(size = 4),  # Smaller y-axis text (parameters)
+    text = element_text(size = 8), 
+    axis.text.x = element_text(size = 5),
+    axis.text.y = element_text(size = 4),
     legend.position = "right", 
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
@@ -426,7 +407,7 @@ p_heatmap <- plot_data_aggregated_study1 %>%
     legend.title = element_text(size = 12),
     legend.text = element_text(size = 12),  
     strip.text.y = element_text(size = 12), 
-    strip.text.x = element_text(size = 12), 
+    strip.text.x = element_text(size = 15), 
     legend.key.width = unit(0.8, "cm"),
     panel.grid = element_blank(),
     axis.title.x = element_blank(),
@@ -443,7 +424,9 @@ print(p_heatmap)
 ggsave("tables/aggregated_bias_study1.png", plot = p_heatmap, width = 12, height = 6.5)
 ```
 
-*Note.* This figure shows the aggregated bias (absolute values) of the estimated regression parameters for the different methods and conditions in simulation study 1.
+
+Note: This figure displays the aggregated bias (absolute values) of estimated regression parameters across methods and conditions in simulation study 1. The right y-axis indicates misspecifications (MP), referring to omitted parameters in the analysis model.
+
 
 Aggregated Bias of Regression Parameters (Study 1)
 
@@ -686,8 +669,9 @@ p4 <- data_plot4 %>%
     legend.position = "right", 
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    strip.text.y = element_text(size = 5),
-    strip.text.x = element_text(size = 5),
+    strip.text.y.left = element_text(size = 7),  # General y-axis label formatting
+    strip.text.y = element_text(size = 15),  # Nested y-axis label formatting
+    strip.text.x = element_text(size = 15),
     legend.key.width = unit(1, "cm"),
     panel.grid = element_line(linewidth = 0.01, color = "gray98"),
     axis.title.x = element_blank(),
