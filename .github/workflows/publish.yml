@@ -1,48 +1,25 @@
-name: Deploy Quarto Presentation to GitHub Pages
-
 on:
   workflow_dispatch:
   push:
-    branches: [presentation] 
+    branches: presentation
 
-permissions:
-  contents: write
-  pages: write      
-  id-token: write   
+name: Quarto Publish
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      - name: Install Quarto
+      - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render Quarto presentation
-        run: |
-          mkdir -p output
-          quarto render VK/thesis/LIP_presentation.qmd --output-dir output
-
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: Render and Publish
+        uses: quarto-dev/quarto-actions/publish@v2
         with:
-          path: ./output
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
