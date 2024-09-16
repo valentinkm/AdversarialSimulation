@@ -16,10 +16,13 @@ bibliography: ../../bibliography.bib
 ---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+
 library(dplyr)
 library(tidyr)
 library(kableExtra)
 library(ggplot2)
+
+
 ```
 
 
@@ -39,6 +42,7 @@ library(ggplot2)
 <br>
 <br>
 <span style="color: grey;">Discussion</span>
+
 :::
 
 
@@ -86,7 +90,7 @@ digraph circular_process {
 :::
 
 
-## The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
+## 1. The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
 :::{.columns}
 ::: {.column width="25%"}
@@ -102,13 +106,13 @@ digraph circular_process {
 
 ::: {.fragment}
 
-<span style="color: red;">researcher's degrees of freedom</span> <br>
+<span style="color: red;">researchers degrees of freedom</span> <br>
 :::
 
 ::: {.fragment}
 
 <span style="color: red;">→ ambiguity</span> <br> 
-<span style="color: red;">→ **persistent disagreement**</span>
+<span style="color: red;">→ **persistant disagreement**</span>
 
 
 :::
@@ -153,9 +157,9 @@ digraph circular_process {
 - This leads to **persistent disagreements** and **ambiguity** in scientific discourse.
 :::
 
-## The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
+## 1. The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
-In Simulation Studies
+in Simulation Studies
 
 :::{.columns}
 ::: {.column width="25%"}
@@ -214,7 +218,7 @@ digraph circular_process {
 :::
 :::
 
-## Adversarial Collaboration (AC) as a Remedy?{auto-animate=true 
+## 2. Adversarial Collaboration (AC) as a Remedy?{auto-animate=true 
 auto-animate-easing="ease-in-out"}
 
 :::{.r-fit-text}
@@ -222,7 +226,7 @@ auto-animate-easing="ease-in-out"}
 Pioneered by @mellers_frequency_2001:
 ![](figures/paper1.png){width="70%"}
 
-Recognized in Empirical Research @melloni_adversarial_2023 @clark_adversarial_2021
+Recognized in empirical research @melloni_adversarial_2023 @clark_adversarial_2021
 
 :::
 
@@ -301,30 +305,18 @@ digraph circular_process {
 ::: {.r-fit-text}
 | Steps of a Simulation Study | Content |
 |-----------------|-----------------|
-| <span class="fragment"><b>1. Research Question</b></span>    | <span class="fragment" style="color:grey;">Verbal description of Research Goals</span>    |
-| <span class="fragment"><b>2. Population Model</b></span>   | <span class="fragment" style="color:grey;">Type, size, complexity</span> |
-| <span class="fragment"><b>3. Data Generation</b></span>    | <span class="fragment" style="color:grey;">E.g. resampling vs. parametric draw</span>    |
-| <span class="fragment"><b>4. Experimental Design</b></span>    | <span class="fragment" style="color:grey;">Specifiy conditions (e.g., sample size)</span>    |
-| <span class="fragment"><b>5. Method Selection</b></span>   | <span class="fragment" style="color:grey;">Type, implementation, number</span>    |
-| <span class="fragment"><b>6. Estimands</b></span>    | <span class="fragment" style="color:grey;">Population level parameter values</span>    |
-| <span class="fragment"><b>7. Performance Metrics</b></span>    | <span class="fragment" style="color:grey;">E.g. Bias, Coverage etc.</span>  |
-| <span class="fragment"><b>8. Software</b></span>    | <span class="fragment" style="color:grey;">Applies to steps 2-7</span>    |
-| <span class="fragment"><b>9. Analysis</b></span>    | <span class="fragment" style="color:grey;">Decision criteria, graphical display etc.</span>  |
+| <span class="fragment">1. Research Question</span>    | <span class="fragment">Verbal description of research goals</span>    |
+| <span class="fragment">2. Population Model</span>   | <span class="fragment">Type, size, complexity</span> |
+| <span class="fragment">3. Data Generation</span>    | <span class="fragment">E.g. resampling vs. parametric draw</span>    |
+| <span class="fragment">4. Experimental Design</span>    | <span class="fragment">Specifiy conditions (e.g. sample size)</span>    |
+| <span class="fragment">5. Method Selection</span>   | <span class="fragment">Type, implementation, number</span>    |
+| <span class="fragment">6. Estimands</span>    | <span class="fragment">Population level parameter values</span>    |
+| <span class="fragment">7. Performance Metrics</span>    | <span class="fragment">E.g. Bias, Coverage etc.</span>  |
+| <span class="fragment">8. Software</span>    | <span class="fragment">Applies to steps 2-7</span>    |
+| <span class="fragment">9. Analysis</span>    | <span class="fragment">Decision criteria, graphical display etc.</span>  |
 :::
 
 <span style="font-size: 20px;"> @siepe_simulation_2023, @paxton_monte_2001, @morris_using_2019</span>
-
-:::{.notes}
-Verbal description of research goals, 
-Type, size, complexity,
-E.g. resampling vs. parametric draw,
-Specifiy conditions (e.g. sample size),
-Type, implementation, number, 
-Population level parameter values,
-E.g. Bias, Coverage etc., 
-Applies to steps 2-7, 
-Decision criteria, graphical display etc.
-:::
 
 ## A <span style="color:#4682B4;">Structured</span> Adversarial Simulation <span style="color:#4682B4;">Framework</span> {auto-animate=true}
 
@@ -447,7 +439,7 @@ Problems:
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
 
-## Findings of the Case Study
+## 5. Findings of the Case Study
 
 Replication Results
 <br>
@@ -879,9 +871,6 @@ Adjusting the $\Theta$ matrix directly controls reliability by manipulating meas
 
 ##
 
-Updating Verbal Claims
-<br>
-<br>
 SAM has no convergence rate advantage over bounded ML SEM
 <br>
 <br>
@@ -889,7 +878,7 @@ SAM outperforms SEM despite of negative bias under positive and negative cross l
 
 
 
-## Evaluating the Adversarial Collaboration {auto-animate=true auto-animate-easing="ease-in-out"}
+## Evaluation {auto-animate=true auto-animate-easing="ease-in-out"}
 
 :::{.columns}
 ::: {.column width="25%"}
@@ -956,26 +945,18 @@ SAM outperforms SEM despite of negative bias under cross loadings, small sample 
 
 ## Limitations and Future Directions
 
-:::{.fragment}
 - "Toy" case study for AC<br>
   low stakes & no "real" adversaries <br>
   partly resolvable by thorough review <br>
   <br>
-:::
-:::{.fragment}
 - Increased Generalizability? <br>
-:::
-:::{.fragment}
   still limited to specific (somewhat less) arbitrary choices for simulation<br>
-:::
-:::{.fragment}
   → empirically ground simulations by sampling models (and data) from the literature (Taxonomy.jl)
-:::
 
 ## Discussion
 
-1. Is the settling of verbal disputes through unified operationalizations really increasing generalizability?
-2. Are individual studies in prior to adversarial collaboration beneficial?
+1. Is the setteling of a verbal disputes through unified operationalizations really increasing generalizability?
+2. Are individual studies in prior to adversarial collaboration benfeficial?
 3. How could an incentive structure be designed to encourage adversarial collaboration?
 4. Could adversarial collaboration be implemented in the peer review process?
 
