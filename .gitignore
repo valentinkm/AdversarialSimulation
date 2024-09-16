@@ -10,3 +10,4 @@ VK/.Rapp.history
 .RData
 *.Rproj
 /.quarto/
+_publish/
