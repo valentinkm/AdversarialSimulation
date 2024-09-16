@@ -1,6 +1,0 @@
-project:
-  type: website
-  title: "FAIR Theory"
-  render: 
-    - VK/thesis/LIP_presentation.qmd
-  output-dir: _publish/
