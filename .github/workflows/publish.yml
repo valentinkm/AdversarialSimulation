@@ -22,6 +22,17 @@ jobs:
         with:
           r-version: '4.2.0'
 
+      - name: Install Required R Packages
+        run: |
+          Rscript -e 'install.packages(c(
+            "knitr", 
+            "rmarkdown", 
+            "dplyr", 
+            "tidyr", 
+            "kableExtra", 
+            "ggplot2"
+          ), repos = "https://cran.rstudio.com")'
+
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
