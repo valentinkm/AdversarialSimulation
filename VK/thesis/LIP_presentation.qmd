@@ -2,7 +2,9 @@
 title: "Adversarial Simulation"
 subtitle: "Structural after Measurement vs. vanilla SEM estimation - a Case Study on Adversarial Collaboration for Simulation Studies"
 fig-cap-location: top
-author: "Valentin Kriegmair"
+author: 
+  - name: "Valentin Kriegmair"
+  - name: "Leonard Kosanke"
 format:
   revealjs:
     center: true
@@ -13,6 +15,7 @@ format:
 
 engine: knitr
 bibliography: ../../bibliography.bib
+csl: ../../apa.csl
 ---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
@@ -25,18 +28,20 @@ library(ggplot2)
 
 ::: {.r-fit-text style="font-size: 0.8em;"}
 ## Outline {auto-animate=true}
-1. The Generalizability Challenge
-2. Adversarial Collaboration as Remedy
-3. An Adversarial Simulation Framework
+1. The Generalizability Challenge & Adversarial Collaboration
+2. An Adversarial Simulation Framework
+3. Background (SAM vs. SEM)
+4. Research Questions
 <br>
 <br>
 <span style="color: grey;">Time for questions</span>
 <br>
 <br>
-4. **Background**: SAM vs. SEM
-5. **Findings**: Results and Collaboration
-6. **Outlook**: Evaluation and Future Directions
-<br>
+
+5. Results
+6. Collaboration
+7. Evaluation and Future Directions
+
 <br>
 <span style="color: grey;">Discussion</span>
 :::
@@ -85,6 +90,11 @@ digraph circular_process {
 :::
 :::
 
+:::{.notes}
+Karl Popper once famously described Science as the art of "systematic over simplification".
+
+This term ironically and yet accurately describes the very basic cycle of empirical research, where we lay out general claims about the world as hypotheses, translate them into measurable constructs and choose how to gather data from certain populations that finally in turn updates our beliefs about general verbal claims about the world.
+:::
 
 ## The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
@@ -116,7 +126,7 @@ digraph circular_process {
 <br>
 <br>
 <br>
-<span style="color: green;">specific & empirical</span>
+<span style="color: green;">specific</span> & <span style="color: purple">  empirical</span>
 :::
 :::
 ::: {.column width="50%"}
@@ -134,7 +144,7 @@ digraph circular_process {
     // Define nodes with positions to form a circle
         hypothesize [label=< <font color="blue">Hypothesize</font> >, pos="0,1!"];
         operationalize [label=< <font color="green">Operationalize</font> >, pos="-0.866,-0.5!"];
-        gather_data [label=< <font color="green">Gather Data</font> >, pos="0.866,-0.5!"];
+        gather_data [label=< <font color="purple">Gather Data</font> >, pos="0.866,-0.5!"];
 
     // Define edges to create a circular process
     hypothesize -> operationalize [color="red"];
@@ -147,10 +157,9 @@ digraph circular_process {
 :::
 
 :::{.notes}
-- Science is **communicated** through **general verbal descriptions**.
-- Empirical research, however, requires **precise operationalization** on the empirical plane.
-- Conflicts arise when **verbal descriptions** do not neatly map onto operationalized data.
-- This leads to **persistent disagreements** and **ambiguity** in scientific discourse.
+One core challenge in every research endavour is the mapping of the general to the specific (when designing and conducting the study) or from the specific & empirical to the verbal & general (when interpreting the results). 
+
+This mapping seems the crux of most research and here most, if not all of of a researcher's degrees of freedom lie. This makes this mapping the source of ambiguity and persistant disputes. When divergences in mappings from the verbal plane are not recognized or not transparent, persistent and seemingly unresolvable disagreements in the general and verbal plane occur.
 :::
 
 ## The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
@@ -180,7 +189,7 @@ In Simulation Studies
 <br>
 <br>
 <br>
-<span style="color: green;">specific & empirical</span>
+<span style="color: green;">specific</span> & <span style="color: purple">  empirical</span>
 :::
 :::
 ::: {.column width="50%"}
@@ -202,7 +211,7 @@ digraph circular_process {
             <tr><td><font color="green">Model,<br/> Estimands,<br/> Metrics etc.</font></td></tr>
         </table>
     >, pos="-0.866,-0.5!", color="green"];
-    gather_data [label=< <font color="green">Simulate</font> >, pos="0.866,-0.5!", color="green"];
+    gather_data [label=< <font color="purple">Simulate</font> >, pos="0.866,-0.5!", color="green"];
 
     // Define edges to create a circular process
     hypothesize -> operationalize [color="red"];
@@ -212,6 +221,14 @@ digraph circular_process {
 ```
 :::
 :::
+:::
+
+:::{.notes}
+This challenge transfers to monte carlo simulation studies. These are commonly used tools to test statistical methods in simulated data that can be used to evaluate any method against a known ground truth.
+
+As it is impossible to simulate and test every possible data and analysis model combination, here too, researchers are confronted with a multitude of degrees of freedom and decisions about what "prototypical" models to test in which "prototypical" data and settings.
+
+Here, especially the comparison of different methods in their "general" applicability and performance for various research settings is prone to conflicting verbal claims based on diverging simulation decisions. Biases for a specific method developed by one researcher might additionally amplify these divergencies not only at the step of interpreting results but importantly also when designing a simulation.
 :::
 
 ## Adversarial Collaboration (AC) as a Remedy?{auto-animate=true 
@@ -226,6 +243,14 @@ Recognized in Empirical Research @melloni_adversarial_2023 @clark_adversarial_20
 
 :::
 
+:::{.notes}
+Adversarial Collaboration is a scientific practice that aimed to tackle entrenched disagreeing positions and unveil underlying discrepancies in operationalizations.
+
+It was famously pioneered by Ralph Hertwig and Daniel Kahneman who tried to settle a persistent scientific disagreement about frequency representation and consulted Barbara Mellers as a neutral arbiter.
+
+Today it is recognized as a potent tool in the social empirical research community
+:::
+
 
 ## Adversarial Collaboration (AC){auto-animate=true auto-animate-easing="ease-in-out"}
 
@@ -235,7 +260,7 @@ Recognized in Empirical Research @melloni_adversarial_2023 @clark_adversarial_20
 
 :::{.fragment fragment-index=1}
 <br>
-<span style="color:blue">Identify general & verbal Disagreement</span>
+<span style="color:blue">Identify general & verbal Disagreement → joint Research Question</span>
 <br>
 :::
 :::{.fragment fragment-index=2}
@@ -283,18 +308,18 @@ digraph circular_process {
 :::
 
 :::{.notes}
-- Scholars with opposing views **jointly identify** where their verbal descriptions and empirical evidence diverge.
-- **Translate** general verbal descriptions into mutually agreed **operational definitions**.
-- This **mapping** is key: aligning theoretical concepts with empirical measures.
-- Develop **agreed-upon methods** to test competing hypotheses, focusing on points of empirical disagreement.
-- Tests must capture both the **nuances** of verbal claims and the **rigor** of empirical standards.
-- Develop **agreed-upon methods** to test competing hypotheses, focusing on points of empirical disagreement.
-- Tests must capture both the **nuances** of verbal claims and the **rigor** of empirical standards.
-- Both sides **collaborate** in interpreting the findings, ensuring that conclusions **respect the initial verbal intentions** while reflecting **empirical reality**.
+The basic idea is for two researchers in disagreement to first identify a general verbal dispute and agree on a research question to settle the debate.
+
+Based on this they collaboratively work on operationalizing, testing and interpreting this verbal claim. This process aims to unveil and concretize underlying disagreements and thus reduce ambiguity and increase generalizability.
+
+In this project we aim to transfer the concept of adversarial collaboration from the empirical domain to monte carlo simulation studies and assess its feasibility and viability in a case study in this context.
 :::
 
-
 ## Creating an Adversarial Simulation <span style="color:#4682B4;">Framework</span>{auto-animate=true}
+
+:::{.notes}
+To conduct such an examplatory adversarial collaboration we first need a framework that structures the collaborative process tailored to the outline of simulation studies.
+:::
 
 ## <span style="color:#4682B4;">Structure</span> of a Simulation Study {auto-animate=true}
 
@@ -315,15 +340,7 @@ digraph circular_process {
 <span style="font-size: 20px;"> @siepe_simulation_2023, @paxton_monte_2001, @morris_using_2019</span>
 
 :::{.notes}
-Verbal description of research goals, 
-Type, size, complexity,
-E.g. resampling vs. parametric draw,
-Specifiy conditions (e.g. sample size),
-Type, implementation, number, 
-Population level parameter values,
-E.g. Bias, Coverage etc., 
-Applies to steps 2-7, 
-Decision criteria, graphical display etc.
+As basis for this we first identified the core steps of a simulation study at which critical and distinctive decision points occur.
 :::
 
 ## A <span style="color:#4682B4;">Structured</span> Adversarial Simulation <span style="color:#4682B4;">Framework</span> {auto-animate=true}
@@ -343,8 +360,15 @@ Decision criteria, graphical display etc.
 | 9. Analysis         |→                |                       |←                |
 :::
 
+:::{.notes}
+This led us to a specific adversarial simulation framework. Importantly we decided to structure the collaboration in two rounds. In the first round, each collaborator works on the simulation study independently. In the second round, they collaborate on a joint study based on the results of the first round
+:::
 
-## SAM vs SEM <span style="font-size: 20px;"> Background</span>
+## Strucutral after Measurement (SAM) vs traditional SEM estimation <span style="font-size: 20px;"> Background</span>
+
+:::{.notes}
+Now, to set the stage for our specific case study I briefly outline the background of Structural After Measurement (SAM) as potential alternative to traditional Structural Equation Modeling (SEM) estimation.
+:::
 
 ## Standard SEM Estimation <span style="font-size: 20px;">(e.g.ML, ADF, GLS, ULS)</span>{auto-animate="true"}
 
@@ -372,6 +396,9 @@ Problems:
 ::::
 :::
 
+:::{.notes}
+Traditional SEM methods, like maximum likelihood estimation, optimize all parameters simultaneously under the assumption of multivariate normality. While powerful, they often face issues such as non-convergence, improper solutions, and biases from local measurement misspecifications that affect the entire model. They also typically require large sample sizes for optimal performance.
+:::
 
 ## Structural After Measurement (SAM)
 ::: {.columns}
@@ -403,6 +430,8 @@ Problems:
 <span style="font-size: 20px;">@rosseel_structural_2022</span>
 
 :::{.notes}
+SAM addresses some limitations of SEM by separating the estimation into two phases. First, the measurement model parameters are estimated, either locally for each block or globally. Then, these fixed parameters are used in the structural model estimation. This approach aims to reduce the propagation of bias from the measurement to the structural part and decrease convergence issues, especially in smaller samples.
+
 1. **Local SAM (lSAM):** Constructs the latent variable mean vector and variance-covariance matrix using observed data, measurement parameters, and a mapping matrix to inform the structural model estimation.
 
 2. **Global SAM (gSAM):** Directly estimates structural parameters using the full model while keeping measurement parameters fixed, without constructing latent variable summary statistics.
@@ -424,6 +453,10 @@ Problems:
 
 :::
 
+:::{.notes}
+There have been conflicting reports on the performance of SAM versus SEM. Some studies suggest that SAM outperforms SEM in terms of convergence, bias, and RMSE, particularly in challenging conditions. Others find that SAM doesn't generally outperform SEM and that any apparent advantages may be due to bias cancellation under certain misspecifications. This disagreement forms the basis for our adversarial simulation case study.
+:::
+
 :::
 
 ## SAM vs. SEM: <br> an <span style="color: #4682B4;"> Adversarial Simulation </span> {auto-animate="true"}
@@ -442,10 +475,28 @@ Problems:
 
 :::
 
-## Research Questions <span style="font-size: 20px;">agreed upon prior to individual studies</span>
+:::{.notes}
+A replication of these conflicting studies represent round 1 of individually conducted studies.
+:::
+
+
+## Research Questions
+
+::: {.r-fit-text}
+
+**Is Adversarial Collaboration a viable approach to address ambiguity and increase generalizability in simulation studies?**
+<br>
+<br>
+**Substantive Questions wihtin the Case Study** <span style="font-size: 20px;">(agreed upon prior to individual studies)</span>
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms of bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
+
+:::
+
+:::{.notes}
+Our primary research question is whether adversarial collaboration is a viable approach to reduce ambiguity and increase generalizability in simulation studies. Specifically, within our case study, we want to compare SAM and traditional SEM methods in terms of bias, MSE, and convergence rates in small to moderate samples, and assess the impact of model misspecifications on their performance.
+:::
 
 ## Findings of the Case Study
 
@@ -601,7 +652,7 @@ Adversarial Collaboration
 
 
 
-## Bias <span style="font-size: 20px;"> E.g.: Kriegmair Study 1: absolute $\hat{\beta}$ bias values aggregated across parameters</span>
+## Bias <span style="font-size: 20px;"> E.g.: Kriegmair Study 1: relative $\hat{\beta}$ bias values aggregated across parameters</span>
 ::: {.r-fit-text}
 ![](tables/aggregated_bias_study1.png)
 :::
@@ -668,7 +719,7 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
 | Verbal Dispute |"SEM performs worse than SAM in <span style="color: green;">low reliability</span> x <span style="color:blue;">low sample size</span> x <span style="color:orange;">misspecification</span>"| "SAM generally did not outperform traditional SEM in <span style="color:blue;">small to moderate samples</span>." <br> <br> "[under] <span style="color:orange;">unmodeled negative cross-loadings and residual correlations</span>, SAM tended to perform worse than traditional SEM"|
 |4. Experimental Design| *N*:<span style="color:blue;">100, 400</span>, 6400<br> <span style="color:green;">Reliability via $\Theta$ </span> <br> <span style="color:orange;">Positive cross loadings & correlated residuals</span>| *N*:<span style="color:blue;">50, 100, 250, 500</span>, 1000, 2500, 100000<br><span style="color:green;"> Reliability via  $\Lambda$</span> <br> <span style="color:orange;">Positive & negative cross loadings & correlated residuals (only in CFA)</span>|
 |<span class = "fragment"> 5. Population Model</span >|<span class = "fragment"> 5-factor-SEM</span>| <span class="fragment"> 2-factor CFA & 5-factor SEM </span> |
-|<span class = "fragment"> 6. Analysis |<span class = "fragment"> Aggregated absolute values and parameter-wise </span> |<span class = "fragment"> Aggregated absolute values & aggregated relative bias </span> |
+|<span class = "fragment"> 6. Analysis |<span class = "fragment"> Aggregated relative values and parameter-wise </span> |<span class = "fragment"> Aggregated relative bias </span> |
 :::
 
 
@@ -679,7 +730,7 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
     <tr>
       <th></th>
       <th>Round 1</th>
-      <th>Round 2</th>
+      <th class="pastel-blue">Round 2</th>
       <th>Round 1</th>
     </tr>
   </thead>
@@ -687,7 +738,7 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
     <tr>
       <td><strong>Steps</strong></td>
       <td>Kriegmair</td>
-      <td>Joint Study</td>
+      <td class="pastel-blue">Joint Study</td>
       <td>Kosanke</td>
     </tr>
     <!-- Step 2 -->
@@ -696,19 +747,19 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
       <td>
         5-factor-SEM
       </td>
-      <td class="fragment" data-fragment-index="2">5-factor-SEM</td>
+      <td class="pastel-blue fragment" data-fragment-index="2">5-factor-SEM</td>
       <td>
         5-factor-SEM<br>
         <span class="strike fragment" data-fragment-index="2">2-factor-CFA</span>
       </td>
     </tr>
     <!-- Step 3 -->
-    <tr>
+    <tr class="grey-text">
       <td><strong>Data Generation</strong></td>
       <td>
         parametric & normally distributed
       </td>
-      <td class="fragment" data-fragment-index="3">parametric & normally distributed</td>
+      <td class="pastel-blue fragment" data-fragment-index="3">parametric & normally distributed</td>
       <td>
         parametric & normally distributed
       </td>
@@ -721,7 +772,7 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
         *N*: 100 - <span class="strike fragment" data-fragment-index="4">6400</span><br>
         Reliability via Θ
       </td>
-      <td class="fragment" data-fragment-index="4">
+      <td class="pastel-blue fragment" data-fragment-index="4">
         Misspecifications (+/-)<br>
         *N*: 50, 100, 250, 400<br>
         Reliability via Θ
@@ -736,9 +787,9 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
     <tr>
       <td><strong>Method Selection</strong></td>
       <td>
-        SEM-ML, gSAM, lSAM (ULS & ML)
+        <span class="strike fragment" data-fragment-index="5">SEM-ML</span>, gSAM, lSAM (ULS & ML)
       </td>
-      <td class="fragment" data-fragment-index="5">
+      <td class="pastel-blue fragment" data-fragment-index="5">
         bounded SEM-ML, gSAM, lSAM (ULS & ML)
       </td>
       <td>
@@ -751,7 +802,7 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
       <td>
         β: Fixed at 0.1 <span class="strike fragment" data-fragment-index="6"> and varied</span>
       </td>
-      <td class="fragment" data-fragment-index="6">
+      <td class="pastel-blue fragment" data-fragment-index="6">
         β: Fixed at 0.1
       </td>
       <td>
@@ -764,11 +815,11 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
       <td><strong>Performance Metrics</strong></td>
       <td>
         Absolute bias in absolute values <br>
-        RMSE<br>
+        <span class="strike fragment" data-fragment-index="7">Signed Relative bias</span><br>
         95% CI coverage<br>
         Convergence & Improper Solutions
       </td>
-      <td class="fragment" data-fragment-index="7">
+      <td class="pastel-blue fragment" data-fragment-index="7">
         Absolute bias<br>
         RMSE<br>
         95% CI coverage<br>
@@ -776,17 +827,17 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
       </td>
       <td>
         Absolute bias in absolute values<br>
-        <span class="strike fragment" data-fragment-index="7">Relative bias</span><br>
+        <span class="strike fragment" data-fragment-index="7">Signed Relative bias</span><br>
         RMSE<br>
         95% CI coverage      </td>
     </tr>
     <!-- Step 8 -->
-    <tr>
+    <tr class="grey-text">
       <td><strong>Software</strong></td>
       <td>
         lavaan::simulateData()
       </td>
-      <td class="fragment" data-fragment-index="8">
+      <td class="pastel-blue fragment" data-fragment-index="8">
         lavaan::simulateData()
       </td>
       <td>
@@ -799,7 +850,7 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
       <td>
         Aggregated across parameters,<br> heat maps
       </td>
-      <td class="fragment" data-fragment-index="9">
+      <td class="pastel-blue fragment" data-fragment-index="9">
         Aggregated, <br> **parameter-wise**,<br>
         decision criteria <br> heat maps
       </td>
@@ -836,6 +887,12 @@ However, this is a false perception of robustness, as LSAM performs inconsistent
   }
   .strike.visible {
     text-decoration: line-through;
+  }
+  .grey-text {
+    color: grey;
+  }
+  .pastel-blue {
+    background-color: #b3cde0;
   }
 </style>
 
