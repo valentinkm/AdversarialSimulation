@@ -503,7 +503,7 @@ Replication Results
 Adversarial Collaboration
 
 :::{.notes}
-Now, let's dive into the results of our case study
+Now, let's delve into the results of our case study.
 :::
 
 
@@ -513,13 +513,13 @@ Now, let's dive into the results of our case study
 | based on @rosseel_structural_2022 and @dhaene_evaluation_2023 | based on @robitzsch_comparing_2022  |
 
 :::{.notes}
-As just mentioned in the first round of our adversarial collaboration, Leonard Kosanke and I conducted individual simulation studies based on the conflicting reports by Rossel, Loh, and Dahene and Robitzsch.
+As mentioned earlier, in the first round of our adversarial collaboration, Leonard Kosanke and I conducted individual simulation studies based on the conflicting reports by Rossel, Loh, and Dahene, as well as Robitzsch.
 :::
 
 ## Studies by Kriegmair
 
 :::{.notes}
-I will first present the results of my individual simulation studies.
+I'll start by presenting the results of my individual studies.
 :::
 
 ## Study 1 <span style="font-size: 20px;">based on @rosseel_structural_2022</span>
@@ -592,7 +592,7 @@ I will first present the results of my individual simulation studies.
 :::
 
 :::{.notes}
-Here I give a brief overview of the set up the studies. In a first study I considered four distinct population models that differed in the presence of misspecifications which was also one condition of interest. I also varied the sample size, the indicator reliability. Four different methods, traditional SEM with ML, global SAM, local SAM with ML, and local SAM with unweighted least squares compared in each condition. As performance metrics, I considered the bias of path estimates which is the difference between the predicted and actual values, indicating whether the model systematically over- or under-predicts, and the RMSE of path estimates, measuring the overall error magnitude and general accuracy of estimates. The coverage of 95% confidence intervals for path estimates was calculated as the proportion of times the true path coefficient was within the 95% confidence interval of the estimated path coefficient.
+To begin, here is a brief overview of the study setup. In the first study, I considered four distinct population models, each differing in the presence of misspecifications, which was a key condition of interest. I also varied both sample size and indicator reliability. In each condition, four methods were compared: traditional SEM with ML, global SAM, local SAM with ML, and local SAM with unweighted least squares. As performance metrics, I assessed the bias of path estimates—indicating whether the model systematically over- or under-predicts by comparing the predicted and actual values—and the RMSE of path estimates, which measures the overall error magnitude and general accuracy of the estimates. Additionally, I calculated the coverage of the 95% confidence intervals for path estimates, representing the proportion of times the true path coefficient fell within the estimated interval.
 :::
 
 ## Study 2 <span style="font-size: 20px;">based on @dhaene_evaluation_2023</span>
@@ -651,7 +651,7 @@ Here I give a brief overview of the set up the studies. In a first study I consi
 :::
 
 :::{.notes}
-In the second study, I considered also four population models that differed in the presence of misspecifications. Where the first condition was a model with no measurement misspecifications and estimated paths absent in the population but specified in the analysis model. I then considered the same model with measurement misspecifications either in the exogenous or endogenous analysis model or both. Next to the sample size and indicator reliability, I also varied the $R^2$ of the latent variables and the number of measurement blocks used for SAM. The same methods under the same performance metrics as in study  were compared in each condition.
+In the second study, I again examined four population models, each differing in the presence of misspecifications. The first condition featured a model with no measurement misspecifications and included paths that were absent in the population but specified in the analysis model. I then considered scenarios with measurement misspecifications either in the exogenous or endogenous analysis model, or both. In addition to sample size and indicator reliability, I varied the regressions paths via total variance explained in the endogenous latet variables and the number of measurement blocks used for SAM. The same methods and performance metrics as in the first study were applied to each condition.
 :::
 
 ## Studies by Kosanke <span style="font-size: 20px;">based on @robitzsch_comparing_2022</span>
@@ -659,7 +659,7 @@ In the second study, I considered also four population models that differed in t
 ![](figures/kosanke_studies_overview.png)
 
 :::{.notes}
-Now, let me give a brief overview of Kosanke's studies. He conducted six simulation studies replicating key aspects relevant to our research questions. He examined various population models to create different misspecification conditions, similar to my own approach. However he also included negative cross-loadings and residual correlations and he put a special focus on simple 2 factor CFA models. He also varied the sample size ranging from as small as 50 to as large as 100,000 and also varied the reliability of the indicators. He used mostly the same methods and performance metrics as I did in my studies. I will now go into more detail about specific discrepancies between our aproaches when presenting the results.
+Now, let's move on to an overview of Kosanke's studies. He conducted six simulation studies that replicated key aspects relevant to our research questions. He examined various population models to create different misspecification conditions, similar to my approach. However, he also included negative cross-loadings and residual correlations, placing a special emphasis on simple 2-factor CFA models. Furthermore, he varied the sample size, ranging from as small as 50 to as large as 100,000, as well as the reliability of the indicators. Although he used mostly the same methods and performance metrics as I did, there were some specific discrepancies between our approaches, which I will now explore in more detail.
 :::
 
 # Results of individual studies <span style="font-size: 20px;"> (examplatory) </span>
@@ -675,9 +675,9 @@ Now, let me give a brief overview of Kosanke's studies. He conducted six simulat
 :::
 
 :::{.notes}
-One main discrepancy between the findings of our individual studies was the convergence rate of SEM.  I found that SEM had a low convergence rate, especially in small samples and low reliabillity. Kosanke on the other hand did not report any or just neglible convergence issues. We found that this discrepancy was likely due to differences in the method selection and analysis. I used unbounded ML SEM, while Kosanke used bounded ML SEM. Bounded ML SEM constraints variances and loadings to their theoretical range, which can help with convergence issues and avoid improper solutions.
+One key difference between the findings of our individual studies was the convergence rate of SEM. I found that SEM had a low convergence rate, particularly in small samples with low reliability. In contrast, Kosanke reported few or negligible convergence issues. We determined that this discrepancy was likely due to differences in method selection and analysis. I used unbounded ML SEM, while Kosanke employed bounded ML SEM, which constrains variances and loadings to their theoretical range, potentially aiding in resolving convergence issues and avoiding improper solutions.
 
-I also captured the convergence rate condition-wise, while Kosanke tracked the overall rate. 
+I also captured the convergence rate condition-wise, while Kosanke tracked the overall rate.
 :::
 
 ## Convergence Rate <span style="font-size: 20px;"> E.g.: Kriegmair Study 1:</span>
@@ -685,7 +685,7 @@ I also captured the convergence rate condition-wise, while Kosanke tracked the o
 ![](tables/convergence_rate_study1.png)
 
 :::{.notes}
-Here you can see the convergence rates for the different methods in the first study. As you can see, SEM had convergence rates as low as 50%, in low sample size and reliability with misspecifications. SAM methods, on the other hand had no convergence issues at all.
+Here are the convergence rates for the different methods in the first study. As you can see, SEM exhibited convergence rates as low as 50% in conditions with small sample size and low reliability, especially with misspecifications. In contrast, SAM methods showed no convergence issues.
 :::
 
 ## Bias
@@ -696,7 +696,7 @@ Here you can see the convergence rates for the different methods in the first st
 :::
 
 :::{.notes}
-Another key discrepancy we found in our findings was for example the bias of the path estimates. I found and claimed that SEM performed worse than SAM in low reliability, low sample size, and misspecification conditions. Kosanke, on the other hand, found that SAM generally did not outperform traditional SEM in small to moderate samples. He also found that under unmodeled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM.
+Another key discrepancy we identified was related to the bias of the path estimates. I argued that SEM performed worse than SAM under conditions of low reliability, small sample sizes, and misspecifications. Conversely, Kosanke found that SAM generally did not outperform traditional SEM in small to moderate samples. Additionally, he observed that under unmodeled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM.
 :::
 
 
@@ -706,7 +706,7 @@ Another key discrepancy we found in our findings was for example the bias of the
 :::
 
 :::{.notes}
-Here for example you can see the aggregated relative bias values for the path estimates in my first study. As you can see here I found that espcially cross loadings led to a higher bias in SEM compared to SAM in small samples and low and moderate reliability.
+Here, for example, are the aggregated relative bias values for the path estimates in my first study. I found that cross-loadings, in particular, led to a higher bias in SEM compared to SAM in conditions with small samples and low to moderate reliability.
 :::
 
 ## Bias <span style="font-size: 20px;"> E.g.: Kosanke Study 1:</span>
@@ -746,13 +746,11 @@ create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 :::
 
 :::{.notes}
-Kosanke on the other hand backed his verbal claim with for example findings like these where SEM consistently outperformed SAM in terms of bias in small to moderate samples in a 2-factor CFA model with two negative unmodelled residual correlations.
+Kosanke, on the other hand, supported his claims with findings showing that SEM consistently outperformed SAM in terms of bias in small to moderate samples in a 2-factor CFA model with two negative unmodeled residual correlations.
 
-Kosanke replicating Robitiszsches findings, claimed here that SAM appears to perform worse than traditional SEM under unmodeled negative cross-loadings and residual correlations. This happens because of a  cancellation of bias in LSAM, particularly in small samples:
+In replicating Robitzsch's findings, Kosanke claimed that SAM appears to perform worse than traditional SEM under unmodeled negative cross-loadings and residual correlations. This occurs because LSAM tends to have a negative small-sample bias. When positive residual correlations are ignored, it introduces a positive bias. These two biases cancel each other out, making LSAM seem more accurate than it actually is.
 
-LSAM tends to have a negative small-sample bias, and when you ignore positive residual correlations, that introduces a positive bias. These two biases cancel each other out, making LSAM seem more accurate than it really is.
-
-However, he claims this is a false perception of robustness, as LSAM performs inconsistently across different conditions, and in cases like unmodeled negative correlations, it actually does worse than SEM.
+However, Kosanke argues that this is a false perception of robustness, as LSAM's performance varies across different conditions and, in cases of unmodeled negative correlations, actually performs worse than SEM.
 :::
 
 ## Bias
@@ -767,7 +765,7 @@ However, he claims this is a false perception of robustness, as LSAM performs in
 
 
 :::{.notes}
-A closer look then enabled us to trace back our verbal claims in direct contrast to differences in certain decisions in our individual studies. [▶︎] Firstly "low" sample size included a size of 50 in Kosanke's study, while I started at 100. Secondly, I manipulated reliability by adjusting the indicator error variance, while Kosanke varied the factor loadings. Thirdly I only included positive cross-loadings and correlated residuals, while Kosanke also included negative cross-loadings and residual correlations. Fourth, I refer only to results from a 5-factor SEM with a strucutral while Kosankes findings are in large based on estimating CFA models.
+A closer examination allowed us to trace our differing claims back to specific choices made in our individual studies. [▶︎] Firstly, Kosanke included a "low" sample size of 50, while I started at 100. Secondly, I manipulated reliability by adjusting the indicator error variance, whereas Kosanke varied the factor loadings. Thirdly, I included only positive cross-loadings and correlated residuals, while Kosanke also included negative ones. Lastly, my results were based solely on a 5-factor SEM with a structural component, while Kosanke's findings were largely derived from estimating CFA models.
 :::
 
 ## Bias
@@ -781,7 +779,7 @@ A closer look then enabled us to trace back our verbal claims in direct contrast
 :::
 
 :::{.notes}
-A closer look then enabled us to trace back our verbal claims in direct contrast to differences in certain decisions in our individual studies. [▶︎] Firstly "low" sample size included a size of 50 in Kosanke's study, while I started at 100. Secondly, I manipulated reliability by adjusting the indicator error variance, while Kosanke varied the factor loadings. Thirdly I only included positive cross-loadings and correlated residuals, while Kosanke also included negative cross-loadings and residual correlations. Fourth, I refer only to results from a 5-factor SEM with a strucutral while Kosankes findings are in large based on estimating CFA models.
+A closer examination allowed us to trace our differing claims back to specific choices made in our individual studies. [▶︎] Firstly, Kosanke included a "low" sample size of 50, while I started at 100. Secondly, I manipulated reliability by adjusting the indicator error variance, whereas Kosanke varied the factor loadings. Thirdly, I included only positive cross-loadings and correlated residuals, while Kosanke also included negative ones. Lastly, my results were based solely on a 5-factor SEM with a structural component, while Kosanke's findings were largely derived from estimating CFA models.
 :::
 
 ## Collaboration
@@ -979,9 +977,10 @@ A closer look then enabled us to trace back our verbal claims in direct contrast
 
 
 :::{.notes}
-We then continued to stepwise align our decisions in round 2. Due to time limitations of the project we limited the joint study to a minimal scope. 
+We then proceeded to align our decisions step-by-step in round 2. Due to time constraints, we limited the joint study's scope to a minimal level.
 
-We agreed on a 5-factor SEM population model as SAM is particularly designed for complex models with a structural part while not tailored to CFA models. We kept the data generation and software the same as in our individual studies. We agreed on bounded ML SEM as the method of choice as this was brought up as one argument of why SAM has no better convergence rate than SEM. We limited the estimands to fixed coefficients as no relevant differences for the SAM vs SEM comparison were found here in my first studies. For performance metrics we agreed to additionally include a parameter-wise analysis of bias to get a better picture of the proclaimed negative bias of SAM depending on the sign of cross-loadings and residual correlations. 
+We agreed on using a 5-factor SEM population model since SAM is particularly designed for complex models with a structural part, as opposed to being tailored to CFA models. We maintained the data generation and software as they were in our individual studies. We selected bounded ML SEM as the method of choice, as this had been suggested as a reason why SAM does not necessarily have a convergence rate advantage over SEM. We limited the estimands to fixed coefficients, as no significant differences for the SAM vs. SEM comparison had been found in my initial studies. For performance metrics, we included a parameter-wise analysis of bias to get a clearer picture of SAM's potential negative bias depending on the sign of cross-loadings and residual correlations.
+
 :::
 
 ## Results of the Joint Study
@@ -991,7 +990,7 @@ We agreed on a 5-factor SEM population model as SAM is particularly designed for
 ![](tables/convergence_rate_study3.png)
 
 :::{.notes}
-So first of all we found that the as proposed by the first study of Kosanke any convergence issues and issues of improper solutions in SEM could be resolved by using bounded ML SEM questioning whether SAM has a convergence rate advantage over traditional SEM.
+First, we found that, as suggested by Kosanke's initial study, any convergence issues and improper solutions in SEM could be resolved by using bounded ML SEM, casting doubt on whether SAM has a convergence rate advantage over traditional SEM.
 :::
 
 
@@ -1000,11 +999,11 @@ So first of all we found that the as proposed by the first study of Kosanke any 
 ![](tables/abs_bias_parameterwise_study3.png)
 
 :::{.notes}
-We then looked at parameterwise bias values under positive and negative cross loadings and residual correlations to see if SAM outperforms SEM even in the presence of negative misspecifications and whether the claim that a negative bias of SAM in small samples cancels out the positive bias from positive misspecifications holds true in a more complex model with a structural part.
+Next, we examined parameter-wise bias values under positive and negative cross-loadings and residual correlations. This was to test if SAM outperforms SEM even in the presence of negative misspecifications and to check whether the claim that a negative bias in SAM in small samples cancels out the positive bias from positive misspecifications holds true in a more complex model with a structural part.
 
-Here we can see that the sign switch of the cross loadings from positive to negative also leads to more negative biases in SEM mopared to SAM. This contradicts the claim that SAM outperforms SEM in the presence of negative misspecifications and we dont observe a more negative bias of SAM with negative cross loadings. 
+Our analysis showed that switching the sign of the cross-loadings from positive to negative also led to more negative biases in SEM compared to SAM. This finding contradicts the claim that SAM outperforms SEM in the presence of negative misspecifications, and we do not observe a more negative bias in SAM with negative cross-loadings.
 
-For correlated residuals we can see no clear bias direction dependence on the presign of the correlation with mostly negative biases across the board.
+For correlated residuals, there was no clear relationship between bias direction and the sign of the correlation, with mostly negative biases across the board.
 :::
 
 ## Bias - aggregated <span style="font-size: 20px;"> after collaboration </span>
@@ -1012,7 +1011,7 @@ For correlated residuals we can see no clear bias direction dependence on the pr
 ![](tables/aggregated_bias_study3.png)
 
 :::{.notes}
-When we then aggregate the bias in absolute values across all parameters we can then see that SAM still outperforms SEM in terms of bias in the cross loadings conditions independent of their presign in the low to moderate reliability conditions. We can also see that correlated residuals lead to no or a small benefit of SEM over SAM that is however less pronounced.
+When we aggregate the bias in absolute values across all parameters, we find that SAM still outperforms SEM in terms of bias in the cross-loadings conditions, regardless of their sign, in cases of low to moderate reliability. We also see that correlated residuals provide little to no advantage to SEM over SAM, and the benefit is less pronounced.
 :::
 
 
@@ -1027,7 +1026,7 @@ SAM has no convergence rate advantage over bounded ML SEM
 SAM outperforms SEM despite of negative bias under positive and negative cross loadings in small samples and small to moderate reliability
 
 :::{.notes}
-So in conclusion we can say that SAM has no convergence rate advantage over bounded ML SEM and that SAM outperforms SEM despite of negative bias under positive and negative cross loadings in small samples and small to moderate reliability.
+In conclusion, we can say that SAM does not have a convergence rate advantage over bounded ML SEM. However, it does outperform SEM despite a negative bias under both positive and negative cross-loadings in small samples and conditions of low to moderate reliability.
 :::
 
 
@@ -1093,8 +1092,9 @@ digraph circular_process {
 :::
 
 :::{.notes}
-Assessing our case study we found that we were able to trace back our disagreeing verbal claims to diverging design choices in our individual studies. Through collaboration we were able to jointly map our verbal claims to a unified operationalization. This enabled us to find a reformulated verbal claim that integrates the differences of our individual studies. So we achieved a redction of ambiguity.
-However, the question remains whether this process meaningfully increased generalizability of our verbal claims to the range of applications in which researchers might actually use SAM or SEM. 
+Assessing our case study, we found that we were able to trace our disagreeing claims back to divergent design choices in our individual studies. Through collaboration, we jointly mapped our claims to a unified operationalization. This allowed us to develop a reformulated claim that integrates the differences between our individual studies, reducing ambiguity.
+
+However, the question remains whether this process genuinely increased the generalizability of our claims to the wider range of applications in which researchers might actually use SAM or SEM.
 :::
 
 ## Limitations and Future Directions
@@ -1120,19 +1120,19 @@ However, the question remains whether this process meaningfully increased genera
 :::
 
 :::{.notes}
-This brings me to the limitations and future directions. First of all we have to acknowledge that our case study was just a "toy" case study for adversarial collaboration. We were not real adversaries and the stakes were low as we do not actually come from disagreeing research backgrounds and have little to no experience in this field compared to more senior researchers.
-Secondly, as just mentioned this process only partially increased generalizability as we still were limited to specific and somewhat arbitrary choices for our individual and joint simulations.
+This brings me to the limitations and future directions. Firstly, our case study was a "toy" example of adversarial collaboration. We were not true adversaries, and the stakes were relatively low, as we do not come from conflicting research backgrounds and have less experience in this field compared to more senior researchers.
 
-One way to address this would be to empirically ground simulations by sampling models and data from the literature. Our group is currently developing a Julia Package called Taxonomy.jl to facilitate this.
+Secondly, this process only partially increased generalizability, as we were still limited to specific, somewhat arbitrary choices for our individual and joint simulations.
 
-Another way would be to establish the practive of at least low-code adversarial simulation by all co-authors of a study. This would, at a cost of more resources, allow for a more diverse set of designs and thus a more generalizable set of results.
+One way to address this limitation would be to empirically ground simulations by sampling models and data from the literature. Our group is currently developing a Julia package called Taxonomy.jl to facilitate this.
 
+Another approach would be to establish the practice of at least low-code adversarial simulation by all co-authors of a study. Although this would require more resources, it would allow for a more diverse set of designs and thus produce more generalizable results.
 :::
 
 ## Discussion
 
 1. Is the settling of verbal disputes through unified operationalizations really increasing generalizability?
-2. Are individual studies in prior to adversarial collaboration beneficial?
+2. Are individual studies prior to adversarial collaboration for joint projects beneficial?
 3. How could an incentive structure be designed to encourage adversarial collaboration?
 4. Could adversarial collaboration be implemented in the peer review process?
 
