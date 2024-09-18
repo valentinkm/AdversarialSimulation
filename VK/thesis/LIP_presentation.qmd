@@ -321,9 +321,12 @@ The basic idea is for two researchers in disagreement to first identify a genera
 To conduct such an exemplary adversarial collaboration, we first need a framework that structures the collaborative process tailored to the outline of simulation studies.
 :::
 
-# <span style="color:#4682B4;">Structure</span> of a Simulation Study {auto-animate="true" data-id="simulation-structure-slide"}
+
+
+## <span style="color:#4682B4;">Structure</span> of a Simulation Study {auto-animate="true" data-id="simulation-structure-slide"}
 
 ::: {.r-fit-text}
+
 | Steps of a Simulation Study | Content |
 |-----------------|-----------------|
 | <span class="fragment"><b>1. Research Question</b></span>    | <span class="fragment" style="color:grey;">Verbal description of Research Goals</span>    |
@@ -335,9 +338,12 @@ To conduct such an exemplary adversarial collaboration, we first need a framewor
 | <span class="fragment"><b>7. Performance Metrics</b></span>    | <span class="fragment" style="color:grey;">E.g. Bias, Coverage etc.</span>  |
 | <span class="fragment"><b>8. Software</b></span>    | <span class="fragment" style="color:grey;">Applies to steps 2-7</span>    |
 | <span class="fragment"><b>9. Analysis</b></span>    | <span class="fragment" style="color:grey;">Decision criteria, graphical display etc.</span>  |
+
 :::
 
 <span style="font-size: 20px;"> @siepe_simulation_2023, @paxton_monte_2001, @morris_using_2019</span>
+
+
 
 :::{.notes}
 As a basis for this, we first identified the core steps of a simulation study where critical and distinctive decision points occur.
@@ -525,6 +531,7 @@ I'll start by presenting the results of my individual studies.
 ## Study 1 <span style="font-size: 20px;">based on @rosseel_structural_2022</span>
 
 ::: {.r-fit-text}
+
 ::: {layout="[20,60,20]"}
 
 ::: {.column width="0%"}
@@ -581,10 +588,10 @@ I'll start by presenting the results of my individual studies.
 :::{.fragment}
 
 #### Performance Metrics:
-- Bias of path estimates $\hat{\beta}_i - \beta_i$
-- RMSE of path estimates
+- Bias  $\hat{\beta}_i - \beta_i$
+- RMSE
   $\sqrt{\sum_{i=1}^{n} (\hat{\beta}_i - \beta_i)^2}$
-- Coverage of 95% CI for path estimates
+- Coverage of 95% CI
 :::
 
 :::
@@ -1099,6 +1106,8 @@ However, the question remains whether this process genuinely increased the gener
 
 ## Limitations and Future Directions
 
+:::{.r-fit-text}
+
 :::{.fragment}
 - "Toy" case study for AC<br>
   low stakes & no "real" adversaries <br>
@@ -1117,6 +1126,8 @@ However, the question remains whether this process genuinely increased the gener
 
 :::{.fragment}
   → Establish the practice of (at least low-code) adversarial simulation by all co-authors of a study?
+:::
+
 :::
 
 :::{.notes}
