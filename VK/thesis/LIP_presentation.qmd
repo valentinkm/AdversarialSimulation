@@ -1132,7 +1132,7 @@ Another approach would be to establish the practice of at least low-code adversa
 ## Discussion
 
 1. Is the settling of verbal disputes through unified operationalizations really increasing generalizability?
-2. Are individual studies prior to adversarial collaboration for joint projects beneficial?
+2. Are individual studies prior to adversarial collaboration for joint projects beneficial and worth the cost?
 3. How could an incentive structure be designed to encourage adversarial collaboration?
 4. Could adversarial collaboration be implemented in the peer review process?
 
