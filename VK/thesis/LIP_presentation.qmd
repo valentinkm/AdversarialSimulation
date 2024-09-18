@@ -339,10 +339,8 @@ To conduct such an exemplary adversarial collaboration, we first need a framewor
 | <span class="fragment"><b>8. Software</b></span>    | <span class="fragment" style="color:grey;">Applies to steps 2-7</span>    |
 | <span class="fragment"><b>9. Analysis</b></span>    | <span class="fragment" style="color:grey;">Decision criteria, graphical display etc.</span>  |
 
+<span style="font-size: 15px;"> @siepe_simulation_2023, @paxton_monte_2001, @morris_using_2019</span>
 :::
-
-<span style="font-size: 20px;"> @siepe_simulation_2023, @paxton_monte_2001, @morris_using_2019</span>
-
 
 
 :::{.notes}
@@ -801,6 +799,7 @@ A closer examination allowed us to trace our differing claims back to specific c
     </tr>
   </thead>
   <tbody>
+    <!-- Step 1 -->
     <tr>
       <td><strong>Steps</strong></td>
       <td>Kriegmair</td>
@@ -862,6 +861,62 @@ A closer examination allowed us to trace our differing claims back to specific c
         bounded SEM (<span class="strike fragment" data-fragment-index="5">ULS</span> & ML), gSAM, lSAM (ULS & ML)
       </td>
     </tr>
+  </tbody>
+</table>
+</div>
+
+<style>
+  .scrollable-table {
+    max-height: 65vh;
+    overflow-y: auto;
+    font-size: 0.6em;
+  }
+  .scrollable-table table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .scrollable-table th, .scrollable-table td {
+    border: 1px solid #ddd;
+    padding: 4px;
+    text-align: left;
+  }
+  .scrollable-table th {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+  }
+  .strike {
+    text-decoration: none;
+  }
+  .strike.visible {
+    text-decoration: line-through;
+  }
+  .grey-text {
+    color: grey;
+  }
+  .pastel-blue {
+    background-color: #b3cde0;
+  }
+</style>
+
+:::{.notes}
+We then proceeded to align our decisions step-by-step in round 2. Due to time constraints, we limited the joint study's scope to a minimal level.
+
+[▶︎] We agreed on using a 5-factor SEM population model since SAM is particularly designed for complex models with a structural part, as opposed to being tailored to CFA models.[▶︎] We maintained the data generation and software as they were in our individual studies. [▶︎] We selected bounded ML SEM as the method of choice, as this had been suggested as a reason why SAM does not necessarily have a convergence rate advantage over SEM. [▶︎]
+:::
+
+## Collaboration
+<div class="scrollable-table">
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Round 1</th>
+      <th class="pastel-blue">Round 2</th>
+      <th>Round 1</th>
+    </tr>
+  </thead>
+  <tbody>
     <!-- Step 6 -->
     <tr>
       <td><strong>Estimands</strong></td>
@@ -886,7 +941,7 @@ A closer examination allowed us to trace our differing claims back to specific c
         Convergence & Improper Solutions
       </td>
       <td class="pastel-blue fragment" data-fragment-index="7">
-        Absolute bias in absolute and sigend values<br>
+        Absolute bias in absolute and signed values<br>
         RMSE<br>
         95% CI coverage<br>
         Convergence & Improper Solutions
@@ -895,7 +950,8 @@ A closer examination allowed us to trace our differing claims back to specific c
         Absolute bias in absolute values<br>
         <span class="strike fragment" data-fragment-index="7">Signed Relative bias</span><br>
         RMSE<br>
-        95% CI coverage</td>
+        95% CI coverage
+      </td>
     </tr>
     <!-- Step 8 -->
     <tr class="grey-text">
@@ -962,32 +1018,8 @@ A closer examination allowed us to trace our differing claims back to specific c
   }
 </style>
 
-<script>
-  // Auto-scroll logic
-  const scrollableTable = document.querySelector('.scrollable-table');
-  let scrollSpeed = 1; // Adjust this for faster/slower scrolling
-  
-  function autoScroll() {
-    if (scrollableTable.scrollTop + scrollableTable.clientHeight >= scrollableTable.scrollHeight) {
-      scrollableTable.scrollTop = 0;
-    } else {
-      scrollableTable.scrollTop += scrollSpeed;
-    }
-  }
-  
-  // Set timeout for scrolling to start after 30 seconds
-  setTimeout(() => {
-    // Set interval for scrolling
-    let scrollInterval = setInterval(autoScroll, 50); // 50ms interval, adjust for smoothness
-  }, 30000); // 30 seconds delay (30,000 milliseconds)
-</script>
-
-
 :::{.notes}
-We then proceeded to align our decisions step-by-step in round 2. Due to time constraints, we limited the joint study's scope to a minimal level.
-
-We agreed on using a 5-factor SEM population model since SAM is particularly designed for complex models with a structural part, as opposed to being tailored to CFA models. We maintained the data generation and software as they were in our individual studies. We selected bounded ML SEM as the method of choice, as this had been suggested as a reason why SAM does not necessarily have a convergence rate advantage over SEM. We limited the estimands to fixed coefficients, as no significant differences for the SAM vs. SEM comparison had been found in my initial studies. For performance metrics, we included a parameter-wise analysis of bias to get a clearer picture of SAM's potential negative bias depending on the sign of cross-loadings and residual correlations.
-
+We limited the estimands to fixed coefficients, as no significant differences for the SAM vs. SEM comparison had been found in my initial studies. [▶︎] For performance metrics and analysis [▶︎], we included a parameter-wise analysis of bias to get a clearer picture of SAM's potential negative bias depending on the sign of cross-loadings and residual correlations.
 :::
 
 ## Results of the Joint Study
