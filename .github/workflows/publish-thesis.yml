@@ -19,6 +19,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Install Git
+        run: |
+          apt-get update
+          apt-get install -y git
+
       - name: Set up Git for Publishing
         run: |
           git config --global user.name "${{ github.actor }}"
