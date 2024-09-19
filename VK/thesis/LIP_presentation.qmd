@@ -51,7 +51,7 @@ Before we dive in, let me give you a quick overview of today's presentation.
 
 We'll start by exploring the challenges in generalizing research findings and how adversarial collaboration can address these issues. Then, I'll introduce the adversarial simulation framework we've developed.
 
-After setting the stage, I'll provide some background on Structural After Measurement as an alternative to traditional Structural Equation Model estiamtion, which is the substantial topic of our case study. I then introduce the research questions we aimed to answer in this project.
+After setting the stage, I'll provide some background on Structural After Measurement as an alternative to traditional Structural Equation Model estimation, which is the substantial topic of our case study. I then introduce the research questions we aimed to answer in this project.
 
 In the latter part, I'll present and discuss our results and the collaborative process to conclude with an evaluation and future directions.
 
@@ -370,7 +370,7 @@ We developed a specific adversarial simulation framework and structured the coll
 This two-step approach is designed to highlight differences in a systematic way and to establish an virtual foundation for collaboration before engaging in a joint effort in our case study.
 :::
 
-## Strucutral after Measurement (SAM) vs traditional SEM estimation <span style="font-size: 20px;"> Background</span>
+## Structural after Measurement (SAM) vs traditional SEM estimation <span style="font-size: 20px;"> Background</span>
 
 :::{.notes}
 Now, to set the stage for our specific case study, I briefly outline the background of Structural After Measurement (SAM) as a potential alternative to traditional Structural Equation Modeling (SEM) estimation.
@@ -403,7 +403,7 @@ Problems:
 :::
 
 :::{.notes}
-Traditional SEM methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously under the assumption of multivariate normality. While powerful and although robust estimation techniques relax the normality assumption, all system wide estimators suffer from several shortcomings, [▶︎] they often face issues such as non-convergence, improper solutions (with parameters out of definitoral range), and biases from local measurement misspecifications that affect the entire model. They also typically require large sample sizes for adequate performance, especially in complex models.
+Traditional SEM methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously under the assumption of multivariate normality. While powerful and although robust estimation techniques relax the normality assumption, all system wide estimators suffer from several shortcomings, [▶︎] they often face issues such as non-convergence, improper solutions (with parameters out of definitional range), and biases from local measurement misspecifications that affect the entire model. They also typically require large sample sizes for adequate performance, especially in complex models.
 :::
 
 ## Structural After Measurement (SAM)
@@ -436,7 +436,7 @@ Traditional SEM methods, like maximum likelihood estimation, optimize all parame
 <span style="font-size: 20px;">@rosseel_structural_2022</span>
 
 :::{.notes}
-SAM addresses some limitations of SEM by separating the estimation into two phases. First, the measurement model parameters are estimated and then fixed to estimate the structural model. This approach aims to reduce the propagation of bias from the measurement to the structural part and decrease convergence issues, especially in smaller samples and complex models. [▶︎] There are two distinctive implementations of SAM [▶︎] local SAM constructs latent variable summary statistics and a mapping matrix to inform the structural model estimation, [▶︎] while global SAM directly estimates structural parameters using fixed measurment parameters of one measurement model.[▶︎]
+SAM addresses some limitations of SEM by separating the estimation into two phases. First, the measurement model parameters are estimated and then fixed to estimate the structural model. This approach aims to reduce the propagation of bias from the measurement to the structural part and decrease convergence issues, especially in smaller samples and complex models. [▶︎] There are two distinctive implementations of SAM [▶︎] local SAM constructs latent variable summary statistics and a mapping matrix to inform the structural model estimation, [▶︎] while global SAM directly estimates structural parameters using fixed measurement parameters of one measurement model.[▶︎]
 :::
 
 
