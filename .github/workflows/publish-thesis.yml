@@ -1,21 +1,18 @@
 name: Quarto Publish Thesis
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - main
-    paths-ignore:
-      - 'VK/Dockerfile'
-  workflow_run:
-    workflows: ["Build and Publish Docker Image"]
-    types:
-      - completed
+    branches: main
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository_owner }}/quarto-render:latest
+      image: ghcr.io/valentinkm/quarto-render:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GH_TOKEN }}
     permissions:
       contents: write
     steps:
