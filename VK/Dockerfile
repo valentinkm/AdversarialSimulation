@@ -27,7 +27,8 @@ RUN Rscript -e 'install.packages(c( \
     "tidyr", \
     "kableExtra", \
     "ggplot2", \
-    "data.table" \
+    "data.table", \
+    "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
 WORKDIR /project
