@@ -31,13 +31,12 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
 ```{r}
-library(dplyr)
 library(tidyr)
+library(dplyr)
+library(data.table)
 library(kableExtra)
 library(ggplot2)
-library(data.table)
-library(dplyr)
-library(tidyr)
+library(ggh4x)
 summary_1 <- readRDS("simulation/results/summary_study1.rds")
 summary_2 <- readRDS("simulation/results/summary_study2.rds")
 ```
@@ -606,10 +605,6 @@ improper_solutions_table_4 <- create_improper_solutions_table(4, "Percentage of 
 ```
 
 ```{r, echo=FALSE}
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(ggh4x)
 
 summary_stats <- readRDS("simulation/results/parameter_wise_summary_study2_full.rds")
 
