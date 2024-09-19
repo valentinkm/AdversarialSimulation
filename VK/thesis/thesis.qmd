@@ -19,15 +19,43 @@ format:
 fontsize: 12pt
 engine: knitr
 bibliography: ../bibliography.bib
+csl: ../../apa.csl
 ---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
+# Introduction
+
 # Methods
 
-{{< include methods.qmd >}}
+## A Framework for Adversarial Collaboration
+
+## Methods of Individual Simulation Studies
+
+### Studies by Kriegmair
+
+### Studies by Kosanke
+
+## Methods of "Joint" Simulation Study
+
 
 # Results
 
+## Results of Individual Simulation Studies
+
+### Results of Kriegmair's Simulation Studies
+
+### Results of Kosanke's Simulation Studies
+
+## Results of the "Joint" Simulation Study
+
+## Results of the Adversarial Collaboration
+
 {{< include results.qmd >}}
+
+# Discussion
+
+## Discussing the substanital results
+
+## Disucssing the Adversarial Collaboration

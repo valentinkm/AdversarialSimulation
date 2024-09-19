@@ -3,7 +3,7 @@ on:
   push:
     branches: main
 
-name: Quarto Publish Slides
+name: Quarto Publish Thesis
 
 jobs:
   build-deploy:
@@ -30,13 +30,17 @@ jobs:
             "dplyr", 
             "tidyr", 
             "kableExtra", 
-            "ggplot2"
+            "ggplot2",
+            "data.table"
           ), repos = "https://cran.rstudio.com")'
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-          path: VK/presentation
+          path: VK/thesis
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+            
