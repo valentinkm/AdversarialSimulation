@@ -35,10 +35,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 ### Studies by Kriegmair
 
+{{< include methods.qmd >}}
+
 ### Studies by Kosanke
 
 ## Methods of "Joint" Simulation Study
-
 
 # Results
 
@@ -59,3 +60,5 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ## Discussing the substanital results
 
 ## Disucssing the Adversarial Collaboration
+
+Idea: living simulations

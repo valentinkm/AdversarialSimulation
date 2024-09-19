@@ -97,7 +97,7 @@ p_convergence_heatmap <- conv_rate1 %>%
 
 # Print the convergence heatmap
 print(p_convergence_heatmap)
-ggsave("tables/convergence_rate_study1.png", plot = p_convergence_heatmap, width = 12, height = 6.5)
+# ggsave("tables/convergence_rate_study1.png", plot = p_convergence_heatmap, width = 12, height = 6.5)
 ```
 
 *Note* This figure shows the convergence rate and the rate of proper solutions for the different methods and conditions in simulation study 1.
@@ -156,7 +156,7 @@ p_convergence_heatmap_study2 <- conv_rate2 %>%
 
 # Print the heatmap for study 2
 print(p_convergence_heatmap_study2)
-ggplot2::ggsave("tables/convergence_rate_study2.png", plot = p_convergence_heatmap_study2, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/convergence_rate_study2.png", plot = p_convergence_heatmap_study2, width = 12, height = 6.5)
 ```
 
 *Note* This figure shows the convergence rate and the rate of proper solutions in brackets for the different methods and conditions in simulation study 2.
@@ -208,7 +208,7 @@ p_convergence_heatmap_study3 <- conv_rate3 %>%
   scale_y_discrete(expand = c(0, 0), position = "right")
 
 print(p_convergence_heatmap_study3)
-ggsave("tables/convergence_rate_study3.png", plot = p_convergence_heatmap_study3, width = 12, height = 6.5)
+# ggsave("tables/convergence_rate_study3.png", plot = p_convergence_heatmap_study3, width = 12, height = 6.5)
 ```
 
 *Note* This figure shows the convergence rate and the rate of improper solutions for the different methods and conditions in simulation study 3.
@@ -385,7 +385,7 @@ p3 <- data_plot3 %>%
   scale_x_discrete(expand = c(0,0))
 
 print(p3)
-ggplot2::ggsave("tables/abs_bias_parameterwise_study1.png", plot = p3, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/abs_bias_parameterwise_study1.png", plot = p3, width = 12, height = 6.5)
 ```
 
 *Note.* This figure shows the average absolute bias values for each parameter in the different conditions of simulation study 1.
@@ -427,7 +427,7 @@ p_heatmap <- plot_data_aggregated_study1 %>%
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
 print(p_heatmap)
-ggsave("tables/aggregated_bias_study1.png", plot = p_heatmap, width = 12, height = 6.5)
+# ggsave("tables/aggregated_bias_study1.png", plot = p_heatmap, width = 12, height = 6.5)
 ```
 
 
@@ -482,7 +482,7 @@ p1 <- data_plot1 %>%
   scale_x_discrete(expand = c(0,0))
 
 print(p1)
-ggplot2::ggsave("tables/rel_bias_parameterwise_study2.png", plot = p1, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/rel_bias_parameterwise_study2.png", plot = p1, width = 12, height = 6.5)
 ```
 
 *Note.* This figure shows the
@@ -533,7 +533,7 @@ p2 <- data_plot2 %>%
   scale_x_discrete(expand = c(0,0))
 
 print(p2)
-ggplot2::ggsave("tables/abs_bias_parameterwise_study2.png", plot = p2, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/abs_bias_parameterwise_study2.png", plot = p2, width = 12, height = 6.5)
 ```
 
 *Note.* This figure shows the 
@@ -606,7 +606,7 @@ p_heatmap_study2 <- plot_data_aggregated_study2 %>%
 
 # Print the heatmap for study 2
 print(p_heatmap_study2)
-ggplot2::ggsave("tables/aggregated_rel_bias_study2.png", plot = p_heatmap_study2, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/aggregated_rel_bias_study2.png", plot = p_heatmap_study2, width = 12, height = 6.5)
 ```
 
 *Note.* This figure shows the aggregated relative bias (in absolute values) of the estimated regression parameters for the different methods and conditions in simulation study 2.
@@ -650,7 +650,7 @@ p_boxplot <- comparison_data %>%
 
 # Print the improved box plot
 print(p_boxplot)
-ggplot2::ggsave("tables/boxplot_study2.png", plot = p_boxplot, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/boxplot_study2.png", plot = p_boxplot, width = 12, height = 6.5)
 ```
 
 \blandscape
@@ -693,7 +693,7 @@ p4 <- data_plot4 %>%
   scale_x_discrete(expand = c(0,0))
 
 print(p4)
-ggplot2::ggsave("tables/abs_bias_parameterwise_study3.png", plot = p4, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/abs_bias_parameterwise_study3.png", plot = p4, width = 12, height = 6.5)
 ```
 
 *Note.* This figure shows the average absolute bias values for each parameter in the different conditions of simulation study 3.
@@ -738,7 +738,7 @@ p_heatmap <- plot_data_aggregated_study3 %>%
 
 # Print the heatmap
 print(p_heatmap)
-ggplot2::ggsave("tables/aggregated_bias_study3.png", plot = p_heatmap, width = 12, height = 6.5)
+# ggplot2::ggsave("tables/aggregated_bias_study3.png", plot = p_heatmap, width = 12, height = 6.5)
 ```
 
 *Note.* Tis figure shows the aggregated bias (absolute values) of the estimated regression parameters for the different methods and conditions.
