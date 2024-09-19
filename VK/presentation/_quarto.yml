@@ -1,4 +1,4 @@
 project:
   type: website
   render: 
-    - thesis.qmd
+    - LIP_presentation.qmd
