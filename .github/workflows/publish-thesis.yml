@@ -39,7 +39,8 @@ jobs:
             "tidyr", 
             "kableExtra", 
             "ggplot2",
-            "data.table"
+            "data.table",
+            "ggh4x"
           ), repos = "https://cran.rstudio.com")'
 
       - name: Render and Publish
