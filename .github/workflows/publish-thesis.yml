@@ -24,15 +24,21 @@ jobs:
           apt-get update
           apt-get install -y git
 
+      - name: List files for debugging
+        run: |
+          ls -R VK/thesis
+
       - name: Set up Git for Publishing
         run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
       - name: Render Quarto Project
+        working-directory: VK
         run: quarto render thesis/thesis.qmd
 
       - name: Publish Thesis
+        working-directory: VK
         run: |
           quarto publish gh-pages thesis --no-browser --no-render
         env:
