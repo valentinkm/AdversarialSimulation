@@ -25,14 +25,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: list files in the repository recursively
+      - name: List files before rendering
         run: ls -R
-      
+
       - name: Render Thesis
         working-directory: ./VK
         run: quarto render thesis/thesis.qmd
 
-      - name: list files in the repository recursively
+      - name: List files after rendering
         run: ls -R
 
       - name: Publish Thesis to gh-pages
