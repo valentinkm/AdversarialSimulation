@@ -74,7 +74,7 @@ jobs:
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-          path: VK/thesis
+          path: thesis
           render: false
           clean: false
         env:
