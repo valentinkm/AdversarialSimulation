@@ -51,6 +51,11 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
     steps:
+      - name: Install Git
+        run: |
+          apt-get update
+          apt-get install -y git  # Install Git in this container
+
       - name: Check out repository
         uses: actions/checkout@v4
 
