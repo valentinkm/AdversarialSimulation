@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     texlive-fonts-recommended \
     && rm -rf /var/lib/apt/lists/*
 
+
 # Install Quarto
 RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
     gdebi --non-interactive quarto.deb && \
@@ -37,8 +38,11 @@ RUN Rscript -e 'install.packages(c( \
     "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
+
 # Set the working directory inside the container
 WORKDIR /VK
+
+RUN Rscript -e 'library(ggh4x)'
 
 # Copy the thesis files
 COPY thesis/ thesis/
