@@ -23,14 +23,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Cache LaTeX packages
-        uses: actions/cache@v3
-        with:
-          path: /usr/local/texlive
-          key: ${{ runner.os }}-texlive-${{ hashFiles('**/thesis.qmd') }}
-          restore-keys: |
-            ${{ runner.os }}-texlive-
-
       - name: Install Git
         run: |
           apt-get update
