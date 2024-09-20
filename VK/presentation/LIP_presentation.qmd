@@ -14,8 +14,8 @@ format:
     chalkboard: true
 
 engine: knitr
-bibliography: ../../bibliography.bib
-csl: ../../apa.csl
+bibliography: ../bibliography.bib
+csl: ../apa.csl
 ---
 
 ```{r, include=FALSE}
