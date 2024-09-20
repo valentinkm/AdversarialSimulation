@@ -5,28 +5,35 @@ on:
     types: [published, updated]
   workflow_dispatch:
 
-name: Render and publish Thesis and Presentation
+name: Render and Publish Thesis and Presentation
+
+on:
+  push:
+    branches: main
+    paths-ignore:
+      - 'VK/Dockerfile'
+  registry_package:
+    types: [published, updated]
+  workflow_dispatch:
 
 jobs:
-  imagename:
-    runs-on: ubuntu-latest
-    outputs:
-      lowercase: ${{ steps.lowercase.outputs.test }}
-    steps:
-      - name: Convert the repo name to lowercase
-        id: lowercase
-        run: echo "::set-output name=test::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
-
   publish-thesis:
-    needs: imagename
     runs-on: ubuntu-latest
-    container: ghcr.io/${{ needs.imagename.outputs.lowercase }}:main
+    container:
+      image: ghcr.io/valentinkm/quarto-render:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: List files before rendering
         run: ls -R
+
+      - name: Verify ggh4x Installation
+        run: |
+          Rscript -e "if(!require('ggh4x')) { stop('ggh4x is not installed') }"
+
+      - name: Verify TeX Installation
+        run: xelatex --version
 
       - name: Render Thesis
         working-directory: ./VK
