@@ -18,8 +18,8 @@ jobs:
         run: echo "::set-output name=test::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
 
   publish-thesis:
-    runs-on: ubuntu-latest
     needs: imagename
+    runs-on: ubuntu-latest
     container: ghcr.io/${{ needs.imagename.outputs.lowercase }}:main
     steps:
       - name: Checkout repository
@@ -27,6 +27,12 @@ jobs:
 
       - name: list files in the repository recursively
         run: ls -R
+      
+      - name: set working directory
+        run: cd VK
+
+      - name: Set Working Directory
+        run: cd VK
 
       - name: Render Thesis
         run: quarto render thesis/thesis.qmd
