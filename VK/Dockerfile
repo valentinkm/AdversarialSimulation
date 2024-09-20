@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     pandoc \
+    texlive-latex-base \
+    texlive-latex-extra \
+    texlive-fonts-recommended \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
