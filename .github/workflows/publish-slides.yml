@@ -51,6 +51,7 @@ jobs:
         with:
           target: gh-pages
           path: VK/presentation
+          dest: presentation
           clean: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
