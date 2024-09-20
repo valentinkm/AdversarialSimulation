@@ -28,10 +28,15 @@ jobs:
           apt-get update
           apt-get install -y git
 
-      - name: Install LaTeX (TeX Live)
+      - name: Install LaTeX (TeX Live with xelatex)
         run: |
           apt-get update
-          apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+          apt-get install -y \
+            texlive-xetex \
+            texlive-latex-recommended \
+            texlive-fonts-recommended \
+            texlive-latex-extra \
+            texlive-lang-all
 
       - name: List files for debugging
         run: |
