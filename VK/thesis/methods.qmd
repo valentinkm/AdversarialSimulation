@@ -16,7 +16,8 @@ format:
            - \geometry{margin=1in}
 fontsize: 12pt
 engine: knitr
-bibliography: ../../bibliography.bib
+bibliography: ../bibliography.bib
+csl: ../apa.csl
 ---
 
 ```{r, include=FALSE}

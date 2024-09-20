@@ -19,7 +19,7 @@ format:
 fontsize: 12pt
 engine: knitr
 bibliography: ../bibliography.bib
-csl: ../../apa.csl
+csl: ../apa.csl
 ---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)

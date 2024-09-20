@@ -43,7 +43,7 @@ jobs:
         run: quarto render thesis/thesis.qmd
 
   publish-thesis:
-    needs: build-deploy  # This ensures the second job runs after the first
+    needs: build-deploy
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -54,6 +54,6 @@ jobs:
         with:
           target: gh-pages
           path: thesis
-          render: false  # Set render to false since it was done in the previous job
+          render: false
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -38,5 +38,6 @@ WORKDIR /VK
 
 COPY thesis/ /VK/thesis/
 COPY simulation/results/ /VK/simulation/results/
+COPY ../
 
 CMD ["quarto"]
