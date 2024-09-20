@@ -1,89 +1,73 @@
-name: Quarto Publish Thesis and Presentation
-
 on:
   push:
-    branches:
-      - main
+    branches: main
+  registry_package:
+    types: [published, updated]
+  workflow_dispatch:
+
+name: Render and publish Thesis and Presentation
 
 jobs:
-  build-thesis:
+  # Convert the repository name to lowercase for image name
+  imagename:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/valentinkm/quarto-render:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GH_TOKEN }}
-    permissions:
-      contents: write
+    outputs:
+      lowercase: ${{ steps.lowercase.outputs.test }}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Convert the repo name to lowercase
+        id: lowercase
+        run: echo "::set-output name=test::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
 
-      - name: Install Git and LaTeX (TeX Live with xelatex)
-        run: |
-          apt-get update
-          apt-get install -y git texlive-xetex texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra texlive-lang-all
+  # Publish the thesis using the custom Docker container
+  publish-thesis:
+    runs-on: ubuntu-latest
+    needs: imagename
+    container: ghcr.io/${{ needs.imagename.outputs.lowercase }}:main
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Render Thesis (Docker with LaTeX)
+      - name: Render Thesis
         working-directory: /VK
         run: quarto render thesis/thesis.qmd
 
       - name: Publish Thesis to gh-pages
-        uses: quarto-dev/quarto-actions/publish@v2
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          target: gh-pages
-          path: VK/thesis/_site
-          render: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          branch: gh-pages
+          folder: VK/thesis/_site
+          folder-to-dest: thesis  # Ensure it goes to 'thesis' folder
+          token: ${{ secrets.GH_TOKEN }}
+          clean: false  # Ensure no conflicts with other pages
 
-  build-presentation:
+  # Publish the presentation (not in Docker)
+  publish-presentation:
     runs-on: ubuntu-latest
-    needs: build-thesis  # Ensures thesis is built before presentation
-    permissions:
-      contents: write
+    needs: imagename
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Set up R for Presentation
+      - name: Set up R
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: '4.2.0'
 
-      - name: Cache R Packages for Presentation
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            ${{ runner.os }}-r-
-
-      - name: Install Required R Packages for Presentation
+      - name: Install Required R Packages
         run: |
-          Rscript -e 'install.packages(c(
-            "knitr", 
-            "rmarkdown", 
-            "dplyr", 
-            "tidyr", 
-            "kableExtra", 
-            "ggplot2"
-          ), repos = "https://cran.rstudio.com")'
-        env:
-          R_LIBS_USER: ${{ env.R_LIBS_USER }}
+          Rscript -e 'install.packages(c("knitr", "rmarkdown", "dplyr", "ggplot2"), repos = "https://cran.rstudio.com")'
 
-      - name: Render Presentation (Non-Docker)
+      - name: Render Presentation
         run: quarto render VK/presentation
 
       - name: Publish Presentation to gh-pages
-        uses: quarto-dev/quarto-actions/publish@v2
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          target: gh-pages
-          path: VK/presentation/_site
-          dest: presentation
-          render: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: VK/presentation/_site
+          folder-to-dest: presentation  # Ensure it goes to 'presentation' folder
+          token: ${{ secrets.GH_TOKEN }}
+          clean: false
