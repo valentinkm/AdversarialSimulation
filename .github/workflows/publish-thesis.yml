@@ -66,6 +66,6 @@ jobs:
         run: |
           git config --global user.email "quarto-github-actions-publish@example.com"
           git config --global user.name "Quarto GHA Workflow Runner"
-          quarto publish gh-pages VK/thesis --no-render --no-browser --clean==false
+          quarto publish gh-pages VK/thesis --no-render --no-browser --clean=false
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
