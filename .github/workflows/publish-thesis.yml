@@ -63,7 +63,7 @@ jobs:
 
       - name: Install Required R Packages
         run: |
-          Rscript -e 'install.packages(c("knitr", "rmarkdown", "dplyr", "ggplot2"), repos = "https://cran.rstudio.com")'
+          Rscript -e 'install.packages(c("knitr", "rmarkdown", "dplyr", "ggplot2", "tidyr", "kableExtra"), repos = "https://cran.rstudio.com")'
 
       - name: Render Presentation
         run: quarto render VK/presentation
