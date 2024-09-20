@@ -46,7 +46,7 @@ jobs:
     needs: build-deploy
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/valentinkm/quarto-render:latest  # Use the same Docker image
+      image: ghcr.io/valentinkm/quarto-render:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
@@ -58,6 +58,9 @@ jobs:
 
       - name: Check out repository
         uses: actions/checkout@v4
+      
+      - name: List files in the repository recursively
+        run: ls -R
 
       - name: Publish Thesis
         run: |
