@@ -24,20 +24,20 @@ csl: ../apa.csl
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
-The following description of the simulation studies is based on the established structure for simulation studies coaligned with the other conducted studies to facilitate a potential collaboration:
+The following description of the methodological setup of my individual simulation studies is based on the structure for simulation studies we established to follow the *adversarial simulation* framework we established and thus facilitate collaboration. In this initial phase of our case study, I conducted two separate simulation studies independently of my collaborator.
 
 ### Aims, objectives and research questions
 
-All studies aimed to evaluate the performance of vanilla SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies:
+Both studies aimed to evaluate the performance of vanilla SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we established prior to conducting the studies served as general basis for both studies:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
 
-The first two studies represent a conceptual replication of the studies conducted by @rosseel_structural_2022 and @dhaene_evaluation_2023. However, these studies just served as a basis for the design and several adjustments were made as described below. The third study was conducted as a result of the collaboration with Kosanke and the respective studies conducted. After examining the studies conducted by Kosanke and study 1 and 2 we did not jointly arrive at the conclusion that a collaborative simulation study is warrented (see Discussion for more detail). However I identified several arguments for setting up another simulation.
+The first two studies represent a conceptual replication of the studies conducted by @rosseel_structural_2022 and @dhaene_evaluation_2023. However, these studies just served as a basis for the design and several adjustments were made as described below.
 
 ### Population Models and Data Generation Mechanisms
 
-#### Study 1:
+**Study 1**
 
 Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4). In line with @rosseel_structural_2022 this model design was chosen to represent a realistic model with sufficient complexity to pose a challange for the estimation methods, especially in the presence of misspecifications:
 
