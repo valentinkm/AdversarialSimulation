@@ -28,6 +28,11 @@ jobs:
           apt-get update
           apt-get install -y git
 
+      - name: Install LaTeX (TeX Live)
+        run: |
+          apt-get update
+          apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+
       - name: List files for debugging
         run: |
           ls -R VK/thesis
