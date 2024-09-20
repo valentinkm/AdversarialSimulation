@@ -30,9 +30,9 @@ jobs:
       
       - name: set working directory
         run: cd VK
-
-      - name: Set Working Directory
-        run: cd VK
+        
+      - name: list files in the repository recursively
+        run: ls -R
 
       - name: Render Thesis
         run: quarto render thesis/thesis.qmd
