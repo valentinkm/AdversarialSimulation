@@ -8,7 +8,6 @@ on:
 name: Render and publish Thesis and Presentation
 
 jobs:
-  # Convert the repository name to lowercase for image name
   imagename:
     runs-on: ubuntu-latest
     outputs:
@@ -18,7 +17,6 @@ jobs:
         id: lowercase
         run: echo "::set-output name=test::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
 
-  # Publish the thesis using the custom Docker container
   publish-thesis:
     runs-on: ubuntu-latest
     needs: imagename
@@ -27,8 +25,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: list files in the repository recursively
+        run: ls -R
+
       - name: Render Thesis
-        working-directory: /VK
         run: quarto render thesis/thesis.qmd
 
       - name: Publish Thesis to gh-pages
@@ -36,11 +36,10 @@ jobs:
         with:
           branch: gh-pages
           folder: VK/thesis/_site
-          folder-to-dest: thesis  # Ensure it goes to 'thesis' folder
+          folder-to-dest: thesis
           token: ${{ secrets.GH_TOKEN }}
-          clean: false  # Ensure no conflicts with other pages
+          clean: false
 
-  # Publish the presentation (not in Docker)
   publish-presentation:
     runs-on: ubuntu-latest
     needs: imagename
@@ -68,6 +67,6 @@ jobs:
         with:
           branch: gh-pages
           folder: VK/presentation/_site
-          folder-to-dest: presentation  # Ensure it goes to 'presentation' folder
+          folder-to-dest: presentation
           token: ${{ secrets.GH_TOKEN }}
           clean: false
