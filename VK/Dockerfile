@@ -47,6 +47,3 @@ COPY simulation/results/ simulation/results/
 # Copy the bib and csl files into VK directory
 COPY bibliography.bib .
 COPY apa.csl .
-
-# Set Quarto as the command to run in the container
-CMD ["quarto"]
