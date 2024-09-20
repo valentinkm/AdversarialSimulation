@@ -1,5 +1,6 @@
 FROM rocker/r-ver:4.2.0
 
+# Install required packages and dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     gdebi-core \
@@ -19,10 +20,12 @@ RUN apt-get update && apt-get install -y \
     texlive-fonts-recommended \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Quarto
 RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
     gdebi --non-interactive quarto.deb && \
     rm quarto.deb
 
+# Install R packages
 RUN Rscript -e 'install.packages(c( \
     "knitr", \
     "rmarkdown", \
@@ -34,10 +37,16 @@ RUN Rscript -e 'install.packages(c( \
     "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
+# Set the working directory inside the container
 WORKDIR /VK
 
-COPY thesis/ /VK/thesis/
-COPY simulation/results/ /VK/simulation/results/
-COPY ../
+# Copy the thesis files
+COPY thesis/ thesis/
+COPY simulation/results/ simulation/results/
 
+# Copy the bib and csl files into VK directory
+COPY bibliography.bib .
+COPY apa.csl .
+
+# Set Quarto as the command to run in the container
 CMD ["quarto"]
