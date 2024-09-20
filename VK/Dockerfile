@@ -34,9 +34,9 @@ RUN Rscript -e 'install.packages(c( \
     "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
-WORKDIR /project
+WORKDIR /VK
 
-COPY thesis/ /project/thesis/
-COPY simulation/results/ /project/simulation/results/
+COPY thesis/ /VK/thesis/
+COPY simulation/results/ /VK/simulation/results/
 
 CMD ["quarto"]

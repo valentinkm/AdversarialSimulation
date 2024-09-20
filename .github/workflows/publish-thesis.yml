@@ -39,14 +39,15 @@ jobs:
             texlive-lang-all
 
       - name: Render Quarto Project
-        working-directory: VK
+        working-directory: /VK
         run: quarto render thesis/thesis.qmd
 
       - name: Publish Thesis
+        working-directory: /VK
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-          path: thesis
-          clean: true
+          path: thesis  # relative to /VK
+          render: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
