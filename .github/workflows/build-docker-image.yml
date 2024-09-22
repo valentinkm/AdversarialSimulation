@@ -3,7 +3,7 @@ name: Build and Publish Docker Image
 on:
   push:
     paths:
-      - 'VK/Dockerfile'
+      - 'Dockerfile'
       - '.github/workflows/build-docker-image.yml'
       - 'VK/thesis/**'
       - 'VK/simulation/results/**'
@@ -40,8 +40,7 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: VK/
-          file: VK/Dockerfile
+          file: Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/quarto-render:latest
           cache-from: type=local,src=/tmp/.buildx-cache
