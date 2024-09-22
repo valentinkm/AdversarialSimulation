@@ -39,11 +39,9 @@ RUN Rscript -e 'install.packages(c( \
     "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
-# Set an alternative TeX Live repository
-RUN tlmgr option repository https://mirror.ctan.org/systems/texlive/tlnet
-
-# Initialize the LaTeX package manager (tlmgr) for the root user and install xetex
-RUN tlmgr init-usertree && \
+RUN echo "selected_scheme scheme-full" >> /tmp/texlive.profile && \
+    tlmgr option repository https://mirror.ctan.org/systems/texlive/tlnet && \
+    tlmgr init-usertree && \
     tlmgr update --self && \
     tlmgr install xetex
 
