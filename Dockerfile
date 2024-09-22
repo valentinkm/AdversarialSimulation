@@ -38,24 +38,15 @@ RUN Rscript -e 'install.packages(c( \
     "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
-# Set the working directory to thesis
-WORKDIR /thesis
 
 # Copy the Quarto project files including _quarto.yml
-COPY VK/thesis/ .
+COPY VK/thesis/ VK/thesis/
 
 # Copy the results directory (if needed)
-COPY VK/simulation/results/ simulation/results/
+COPY VK/simulation/results/ VK/simulation/results/
 
 # Copy additional files
-COPY VK/bibliography.bib .
-COPY VK/apa.csl .
+COPY VK/bibliography.bib VK/bibliography.bib
+COPY VK/apa.csl VK/apa.csl
 
-# Debugging step: List contents of /thesis to verify files
-RUN ls -la /thesis
-
-# Debugging step: List contents of /thesis/simulation/results to verify files
-RUN ls -la /thesis/simulation/results
-
-# Render the Quarto document (commented out for now, can be enabled later)
 # RUN quarto render thesis.qmd
