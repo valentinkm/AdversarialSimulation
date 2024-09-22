@@ -48,3 +48,6 @@ COPY VK/simulation/results/ simulation/results/
 # Copy the bib and csl files into VK directory
 COPY VK/bibliography.bib .
 COPY VK/apa.csl .
+
+WORKDIR /thesis
+RUN quarto render
