@@ -1,1 +1,0 @@
-Sitemap: https://valentinkm.github.io/AdversarialSimulation/sitemap.xml
