@@ -31,9 +31,9 @@ jobs:
         run: |
           docker run --rm \
           -v ${{ github.workspace }}:/workspace \
-          -w /workspace/thesis \
+          -w /workspace/VK/thesis \
           ghcr.io/${{ github.repository_owner }}/quarto-render:latest \
-          quarto render
+          quarto render thesis.qmd
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
