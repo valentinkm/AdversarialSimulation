@@ -17,7 +17,6 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     pandoc \
     texlive-full \  # Full LaTeX installation including XeLaTeX
-    texlive-xetex \  # XeLaTeX engine
     texlive-fonts-recommended \  # Recommended fonts
     texlive-latex-extra \  # Additional LaTeX packages
     && rm -rf /var/lib/apt/lists/*
