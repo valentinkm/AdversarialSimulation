@@ -1,7 +1,7 @@
 # Base image
 FROM rocker/r-ver:4.2.0
 
-# Install required system dependencies and LaTeX
+# required system dependencies and LaTeX
 RUN apt-get update && apt-get install -y \
     wget \
     gdebi-core \
@@ -21,12 +21,12 @@ RUN apt-get update && apt-get install -y \
     texlive-latex-extra \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Quarto
+# install quarto
 RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
     gdebi --non-interactive quarto.deb && \
     rm quarto.deb
 
-# Install R packages
+# install R libraries
 RUN Rscript -e 'install.packages(c( \
     "knitr", \
     "rmarkdown", \
@@ -39,14 +39,10 @@ RUN Rscript -e 'install.packages(c( \
   ), repos = "https://cran.rstudio.com")'
 
 
-# Copy the Quarto project files including _quarto.yml
-COPY VK/thesis/ VK/thesis/
+# copy all files belonging to vk
+COPY VK/ /VK/
 
-# Copy the results directory (if needed)
-COPY VK/simulation/results/ VK/simulation/results/
-
-# Copy additional files
-COPY VK/bibliography.bib VK/bibliography.bib
-COPY VK/apa.csl VK/apa.csl
+# working directory at root
+WORKDIR /
 
 # RUN quarto render thesis.qmd
