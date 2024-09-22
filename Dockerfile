@@ -39,15 +39,12 @@ RUN Rscript -e 'install.packages(c( \
   ), repos = "https://cran.rstudio.com")'
 
 
-# Set the working directory inside the container
-WORKDIR /VK
-
 RUN Rscript -e 'library(ggh4x)'
 
 # Copy the thesis files
-COPY thesis/ thesis/
-COPY simulation/results/ simulation/results/
+COPY VK/thesis/ thesis/
+COPY VK/simulation/results/ simulation/results/
 
 # Copy the bib and csl files into VK directory
-COPY bibliography.bib .
-COPY apa.csl .
+COPY VK/bibliography.bib .
+COPY VK/apa.csl .
