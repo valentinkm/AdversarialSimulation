@@ -1,4 +1,4 @@
-name: Publish
+name: Publish Thesis and Presentation
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       - name: Pull Docker image
         run: docker pull ghcr.io/${{ github.repository_owner }}/quarto-render:latest
 
-      - name: Render Quarto Thesis Document
+      - name: Render Quarto document
         run: |
           docker run --rm \
           -v ${{ github.workspace }}:/workspace \
@@ -40,13 +40,11 @@ jobs:
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./VK/thesis/_site
-          destination_dir: . 
+          destination_dir: thesis
+          clean: false
 
-  build-deploy-presentation:
+  knit-and-publish-presentation:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
 
     steps:
       - name: Check out repository
@@ -78,18 +76,14 @@ jobs:
             "kableExtra", 
             "ggplot2"
           ), repos = "https://cran.rstudio.com")'
-        env:
-          R_LIBS_USER: ${{ env.R_LIBS_USER }}
 
-      - name: Render Quarto Presentation
+      - name: Render Presentation
         run: quarto render VK/presentation
 
-      - name: Publish Presentation to GitHub Pages
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Deploy Presentation to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          target: gh-pages
-          path: VK/presentation
-          dest: presentation
+          github_token: ${{ secrets.GH_TOKEN }}
+          publish_dir: ./VK/presentation/_site
+          destination_dir: presentation
           clean: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
