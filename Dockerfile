@@ -41,11 +41,15 @@ RUN Rscript -e 'install.packages(c( \
 # Set the working directory to thesis
 WORKDIR /thesis
 
-# Copy thesis files
-COPY VK/thesis/ thesis/
+# Copy the Quarto project files including _quarto.yml
+COPY VK/thesis/ .
+
+# Copy the results directory (if needed)
 COPY VK/simulation/results/ simulation/results/
+
+# Copy additional files
 COPY VK/bibliography.bib .
 COPY VK/apa.csl .
 
 # Render the Quarto document
-RUN quarto render
+RUN quarto render thesis.qmd
