@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     pandoc \
     texlive-full \  # Full LaTeX installation including XeLaTeX
     texlive-fonts-recommended \  # Recommended fonts
-    texlive-latex-extra \  # Additional LaTeX packages
+    texlive-latex-extra \  # Additional LaTeX packages \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Quarto
