@@ -51,5 +51,11 @@ COPY VK/simulation/results/ simulation/results/
 COPY VK/bibliography.bib .
 COPY VK/apa.csl .
 
-# Render the Quarto document
-RUN quarto render thesis.qmd
+# Debugging step: List contents of /thesis to verify files
+RUN ls -la /thesis
+
+# Debugging step: List contents of /thesis/simulation/results to verify files
+RUN ls -la /thesis/simulation/results
+
+# Render the Quarto document (commented out for now, can be enabled later)
+# RUN quarto render thesis.qmd
