@@ -40,7 +40,6 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./VK/thesis/_site
           destination_dir: thesis
-          clean: false
 
   publish-presentation:
     runs-on: ubuntu-latest
