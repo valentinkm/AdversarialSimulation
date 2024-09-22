@@ -16,9 +16,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     pandoc \
-    texlive-full \  # Full LaTeX installation including XeLaTeX
-    texlive-fonts-recommended \  # Recommended fonts
-    texlive-latex-extra \  # Additional LaTeX packages \
+    texlive-full \
+    texlive-fonts-recommended \
+    texlive-latex-extra \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Quarto
