@@ -1,6 +1,7 @@
+# Base image
 FROM rocker/r-ver:4.2.0
 
-# Install required packages and dependencies
+# Install required system dependencies and LaTeX
 RUN apt-get update && apt-get install -y \
     wget \
     gdebi-core \
@@ -15,11 +16,11 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     pandoc \
+    texlive-full \
     texlive-latex-base \
     texlive-latex-extra \
     texlive-fonts-recommended \
     && rm -rf /var/lib/apt/lists/*
-
 
 # Install Quarto
 RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
@@ -38,16 +39,19 @@ RUN Rscript -e 'install.packages(c( \
     "ggh4x" \
   ), repos = "https://cran.rstudio.com")'
 
+# Initialize the LaTeX package manager (tlmgr) for the root user
+RUN tlmgr init-usertree && \
+    tlmgr update --self && \
+    tlmgr install xetex
 
-RUN Rscript -e 'library(ggh4x)'
+# Set the working directory to thesis
+WORKDIR /thesis
 
-# Copy the thesis files
+# Copy thesis files
 COPY VK/thesis/ thesis/
 COPY VK/simulation/results/ simulation/results/
-
-# Copy the bib and csl files into VK directory
 COPY VK/bibliography.bib .
 COPY VK/apa.csl .
 
-WORKDIR /thesis
+# Render the Quarto document
 RUN quarto render
