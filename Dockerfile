@@ -43,8 +43,7 @@ RUN Rscript -e 'install.packages(c( \
 COPY VK/ /VK/
 
 # copy results report of Kosanke
-COPY LK/results.qmd /LK/results.qmd
-COPY LK/images/ /LK/images/
+COPY LK/ /LK/
 
 # working directory at root
 WORKDIR /
