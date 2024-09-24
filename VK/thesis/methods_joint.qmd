@@ -31,3 +31,5 @@ As in study 1 and 2 data for study 3 was generated based on a 5-factor populatio
 knitr::include_graphics(c("figures/model3_1.tex", 
                           "figures/model3_2.tex"))
 ```
+
+### Experimental Design of simulation procedures**
