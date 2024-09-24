@@ -44,6 +44,7 @@ COPY VK/ /VK/
 
 # copy results report of Kosanke
 COPY LK/results.qmd /LK/results.qmd
+COPY LK/images/ /LK/images/
 
 # working directory at root
 WORKDIR /
