@@ -46,40 +46,38 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ### Studies by Kosanke
 
 ```{r, results = 'asis'}
-# Read original methods section from Kosanke
-lines <- readLines("../../LK/thesis.qmd")
+# # Read original methods section from Kosanke
+# lines <- readLines("../../LK/thesis.qmd")
 
-# Find the indices of "### Methods" and "### Results" headings
-methods_headings <- grep("^### Methods", lines)
-results_headings <- grep("^### Results", lines)
+# # Find the indices of "### Methods" and "### Results" headings
+# methods_headings <- grep("^### Methods", lines)
+# results_headings <- grep("^### Results", lines)
 
-# Extract content between the second occurrence of Methods and Results
-start <- methods_headings[2]
-end <- results_headings[2]
-extracted_lines <- lines[(start):(end-1)]
+# # Extract content between the second occurrence of Methods and Results
+# start <- methods_headings[2]
+# end <- results_headings[2]
+# extracted_lines <- lines[(start):(end-1)]
 
-# Detect the placeholder for the table (e.g., "**Table 7**")
-table_placeholder <- grep("\\*\\*Table 7\\*\\*", extracted_lines)
+# # Detect the placeholder for the table (e.g., "**Table 7**")
+# table_placeholder <- grep("\\*\\*Table 7\\*\\*", extracted_lines)
 
-# Split content into before and after the table placeholder
-before_table <- extracted_lines[1:(table_placeholder - 1)]
-after_table <- extracted_lines[(table_placeholder + 1):length(extracted_lines)]
+# # Split content into before and after the table placeholder
+# before_table <- extracted_lines[1:(table_placeholder - 1)]
+# after_table <- extracted_lines[(table_placeholder + 1):length(extracted_lines)]
 
-# Filter out any unwanted lines, including "Overview of the individual simulation studies by Leonard Kosanke"
-before_table <- before_table[!grepl("Overview of the individual simulation studies by Leonard Kosanke.", before_table)]
-before_table <- before_table[!grepl("\\*\\*Table 7\\*\\*", before_table)]  # Filter out "**Table 7**"
+# # Filter out any unwanted lines, including "Overview of the individual simulation studies by Leonard Kosanke"
+# before_table <- before_table[!grepl("Overview of the individual simulation studies by Leonard Kosanke.", before_table)]
+# before_table <- before_table[!grepl("\\*\\*Table 7\\*\\*", before_table)]  # Filter out "**Table 7**"
 
-# Output the content before the table
-cat(paste(before_table, collapse = "\n"))
-
+# # Output the content before the table
+# cat(paste(before_table, collapse = "\n"))
 ```
 
 
-:::{#fig-kosanke-studies}
+:::{fig-kosanke-studies}
 
 ```{r schematic_1, echo=FALSE, out.width="125%"}
-knitr::include_graphics("../../LK/images/TableOverviewIndividualStudies.pdf")
-
+# knitr::include_graphics("../../LK/images/TableOverviewIndividualStudies.pdf")
 ```
 
 \raggedright \textit{Note.} $\Phi$: factor correlation, N: sample size, $\lambda$: factor loading, $\sigma$: residual variance, $\tau$: factor variance, RC: residual correlations, CL: cross-loadings, CFA: confirmatory factor analysis, $\beta$: regression coefficient between factors.
@@ -89,12 +87,12 @@ Overview of Simulation Studies conducted by Kosanke
 :::
 
 ```{r, results = 'asis'}
-# Filter out the unwanted raw code and remaining unwanted lines after the table
-after_table <- after_table[!grepl("\\{r|knitr::include_graphics|```", after_table)]
-after_table <- after_table[!grepl("Overview of the individual simulation studies by Leonard Kosanke.", after_table)]
+# # Filter out the unwanted raw code and remaining unwanted lines after the table
+# after_table <- after_table[!grepl("\\{r|knitr::include_graphics|```", after_table)]
+# after_table <- after_table[!grepl("Overview of the individual simulation studies by Leonard Kosanke.", after_table)]
 
-# Output the content after the table
-cat(paste(after_table, collapse = "\n"))
+# # Output the content after the table
+# cat(paste(after_table, collapse = "\n"))
 ```
 
 ## Methods of "Joint" Simulation Study
