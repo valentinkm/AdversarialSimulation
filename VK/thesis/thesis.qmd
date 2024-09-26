@@ -45,6 +45,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 ### Studies by Kosanke
 
+```{r}
+cat("Current working directory: ", getwd(), "\n")
+cat("Does LK/thesis.qmd exist? ", file.exists("../../LK/thesis.qmd"), "\n")
+```
+
 ```{r, results = 'asis'}
 # Read original methods section from Kosanke
 lines <- readLines("../../LK/thesis.qmd")
