@@ -40,7 +40,8 @@ RUN tlmgr install \
     float \
     pgf
 
-    RUN install2.r --error --skipinstalled \ 
+# Install required R packages
+RUN install2.r --error --skipinstalled \ 
     gert \ 
     here \ 
     patchwork \ 
@@ -62,7 +63,6 @@ RUN tlmgr install \
     rmarkdown \
     dplyr \
     tidyr \
-    kableExtra \
     ggplot2 \
     data.table \
     ggh4x
