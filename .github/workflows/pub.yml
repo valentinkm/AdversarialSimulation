@@ -22,7 +22,7 @@ jobs:
 
       - name: Pull Docker image
         run: |
-          docker pull ghcr.io/${{ github.repository_owner }}/quarto-render:latest
+          docker run --pull always ghcr.io/${{ github.repository_owner }}/quarto-render:latest
 
       - name: Render Thesis
         run: |
