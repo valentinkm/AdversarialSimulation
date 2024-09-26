@@ -3,7 +3,7 @@ name: Publish Thesis and Presentation
 on:
   push:
     branches:
-      - main
+      - presentation
   workflow_dispatch:
   workflow_run:
     workflows: ["Build and Publish Docker Image"]
