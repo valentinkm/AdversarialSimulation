@@ -1,9 +1,6 @@
 # Use rocker/verse, which includes R, RStudio, and TeX Live
 FROM rocker/verse:4.2.2
 
-# Set the build date (optional)
-ARG BUILD_DATE=2024-05-28
-
 # Set the working directory
 WORKDIR /home/rstudio
 
@@ -25,9 +22,15 @@ RUN apt-get update -y && apt-get install -y \
     pandoc \
     && rm -rf /var/lib/apt/lists/*
 
+# Update tlmgr (TeX Live Manager) and all TeX Live packages
+RUN tlmgr option repository ctan && \
+    tlmgr update --self && \
+    tlmgr update --all
+
 # Install additional LaTeX packages
 RUN tlmgr install \
     collection-latexrecommended \
+    collection-pictures \
     libertine \
     pdfpages \
     lualatex-math \
