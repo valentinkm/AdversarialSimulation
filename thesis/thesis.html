@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>thesis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+</section>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<section id="a-framework-for-adversarial-collaboration" class="level2">
+<h2 class="anchored" data-anchor-id="a-framework-for-adversarial-collaboration">A Framework for Adversarial Collaboration</h2>
+</section>
+<section id="methods-of-individual-simulation-studies" class="level2">
+<h2 class="anchored" data-anchor-id="methods-of-individual-simulation-studies">Methods of Individual Simulation Studies</h2>
+<section id="studies-by-kriegmair" class="level3">
+<h3 class="anchored" data-anchor-id="studies-by-kriegmair">Studies by Kriegmair</h3>
+<p>The following description of the methodological setup of my individual simulation studies is based on the structure for simulation studies we established to follow the <em>adversarial simulation</em> framework we established and thus facilitate collaboration. As outlined in this initial phase of our case study, I conducted two separate simulation studies independently of my collaborator.</p>
+</section>
+<section id="aims-objectives-and-research-questions" class="level3">
+<h3 class="anchored" data-anchor-id="aims-objectives-and-research-questions">Aims, objectives and research questions</h3>
+<p>Both studies aimed to evaluate the performance of vanilla SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as general basis for both studies:</p>
+<ol type="1">
+<li>How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?</li>
+<li>What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?</li>
+</ol>
+<p>These indivudal studies represent a conceptual replication of the studies conducted by <span class="citation" data-cites="rosseel_structural_2022">@rosseel_structural_2022</span> and <span class="citation" data-cites="dhaene_evaluation_2023">@dhaene_evaluation_2023</span>. However, these studies just served as a basis for the design and several adjustments were made as described below.</p>
+</section>
+<section id="population-models-and-data-generation-mechanisms" class="level3">
+<h3 class="anchored" data-anchor-id="population-models-and-data-generation-mechanisms">Population Models and Data Generation Mechanisms</h3>
+<p><strong>Study 1</strong></p>
+<p>Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4). In line with <span class="citation" data-cites="rosseel_structural_2022">@rosseel_structural_2022</span> this model design was chosen to represent a realistic model with sufficient complexity to pose a challange for the estimation methods, especially in the presence of misspecifications:</p>
+<ul>
+<li>Model 1.1: Correctly specified model.</li>
+<li>Model 1.2: Misspecified with cross-loadings in the population model that are ignored in the estimation model (model 1.1)</li>
+<li>Model 1.3: Misspecified with correlated residuals and a reversed structural path between the third and fourth latent factors in the population model that are ignored in the estimation model (model 1.1)</li>
+<li>Model 1.4: Misspecified with a bidirectional structural relation between factors 3 and 4 specified as only one directional</li>
+</ul>
+<p>To investigate additioanl possible and realisitic scenarios beyond the ones studied by <span class="citation" data-cites="rosseel_structural_2022">@rosseel_structural_2022</span> model 1.3 here included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications to introduce an even more severly misspecified model under which SAM methods might perform even better than traditional SEM. Further, model 1.4 included a (not estimated) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1. Factor loadings were fixed across all reliability conditions, with the first indicator of each factor serving as the scaling indicator (<span class="math inline">\(\lambda\)</span> = 1.0), and the other two indicators having loadings of 0.7. Indicator reliability levels were manipulated by adjusting the measurement error variances in the <span class="math inline">\(\Theta\)</span> matrix. Specifically, the a reliability value was set at different levels (low = 0.3, moderate = 0.5 or high = 0.7) to compute the respective error variances on the diagonal of <span class="math inline">\(\Theta\)</span>: <span class="math inline">\(\Theta^{*} = \text{Var}(\eta)\Lambda^{T} \times \frac{1}{r - 1}\)</span>.</p>
+<div class="{fig-study1-models}">
+<div id="fig-study1-models" class="cell quarto-layout-panel">
+<p></p><figcaption>Figure&nbsp;1: Population Model Variations of Study 1</figcaption><p></p>
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-study1-models-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(a) Model 1.1</figcaption><p></p>
+<p><embed src="figures/model1_1.tex" class="img-fluid" data-ref-parent="fig-study1-models"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-study1-models-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(b) Model 1.2</figcaption><p></p>
+<p><embed src="figures/model1_2.tex" class="img-fluid" data-ref-parent="fig-study1-models"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 57.1%;justify-content: center;">
+<div id="fig-study1-models-3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(c) Model 1.3</figcaption><p></p>
+<p><embed src="figures/model1_3.tex" class="img-fluid" data-ref-parent="fig-study1-models"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 42.9%;justify-content: center;">
+<div id="fig-study1-models-4" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(d) Model 1.4</figcaption><p></p>
+<p><embed src="figures/model1_4.tex" class="img-fluid" data-ref-parent="fig-study1-models"></p>
+</figure>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<div class="{fig-note}">
+<p> Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model.”</p>
+</div>
+</div>
+<p><strong>Study 2:</strong></p>
+<p>Data were generated based on a 5-factor population structural model with 3 indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained (<span class="math inline">\(R^2\)</span>) by the endogenous factors set at low (<span class="math inline">\(R^2 = 0.1\)</span>) or medium (<span class="math inline">\(R^2 = 0.4\)</span>). Note however that the computation of this was a simplification and does not accurately result in said <span class="math inline">\(R^2\)</span> values. The aim here was only to generally modulate between lower and higher regression weights. The population models resulted in the following model types with varying misspecification in the estimation model:</p>
+<ul>
+<li><p>Model 2.1: structural misspecifcation with falsely specified paths in the estimation model absent in the population model (Figure 5)</p></li>
+<li><p>Model 2.2: correlated residuals and a factor cross-loading in either the exogenous (Model 2.2-exo), endogenous (Model 2.2-endo) part of the model or both (Model 2.2-both) with falsely specified paths in the estimation model absent in the population model (see figure 5-6).</p></li>
+</ul>
+<div class="{fig-study2-models}">
+<div id="fig-study2-models" class="cell quarto-layout-panel">
+<p></p><figcaption>Figure&nbsp;2: Population Model Variations of Study 2</figcaption><p></p>
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-study2-models-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(a) Model 2.1</figcaption><p></p>
+<p><embed src="figures/model2_1.tex" class="img-fluid" data-ref-parent="fig-study2-models"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-study2-models-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(b) Model 2.2</figcaption><p></p>
+<p><embed src="figures/model2_2.tex" class="img-fluid" data-ref-parent="fig-study2-models"></p>
+</figure>
+</div>
+</div>
+</div>
+</figure>
+</div>
+<div class="{fig-note}">
+<p> Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For Model 2.2, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part of the model. These types of misspecifications result in different realizations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.</p>
+</div>
+</div>
+</section>
+<section id="experimental-design-of-simulation-procedures" class="level3">
+<h3 class="anchored" data-anchor-id="experimental-design-of-simulation-procedures">Experimental Design of simulation procedures</h3>
+<p><strong>Study 1</strong></p>
+<p>Study 1 varied three main conditions: (1) sample sizes of small (<span class="math inline">\(N = 100\)</span>), moderate (<span class="math inline">\(N = 400\)</span>), and large (<span class="math inline">\(N = 6400\)</span>); (2) Indicator reliability of low (<span class="math inline">\(= 0.3\)</span>), moderate (<span class="math inline">\(0.5\)</span>), high (<span class="math inline">\(= 0.7\)</span>); (3) Model specifications: correctly specified model and misspecified with not specified cross loadings in the population model (see figure 2), misspecified with not-specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model (see figure 3) and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see figure 4).</p>
+<p><strong>Study 2</strong></p>
+<p>Study 2 varied five conditions: (1) sample sizes: small (<span class="math inline">\(N = 100\)</span>), medium (<span class="math inline">\(N = 400\)</span>), and large (<span class="math inline">\(N = 6400\)</span>). (2) Variance explained by endogenous factors: low (<span class="math inline">\(R^2 = 0.1\)</span>) and medium (<span class="math inline">\(R^2 = 0.4\)</span>). (3) Indicator reliability: low (<span class="math inline">\(0.3\)</span>), moderate (<span class="math inline">\(0.5\)</span>), and high (<span class="math inline">\(0.7\)</span>). (4) Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. (5) Number of measurement blocks: separate measurement model per latent variable (<span class="math inline">\(b = 5\)</span>) and joint measurement model for all exogenous variables (<span class="math inline">\(b = 3\)</span>) for the local SAM condition (lSAM-ML).</p>
+<p><strong>Study 3</strong></p>
+<p>Study 3 varied three conditions: (1) sample sizes of very small (<span class="math inline">\(N = 50\)</span>), small (<span class="math inline">\(N = 100\)</span>) or moderate (<span class="math inline">\(N = 400\)</span>). (2) Indicator reliability of low (<span class="math inline">\(= 0.3\)</span>), moderate (<span class="math inline">\(0.5\)</span>) or high (<span class="math inline">\(= 0.7\)</span>); (3) Model misspecifications with not-specified cross loadings in the population model that were positive or negative (see figure ) or not-specified correlated residuals in the population model that were postive or negative (see figure 8).</p>
+</section>
+<section id="method-selection" class="level3">
+<h3 class="anchored" data-anchor-id="method-selection">Method Selection</h3>
+<p>All studies compared the performance of four estimation methods: Vanilla SEM with maximum likelihood (ML), Global SAM with maximum likelihood (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).</p>
+</section>
+<section id="performance-measures" class="level3">
+<h3 class="anchored" data-anchor-id="performance-measures">Performance Measures</h3>
+<p>For both studies convergence rates were tracked via lavaan’s built-in function that indicates convergence. Further, improper solutions, converged models that showed negative variances (as the only type of improper solution present), were tracked via lavaan warning messages. Next of all converged and propper solutions bias (<span class="math inline">\(\bar{T} - \theta\)</span>), and RMSE (<span class="math inline">\(\sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}\)</span>) where <span class="math inline">\(T_k\)</span> is the estimated parameter, <span class="math inline">\(\bar{T}\)</span> the mean of the estimated parameters and <span class="math inline">\(\theta\)</span> the true parameter value, and <span class="math inline">\(K\)</span> is the number of replications computed. For comparability across varying regression weights for study 2, relative bias (<span class="math inline">\(\frac{\bar{T} - \theta}{\theta}\)</span>) and relative RMSE (<span class="math inline">\(\sqrt{\frac{(\bar{T} - \theta)^2 + S_T^2}{\theta^2}}\)</span>) were computed. Monte Carlo standard errors (MCSE) were computed for bias and RMSE as well as relative bias and relative RMSE: <span class="math inline">\(\sqrt{\frac{S_T^2}{K}}\)</span> and <span class="math inline">\(\sqrt{\frac{S_T^2}{K\theta^2}}\)</span> for bias and relative bias, and <span class="math inline">\(\sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{RMSE}_{(j)} - \text{RMSE} \right)^2}\)</span> and <span class="math inline">\(\sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( rRMSE_{(j)} - rRMSE \right)^2}\)</span> for RMSE and relative RMSE.</p>
+</section>
+<section id="software" class="level3">
+<h3 class="anchored" data-anchor-id="software">Software</h3>
+<p>All analyses were conducted in <span class="citation" data-cites="r_core_team_r_2023">@r_core_team_r_2023</span>. Simulation and estimation was done using <span class="citation" data-cites="rosseel_lavaan_2012">@rosseel_lavaan_2012</span>. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications. For further details and a complete list of libraries, visit <a href="https://github.com/valentinkm/AdversarialSimulation" class="uri">https://github.com/valentinkm/AdversarialSimulation</a>.</p>
+</section>
+<section id="analysis-and-interpretation-plan" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-and-interpretation-plan">Analysis and Interpretation plan</h3>
+<p>Similar to the studies by <span class="citation" data-cites="rosseel_structural_2022">@rosseel_structural_2022</span> and <span class="citation" data-cites="dhaene_evaluation_2023">@dhaene_evaluation_2023</span> results were interpreted by descriptively comparing the performance measures of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications without predetermined cut-off values or critical distances. Performance metric values were aggregated across all parameters excluding the misspecified parameters (present in the population but not in the estimation model).</p>
+</section>
+<section id="studies-by-kosanke" class="level3">
+<h3 class="anchored" data-anchor-id="studies-by-kosanke">Studies by Kosanke</h3>
+</section>
+<section id="methods-1" class="level3">
+<h3 class="anchored" data-anchor-id="methods-1">Methods</h3>
+<p>The structure of this section closely aligns to our agreed upon structure of simulation studies in Table 1.</p>
+<p>In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>. This protocol can be accessed here: <a href="https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf" class="uri">https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf</a>.</p>
+<p><strong>Aims, objectives and research questions</strong></p>
+<p>For my individual study, I replicated parts of <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span> that were relevant to our two substantive research questions. Overall, I conducted 6 simulation studies.</p>
+<p><strong>Population Models and Data Generation Mechanisms</strong></p>
+<p>The most important details with regards to the population models and data-generating mechanisms are visible in Table 7. With regards to the population models, all factors in all studies loaded onto 3 indicators each. I chose the population values to align with the original paper by <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>. The multivariate normally distributed data was generated parametrically, based on a specified population model. All simulations were conducted using seeds to allow for the reproducibility of results.</p>
+<p>For more details on the exact values of each study, see the simulation scripts in the Github repository.</p>
+<div class="{fig-kosanke-studies}">
+<div class="cell">
+<div class="cell-output-display">
+<p><embed src="../../LK/images/TableOverviewIndividualStudies.pdf" class="img-fluid" style="width:125.0%"></p>
+</div>
+</div>
+<p> <span class="math inline">\(\Phi\)</span>: factor correlation, N: sample size, <span class="math inline">\(\lambda\)</span>: factor loading, <span class="math inline">\(\sigma\)</span>: residual variance, <span class="math inline">\(\tau\)</span>: factor variance, RC: residual correlations, CL: cross-loadings, CFA: confirmatory factor analysis, <span class="math inline">\(\beta\)</span>: regression coefficient between factors.</p>
+<p>Overview of Simulation Studies conducted by Kosanke</p>
+</div>
+<p><strong>Experimental Design of simulation procedures</strong></p>
+<p>Overall, 3 different types of factors were varied that can be deduced from Table 7 and are detailed again in the simulation scripts provided.</p>
+<p>Firstly, I varied the sample size in all studies, ranging from N = 50 to 100.000. I included a smaller sample size N=50 for all studies, to be able to answer our substantive research questions in more detail. Study 1b explicitly investigated the small sample bias of LSAM estimation in low sample sizes. Thus, only N=50 and N=100 were present in this study.</p>
+<p>Additionally, I varied the amount of misspecification in all studies, either via different numbers of unmodelled residual correlations, cross-loadings, or both.</p>
+<p>Thirdly, in Studies 1b and 4a, I varied the population values for three model parameters (phi, beta and/ or lambda).</p>
+<p>Besides studies 1 and 2, I implemented full factorial designs. In Studies 1 and 2 I omitted conditions were both one positive and one negative value would be present. I hypothesize that this was done in <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span> to avoid cancellation of biases, but the authors did not give reasoning for this decision themselves.</p>
+<p>In Studies 4 and 4a I investigated the differential performance of the estimators in a model that included a non-saturated structural model (i.e.&nbsp;regressions between some of the factors). These studies were replications not only of the paper by <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>, but of the first paper on the SAM approach by <span class="citation" data-cites="rosseel_structural_2022">@rosseel_structural_2022</span>. In contrast to the other studies, studies 4 and 4a differed in the way the misspecification variation was labelled in <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>. Instead of varying a factor misspecification as in the previous study, they varied 3 different data-generating mechanisms (DGM’s) as a whole. Thus the conditions are labelled differently: DGM 1 contained no misspecification. DGM 2 contained 5 cross-loadings in the data-generating model, that were not modelled in the estimated models. DGM 3 contained 20 residual correlations that were not modelled in the models. I extended them to investigate the interaction of beta and N for the 5-factor regression model, as this again was of interest four our substantial research questions. Additionally, I omitted the inclusion of DGM 1 in Study 4a, as it neither contained misspecification (which is central to our research question), nor did it lead to interesting results in the original study.</p>
+<p><strong>Method Selection</strong></p>
+<p>In terms of estimation methods, I used constrained SEM maximum-likelihood (SEM-ML) and unweighted-least-squares estimation (SEM-ULS), so that loadings and variance parameters were given the constraints that they had to be positive and larger than 0.01. Additionally, I implemented local-SAM (LSAM) and global-SAM (GSAM) estimation, in both maximum-likelihood (LSAM-ML/ GSAM-ML), and unweighted-least-squares estimation (GSAM-ML/ GSAM-ULS) contexts. Exceptions were studies 1b, 4 and 4a, where only LSAM was investigated, as results did not really differ between the two different SAM-methods <span class="citation" data-cites="robitzsch_comparing_2022">[@robitzsch_comparing_2022]</span>.</p>
+<p><strong>Performance Measures</strong></p>
+<p>I calculated the bias and RMSE of the estimated factor correlations in all studies, as well as the standard deviation of the one factor correlation present in Studies 1,2 and 3. For the type of bias calculated, I oriented on <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>, besides in Study 1b. Thus, I calculated average relative bias in Studies 1, 2 and 3, and average absolute bias in Studies 1b, 4 and 4a. In Study 1b, I took the absolute value to see if negative and positive biases canceled each other out in the original study for conditions with lower phi values. In addition to what was done in <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>, I calculated confidence intervals for the bias estimates, but omitted them in the results tables for presentation purposes. The exact computation of the performance measures is detailed in the simulation scripts and results.pdf file in my sub-folder of the Github repository.</p>
+<p>I did not include a detailed mechanism to capture model convergence as detailed in the first substantive research question. As <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span> argued in their paper, and was shown already in other simulations, using constrained maximum likelihood estimation should resolve convergence issues of classical maximum likelihood estimation in smaller samples <span class="citation" data-cites="ludtke_comparison_2021 ulitzsch_alleviating_2023">[@ludtke_comparison_2021; @ulitzsch_alleviating_2023]</span>. I did include, however, a mechanism to track the total number of warnings for each estimation and compare it to the total number of estimations as a sanity check.</p>
+<p><strong>Software</strong></p>
+<p>All analyses were conducted in R <span class="citation" data-cites="r_core_team_r_2023">[@r_core_team_r_2023]</span>. I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results <span class="citation" data-cites="rosseel_lavaan_2012 purrr tidyverse furrr knitr zhu_kableextra_2024">[@rosseel_lavaan_2012; @purrr; @tidyverse; @furrr; @knitr; @zhu_kableextra_2024]</span> .</p>
+<p><strong>Analysis and Interpretation plan</strong></p>
+<p>For the interpretation of results, I oriented on cut-offs that were used in the original paper by <span class="citation" data-cites="robitzsch_comparing_2022">@robitzsch_comparing_2022</span>. For bias, I interpreted differences of 0.05 or higher as substantial. For SD, I explicitly mentioned percentage reductions of more or equal to 5%. For RMSE, the same interpretation was used for differences of 0.03 or higher. The simulation was repeated 1500 times for each Study.</p>
+</section>
+</section>
+<section id="methods-of-joint-simulation-study" class="level2">
+<h2 class="anchored" data-anchor-id="methods-of-joint-simulation-study">Methods of “Joint” Simulation Study</h2>
+<p>After collaborating based on the individual studies conducted by Kosanke and my individually conducted studies</p>
+<p>After examining the studies conducted by Kosanke and study 1 and 2 we did not jointly arrive at the conclusion that a collaborative simulation study is warrented (see Discussion for more detail).</p>
+<p>The third study was conducted as a result of the collaboration with Kosanke and the respective studies conducted. However I identified several arguments for setting up another simulation. Firstly, to test and evaluate the viability and technical fesability of AC for simulation studies, setting up a study based on the individual studies, their results and with Kosanke can provide valuable</p>
+<section id="aims-objectives-and-research-questions-1" class="level3">
+<h3 class="anchored" data-anchor-id="aims-objectives-and-research-questions-1">Aims, objectives and research questions</h3>
+<p>Following our framework for collaboration the research question for the joint study</p>
+</section>
+<section id="population-models-and-data-generation-mechanisms-1" class="level3">
+<h3 class="anchored" data-anchor-id="population-models-and-data-generation-mechanisms-1">Population Models and Data Generation Mechanisms</h3>
+<p><strong>Study 3</strong></p>
+<p>As in study 1 and 2 data for study 3 was generated based on a 5-factor population structural model with 3 indicators for each factor. Factor loadings and indicator reliability was computed in the same way as in study 1. Two different population models were simulated that resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in Study 1. The omitted crossloadings (see figure 7) could either be all positive or negative and were set to be 10% lower in absolute values than the factor loadings. Correlated residuals were also either all positive or all negative and were set to not exceed a factor of 0.6 of the residual variances of the indicators.</p>
+<div id="fig-combined-models3" class="cell quarto-layout-panel">
+<p></p><figcaption>Figure&nbsp;3: Model 3.1 and Model 3.2. <em>Note</em>. Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. Unspecified crossloadings and correlated residuals could be either positive or negative resulting in 2 modulations of model 3.1 and 3.2 in the study.</figcaption><p></p>
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-combined-models3-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(a) Model 3.1</figcaption><p></p>
+<p><embed src="figures/model3_1.tex" class="img-fluid" data-ref-parent="fig-combined-models3"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-combined-models3-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">(b) Model 3.2</figcaption><p></p>
+<p><embed src="figures/model3_2.tex" class="img-fluid" data-ref-parent="fig-combined-models3"></p>
+</figure>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</section>
+<section id="experimental-design-of-simulation-procedures-1" class="level3">
+<h3 class="anchored" data-anchor-id="experimental-design-of-simulation-procedures-1">Experimental Design of simulation procedures**</h3>
+</section>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<section id="results-of-individual-simulation-studies" class="level2">
+<h2 class="anchored" data-anchor-id="results-of-individual-simulation-studies">Results of Individual Simulation Studies</h2>
+<section id="results-of-kriegmairs-simulation-studies" class="level3">
+<h3 class="anchored" data-anchor-id="results-of-kriegmairs-simulation-studies">Results of Kriegmair’s Simulation Studies</h3>
+<div class="cell">
+
+</div>
+<div class="{tbl-cr-study1}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Convergence Rate and Rate of Proper Solutions in Study 1</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.</p>
+</div>
+</div>
+<div class="{fig-cr-study2}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Convergence Rate and Rate of Proper Solutions in Study 2</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecification location for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.</p>
+</div>
+</div>
+<div class="{fig-cr-study3}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Convergence Rate and Rate of Proper Solutions in Study 3</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Convergence and (proper solutions) rates across sample sizes (N), reliability (r), for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM with cross-loadings (CL) and correlated residuals (CR).</p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="{fig-abs-bias-parameterwise-study1}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Average Bias of Regression Parameters in Study 1</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Mean bias (unnormed) for each parameter across sample sizes (N), reliability (r) and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM</p>
+</div>
+</div>
+<div class="{fig-aggregated-bias-study1}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Mean Average Bias of Regression Parameters in Study 1</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Mean bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.</p>
+</div>
+</div>
+<div class="{fig-rel-bias-parameterwise-study2}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Relative Average Bias of Regression Parameters in Study 2</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Relative average bias for each parameter across sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.</p>
+</div>
+</div>
+<div class="{fig-abs-bias-parameterwise-study2}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Average Bias of Regression Parameters not Present (set to 0) in the Population Model in Study 2</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Mean bias (unnormed) for each misspecified parameter (0 in population) across sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.</p>
+</div>
+</div>
+<div class="{tbl-aggregated-rel-bias-study2}">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p></p><figcaption class="figure-caption">Aggregated Relative Bias of Regression Parameters in Study 2</figcaption><p></p>
+<p><img src="thesis_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1152"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="{fig-note}">
+<p> Mean relative bias averaged over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.</p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="thesis_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div id="tbl-abs-bias-parameterwise-study3" class="tbl-parent quarto-layout-panel anchored">
+<div class="panel-caption table-caption">
+<p>Absolute Average Bias of Regression Parameters (Study 3)</p>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell-output-display">
+<p><img src="thesis_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><em>Note.</em> This figure shows the average absolute bias values for each parameter in the different conditions of simulation study 3.</p>
+</div>
+</div>
+</div>
+<div id="tbl-aggregated-bias-study3" class="tbl-parent quarto-layout-panel anchored">
+<div class="panel-caption table-caption">
+<p>Aggregated Bias of Regression Parameters</p>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<div class="cell-output-display">
+<p><img src="thesis_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="1152"></p>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<p><em>Note.</em> Tis figure shows the aggregated bias (absolute values) of the estimated regression parameters for the different methods and conditions.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="results-of-kosankes-simulation-studies" class="level3">
+<h3 class="anchored" data-anchor-id="results-of-kosankes-simulation-studies">Results of Kosanke’s Simulation Studies</h3>
+</section>
+</section>
+<section id="results-of-the-joint-simulation-study" class="level2">
+<h2 class="anchored" data-anchor-id="results-of-the-joint-simulation-study">Results of the “Joint” Simulation Study</h2>
+</section>
+<section id="results-of-the-adversarial-collaboration" class="level2">
+<h2 class="anchored" data-anchor-id="results-of-the-adversarial-collaboration">Results of the Adversarial Collaboration</h2>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<section id="discussing-the-substanital-results" class="level2">
+<h2 class="anchored" data-anchor-id="discussing-the-substanital-results">Discussing the substanital results</h2>
+</section>
+<section id="disucssing-the-adversarial-collaboration" class="level2">
+<h2 class="anchored" data-anchor-id="disucssing-the-adversarial-collaboration">Disucssing the Adversarial Collaboration</h2>
+<p>Idea: living simulations…</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

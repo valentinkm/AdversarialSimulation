@@ -1,0 +1,58 @@
+\begin{tikzpicture}[>=Stealth, node distance=1.8cm]
+
+    % Nodes
+    \node[draw, circle] (f1) {$f_1$};
+    \node[draw, circle, below=2cm of f1] (f3) {$f_3$};
+    \node[draw, circle, below right=1.5cm and 1.25cm of f1] (f2) {$f_2$};
+    \node[draw, circle, below=2cm of f2] (f4) {$f_4$};
+    \node[draw, circle, below=2cm of f3] (f5) {$f_5$};
+    
+    \node[draw, rectangle, left=0.8cm of f1] (y1) {$y_1$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f1] (y2) {$y_2$};
+    \node[draw, rectangle, below left=0.5cm and 0.5cm of f1] (y3) {$y_3$};
+    
+    \node[draw, rectangle, left=0.8cm of f3] (y7) {$y_7$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f3] (y8) {$y_8$};
+    \node[draw, rectangle, below left=0.5cm and 0.5cm of f3] (y9) {$y_9$};
+    
+    \node[draw, rectangle, left=0.8cm of f5] (y13) {$y_{13}$};
+    \node[draw, rectangle, above left=0.5cm and 0.5cm of f5] (y14) {$y_{14}$};
+    \node[draw, rectangle, below left=0.5cm and 0.5cm of f5] (y15) {$y_{15}$};
+    
+    \node[draw, rectangle, right=0.8cm of f2] (y4) {$y_4$};
+    \node[draw, rectangle, above right=0.5cm and 0.5cm of f2] (y5) {$y_5$};
+    \node[draw, rectangle, below right=0.5cm and 0.5cm of f2] (y6) {$y_6$};
+    
+    \node[draw, rectangle, right=0.8cm of f4] (y10) {$y_{10}$};
+    \node[draw, rectangle, above right=0.5cm and 0.5cm of f4] (y11) {$y_{11}$};
+    \node[draw, rectangle, below right=0.5cm and 0.5cm of f4] (y12) {$y_{12}$};
+    
+    % Arrows
+    \draw[<-] (y1) -- (f1);
+    \draw[<-] (y2) -- (f1);
+    \draw[<-] (y3) -- (f1);
+    \draw[<-] (y7) -- (f3);
+    \draw[<-] (y8) -- (f3);
+    \draw[<-] (y9) -- (f3);
+    \draw[<-] (y13) -- (f5);
+    \draw[<-] (y14) -- (f5);
+    \draw[<-] (y15) -- (f5);
+    \draw[->] (f1) -- (f3);
+    \draw[->] (f2) -- (f3);
+    \draw[->] (f4) -- (f3);
+    \draw[->] (f3) -- (f5);
+    \draw[->] (f4) -- (f5);
+
+    \draw[->] (f1) -- (f4);
+    \draw[->] (f2) -- (f4);
+    \draw[<-] (y4) -- (f2);
+    \draw[<-] (y5) -- (f2);
+    \draw[<-] (y6) -- (f2);
+    \draw[<-] (y10) -- (f4);
+    \draw[<-] (y11) -- (f4);
+    \draw[<-] (y12) -- (f4);
+    
+    % Curved arrow from f1 to f5
+    \draw[->, bend right=85] (f1) to (f5);
+    
+\end{tikzpicture}
