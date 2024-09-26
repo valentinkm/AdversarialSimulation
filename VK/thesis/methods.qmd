@@ -66,10 +66,10 @@ To investigate additioanl possible and realisitic scenarios beyond the ones stud
 #| layout: "[[1,1], [1.2,0.9]]"
 #| out.width: "90%"
 
-knitr::include_graphics(c("figures/model1_1.tex", 
-                          "figures/model1_2.tex", 
-                          "figures/model1_3.tex", 
-                          "figures/model1_4.tex"))
+knitr::include_graphics(c("figures/model1_1.svg", 
+                          "figures/model1_2.svg", 
+                          "figures/model1_3.svg", 
+                          "figures/model1_4.svg"))
 ```
 
 ::: {fig-note}
@@ -94,8 +94,8 @@ Data were generated based on a 5-factor population structural model with 3 indic
 #| layout: "[[1,1]]"
 #| out.width: "100%"
 
-knitr::include_graphics(c("figures/model2_1.tex", 
-                          "figures/model2_2.tex"))
+knitr::include_graphics(c("figures/model2_1.svg", 
+                          "figures/model2_2.svg"))
 ```
 
 ::: {fig-note} 
