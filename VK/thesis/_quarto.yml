@@ -1,3 +1,6 @@
 project:
   render: 
     - thesis.qmd
+
+format:
+  pdf: default
