@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - presentation
-  workflow_dispatch:
-  workflow_run:
-    workflows: ["Build and Publish Docker Image"]
-    types:
-      - completed
+  # workflow_dispatch:
+  # workflow_run:
+  #   workflows: ["Build and Publish Docker Image"]
+  #   types:
+  #     - completed
 
 jobs:
   publish-thesis:
