@@ -1,5 +1,8 @@
-# Use rocker/verse, which includes R, RStudio, and TeX Live
-FROM rocker/verse:4.2.2
+# Use rocker/r-ver as the base image, which includes R but not TeX Live
+FROM rocker/r-ver:4.2.2
+
+# Set the build date (optional)
+ARG BUILD_DATE=2024-05-28
 
 # Set the working directory
 WORKDIR /home/rstudio
@@ -22,26 +25,22 @@ RUN apt-get update -y && apt-get install -y \
     pandoc \
     && rm -rf /var/lib/apt/lists/*
 
-# Update tlmgr (TeX Live Manager) and all TeX Live packages
-RUN tlmgr option repository ctan && \
-    tlmgr update --self && \
-    tlmgr update --all
+# Install TinyTeX
+RUN Rscript -e "install.packages('tinytex'); tinytex::install_tinytex()"
 
-# Install additional LaTeX packages
+# Ensure tlmgr is in the PATH
+ENV PATH="/root/bin:${PATH}"
+
+# Install additional LaTeX packages using TinyTeX
 RUN tlmgr install \
     collection-latexrecommended \
+    collection-latex \
+    collection-fontsrecommended \
+    collection-fontsextra \
     collection-pictures \
-    libertine \
-    pdfpages \
-    lualatex-math \
-    luatexbase \
-    titling \
-    pdfx \
-    luatex85 \
-    colorprofiles \
-    multirow \
-    float \
-    pgf
+    pgf \
+    tikzsymbols \
+    xkeyval
 
 # Install required R packages
 RUN install2.r --error --skipinstalled \ 
@@ -70,8 +69,10 @@ RUN install2.r --error --skipinstalled \
     data.table \
     ggh4x
 
-# Install Quarto CLI (already included in rocker/verse, but update if necessary)
-RUN /rocker_scripts/install_quarto.sh
+# Install Quarto CLI
+RUN wget https://quarto.org/download/latest/quarto-linux-amd64.deb \
+    && dpkg -i quarto-linux-amd64.deb \
+    && rm quarto-linux-amd64.deb
 
 # Copy your project files into the Docker image
 COPY VK/ /home/rstudio/VK/
