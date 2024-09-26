@@ -1,14 +1,9 @@
 name: Render and Publish Thesis
 
 on:
-    push:
-      branches:
-        - main
-    workflow_dispatch:
-    workflow_run:
-      workflows: ["Build and Publish Docker Image"]
-      types:
-        - completed
+  push:
+    branches:
+      - main
 
 jobs:
   render-and-publish:
@@ -29,17 +24,10 @@ jobs:
         run: |
           docker pull ghcr.io/${{ github.repository_owner }}/quarto-render:latest
 
-      - name: Get UID and GID
-        id: uid_gid
-        run: |
-          echo "uid=$(id -u)" >> $GITHUB_OUTPUT
-          echo "gid=$(id -g)" >> $GITHUB_OUTPUT
-
       - name: Render Thesis
         run: |
           docker run --rm \
             -v ${{ github.workspace }}/VK:/home/rstudio/VK \
-            --user ${{ steps.uid_gid.outputs.uid }}:${{ steps.uid_gid.outputs.gid }} \
             ghcr.io/${{ github.repository_owner }}/quarto-render:latest
 
       - name: Deploy to GitHub Pages
