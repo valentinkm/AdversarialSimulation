@@ -45,6 +45,8 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./VK/thesis/_site
           destination_dir: thesis
+        env:
+          ACTIONS_STEP_DEBUG: true
 
   publish-presentation:
     runs-on: ubuntu-latest
@@ -89,3 +91,5 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./VK/presentation/_site
           destination_dir: presentation
+        env:
+          ACTIONS_STEP_DEBUG: true
