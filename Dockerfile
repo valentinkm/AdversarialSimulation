@@ -1,9 +1,18 @@
-FROM rocker/r-ver:4.2.0
+# Use rocker/verse, which includes R, RStudio, and TeX Live
+FROM rocker/verse:4.2.2
 
-RUN apt-get update && apt-get install -y \
+# Set the build date (optional)
+ARG BUILD_DATE=2024-05-28
+
+# Set the working directory
+WORKDIR /home/rstudio
+
+# Update packages and install additional system dependencies
+RUN apt-get update -y && apt-get install -y \
+    rsync \
     wget \
     gdebi-core \
-    libcurl4-gnutls-dev \
+    libcurl4-openssl-dev \
     libxml2-dev \
     libssl-dev \
     libfontconfig1-dev \
@@ -14,22 +23,58 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     pandoc \
-    texlive-full \
-    texlive-fonts-recommended \
-    texlive-latex-extra \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
-    gdebi --non-interactive quarto.deb && \
-    rm quarto.deb
+# Install additional LaTeX packages
+RUN tlmgr install \
+    collection-latexrecommended \
+    libertine \
+    pdfpages \
+    lualatex-math \
+    luatexbase \
+    titling \
+    pdfx \
+    luatex85 \
+    colorprofiles \
+    multirow \
+    float \
+    pgf
 
-RUN R -e "install.packages('renv', repos='https://cran.rstudio.com')"
+    RUN install2.r --error --skipinstalled \ 
+    gert \ 
+    here \ 
+    patchwork \ 
+    qrcode \ 
+    showtext \ 
+    svglite \ 
+    xaringanthemer \
+    furrr \ 
+    future \
+    future.batchtools \ 
+    future.apply \
+    remotes \
+    lavaan \
+    purrr \
+    tidyverse \
+    knitr \
+    kableExtra \
+    sessioninfo \
+    rmarkdown \
+    dplyr \
+    tidyr \
+    kableExtra \
+    ggplot2 \
+    data.table \
+    ggh4x
 
-COPY VK/ /VK/
-COPY LK/ /LK/
+# Install Quarto CLI (already included in rocker/verse, but update if necessary)
+RUN /rocker_scripts/install_quarto.sh
 
-WORKDIR /VK/thesis
+# Copy your project files into the Docker image
+COPY VK/ /home/rstudio/VK/
+COPY LK/ /home/rstudio/LK/
 
-RUN R -e "renv::restore()"
+# Set the working directory to your thesis directory
+WORKDIR /home/rstudio/VK/thesis
 
 CMD ["quarto", "render", "thesis.qmd"]

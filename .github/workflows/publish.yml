@@ -33,10 +33,10 @@ jobs:
       - name: Render Thesis Document
         run: |
           docker run --rm \
-          -v ${{ github.workspace }}:/workspace \
-          -w /workspace/VK/thesis \
-          ghcr.io/${{ github.repository_owner }}/quarto-render:latest \
-          quarto render thesis.qmd
+          -v ${{ github.workspace }}/VK:/home/rstudio/VK \
+          -v ${{ github.workspace }}/LK:/home/rstudio/LK \
+          -w /home/rstudio/VK/thesis \
+          ghcr.io/${{ github.repository_owner }}/quarto-render:latest
 
       - name: Deploy Thesis to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -81,10 +81,6 @@ jobs:
 
       - name: Render Presentation
         run: quarto render VK/presentation
-      
-      - name: Show LaTeX Log on Failure
-        if: failure()
-        run: cat /VK/thesis/thesis.log
       
       - name: Deploy Presentation to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
