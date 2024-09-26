@@ -1,7 +1,7 @@
 name: Render and Publish Thesis
 
 on:
-    push:
+    push:   
       branches:
         - presentation
 
