@@ -81,7 +81,11 @@ jobs:
 
       - name: Render Presentation
         run: quarto render VK/presentation
-
+      
+      - name: Show LaTeX Log on Failure
+        if: failure()
+        run: cat /VK/thesis/thesis.log
+      
       - name: Deploy Presentation to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
