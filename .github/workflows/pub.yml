@@ -1,10 +1,9 @@
 name: Render and Publish Thesis
 
 on:
-  push:
-    paths:
-      - 'VK/thesis/**'
-      - '.github/workflows/render-thesis.yml'
+    push:
+      branches:
+        - presentation
 
 jobs:
   render-and-publish:
