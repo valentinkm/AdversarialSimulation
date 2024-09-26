@@ -23,6 +23,9 @@ RUN apt-get update -y && apt-get install -y \
     libjpeg-dev \
     zlib1g-dev \
     pandoc \
+    librsvg2-dev \
+    libcairo2-dev \
+    libgdk-pixbuf2.0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install additional LaTeX packages using tlmgr
@@ -64,7 +67,8 @@ RUN install2.r --error --skipinstalled \
     tidyr \
     ggplot2 \
     data.table \
-    ggh4x
+    ggh4x \
+    rsvg  # Added rsvg package
 
 # Install Quarto CLI (already included in rocker/verse, but update if necessary)
 RUN /rocker_scripts/install_quarto.sh
