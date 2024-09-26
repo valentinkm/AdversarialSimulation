@@ -1,51 +1,66 @@
-# Base image
-FROM rocker/r-ver:4.2.0
+FROM rocker/verse:4.3.1
 
-# required system dependencies and LaTeX
-RUN apt-get update && apt-get install -y \
-    wget \
-    gdebi-core \
-    libcurl4-gnutls-dev \
-    libxml2-dev \
-    libssl-dev \
-    libfontconfig1-dev \
-    libfreetype6-dev \
-    libharfbuzz-dev \
-    libfribidi-dev \
-    libtiff5-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    pandoc \
-    texlive-full \
-    texlive-fonts-recommended \
-    texlive-latex-extra \
-    && rm -rf /var/lib/apt/lists/*
+# Install necessary dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        libcurl4-openssl-dev \
+        libssl-dev \
+        libxml2-dev \
+        libgit2-dev \
+        make \
+        wget \
+        slurm-client \
+        texlive-base \
+        texlive-latex-extra \
+        texlive-fonts-recommended \
+        texlive-science \
+        texlive-xetex \
+        texlive-bibtex-extra \
+        texlive-pictures \
+        texlive-latex-recommended \
+        texlive-fonts-extra \
+        lmodern
 
-# install quarto
-RUN wget -O quarto.deb https://quarto.org/download/latest/quarto-linux-amd64.deb && \
-    gdebi --non-interactive quarto.deb && \
-    rm quarto.deb
+# Update tlmgr and install LaTeX packages
+RUN tlmgr option repository ctan && \
+    tlmgr update --self && \
+    tlmgr install \
+        float \
+        geometry \
+        caption \
+        tikz \
+        koma-script \
+        pdflscape \
+        afterpage \
+        lscape \
+        xcolor \
+        booktabs \
+        longtable \
+        multirow \
+        adjustbox \
+        tcolorbox \
+        titlesec \
+        fontspec \
+        pgfplots \
+        fontawesome5
 
-# install R libraries
-RUN Rscript -e 'install.packages(c( \
-    "knitr", \
-    "rmarkdown", \
-    "dplyr", \
-    "tidyr", \
-    "kableExtra", \
-    "ggplot2", \
-    "data.table", \
-    "ggh4x" \
-  ), repos = "https://cran.rstudio.com")'
+# Install Quarto CLI
+RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.3.450/quarto-1.3.450-linux-amd64.deb && \
+    dpkg -i quarto-1.3.450-linux-amd64.deb && \
+    rm quarto-1.3.450-linux-amd64.deb
 
+# Install renv
+RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
 
-# copy all files belonging to vk
-COPY VK/ /VK/
+# Copy your simulation and thesis files into the Docker image
+COPY VK/simulation /home/rstudio/simulation
+COPY VK/thesis /home/rstudio/thesis
 
-# copy results report of Kosanke
-COPY LK/ /LK/
+# Set the working directory to your thesis folder
+WORKDIR /home/rstudio/thesis
 
-# working directory at root
-WORKDIR /
+# Restore the renv environment
+RUN R -e "renv::restore()"
 
-# RUN quarto render thesis.qmd
+# Default command to render the thesis
+CMD ["quarto", "render", "thesis.qmd"]
