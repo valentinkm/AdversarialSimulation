@@ -28,7 +28,12 @@ jobs:
         run: |
           docker run --rm \
             -v ${{ github.workspace }}/VK:/home/rstudio/VK \
-            ghcr.io/${{ github.repository_owner }}/quarto-render:latest
+            ghcr.io/${{ github.repository_owner }}/quarto-render:latest \
+            quarto render VK/thesis
+
+      - name: List site contents
+        run: |
+          ls -R VK/thesis/_site
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
