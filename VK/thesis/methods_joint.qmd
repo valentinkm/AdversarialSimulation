@@ -21,8 +21,8 @@ As in study 1 and 2 data for study 3 was generated based on a 5-factor populatio
 #| layout: "[[1,1]]"
 #| out.width: "100%"
 #| out.height: "100%"
-knitr::include_graphics(c("figures/model3_1.svg", 
-                          "figures/model3_2.svg"))
+knitr::include_graphics(c("figures/model3_1.pdf", 
+                          "figures/model3_2.pdf"))
 ```
 
 
