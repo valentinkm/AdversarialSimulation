@@ -29,7 +29,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}/VK:/home/rstudio/VK \
             ghcr.io/${{ github.repository_owner }}/quarto-render:latest \
-            quarto render VK/thesis
+            quarto render thesis.qmd
 
       - name: List site contents
         run: |
