@@ -1,21 +1,21 @@
 ```{r convert-svg-to-pdf, include=FALSE}
-# Load necessary library
-library(rsvg)
+# # Load necessary library
+# library(rsvg)
 
-# Define the directory containing your SVG files
-svg_dir <- "figures/"
+# # Define the directory containing your SVG files
+# svg_dir <- "figures/"
 
-# List all SVG files in the directory
-svg_files <- list.files(svg_dir, pattern = "\\.svg$", full.names = TRUE)
+# # List all SVG files in the directory
+# svg_files <- list.files(svg_dir, pattern = "\\.svg$", full.names = TRUE)
 
-# Convert each SVG file to PDF
-for (svg_file in svg_files) {
-  pdf_file <- sub("\\.svg$", ".pdf", svg_file)
-  # Only convert if PDF does not exist or SVG is newer
-  if (!file.exists(pdf_file) || file.mtime(svg_file) > file.mtime(pdf_file)) {
-    rsvg::rsvg_pdf(svg_file, pdf_file)
-  }
-}
+# # Convert each SVG file to PDF
+# for (svg_file in svg_files) {
+#   pdf_file <- sub("\\.svg$", ".pdf", svg_file)
+#   # Only convert if PDF does not exist or SVG is newer
+#   if (!file.exists(pdf_file) || file.mtime(svg_file) > file.mtime(pdf_file)) {
+#     rsvg::rsvg_pdf(svg_file, pdf_file)
+#   }
+# }
 ```
 
 ```{r, include=FALSE}
@@ -51,10 +51,10 @@ To investigate additioanl possible and realisitic scenarios beyond the ones stud
 #| layout: "[[1,1], [1.2,0.9]]"
 #| out.width: "90%"
 #| out.height: "90%"
-knitr::include_graphics(c("figures/model1_1.pdf", 
-                          "figures/model1_2.pdf", 
-                          "figures/model1_3.pdf", 
-                          "figures/model1_4.pdf"))
+knitr::include_graphics(c("figures/model1_1.svg", 
+                          "figures/model1_2.svg", 
+                          "figures/model1_3.svg", 
+                          "figures/model1_4.svg"))
 ```
 
 \raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model."
@@ -77,8 +77,8 @@ Data were generated based on a 5-factor population structural model with 3 indic
 #| out.width: "100%"
 #| out.height: "100%"
 
-knitr::include_graphics(c("figures/model2_1.pdf", 
-                          "figures/model2_2.pdf"))
+knitr::include_graphics(c("figures/model2_1.svg", 
+                          "figures/model2_2.svg"))
 ```
 
 \raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For Model 2.2, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part of the model. These types of misspecifications result in different realizations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
