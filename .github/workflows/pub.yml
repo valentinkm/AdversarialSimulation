@@ -35,11 +35,8 @@ jobs:
         run: |
           ls -R VK/thesis/_site
 
-      - name: Deploy Thesis to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          publish_dir: ./VK/thesis/_site
-          destination_dir: thesis
-        env:
-          ACTIONS_STEP_DEBUG: true
+          publish_dir: VK/thesis/_site
