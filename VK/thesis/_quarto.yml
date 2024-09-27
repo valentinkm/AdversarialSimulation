@@ -1,6 +1,4 @@
 project:
+  type: website
   render: 
     - thesis.qmd
-
-format:
-  pdf: default
