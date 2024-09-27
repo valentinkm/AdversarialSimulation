@@ -3,7 +3,11 @@ name: Render and Publish Thesis
 on:
   push:
     branches:
-      - main
+      - main  
+  workflow_run:
+    workflows: ["Build and Publish Docker Image"]
+    types:
+      - completed
 
 jobs:
   render-and-publish:
