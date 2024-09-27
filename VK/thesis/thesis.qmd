@@ -121,6 +121,13 @@ cat(paste(after_table, collapse = "\n"))
 
 ### Results of Kosanke's Simulation Studies
 
+```{r}
+# Read the results section from Kosanke
+lines <- readLines("../../LK/thesis.qmd")
+
+
+```
+
 ## Results of the "Joint" Simulation Study
 
 ## Results of the Adversarial Collaboration

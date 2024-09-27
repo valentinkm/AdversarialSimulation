@@ -21,12 +21,12 @@ As in study 1 and 2 data for study 3 was generated based on a 5-factor populatio
 #| layout: "[[1,1]]"
 #| out.width: "100%"
 #| out.height: "100%"
-knitr::include_graphics(c("figures_tex/model3_1.tex", 
-                          "figures_tex/model3_2.tex"))
+knitr::include_graphics(c("figures/model3_1.tex", 
+                          "figures/model3_2.tex"))
 ```
 
 
-\raggedright \textit{Note.} Model 3.1 and Model 3.2. *Note*. Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. Unspecified crossloadings and correlated residuals could be either positive or negative resulting in 2 modulations of model 3.1 and 3.2 in the study.
+\raggedright \textit{Note.} *Note*. Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. Unspecified crossloadings and correlated residuals could be either positive or negative resulting in 2 modulations of model 3.1 and 3.2 in the study.
 
 Population Model Variations for Study 3
 :::
