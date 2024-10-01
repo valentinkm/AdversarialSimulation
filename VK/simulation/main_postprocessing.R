@@ -6,20 +6,48 @@ source("process_study1.R")
 source("process_study2.R")
 source("process_study3.R")
 
+getwd
+
+get_latest_file <- function(directory, pattern) {
+  # Normalize the directory path
+  directory <- normalizePath(directory, mustWork = TRUE)
+  
+  # List all files in the directory
+  all_files <- list.files(directory, full.names = TRUE)
+  cat("All files in directory:\n", paste(all_files, collapse = "\n"), "\n\n")
+  
+  # Filter files based on the pattern
+  files <- list.files(directory, pattern = pattern, full.names = TRUE)
+  cat("Matching files:\n", paste(files, collapse = "\n"), "\n\n")
+  
+  # Check if there are any matching files
+  if (length(files) == 0) {
+    stop(paste("No files found matching pattern:", pattern))
+  }
+  
+  # Extract the timestamps from the file names and sort them
+  timestamps <- str_extract(files, "[0-9]{12,}")
+  latest_file <- files[which.max(timestamps)]
+  
+  return(latest_file)
+}
+
 main_processing <- function() {
   all_warnings <- list()
   
-  # # File paths for each study full
-  study1_path <- "../simulation/results/simulation_results_study1.rda"
-  study2_path <- "../simulation/results/simulation_results_study2.rda"
-  study3_path <- "../simulation/results/simulation_results_study3.rda"
+  # Define the directory where the .rda files are stored
+  simulation_directory <- "../simulation/results_test/"
+  
+  # Get the latest files for each study based on the pattern
+  study1_path <- get_latest_file(simulation_directory, "simulation_results_study1r[0-9]{12,}\\.rda$")
+  study2_path <- get_latest_file(simulation_directory, "simulation_results_study2r[0-9]{12,}\\.rda$")
+  study3_path <- get_latest_file(simulation_directory, "simulation_results_study3r[0-9]{12,}\\.rda$")
+  
+  # Load each study
+  study1 <- readRDS(study1_path)
+  study2 <- readRDS(study2_path)
+  study3 <- readRDS(study3_path)
 
-  # File paths for each study test
-  # study1_path <- "../simulation/results/simulation_results_study1r20240814170807.rda"
-  # study2_path <- "../simulation/results/simulation_results_study2r20240814172211.rda"
-  # study3_path <- "../simulation/results/simulation_results_study3r20240814172328.rda"
-  
-  
   # Process Study 1
   print("Processing Study 1...")
   all_warnings[[1]] <- process_study1(study1_path)
@@ -59,10 +87,10 @@ main_processing <- function() {
     )
   
   # Save combined_messages_list
-  saveRDS(combined_messages_list, file = "../simulation/results/list_messages.rds")
+  saveRDS(combined_messages_list, file = "../simulation/results_test/list_messages.rds")
   
   # Save combined_messages_summary
-  saveRDS(combined_messages_summary, file = "../simulation/results/summary_messages.rds")
+  saveRDS(combined_messages_summary, file = "../simulation/results_test/summary_messages.rds")
   
   rm(all_warnings, all_unique_messages, combined_messages_list, combined_messages_summary, id_map)
   gc()

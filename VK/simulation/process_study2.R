@@ -22,12 +22,21 @@ process_study2 <- function(file_path) {
   print("Calculate metrics aggregated across parameters")
   study2_aggregated <- aggregate_results(study2_paramwise, 2)
   
-  # Save results
-  saveRDS(study2_paramwise, file = "../simulation/results/parameter_wise_summary_study2.rds")
-  saveRDS(study2_aggregated, file = "../simulation/results/aggregated_summary_study2.rds")
-  cat("study 2 results saved to: \n
-      /simulation/results/parameter_wise_summary_study2.rds \n
-      /simulation/results/aggregated_summary_study2.rds")
+  # Save with timestamp
+  timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
+  
+  # Define filenames with timestamp for study 1
+  paramwise_filename <- paste0("../simulation/results_test/parameter_wise_summary_study2_", timestamp, ".rda")
+  aggregated_filename <- paste0("../simulation/results_test/aggregated_summary_study2_", timestamp, ".rda")
+  
+  # Save results with the new filenames
+  saveRDS(study2_paramwise, file = paramwise_filename)
+  saveRDS(study2_aggregated, file = aggregated_filename)
+  
+  # Display the saved file paths
+  cat("Study 2 results saved to:\n",
+      paramwise_filename, "\n",
+      aggregated_filename, "\n")
   
   rm(detailed_results_2, study2_aggregated, study2_paramwise)
   gc()

@@ -341,20 +341,27 @@ process_study_parameterwise <- function(study_data, study_number, chunk_size = 1
 
 # ------------------ Aggregated across parameter metric computation ------------
 aggregate_results <- function(paramwise_results, study_number) {
-  # Determine grouping variables based on study number
-  if (study_number %in% c(1, 3)) {
+  # Determine grouping variables and correctly specified parameters based on study number
+  if (study_number == 1) {
     grouping_vars <- c("model_type", "N", "reliability", "method")
     correctly_specified_params <- c("f3~f1", "f3~f2", "f4~f1", "f4~f2", "f5~f3", "f5~f4", "f5~f1")
   } else if (study_number == 2) {
     grouping_vars <- c("model_type", "N", "reliability", "R_squared", "method", "b")
     correctly_specified_params <- c("f4~f1", "f4~f2", "f5~f3", "f5~f4", "f5~f2")
+  } else if (study_number == 3) {
+    grouping_vars <- c("model_type", "N", "reliability", "method")
+    correctly_specified_params <- NULL # No filtering for correctly specified parameters
   } else {
     stop("Invalid study number")
   }
   
-  # Filter to only include correctly specified parameters
-  filtered_results <- paramwise_results %>%
-    filter(parameter %in% correctly_specified_params)
+  # Filter to only include correctly specified parameters for Study 1 and Study 2
+  if (!is.null(correctly_specified_params)) {
+    filtered_results <- paramwise_results %>%
+      filter(parameter %in% correctly_specified_params)
+  } else {
+    filtered_results <- paramwise_results
+  }
   
   # Apply Study 2-specific filtering
   if (study_number == 2) {
@@ -412,3 +419,4 @@ aggregate_results <- function(paramwise_results, study_number) {
   
   return(aggregated_results)
 }
+
