@@ -21,17 +21,16 @@ parallel_seeds <- function(n, seed = NULL) {
   purrr::accumulate(seq_len(n - 1), function(s, x) parallel::nextRNGStream(s), 
                     .init = .Random.seed)
 }
-  
+
 # Generate parameters grid with seeds
-n_reps <- 5000
+n_reps <- 2
 params <- expand.grid(
   seed = parallel_seeds(n_reps, seed = 42),
   model_type = c("3.1", "3.2", "3.1_negative", "3.2_negative"),
   N = c(50, 100, 250, 400),
   reliability = c(0.3, 0.5, 0.7),
-  method = c("SEM", "gSAM", "lSAM_ML", "lSAM_ULS")
+  method = c("SEM_bound", "SEM_unbound", "gSAM", "lSAM_ML")
 )
-
 
 # Set population values
 B_true <- c(
@@ -43,7 +42,7 @@ true_values <- list(
   B = B_true
 )
 
-sam_model_syntax <- "
+unbound_model_syntax <- "
     # Measurement 
     f1 =~ y1 + y2 + y3
     f2 =~ y4 + y5 + y6
@@ -57,7 +56,7 @@ sam_model_syntax <- "
     f5 ~ f3 + f4 + f1
 "
 
-sem_model_syntax <- "
+bound_model_syntax <- "
   # Structural 
   f1 =~ y1 + y2 + y3
   f2 =~ y4 + y5 + y6
@@ -117,14 +116,21 @@ sem_model_syntax <- "
   v15 > 0.01
 "
 
-
 # Study function
 simulate_inner <- function(model_type, N, reliability, method) {
   safe_quiet_run_analysis <- safely(quietly(run_analysis))
   data <- gen_pop_model_data(model_type, N, reliability)$data
   
   # Choose the appropriate model syntax based on the method
-  model_syntax <- if(method == "SEM") sem_model_syntax else sam_model_syntax
+  if(method == "SEM_bound") {
+    model_syntax <- bound_model_syntax
+  } else if (method == "SEM_unbound") {
+    model_syntax <- unbound_model_syntax
+  } else if (method == "gSAM" || method == "lSAM_ML") {
+    model_syntax <- unbound_model_syntax  # For SAM methods, use unbound syntax
+  } else {
+    stop("Unknown method specified")
+  }
   
   fit_result <- safe_quiet_run_analysis(data, model_syntax, method)
   sanity_check_estimates <- run_sanity_check(model_type, model_syntax)
@@ -174,8 +180,6 @@ simulate_inner <- function(model_type, N, reliability, method) {
   }
 }
 
-
-
 simulate_mid <- function(seed, design) {
   future_pmap(design, simulate_inner,
               .options = furrr_options(seed = rep.int(list(seed), nrow(design))))
@@ -211,7 +215,6 @@ run_study_3 <- function(params, true_values) {
     )
   
   print('Parallel computation done')
-  #browser()
   
   # Remove NAs from the lists before calculating MCSE
   relative_bias_list <- unlist(results_df$RelativeBiasList)
@@ -232,7 +235,7 @@ run_study_3 <- function(params, true_values) {
       MeanRelativeRMSE = mean(RelativeRMSE, na.rm = TRUE),
       MCSE_RelativeBias = calculate_mcse_bias(relative_bias_list),
       MCSE_RelativeRMSE = calculate_mcse_rmse(relative_rmse_list),
-      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),  # Update to count
+      ImproperSolutionsCount = sum(ImproperSolution, na.rm = TRUE),
       .groups = 'drop'
     ) %>%
     arrange(model_type, N, reliability, method)
@@ -257,4 +260,3 @@ save_results(simulation_results, filename)
 
 cat("Results saved to:", file.path(results_dir, filename), "\n")
 print(simulation_results$Summary)
-

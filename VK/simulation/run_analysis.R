@@ -7,8 +7,9 @@ library(purrr)
 
 # Function to run analysis using SEM or SAM
 run_analysis <- function(data, model_syntax, method = "SEM", b = 5) {
-  if (method == "SEM") {
-    fit <- sem(model_syntax, data = as.data.frame(data))
+  if (method %in% c("SEM_bound", "SEM_unbound", "SEM_ULS")) {
+    estimator <- ifelse(method == "SEM_ULS", "ULS", "ML")
+    fit <- sem(model_syntax, data = as.data.frame(data), estimator = estimator)
   } else if (method == "gSAM") {
     fit <- sam(model_syntax, data = as.data.frame(data), sam.method = "global")
   } else if (method %in% c("lSAM_ML", "lSAM_ULS")) {
@@ -44,8 +45,6 @@ run_analysis <- function(data, model_syntax, method = "SEM", b = 5) {
   }
   return(fit)
 }
-
-
 
 # Function to fit model to population matrix
 run_sanity_check <- function(model_type, model_syntax) {
