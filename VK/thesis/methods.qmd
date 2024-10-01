@@ -22,7 +22,7 @@
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
-The following description of the methodological setup of my individual simulation studies is based on the structure for simulation studies we established to follow the *adversarial simulation* framework we established and thus facilitate collaboration. As outlined in this initial phase of our case study, I conducted two separate simulation studies independently of my collaborator.
+The methodological setup of my individual simulation studies follows the structure we established for our *adversarial simulation* framework to facilitate stepwise collaboration. In the initial phase of our case study, I independently conducted two separate simulation studies without my collaborator's involvement with the goal to conceptually replicate the findings regarding SAM compared to standard SEM estimation of @rosseel_structural_2022 and @dhaene_evaluation_2023. However, there are several differences in the design and setup of the studies compared to the original studies as outlined below.
 
 ### Aims, objectives and research questions
 
@@ -30,8 +30,6 @@ Both studies aimed to evaluate the performance of vanilla SEM (with maximum like
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
-
-These indivudal studies represent a conceptual replication of the studies conducted by @rosseel_structural_2022 and @dhaene_evaluation_2023. However, these studies just served as a basis for the design and several adjustments were made as described below.
 
 ### Population Models and Data Generation Mechanisms
 
@@ -44,7 +42,11 @@ Data were generated based on a 5-factor population structural model with 3 indic
 -   Model 1.3: Misspecified with correlated residuals and a reversed structural path between the third and fourth latent factors in the population model that are ignored in the estimation model (model 1.1)
 -   Model 1.4: Misspecified with a bidirectional structural relation between factors 3 and 4 specified as only one directional
 
-To investigate additioanl possible and realisitic scenarios beyond the ones studied by @rosseel_structural_2022  model 1.3 here included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications to introduce an even more severly misspecified model under which SAM methods might perform even better than traditional SEM. Further, model 1.4 included a (not estimated) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1. Factor loadings were fixed across all reliability conditions, with the first indicator of each factor serving as the scaling indicator ($\lambda$ = 1.0), and the other two indicators having loadings of 0.7. Indicator reliability levels were manipulated by adjusting the measurement error variances in the $\Theta$ matrix. Specifically, the a reliability value was set at different levels (low = 0.3, moderate = 0.5 or high = 0.7) to compute the respective error variances on the diagonal of $\Theta$: $\Theta^{*} = \text{Var}(\eta)\Lambda^{T} \times \frac{1}{r - 1}$.
+Factor loadings were fixed across all reliability conditions, with the first indicator of each factor serving as the scaling indicator ($\lambda$ = 1.0), and the other two indicators having loadings of 0.7. Indicator reliability levels were manipulated by adjusting the measurement error variances in the $\Theta$ matrix. Specifically, the a reliability value was set at different levels (low = 0.3, moderate = 0.5 or high = 0.7) to compute the respective error variances on the diagonal of $\Theta$: $\Theta^{*} = \text{Var}(\eta)\Lambda^{T} \times \frac{1}{r - 1}$.
+
+**Deviation from @rosseel_structural_2022:**
+
+To investigate additioanl possible and realisitic scenarios beyond the ones studied by @rosseel_structural_2022  model 1.3 included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications to introduce an even more severly misspecified model under which SAM methods might perform even better than traditional SEM. Further, model 1.4 included a (not estimated) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1.
 
 :::{#fig-study1-models}
 ```{r}
@@ -71,6 +73,10 @@ Data were generated based on a 5-factor population structural model with 3 indic
 
 -   Model 2.2: correlated residuals and a factor cross-loading in either the exogenous (Model 2.2-exo), endogenous (Model 2.2-endo) part of the model or both (Model 2.2-both) with falsely specified paths in the estimation model absent in the population model (see figure 5-6).
 
+**Deviation from @dahene_evaluation_2023:**
+
+To enable the analysis of the impact of falsely specified paths in the estiamtion model that are not present in the population model and how well the different methods recover these non-existing relations both population models included several such misspecifications in addtion to the measurement misspecifications evaluated by @dhaene_evaluation_2023.
+
 ::: {#fig-study2-models}
 ```{r, echo=FALSE}
 #| layout: "[[1,1]]"
@@ -96,13 +102,9 @@ Study 1 varied three main conditions: (1) sample sizes of small ($N = 100$), mod
 
 Study 2 varied five conditions: (1) sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). (2) Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). (3) Indicator reliability: low ($0.3$), moderate ($0.5$), and high ($0.7$). (4) Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. (5) Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$) for the local SAM condition (lSAM-ML).
 
-**Study 3**
-
-Study 3 varied three conditions: (1) sample sizes of very small ($N = 50$), small ($N = 100$) or moderate ($N = 400$). (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$) or high ($= 0.7$); (3) Model misspecifications with not-specified cross loadings in the population model that were positive or negative (see figure ) or not-specified correlated residuals in the population model that were postive or negative (see figure 8).
-
 ### Method Selection
 
-All studies compared the performance of four estimation methods: Vanilla SEM with maximum likelihood (ML), Global SAM with maximum likelihood (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).
+Both studies compared the performance of four estimation methods: Vanilla SEM with maximum likelihood (ML), Global SAM with maximum likelihood (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).
 
 ### Performance Measures
 
@@ -110,7 +112,7 @@ For both studies convergence rates were tracked via lavaan's built-in function t
 
 ### Software
 
-All analyses were conducted in @r_core_team_r_2023. Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications. For further details and a complete list of libraries, visit <https://github.com/valentinkm/AdversarialSimulation>.
+All analyses were conducted in @r_core_team_r_2023. Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications. For further details and a complete list of libraries and dependencies, visit <https://github.com/valentinkm/AdversarialSimulation>.
 
 ### Analysis and Interpretation plan
 
