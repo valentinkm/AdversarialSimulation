@@ -32,6 +32,7 @@ fontsize: 12pt
 engine: knitr
 bibliography: ../bibliography.bib
 csl: ../apa.csl
+appendix: true
 ---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
@@ -117,7 +118,7 @@ cat(paste(after_table, collapse = "\n"))
 
 ### Results of Kriegmair's Simulation Studies
 
-{{< include results_all.qmd >}}
+{{< include results.qmd >}}
 
 ### Results of Kosanke's Simulation Studies
 
@@ -138,4 +139,22 @@ lines <- readLines("../../LK/thesis.qmd")
 
 ## Disucssing the Adversarial Collaboration
 
-Idea: living simulations... ... ... ...
+Idea: living simulations
+
+# References
+
+:::{#refs}
+
+:::
+
+# Appendix A: Simulation Protocol
+
+{{< include appendix_a.qmd >}}
+
+# Appendix B: Supplementary Figures
+
+\renewcommand{\thefigure}{A\arabic{figure}}
+\setcounter{figure}{0}
+
+{{< include appendix_b.qmd >}}
+

@@ -33,4 +33,14 @@ The joint study varied three conditions: (1) sample sizes of very small ($N = 50
 
 ### Method Selection
 
-To address the question 
+To address the question ...
+
+### Performance Measures
+
+### Software
+
+To fully evaluate the effect of bound SEM on convergence convergence rate and rate of proper solutions were tracked condition wise (Kriegmair's individual studies). 
+
+### Analysis and Interpretation plan
+
+The analysis was conducted largely in the same way as in the individual studies

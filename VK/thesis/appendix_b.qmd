@@ -1,0 +1,98 @@
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+
+# Suppress figure numbering in the appendix by setting fig.show to 'hold' and disabling automatic captions
+knitr::opts_chunk$set(fig.show = 'hold', fig.cap = "")
+
+
+
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+library(ggplot2)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggh4x)
+```
+
+```{r}
+# Convergence Rate
+conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
+conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
+conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
+```
+
+```{r} 
+
+# convergence rate plot for study 2
+
+# Prepare the data with formatted rate values between 0 and 1 for study 2
+conv_rate2 <- conv_rate_study_2 %>%
+  mutate(
+    ConvergenceRate = ConvergedCount / (ConvergedCount + NotConvergedCount + ImproperSolutionCount),
+    ProperSolutionRate = 1 - (ImproperSolutionCount / ConvergedCount),
+    CombinedLabel = paste(sprintf("%.1f", ConvergenceRate), "\n(", sprintf("%.1f", ProperSolutionRate), ")", sep = ""),
+    method = gsub("_", " ", method),
+    R_squared_label = factor(paste0("R^2==", R_squared)),  # Create the parsed R_squared label
+    model_type = case_when(
+      model_type == "2.1" ~ "no measurement MP",
+      model_type == "2.2_exo" ~ "exogenous",
+      model_type == "2.2_endo" ~ "endogenous",
+      model_type == "2.2_both" ~ "endo- & exogenous",
+      TRUE ~ model_type )
+  ) %>%
+  select(model_type, N, reliability, R_squared, R_squared_label, method, ConvergenceRate, ProperSolutionRate, CombinedLabel)
+```
+
+\blandscape
+::: {fig-cr-study2}
+```{r fig.width=12, fig.height=5.5, fig.cap="Convergence Rate and Rate of Proper Solutions in Study 2\\label{fig:convergence-study-2}"}
+
+p_convergence_heatmap_study2 <- conv_rate2 %>%
+  ggplot(aes(x = factor(N, labels = paste("N =", c(100, 400, 6400))), y = model_type)) +
+  geom_tile(aes(fill = ConvergenceRate), color = "white") +
+  geom_text(aes(label = CombinedLabel), size = 3, color = "black", vjust = 0.5, lineheight = 0.9) +
+  scale_fill_gradient2(low = "#ff6f61", mid = "#ffa500", high = "#7fc97f", midpoint = 0.5, 
+                       limits = c(0, 1), oob = scales::squish, name = "Convergence Rate") +
+  ggh4x::facet_nested(
+    factor(reliability, labels = paste("r =", c(0.3, 0.5, 0.7))) ~ method + R_squared_label,
+    scales = "free", 
+    space = "free", 
+    switch = "y",
+    labeller = labeller(R_squared_label = label_parsed, .default = label_value)  # Specify labellers
+  ) +
+  theme_bw() +
+  theme(
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 8, angle = 30, hjust = 1), 
+    axis.text.y = element_text(size = 8),
+    legend.position = "right", 
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 8),
+    strip.text.y = element_text(size = 10),
+    strip.text.x = element_text(size = 14),
+    strip.placement = "outside",
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.spacing = unit(0.5, "lines")
+  ) +
+  labs(
+    x = "Sample Size",
+    y = "Model Type"
+  ) +
+  scale_y_discrete(expand = c(0, 0), position = "right")
+
+# Print the heatmap for study 2
+print(p_convergence_heatmap_study2)
+
+# ggplot2::ggsave("tables/convergence_rate_study2.png", plot = p_convergence_heatmap_study2, width = 12, height = 6.5)
+```
+
+\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecification location for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
+
+:::
+\elandscape

@@ -1,0 +1,87 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+```
+```{r}
+library(dplyr)
+library(tidyr)
+library(kableExtra)
+library(ggplot2)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggh4x)
+```
+
+```{r}
+# Read convergence rate data
+conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
+conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
+conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
+```
+
+As shown in Figure \ref{fig:convergence-study-1} there were no convergence issues for all SAM methods (gSAM, lSAM ML and ULS) with a convergence rate of 100% and no improper solutions across all conditions even in small samples with low reliability. Standard SEM however showed severe convergence issues in small samples with low to moderate reliability with a convergence rate of as low as 50% and 50% improper solutions in the cross loading misspecification condition as the most challenging condition. 
+
+\blandscape
+::: {fig-cr-s1}
+```{r fig.width=12, fig.height=5.5, fig.cap="Convergence Rate and Rate of Proper Solutions in Study 1\\label{fig:convergence-study-1}"}
+
+conv_rate1 <- conv_rate_study_1 %>%
+  mutate(
+    ConvergenceRate = ConvergedCount / (ConvergedCount + NotConvergedCount + ImproperSolutionCount),
+    ProperSolutionRate = 1 - (ImproperSolutionCount / ConvergedCount),
+    CombinedLabel = paste(sprintf("%.1f", ConvergenceRate), "\n(", sprintf("%.1f", ProperSolutionRate), ")", sep = ""),
+    method = gsub("_", " ", method),
+    model_type = case_when(
+      model_type == "1.1" ~ "no measurement MP",
+      model_type == "1.2" ~ "cross loadings",
+      model_type == "1.3" ~ "correlated errors",
+      model_type == "1.4" ~ "structural misspecification",
+      TRUE ~ model_type
+    )
+  ) %>%
+  mutate(
+    model_type = factor(model_type, levels = c("no measurement MP", "cross loadings", "correlated errors", "structural misspecification"))
+  )
+
+
+# Create the heatmap with labeled metrics and heatmap fill
+p_convergence_heatmap <- conv_rate1 %>%
+  ggplot(aes(x = factor(N, labels = paste("N =", c(100, 400, 6400))), y = model_type)) +
+  geom_tile(aes(fill = ConvergenceRate), color = "white") +
+  geom_text(aes(label = CombinedLabel), size = 2.5, color = "black") +
+  scale_fill_gradient2(low = "#ff6f61", mid = "#ffa500", high = "#7fc97f", midpoint = 0.5, 
+                       limits = c(0, 1), oob = scales::squish, name = "Convergence Rate (%)") +
+  ggh4x::facet_nested(factor(reliability, labels = paste("r =", c(0.3, 0.5, 0.7))) ~ method, 
+                      scales = "free", space = "free", switch = "y") +
+  theme_bw() +
+  theme(
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 7),
+    legend.position = "right", 
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 7),
+    strip.text.y = element_text(size = 7),
+    strip.text.x = element_text(size = 15),
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +
+  labs(
+    x = "Sample Size",
+    y = "Model Type"
+  ) +
+  scale_y_discrete(expand = c(0, 0), position = "right")
+
+# Print the convergence heatmap
+print(p_convergence_heatmap)
+# ggsave("tables/convergence_rate_study1.png", plot = p_convergence_heatmap, width = 12, height = 6.5)
+```
+
+::: {fig-note}
+\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
+:::
+:::
+\elandscape
+
+Convergence rates in study 2 were consistent with this with 100% convergence rates for all SAM methods and as low as 60% for standard SEM with exogenous measurement misspecifications posing more challenges than endogenous misspecifications (see Figure \ref{fig:convergence-study-2} in Appendix B).

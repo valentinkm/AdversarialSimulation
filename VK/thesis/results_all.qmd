@@ -94,6 +94,7 @@ conv_rate2 <- conv_rate_study_2 %>%
     ProperSolutionRate = 1 - (ImproperSolutionCount / ConvergedCount),
     CombinedLabel = paste(sprintf("%.1f", ConvergenceRate), "\n(", sprintf("%.1f", ProperSolutionRate), ")", sep = ""),
     method = gsub("_", " ", method),
+    R_squared_label = factor(paste0("R^2==", R_squared)),  # Create the parsed R_squared label
     model_type = case_when(
       model_type == "2.1" ~ "no measurement MP",
       model_type == "2.2_exo" ~ "exogenous",
@@ -101,19 +102,26 @@ conv_rate2 <- conv_rate_study_2 %>%
       model_type == "2.2_both" ~ "endo- & exogenous",
       TRUE ~ model_type )
   ) %>%
-  select(model_type, N, reliability, R_squared, method, ConvergenceRate, ProperSolutionRate, CombinedLabel)
+  select(model_type, N, reliability, R_squared, R_squared_label, method, ConvergenceRate, ProperSolutionRate, CombinedLabel)
+
 
 
 
 # Create the heatmap for study 2 with centered values
+# Create the heatmap for study 2 with centered values
 p_convergence_heatmap_study2 <- conv_rate2 %>%
   ggplot(aes(x = factor(N, labels = paste("N =", c(100, 400, 6400))), y = model_type)) +
   geom_tile(aes(fill = ConvergenceRate), color = "white") +
-  geom_text(aes(label = CombinedLabel), size = 3, color = "black", vjust = 0.5, lineheight = 0.9) + # Center text vertically with adjusted line height
+  geom_text(aes(label = CombinedLabel), size = 3, color = "black", vjust = 0.5, lineheight = 0.9) +
   scale_fill_gradient2(low = "#ff6f61", mid = "#ffa500", high = "#7fc97f", midpoint = 0.5, 
                        limits = c(0, 1), oob = scales::squish, name = "Convergence Rate") +
-  ggh4x::facet_nested(factor(reliability, labels = paste("r =", c(0.3, 0.5, 0.7))) ~ method + factor(R_squared), 
-                      scales = "free", space = "free", switch = "y") +
+  ggh4x::facet_nested(
+    factor(reliability, labels = paste("r =", c(0.3, 0.5, 0.7))) ~ method + R_squared_label,
+    scales = "free", 
+    space = "free", 
+    switch = "y",
+    labeller = labeller(R_squared_label = label_parsed, .default = label_value)  # Specify labellers
+  ) +
   theme_bw() +
   theme(
     text = element_text(size = 8),
@@ -138,6 +146,8 @@ p_convergence_heatmap_study2 <- conv_rate2 %>%
 
 # Print the heatmap for study 2
 print(p_convergence_heatmap_study2)
+
+
 # ggplot2::ggsave("tables/convergence_rate_study2.png", plot = p_convergence_heatmap_study2, width = 12, height = 6.5)
 ```
 
@@ -237,8 +247,9 @@ plot_data_study_1 <- param_summary_study_1 %>%
   mutate(parameter = factor(parameter, levels = unique(parameter)))
 
 # Prepare data for aggregated bias plot study 1:
+
 plot_data_aggregated_study1 <- aggr_summary_study_1 %>%
-  select(model_type, N, reliability, method, mean_Bias, mean_RelativeBias) %>%
+  select(model_type, N, reliability, method, mean_Bias, mean_RelativeBias, mean_MCSE_Bias, mean_MCSE_RMSE) %>%
   mutate(
     N = factor(N, levels = c(100, 400, 6400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
@@ -254,7 +265,6 @@ plot_data_aggregated_study1 <- aggr_summary_study_1 %>%
     model_type = factor(model_type, levels = c("structural MP", "correlated errors", "cross loadings", "no MP")),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
   )
-
 
 # Prepare data for study 2 parameterwise bias plot:
 misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
@@ -303,7 +313,8 @@ plot_data_study_3 <- param_summary_study_3 %>%
 
 # Prepare data for aggregated bias plot study 3:
 plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
-  select(model_type, N, reliability, method, mean_Bias, mean_RelativeBias) %>%
+  select(model_type, N, reliability, method, mean_Bias, mean_RelativeBias, mean_MCSE_RelativeBias, 
+  mean_MCSE_RelativeRMSE) %>%
   mutate(
     N = factor(N, levels = c(50, 100, 250, 400)),
     reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
@@ -322,7 +333,7 @@ plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
 ```
 
 \blandscape
-::: {fig-abs-bias-parameterwise-study1}
+::: {fig-bias-parameterwise-study1}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5}
 #| fig-cap: "Average Bias of Regression Parameters in Study 1"
 
@@ -385,26 +396,31 @@ print(p3)
 \elandscape
 
 \blandscape
-::: {fig-aggregated-bias-study1}
+::: {fig-bias-aggregated-study1}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5}
 #| fig-cap: "Mean Average Bias of Regression Parameters in Study 1"
 
-p_heatmap <- plot_data_aggregated_study1 %>%
+plot_aggregated_study1 <- plot_data_aggregated_study1 %>%
+  mutate(
+    # Create labels with mean bias (two decimal places) and MCSE (three decimal places)
+    label_bias = sprintf("%.3f", mean_Bias),
+    label_mcse = sprintf("(±%.3f)", mean_MCSE_Bias)
+  ) %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_Bias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", mean_Bias)), size = 3.5, color = "black") + 
+  # Add mean bias text
+  geom_text(aes(label = label_bias), size = 4, color = "black", vjust = -0.5) +
+  # Add MCSE text in smaller font and grey color
+  geom_text(aes(label = label_mcse), size = 3, color = "grey40", vjust = 1.5) +
   scale_fill_gradient2(low = "white", high = "red", limits = c(0, 0.5), oob = scales::squish) +
   ggh4x::facet_nested(reliability ~ method, scales = "free", space = "free", switch = "y") +
   theme_bw() +
   theme(
-    text = element_text(size = 12), 
-    axis.text.y = element_text(size = 12),  
-    legend.position = "none", 
-    legend.title = element_text(size = 12),
-    legend.text = element_text(size = 12),  
-    strip.text.y = element_text(size = 12), 
-    strip.text.x = element_text(size = 15), 
-    legend.key.width = unit(0.8, "cm"),
+    text = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    legend.position = "none",
+    strip.text.y = element_text(size = 12),
+    strip.text.x = element_text(size = 15),
     panel.grid = element_blank(),
     axis.title.x = element_blank(),
     axis.title.y = element_blank()
@@ -414,10 +430,12 @@ p_heatmap <- plot_data_aggregated_study1 %>%
     y = "Model Type",
     fill = "Mean Bias"
   ) +
-  scale_y_discrete(expand = c(0,0), position = "right") +
-  scale_x_discrete(expand = c(0,0))
-print(p_heatmap)
-# ggsave("tables/aggregated_bias_study1.png", plot = p_heatmap, width = 12, height = 6.5)
+  scale_y_discrete(expand = c(0, 0), position = "right") +
+  scale_x_discrete(expand = c(0, 0))
+
+# Print the heatmap with updated labels
+print(plot_aggregated_study1)
+# ggsave("tables/aggregated_bias_study1.png", plot = plot_aggregated_study1, width = 12, height = 6.5)
 ```
 
 :::{fig-note}
@@ -434,8 +452,6 @@ print(p_heatmap)
 data_plot1 <- plot_data_study_2 %>%
   filter(!parameter %in% misspecified_paths)
 
-# Create the plot for correctly specified parameters with rounded Bias values
-# Create the plot with smaller text and adjusted labels
 p1 <- data_plot1 %>%
   ggplot(aes(x = N, y = parameter)) +
   geom_tile(aes(fill = Bias), color = "white") +
@@ -535,18 +551,15 @@ print(p2)
 ::: {tbl-aggregated-rel-bias-study2}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5}
 #| fig-cap: "Aggregated Relative Bias of Regression Parameters in Study 2"
-# Modify R_squared, reliability, and b to create expressions for facet labels
+
 plot_data_aggregated_study2 <- aggr_summary_study_2 %>%
-  select(model_type, N, reliability, method, R_squared, b, mean_RelativeBias) %>%
+  select(model_type, N, reliability, method, R_squared, b, mean_RelativeBias, mean_RelativeRMSE, mean_MCSE_RelativeBias, mean_MCSE_RelativeRMSE) %>%
   mutate(
     N = factor(N, levels = c(100, 400, 6400)),
-    # Format reliability as expression string for label_parsed
     reliability_label = factor(paste0("r==", reliability)),
     method = factor(method, levels = unique(method)),
-    # Format R_squared as expression string for label_parsed
     R_squared_label = factor(paste0("R^2==", R_squared)),
-    # Format b as "b = X"
-    b_label = factor(paste0("b==", b)),  # Use b==
+    b_label = factor(paste0("b==", b)),
     model_type = case_when(
       model_type == "2.1" ~ "no measurement MP",
       model_type == "2.2_exo" ~ "exogenous MP",
@@ -557,7 +570,7 @@ plot_data_aggregated_study2 <- aggr_summary_study_2 %>%
   )
 
 
-p_heatmap_study2 <- plot_data_aggregated_study2 %>%
+plot_aggregated_bias_study2 <- plot_data_aggregated_study2 %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_RelativeBias), color = "white") +
   geom_text(aes(label = sprintf("%.2f", mean_RelativeBias)), size = 2.5, color = "black") +
@@ -594,8 +607,8 @@ p_heatmap_study2 <- plot_data_aggregated_study2 %>%
   scale_x_discrete(expand = c(0, 0))
 
 # Print the heatmap for study 2
-print(p_heatmap_study2)
-# ggplot2::ggsave("tables/aggregated_rel_bias_study2.png", plot = p_heatmap_study2, width = 12, height = 6.5)
+print(plot_aggregated_bias_study2)
+# ggplot2::ggsave("tables/aggregated_rel_bias_study2.png", plot = plot_aggregated_bias_study2, width = 12, height = 6.5)
 ```
 
 :::{fig-note}
