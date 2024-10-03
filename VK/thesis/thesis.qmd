@@ -158,3 +158,11 @@ Idea: living simulations
 
 {{< include appendix_b.qmd >}}
 
+# Appendix C: Detailed Error and Warning Messages
+
+\renewcommand{\thetable}{C\arabic{table}}
+\setcounter{table}{0}
+
+In the following, all different warning and error messages raised during the studies are listed (see Table C1) and shown how often they occurred under various fitting conditions (see Table C2).
+
+{{< include appendix_c.qmd >}}
