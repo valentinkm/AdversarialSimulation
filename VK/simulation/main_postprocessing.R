@@ -36,7 +36,7 @@ main_processing <- function() {
   all_warnings <- list()
   
   # Define the directory where the .rda files are stored
-  simulation_directory <- "../simulation/results_test/"
+  simulation_directory <- "../simulation/results/"
   
   # Get the latest files for each study based on the pattern
   study1_path <- get_latest_file(simulation_directory, "simulation_results_study1r[0-9]{12,}\\.rda$")

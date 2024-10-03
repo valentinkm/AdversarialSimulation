@@ -55,9 +55,6 @@ process_study_warnings <- function(detailed_results, study_number) {
   return(warnings_summary)
 }
 
-# ----
-library(dplyr)
-
 filter_and_summarize <- function(detailed_results, study_number) {
   
   # Ensure variables are logical and properly handle ImproperSolution and OtherEstimationIssue
@@ -92,8 +89,14 @@ filter_and_summarize <- function(detailed_results, study_number) {
       .groups = "drop"
     )
   
-  # Save summary
-  saveRDS(results_summary, file = sprintf("../simulation/results/convergence_rate%d.rds", study_number))
+  # Save with timestamp
+  timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
+  filename <- sprintf("../simulation/results_replic/convergence_rate_study%d_%s.rds", study_number, timestamp)
+  
+  saveRDS(results_summary, file = filename)
+  
+  cat("Summary saved to:", filename, "\n")
+  
   
   # Filter out improper and not converged rows
   filtered_results <- detailed_results %>%
@@ -105,7 +108,6 @@ filter_and_summarize <- function(detailed_results, study_number) {
   
   return(filtered_results)
 }
-
 
 
 # ------------------- Helper functions for metric calculation-------------------
@@ -181,7 +183,7 @@ process_row <- function(row, study_number) {
         true_value = NA_real_,
         estimated_value = NA_real_,
         is_misspecified = NA,
-        Coverage = NA_real_  # Add this line
+        Coverage = NA_real_
       ))
     }
     
@@ -200,11 +202,10 @@ process_row <- function(row, study_number) {
       true_value = true_values,
       estimated_value = estimated_paths[names(true_values)],
       is_misspecified = parameter %in% misspecified_paths,
-      Coverage = row$Coverage  # Add this line
+      Coverage = row$Coverage
     )
   }
 }
-
 
 # Function to calculate metrics for a group of replications
 calculate_metrics <- function(group, study_number) {
@@ -230,8 +231,8 @@ calculate_metrics <- function(group, study_number) {
       mcse_rmse = sqrt(var(sqrt((group$estimated_value - true_value)^2)) * (K - 1) / K)
     )
   
-  # Conditional calculation of relative metrics
-  if (abs(true_value) > 1e-10) {  # Avoid division by zero or very small numbers
+  # Conditional calculation of relative metrics to avoid division by zero
+  if (abs(true_value) > 1e-10) {
     results <- results %>%
       mutate(
         relative_bias = bias / true_value,
@@ -409,12 +410,6 @@ aggregate_results <- function(paramwise_results, study_number) {
   if (all(c("included_cases", "total_cases") %in% names(aggregated_results))) {
     aggregated_results <- aggregated_results %>%
       mutate(overall_InclusionRate = included_cases / total_cases)
-  }
-  
-  # Rename mean_Coverage to average_coverage for studies 1 and 3
-  if (study_number %in% c(1, 3)) {
-    aggregated_results <- aggregated_results %>%
-      rename(average_coverage = mean_Coverage)
   }
   
   return(aggregated_results)
