@@ -1,10 +1,9 @@
-
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 knitr::opts_knit$set(root.dir = "../../")
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Your R code for loading libraries and data
 library(dplyr)
 library(purrr)
@@ -17,34 +16,32 @@ combined_summary <- readRDS("VK/simulation/results/summary_messages.rds")
 
 ```
 
-In the following all different warning and error messages raised during the studies are listed (see Table 1) and shown how often they occurred under various fitting conditions (see Table 2).
+\vspace{1em}
 
-```{r}
+```{r, echo=FALSE}
 combined_list %>%
   kable("latex", booktabs = TRUE, longtable = TRUE,
-        caption = "List of Unique Warnings and Errors",
-        align = c('c', 'l')) %>%
-  kable_styling(latex_options = c("repeat_header", "hold_position"),
-                full_width = TRUE,
-                font_size = 10,
+        caption = "List of Unique Warnings and Errors") %>%
+  kable_styling(latex_options = c("repeat_header"),
+                full_width = FALSE,
+                font_size = 11,
                 position = "left") %>%
-  column_spec(1, width = "1cm") %>%
-  column_spec(2, width = "14cm") %>%
+  column_spec(1, width = "2cm") %>%    # ID column
+  column_spec(2, width = "14cm") %>%   # Message column
   row_spec(0, bold = TRUE, align = "c") %>%
   footnote(general = "This table lists all unique warnings and errors encountered during the simulation studies.",
            general_title = "Note.",
            threeparttable = TRUE,
            escape = FALSE,
            footnote_as_chunk = TRUE)
-
-
 ```
 
-```{r}
+\vspace{1em}
+
+```{r, echo=FALSE}
 combined_summary %>%
   kable("latex", booktabs = TRUE, longtable = TRUE, 
-        caption = "Summary of Warnings and Errors by Condition with ID for All Studies",
-        align = c('c', 'c', 'c', 'c', 'c', 'c', 'c', 'c')) %>%
+        caption = "Summary of Warnings and Errors by Condition with ID for All Studies") %>%
   kable_styling(latex_options = c("repeat_header", "hold_position"), 
                 full_width = FALSE, 
                 font_size = 10,
@@ -57,126 +54,9 @@ combined_summary %>%
   column_spec(6, width = "2cm") %>%    # Message ID
   column_spec(7, width = "1.5cm") %>%  # count
   row_spec(0, bold = TRUE, align = "c") %>%
-  kableExtra::footnote(general = "This table summarizes the count of warnings and errors for each condition in all three simulation studies with the respective ID number corresponding to table 1.",
-                       general_title = "Note.",
-                       threeparttable = TRUE,
-                       escape = FALSE,
-                       footnote_as_chunk = TRUE)
+  footnote(general = "This table summarizes the count of warnings and errors for each condition in all three simulation studies with the respective ID number corresponding to Table 1.",
+           general_title = "Note.",
+           threeparttable = TRUE,
+           escape = FALSE,
+           footnote_as_chunk = TRUE)
 ```
-
-
-```{r}
-# df_1 <- readRDS("../simulation/results/simulation_results_study1.rda")
-# detailed_results_1 <- df_1$DetailedResults
-# 
-# df_2 <- readRDS("../simulation/results/simulation_results_study2.rda")
-# detailed_results_2 <- df_2$DetailedResults
-```
-
-```{r}
-# unique_warnings_1 <- unique(detailed_results_1$Warnings)
-# unique_errors_1 <- unique(detailed_results_1$Errors)
-# 
-# unique_warnings_1 <- unique_warnings_1[unique_warnings_1 != ""]
-# unique_errors_1 <- na.omit(unique_errors_1)
-# 
-# unique_warnings_2 <- unique(detailed_results_2$Warnings)
-# unique_errors_2 <- unique(detailed_results_2$Errors)
-# 
-# unique_warnings_2 <- unique_warnings_2[unique_warnings_2 != ""]
-# unique_errors_2 <- na.omit(unique_errors_2)
-# 
-# 
-# all_unique_warnings <- unique(c(unique_warnings_1, unique_warnings_2))
-# all_unique_errors <- unique(c(unique_errors_1, unique_errors_2))
-# 
-# combined_list <- tibble(
-#   ID = seq_along(c(all_unique_warnings, all_unique_errors)),
-#   Message = c(all_unique_warnings, all_unique_errors)
-# )
-# 
-# 
-# combined_list <- combined_list %>%
-#   mutate(Message = str_wrap(Message, width = 80))
-# 
-# # mapping warnings and errors to IDs
-# id_map <- setNames(combined_list$ID, c(all_unique_warnings, all_unique_errors))
-# 
-# combined_list %>%
-#   kable("latex", booktabs = TRUE, longtable = TRUE, 
-#         caption = "List of Unique Warnings and Errors",
-#         align = c('c', 'l')) %>%
-#   kable_styling(latex_options = c("repeat_header", "hold_position"),
-#                 full_width = TRUE,
-#                 font_size = 10,
-#                 position = "left") %>%
-#   column_spec(1, width = "1cm") %>%
-#   column_spec(2, width = "14cm") %>%
-#   row_spec(0, bold = TRUE, align = "c") %>%
-#   footnote(general = "This table lists all unique warnings and errors encountered during the simulation study.",
-#            general_title = "Note.",
-#            threeparttable = TRUE,
-#            escape = FALSE,
-#            footnote_as_chunk = TRUE)
-```
-
-```{r}
-# summary_1 <- detailed_results_1 %>%
-#   mutate(MessageID = ifelse(!is.na(Warnings), id_map[Warnings], id_map[Errors])) %>%
-#   filter(!is.na(MessageID)) %>%
-#   mutate(
-#     method = case_when(
-#       str_detect(method, "lSAM_ULS") ~ "lSAM-ULS",
-#       TRUE ~ method
-#     )) %>%
-#   group_by(model_type, N, reliability, method, MessageID) %>%
-#   summarise(count = n(), .groups = 'drop') %>%
-#   arrange(desc(count))
-# 
-# summary_2 <- detailed_results_2 %>%
-#   mutate(MessageID = ifelse(!is.na(Warnings), id_map[Warnings], id_map[Errors])) %>%
-#   filter(!is.na(MessageID)) %>%
-#   mutate(
-#     method = case_when(
-#       str_detect(method, "lSAM_ULS") ~ "lSAM-ULS",
-#       TRUE ~ method
-#     )) %>%
-#   group_by(model_type, N, reliability, method, MessageID) %>%
-#   summarise(count = n(), .groups = 'drop') %>%
-#   arrange(desc(count))
-# 
-# combined_summary <- bind_rows(summary_1, summary_2) %>%
-#   rename(
-#     `Model Type` = model_type,
-#     `Message ID` = MessageID,
-#     `Reliability` = reliability,
-#     `Method` = method,
-#     `Count` = count
-#   )
-# 
-# combined_summary %>%
-#   kable("latex", booktabs = TRUE, longtable = TRUE, 
-#         caption = "Summary of Warnings and Errors by Condition with ID for Both Studies",
-#         align = c('c', 'c', 'c', 'c', 'c', 'c', 'c')) %>%
-#   kable_styling(latex_options = c("repeat_header", "hold_position"), 
-#                 full_width = FALSE, 
-#                 font_size = 10,
-#                 position = "left") %>%
-#   column_spec(1, width = "1.5cm") %>%  # Study
-#   column_spec(2, width = "2.5cm") %>%  # Model Type
-#   column_spec(3, width = "1cm") %>%    # N
-#   column_spec(4, width = "2cm") %>%    # reliability
-#   column_spec(5, width = "1.5cm") %>%  # method
-#   column_spec(6, width = "2cm") %>%    # Message ID
-#   column_spec(7, width = "1.5cm") %>%  # count
-#   row_spec(0, bold = TRUE, align = "c") %>%
-#   kableExtra::footnote(general = "This table summarizes the count of warnings and errors for each condition in both simulation studies with the respective ID number corresponding to table 1.",
-#                        general_title = "Note.",
-#                        threeparttable = TRUE,
-#                        escape = FALSE,
-#                        footnote_as_chunk = TRUE)
-```
-
-
-
-

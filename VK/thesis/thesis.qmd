@@ -11,12 +11,12 @@ format:
         classoption: oneside
         papersize: a4
         header-includes:
+          - \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+          - \usepackage{array}
           - \usepackage{float}
           - \floatplacement{table}{H}
           - \usepackage{tikz}
           - \usetikzlibrary{arrows.meta, positioning, calc}
-          - \usepackage{geometry}
-          - \geometry{margin=1in}
           - \usepackage{caption}
           - \captionsetup{justification=raggedright, singlelinecheck=false, parskip=0pt}
           - \usepackage{pdflscape}
@@ -27,8 +27,25 @@ format:
           - \newcommand{\blandscape}{\begin{landscape}}
           - \newcommand{\elandscape}{\end{landscape}}
           - \newenvironment{fignote}{\par\vspace{\baselineskip}\small\textit{Note.}\space}{}
-
-fontsize: 12pt
+          - \usepackage{longtable}
+          - \DeclareCaptionFormat{APAlongtable}{\textbf{Table~\thetable.}\\[1.5\baselineskip]\textit{#3}}
+          - \setlength{\LTpre}{0pt}
+          - \captionsetup[table]{
+                  format=plain,
+                  justification=raggedright,
+                  singlelinecheck=false,
+                  labelfont=bf,
+                  labelsep=none,
+                  skip=0pt}
+          - \captionsetup[longtable]{
+                  format=APAlongtable,
+                  labelformat=empty,
+                  justification=raggedright,
+                  singlelinecheck=false,
+                  skip=0pt}
+          - \setlength{\LTpre}{0pt}
+          - \setlength{\LTpost}{0pt}
+fontsize: 11pt
 engine: knitr
 bibliography: ../bibliography.bib
 csl: ../apa.csl
