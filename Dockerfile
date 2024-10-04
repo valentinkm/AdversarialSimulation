@@ -3,7 +3,7 @@ FROM rocker/r-ver:4.4.0
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 
-# Install system dependencies
+# Install system dependencies, including libgit2-dev for git2r support
 RUN apt-get update && apt-get install -y \
     software-properties-common \
     apt-utils \
@@ -33,6 +33,8 @@ RUN apt-get update && apt-get install -y \
     perl \
     tar \
     gnupg \
+    libgit2-dev \  # Add libgit2-dev for git2r support
+    libssh2-1-dev \ # Add libssh2 for libgit2 dependency
     && rm -rf /var/lib/apt/lists/*
 
 # Install TeX Live for LaTeX support
