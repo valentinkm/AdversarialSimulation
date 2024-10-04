@@ -33,8 +33,6 @@ RUN apt-get update && apt-get install -y \
     perl \
     tar \
     gnupg \
-    libgit2-dev \
-    libssh2-1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install TeX Live for LaTeX support
@@ -51,11 +49,15 @@ RUN install2.r --error --skipinstalled renv
 # Verify that rsvg-convert is available and on the path
 RUN which rsvg-convert
 
+# Declare the build argument for the file SHA
+ARG LK_SHA
+
+# Set the build argument as an environment variable
+ENV LK_SHA=$LK_SHA
+
 # Set up working directories and copy project files
 COPY VK/ /home/rstudio/VK/
 COPY LK/ /home/rstudio/LK/
-COPY VK/.git /home/rstudio/VK/.git
-COPY LK/.git /home/rstudio/LK/.git
 
 WORKDIR /home/rstudio/VK/thesis
 

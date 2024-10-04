@@ -7,6 +7,7 @@ on:
       - '.github/workflows/build-docker-image.yml'
       - 'VK/thesis/**'
       - 'VK/simulation/results/**'
+      - 'LK/thesis.qmd'
 
 jobs:
   build-and-push:
@@ -15,6 +16,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get SHA of LK/thesis.qmd
+        id: get-file-sha
+        run: |
+          # Get the SHA of the specific file
+          LK_SHA=$(git log -n 1 --format=format:%H --full-diff -- LK/thesis.qmd)
+          echo "File SHA of LK/thesis.qmd: $LK_SHA"
+          # Set the SHA as an environment variable for subsequent steps
+          echo "LK_SHA=$LK_SHA" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -43,6 +55,8 @@ jobs:
           file: Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/quarto-render:latest
+          build-args: |
+            LK_SHA=${{ env.LK_SHA }}  # Pass the file SHA as a build argument
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           load: false

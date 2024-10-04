@@ -134,40 +134,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 ### Studies by Kosanke
 
-```{r}
-# Load required library
-library(git2r)
-
-# Get the repository path and extract commit details
-repo_path <- "../../LK"  # Replace with your repository path
-repo <- repository(repo_path)
-latest_commit <- commits(repo)[[1]]  # Retrieves the most recent commit
-commit_sha <- sha(latest_commit)
-github_repo <- "https://github.com/yourusername/yourrepository"  # Replace with your repo link
-file_path <- "LK/thesis.qmd"  # Adjust file path if necessary
-link_to_document <- paste0(github_repo, "/blob/", commit_sha, "/", file_path)
-
-```
-
-```{r}
-input_file <- knitr::current_input()
-input_path <- normalizePath(input_file)
-input_dir <- dirname(input_path)
-
-repo_path <- normalizePath(file.path(input_dir, "..", "..", "LK"))
-
-repo <- repository(repo_path)
-latest_commit <- commits(repo)[[1]]
-
-commit_sha_full <- sha(latest_commit)
-commit_sha_short <- substr(commit_sha_full, 1, 7)
-
-```
 ```{r, results = 'asis'}
-# Display the SHA without a link
-# Display the document version with proper formatting
+file_sha <- Sys.getenv("LK_SHA")
+
 cat("#### Quoted verbatim from Kosanke's report\n")
-cat(paste0("\\textit{(Version identified by Git commit SHA: ", commit_sha_short, "):}\n\n"))
+cat(paste0("\\textit{(Version identified by Git commit SHA of thesis.qmd: ", file_sha, "):}\n\n"))
 ```
 
 
