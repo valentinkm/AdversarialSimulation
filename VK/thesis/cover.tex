@@ -1,0 +1,71 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{left=25mm, right=20mm, top=20mm, bottom=20mm}
+\usepackage{tikz}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{xcolor}  
+\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}  
+
+
+\setlength{\parindent}{0pt}
+
+
+\definecolor{humboldtblue}{RGB}{0,55,108}
+
+\begin{document}
+\thispagestyle{empty} 
+
+\begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east, yshift=-1cm, xshift=-1cm] at (current page.north east) {
+        \includegraphics[width=5cm]{HU_Siegel_logo.pdf}
+    };
+\end{tikzpicture}
+
+\begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north west, yshift=-3.5cm, xshift=25mm] at (current page.north west) {  % Aligned to left margin with xshift=25mm, moved down with yshift=-3.5cm
+        \textbf{\Large \textcolor{humboldtblue}{HUMBOLDT-UNIVERSITÄT ZU BERLIN}}
+    };
+\end{tikzpicture}
+
+\vspace{4.5cm}
+\raggedright
+{\large Lebenswissenschaftliche Fakultät}\\
+Institut für Psychologie
+
+\vspace{1.2cm}
+
+\begin{center}
+    \textbf{\Large Masterarbeit} \\
+
+    \vspace{0.8cm}
+
+    zum Erwerb des akademischen Grades \textbf{Master of Science}
+
+    \vspace{1.5cm}
+
+    \textbf{\large Comparing Structural After Measurement (SAM) with Standard Structural Equation Model Estimation (SEM) in an Adversarial Collaboration}
+\end{center}
+
+\vspace{2cm}
+
+\raggedright
+vorgelegt von
+
+\vspace{0.8cm}
+
+Name: Valentin Kriegmair \\
+Matrikelnummer: 631211 \\
+E-Mailadresse: valentin.kriegmair@gmail.com \\
+Geburtsdatum/-ort: 05.09.1996, Munich
+
+\vspace{2cm}
+
+Erstprüfer: Dr. Aaron Peikert \\
+Zweitprüfer: Prof. Dr. Matthias Ziegler
+
+\vfill
+
+\end{document}

@@ -1,50 +1,99 @@
 ---
 Title: "Thesis"
-author: "Valentin Kriegmair"
+author:
+  - name: Valentin Kriegmair
+    affiliations: "Humboldt-Universität zu Berlin"
 fig-cap-location: top
 format:
     pdf:
         fig-numbering: false
-        fontsize: 12pt
+        fontsize: 11pt
         linestretch: 1.5
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: oneside
         papersize: a4
-        header-includes:
-          - \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-          - \usepackage{array}
-          - \usepackage{float}
-          - \floatplacement{table}{H}
-          - \usepackage{tikz}
-          - \usetikzlibrary{arrows.meta, positioning, calc}
-          - \usepackage{caption}
-          - \captionsetup{justification=raggedright, singlelinecheck=false, parskip=0pt}
-          - \usepackage{pdflscape}
-          - \usepackage{afterpage}
-          - \usepackage{lscape}
-          - \DeclareCaptionFormat{APAfigure}{\raggedright\textbf{Figure~\thefigure.}\\[1.5\baselineskip]\textit{#3}}
-          - \captionsetup[figure]{format=APAfigure, labelsep=none, justification=raggedright}
-          - \newcommand{\blandscape}{\begin{landscape}}
-          - \newcommand{\elandscape}{\end{landscape}}
-          - \newenvironment{fignote}{\par\vspace{\baselineskip}\small\textit{Note.}\space}{}
-          - \usepackage{longtable}
-          - \DeclareCaptionFormat{APAlongtable}{\textbf{Table~\thetable.}\\[1.5\baselineskip]\textit{#3}}
-          - \setlength{\LTpre}{0pt}
-          - \captionsetup[table]{
+        header-includes: |
+          \usepackage{pdfpages}  
+          \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+          \usepackage{array}
+          \usepackage{float}
+          \floatplacement{table}{H}
+          \usepackage{tikz}
+          \usetikzlibrary{arrows.meta, positioning, calc}
+          \usepackage{caption}
+          \captionsetup{justification=raggedright, singlelinecheck=false, parskip=0pt}
+          \usepackage{pdflscape}
+          \usepackage{afterpage}
+          \usepackage{lscape}
+          \DeclareCaptionFormat{APAfigure}{\raggedright\textbf{Figure~\thefigure}\\[1.5\baselineskip]\textit{#3}}
+          \captionsetup[figure]{format=APAfigure, labelsep=none, justification=raggedright}
+          \newcommand{\blandscape}{\begin{landscape}}
+          \newcommand{\elandscape}{\end{landscape}}
+          \newenvironment{fignote}{\par\vspace{\baselineskip}\small\textit{Note.}\space}{}
+          \usepackage{longtable}
+          \DeclareCaptionFormat{APAlongtable}{\textbf{Table~\thetable}\\[1.5\baselineskip]\textit{#3}}
+          \setlength{\LTpre}{0pt}
+          \captionsetup[table]{
                   format=plain,
                   justification=raggedright,
                   singlelinecheck=false,
                   labelfont=bf,
                   labelsep=none,
                   skip=0pt}
-          - \captionsetup[longtable]{
+          \captionsetup[longtable]{
                   format=APAlongtable,
                   labelformat=empty,
                   justification=raggedright,
                   singlelinecheck=false,
                   skip=0pt}
-          - \setlength{\LTpre}{0pt}
-          - \setlength{\LTpost}{0pt}
+          \setlength{\LTpre}{0pt}
+          \setlength{\LTpost}{0pt}
+
+          % APA7 headers:
+          \usepackage{setspace}  % Package to handle line spacing
+          \usepackage{indentfirst}  % Indent the first paragraph after a heading
+
+          % Define paragraph indent and spacing
+          \setlength{\parindent}{1.27cm}  % 0.5-inch paragraph indent for new paragraphs
+          \setlength{\parskip}{0pt}  % No additional spacing between paragraphs
+
+          % Double spacing for headings and text
+          \linespread{2.0}  % Set line spacing to double (2.0)
+
+          % KOMA-Script for headings
+          \RedeclareSectionCommand[
+            beforeskip=1\baselineskip,  % Add spacing before the heading
+            afterskip=1\baselineskip,  % Add spacing after the heading
+            font=\normalfont\bfseries\centering
+          ]{section}
+
+          \RedeclareSectionCommand[
+            beforeskip=1\baselineskip,
+            afterskip=1\baselineskip,
+            font=\normalfont\bfseries\flushleft
+          ]{subsection}
+
+          \RedeclareSectionCommand[
+            beforeskip=0.5\baselineskip,
+            afterskip=0.5\baselineskip,
+            font=\normalfont\bfseries\itshape\flushleft
+          ]{subsubsection}
+
+          \RedeclareSectionCommand[
+            beforeskip=0.5\baselineskip,
+            afterskip=0.5\baselineskip,
+            indent=\parindent,
+            font=\normalfont\bfseries,
+            runin=true  % Run-in heading with the paragraph
+          ]{paragraph}
+
+          \RedeclareSectionCommand[
+            beforeskip=0.5\baselineskip,
+            afterskip=0.5\baselineskip,
+            indent=\parindent,
+            font=\normalfont\bfseries\itshape,
+            runin=true  % Run-in heading with the paragraph
+          ]{subparagraph}
 fontsize: 11pt
 engine: knitr
 bibliography: ../bibliography.bib
@@ -55,6 +104,7 @@ appendix: true
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
+\includepdf{cover.pdf}
 
 # Introduction
 
@@ -106,13 +156,11 @@ cat(paste(before_table, collapse = "\n"))
 
 :::{fig-kosanke-studies}
 
-```{r schematic_1, echo=FALSE, out.width="125%"}
+```{r fig.cap="Overview of Simulation Studies Conducted by Kosanke\\label{tbl:studies-kosanke}", echo=FALSE, out.width="100%"}
 knitr::include_graphics("../../LK/images/TableOverviewIndividualStudies.pdf")
 ```
 
 \raggedright \textit{Note.} $\Phi$: factor correlation, N: sample size, $\lambda$: factor loading, $\sigma$: residual variance, $\tau$: factor variance, RC: residual correlations, CL: cross-loadings, CFA: confirmatory factor analysis, $\beta$: regression coefficient between factors.
-
-Overview of Simulation Studies conducted by Kosanke
 
 :::
 
