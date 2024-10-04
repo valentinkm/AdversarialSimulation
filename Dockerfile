@@ -54,6 +54,8 @@ RUN which rsvg-convert
 # Set up working directories and copy project files
 COPY VK/ /home/rstudio/VK/
 COPY LK/ /home/rstudio/LK/
+COPY VK/.git /home/rstudio/VK/.git
+COPY LK/.git /home/rstudio/LK/.git
 
 WORKDIR /home/rstudio/VK/thesis
 

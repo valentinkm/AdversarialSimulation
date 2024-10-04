@@ -102,6 +102,8 @@ csl: ../apa.csl
 appendix: true
 ---
 ```{r, include=FALSE}
+library(git2r)
+library(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
@@ -148,17 +150,18 @@ link_to_document <- paste0(github_repo, "/blob/", commit_sha, "/", file_path)
 ```
 
 ```{r}
-# Load required library
-library(git2r)
+input_file <- knitr::current_input()
+input_path <- normalizePath(input_file)
+input_dir <- dirname(input_path)
 
-# Get the repository path and extract commit details
-repo_path <- "../../LK"  # Replace with your repository path
+repo_path <- normalizePath(file.path(input_dir, "..", "..", "LK"))
+
 repo <- repository(repo_path)
-latest_commit <- commits(repo)[[1]]  # Retrieves the most recent commit
+latest_commit <- commits(repo)[[1]]
 
-# Get the full commit SHA and then abbreviate to the first 7 characters
 commit_sha_full <- sha(latest_commit)
-commit_sha_short <- substr(commit_sha_full, 1, 7)  # Use first 7 characters
+commit_sha_short <- substr(commit_sha_full, 1, 7)
+
 ```
 ```{r, results = 'asis'}
 # Display the SHA without a link
