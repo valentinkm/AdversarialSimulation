@@ -102,7 +102,6 @@ csl: ../apa.csl
 appendix: true
 ---
 ```{r, include=FALSE}
-library(git2r)
 library(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
