@@ -2,11 +2,11 @@ After collaborating based on the individually conducted studies and the respecti
 
 However I identified several reasons for setting up another simulation. Firstly, to test and evaluate the viability and technical fesability of AC for simulation studies, setting up a study based on the individual studies, their results and with Kosanke can provide valuable...
 
-### Aims, objectives and research questions
+#### Aims, objectives and research questions
 
 Following our framework for collaboration the research questions for the joint study remains the same as specified prior to the individual studies.
 
-### Population Models and Data Generation Mechanisms
+#### Population Models and Data Generation Mechanisms
 
 As in study 1 and 2 data for study 3 was generated based on a 5-factor population structural model with 3 indicators for each factor. Factor loadings and indicator reliability was computed in the same way as in study 1. Two different population models were simulated that resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in Study 1. The omitted crossloadings (see figure 7) could either be all positive or negative and were set to be 10% lower in absolute values than the factor loadings. Correlated residuals were also either all positive or all negative and were set to not exceed a factor of 0.6 of the residual variances of the indicators.
 
@@ -26,21 +26,21 @@ Population Model Variations for Study 3
 :::
 
 
-### Experimental Design of simulation procedures**
+#### Experimental Design of simulation procedures**
 
 The joint study varied three conditions: (1) sample sizes of very small ($N = 50$), small ($N = 100$) or moderate ($N = 400$). (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$) or high ($= 0.7$); (3) Model misspecifications with not-specified cross loadings in the population model that were positive or negative (see figure ) or not-specified correlated residuals in the population model that were postive or negative (see figure 8).
 
 
-### Method Selection
+#### Method Selection
 
 To address the question ...
 
-### Performance Measures
+#### Performance Measures
 
-### Software
+#### Software
 
 To fully evaluate the effect of bound SEM on convergence convergence rate and rate of proper solutions were tracked condition wise (Kriegmair's individual studies). 
 
-### Analysis and Interpretation plan
+#### Analysis and Interpretation plan
 
 The analysis was conducted largely in the same way as in the individual studies

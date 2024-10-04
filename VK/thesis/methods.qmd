@@ -4,16 +4,16 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 The methodological setup of my individual simulation studies follows the structure we established for our *adversarial simulation* framework to facilitate stepwise collaboration. In the initial phase of our case study, I independently conducted two separate simulation studies without my collaborator's involvement with the goal to conceptually replicate the findings regarding SAM compared to standard SEM estimation of @rosseel_structural_2022 and @dhaene_evaluation_2023. However, there are several differences in the design and setup of the studies compared to the original studies as outlined below.
 
-### Aims, objectives and research questions
+#### Aims, objectives and research questions
 
 Both studies aimed to evaluate the performance of vanilla SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as general basis for both studies:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
 
-### Population Models and Data Generation Mechanisms
+#### Population Models and Data Generation Mechanisms
 
-**Study 1**
+##### Study 1
 
 Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4). In line with @rosseel_structural_2022 this model design was chosen to represent a realistic model with sufficient complexity to pose a challange for the estimation methods, especially in the presence of misspecifications:
 
@@ -23,8 +23,6 @@ Data were generated based on a 5-factor population structural model with 3 indic
 -   Model 1.4: Misspecified with a bidirectional structural relation between factors 3 and 4 specified as only one directional
 
 Factor loadings were fixed across all reliability conditions, with the first indicator of each factor serving as the scaling indicator ($\lambda$ = 1.0), and the other two indicators having loadings of 0.7. Indicator reliability levels were manipulated by adjusting the measurement error variances in the $\Theta$ matrix. Specifically, the a reliability value was set at different levels (low = 0.3, moderate = 0.5 or high = 0.7) to compute the respective error variances on the diagonal of $\Theta$: $\Theta^{*} = \text{Var}(\eta)\Lambda^{T} \times \frac{1}{r - 1}$.
-
-**Deviation from @rosseel_structural_2022:**
 
 To investigate additioanl possible and realisitic scenarios beyond the ones studied by @rosseel_structural_2022  model 1.3 included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications to introduce an even more severly misspecified model under which SAM methods might perform even better than traditional SEM. Further, model 1.4 included a (not estimated) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1.
 
@@ -44,15 +42,13 @@ knitr::include_graphics(c("figures/model1_1.tex",
 Population Model Variations of Study 1
 :::
 
-**Study 2:**
+##### Study 2
 
 Data were generated based on a 5-factor population structural model with 3 indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained ($R^2$) by the endogenous factors set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$). Note however that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The population models resulted in the following model types with varying misspecification in the estimation model:
 
 -   Model 2.1: structural misspecifcation with falsely specified paths in the estimation model absent in the population model (Figure 5)
 
 -   Model 2.2: correlated residuals and a factor cross-loading in either the exogenous (Model 2.2-exo), endogenous (Model 2.2-endo) part of the model or both (Model 2.2-both) with falsely specified paths in the estimation model absent in the population model (see figure 5-6).
-
-**Deviation from @dhaene_evaluation_2023:**
 
 To enable the analysis of the impact of falsely specified paths in the estiamtion model that are not present in the population model and how well the different methods recover these non-existing relations both population models included several such misspecifications in addtion to the measurement misspecifications evaluated by @dhaene_evaluation_2023.
 
@@ -71,28 +67,28 @@ knitr::include_graphics(c("figures/model2_1.tex",
 Population Model Variations of Study 2
 :::
 
-### Experimental Design of simulation procedures
+#### Experimental Design of simulation procedures
 
-**Study 1**
+##### Study 1
 
 Study 1 varied three main conditions: (1) sample sizes of small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$); (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$), high ($= 0.7$); (3) Model specifications: correctly specified model and misspecified with not specified cross loadings in the population model (see figure 2), misspecified with not-specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model (see figure 3) and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see figure 4).
 
-**Study 2**
+##### Study 2
 
 Study 2 varied five conditions: (1) sample sizes: small ($N = 100$), medium ($N = 400$), and large ($N = 6400$). (2) Variance explained by endogenous factors: low ($R^2 = 0.1$) and medium ($R^2 = 0.4$). (3) Indicator reliability: low ($0.3$), moderate ($0.5$), and high ($0.7$). (4) Model misspecifications: varying the population model by omitting a residual covariance and a factor cross-loading in different parts of the model. (5) Number of measurement blocks: separate measurement model per latent variable ($b = 5$) and joint measurement model for all exogenous variables ($b = 3$) for the local SAM condition (lSAM-ML).
 
-### Method Selection
+#### Method Selection
 
 Both studies compared the performance of four estimation methods: Vanilla SEM with maximum likelihood (ML), Global SAM with maximum likelihood (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).
 
-### Performance Measures
+#### Performance Measures
 
 For both studies convergence rates were tracked via lavaan's built-in function that indicates convergence. Further, improper solutions, converged models that showed negative variances (as the only type of improper solution present), were tracked via lavaan warning messages. Next of all converged and propper solutions bias ($\bar{T} - \theta$), and RMSE ($\sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}$) where $T_k$ is the estimated parameter, $\bar{T}$ the mean of the estimated parameters and $\theta$ the true parameter value, and $K$ is the number of replications computed. For comparability across varying regression weights for study 2, relative bias ($\frac{\bar{T} - \theta}{\theta}$) and relative RMSE ($\sqrt{\frac{(\bar{T} - \theta)^2 + S_T^2}{\theta^2}}$) were computed. Monte Carlo standard errors (MCSE) were computed for bias and RMSE as well as relative bias and relative RMSE: $\sqrt{\frac{S_T^2}{K}}$ and $\sqrt{\frac{S_T^2}{K\theta^2}}$ for bias and relative bias, and $\sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{RMSE}_{(j)} - \text{RMSE} \right)^2}$ and $\sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( rRMSE_{(j)} - rRMSE \right)^2}$ for RMSE and relative RMSE.
 
-### Software
+#### Software
 
 All analyses were conducted in @r_core_team_r_2023. Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications. For further details and a complete list of libraries and dependencies, visit <https://github.com/valentinkm/AdversarialSimulation>.
 
-### Analysis and Interpretation plan
+#### Analysis and Interpretation plan
 
 Similar to the studies by @rosseel_structural_2022 and @dhaene_evaluation_2023 results were interpreted by descriptively comparing the performance measures of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications without predetermined cut-off values or critical distances. Performance metric values were aggregated across all parameters excluding the misspecified parameters (present in the population but not in the estimation model).
