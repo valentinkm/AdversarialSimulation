@@ -135,9 +135,10 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 ```{r, results = 'asis'}
 file_sha <- Sys.getenv("LK_SHA")
+file_sha_escaped <- gsub("#", "\\\\#", file_sha)
 
-cat("#### Quoted verbatim from Kosanke's report\n")
-cat(paste0("\\textit{(Version identified by Git commit SHA of thesis.qmd: ", file_sha, "):}\n\n"))
+cat("Quoted verbatim from Kosanke's report\n")
+cat(paste0("\\textit{(Version identified by Git commit SHA of thesis.qmd: ", file_sha_escaped, "):}\n\n"))
 ```
 
 
