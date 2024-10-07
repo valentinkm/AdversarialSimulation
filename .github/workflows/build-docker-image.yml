@@ -26,6 +26,14 @@ jobs:
           echo "Short File SHA of LK/thesis.qmd: $LK_SHA"
           echo "LK_SHA=$LK_SHA" >> $GITHUB_ENV
 
+      - name: Get short latest SHA
+        id: get-latest-sha
+        run: |
+          # Get short version of the latest commit SHA
+          SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
+          echo "Shortened Latest SHA: $SHORT_SHA"
+          echo "LATEST_SHA=$SHORT_SHA" >> $GITHUB_ENV
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -46,11 +54,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
-
-      - name: Set up build environment variables
-        run: |
-          # Set the SHA of the latest push that triggered the build
-          echo "LATEST_SHA=${{ github.sha }}" >> $GITHUB_ENV
 
       - name: Print Environment Variables
         run: |
