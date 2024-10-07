@@ -3,10 +3,7 @@
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
-# Suppress figure numbering in the appendix by setting fig.show to 'hold' and disabling automatic captions
 knitr::opts_chunk$set(fig.show = 'hold', fig.cap = "")
-
-
 
 library(dplyr)
 library(tidyr)
@@ -25,11 +22,8 @@ conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
 conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
 ```
 
+
 ```{r} 
-
-# convergence rate plot for study 2
-
-# Prepare the data with formatted rate values between 0 and 1 for study 2
 conv_rate2 <- conv_rate_study_2 %>%
   mutate(
     ConvergenceRate = ConvergedCount / (ConvergedCount + NotConvergedCount + ImproperSolutionCount),

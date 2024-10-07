@@ -169,9 +169,8 @@ lines <- readLines("../../LK/thesis.qmd")
 methods_headings <- grep("^### Methods", lines)
 results_headings <- grep("^### Results", lines)
 
-# Define the start and end positions for extracting content
-start <- methods_headings[2] + 1  # Skip the "### Methods" line itself by adding 1
-end <- results_headings[2] - 1    # Exclude the "### Results" header
+start <- methods_headings[2] + 1  # skip "### Methods" header
+end <- results_headings[2] - 1    # skip "### Results" header
 
 extracted_lines <- lines[(start):(end-1)]
 
@@ -240,22 +239,24 @@ Idea: living simulations
 
 :::
 
-# Appendix A: Simulation Protocol
+# Appendix {.appendix}
 
-{{< include appendix_a.qmd >}}
-
-# Appendix B: Supplementary Figures
+## Appendix A: Simulation Protocol
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+{{< include appendix_a.qmd toc=false >}}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+## Appendix B: Supplementary Figures
 
 \renewcommand{\thefigure}{B\arabic{figure}}
 \setcounter{figure}{0}
 
-{{< include appendix_b.qmd >}}
+{{< include appendix_b.qmd toc=false >}}
 
-# Appendix C: Detailed Error and Warning Messages
+## Appendix C: Detailed Error and Warning Messages
 
 \renewcommand{\thetable}{C\arabic{table}}
 \setcounter{table}{0}
 
 In the following, all different warning and error messages raised during the studies are listed (see Table C1) and shown how often they occurred under various fitting conditions (see Table C2).
 
-{{< include appendix_c.qmd >}}
+{{< include appendix_c.qmd toc=false >}}

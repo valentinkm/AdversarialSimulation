@@ -18,6 +18,7 @@ conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
 conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
 ```
 
+
 \blandscape
 ::: {fig-cr-study1}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5}
