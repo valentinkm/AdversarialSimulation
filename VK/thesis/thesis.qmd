@@ -176,6 +176,9 @@ if (nzchar(document_link)) {
 } else {
   cat("Document link not available.\n")
 }
+
+print(paste("Debug - File SHA:", file_sha))
+print(paste("Debug - Document Link:", document_link))
 ```
 
 
