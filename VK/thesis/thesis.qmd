@@ -157,17 +157,23 @@ This two-step approach is designed to highlight differences in a systematic way 
 ### Studies by Kosanke
 
 ```{r, results = 'asis'}
+# Retrieve environment variables
 file_sha <- Sys.getenv("LK_SHA")
-# file_sha_escaped <- gsub("#", "\\\\#", file_sha)
-LK_THESIS_LINK <- Sys.getenv("LK_THESIS_LINK")
+document_link <- Sys.getenv("DOCUMENT_LINK")
 
+# Check if the variables are set correctly
+if (nzchar(document_link)) {
+  cat("#### Quoted verbatim from Kosanke's report\n")
 
-cat("#### Quoted verbatim from Kosanke's report\n")
-cat(paste0("\\textit{(Version identified by Git commit SHA of thesis.qmd: ", file_sha, "):}\n\n"))
-# Create a clickable link in the document
-cat(paste0("You can view the specific version of the thesis [here](", LK_THESIS_LINK, ").\n"))
-# just plain link:
-cat(paste0(LK_THESIS_LINK, "\n"))
+  cat(paste0("\\textit{(Version identified by Git commit SHA of thesis.qmd: ", file_sha, ")}\n\n"))
+
+  cat(paste0("\\href{", document_link, "}{Click here to view the document}\n\n"))
+
+  cat(paste0("Direct link: \\url{", document_link, "}\n"))
+} else {
+  cat("Document link not available.\n")
+}
+
 ```
 
 
