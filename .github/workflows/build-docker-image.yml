@@ -13,9 +13,6 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    env:
-      DOCUMENT_LINK: https://github.com/${{ github.repository }}/blob/${{ github.sha }}/LK/thesis.qmd
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -28,9 +25,6 @@ jobs:
           LK_SHA=$(git log -n 1 --format=format:%h --full-diff -- LK/thesis.qmd)
           echo "Short File SHA of LK/thesis.qmd: $LK_SHA"
           echo "LK_SHA=$LK_SHA" >> $GITHUB_ENV
-
-      - name: Set LK_THESIS_LINK environment variable
-        run: echo "LK_THESIS_LINK=https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA}/LK/thesis.qmd" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -53,6 +47,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
+      - name: Set up build environment variables
+        run: |
+          # Set the SHA of the latest push that triggered the build
+          echo "LATEST_SHA=${{ github.sha }}" >> $GITHUB_ENV
+          # Set the document link variable if it's not already set
+          echo "LK_THESIS_LINK=https://github.com/${{ github.repository }}/blob/${{ github.sha }}/LK/thesis.qmd" >> $GITHUB_ENV
+
+      # Add this debug step right before building and pushing the Docker image
+      - name: Print Environment Variables
+        run: |
+          echo "LK_THESIS_LINK is: ${{ env.LK_THESIS_LINK }}"
+          echo "LATEST_SHA is: ${{ env.LATEST_SHA }}"
+          echo "LK_SHA is: ${{ env.LK_SHA }}"
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
@@ -62,6 +70,7 @@ jobs:
           build-args: |
             LK_SHA=${{ env.LK_SHA }}
             LK_THESIS_LINK=${{ env.LK_THESIS_LINK }}
+            LATEST_SHA=${{ env.LATEST_SHA }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           load: false
