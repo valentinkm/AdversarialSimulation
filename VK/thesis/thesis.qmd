@@ -104,6 +104,7 @@ appendix: true
 ```{r, include=FALSE}
 library(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+latest_sha <- Sys.getenv("LATEST_SHA")
 ```
 
 \includepdf{cover.pdf}
@@ -112,12 +113,12 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 \noindent
 {{< include abstract.qmd >}}
-\noindent 
-```{r, results = 'asis'}
-latest_sha <- Sys.getenv("LATEST_SHA")
-version_note <- paste0("#### Document Version: \n This document was generated using the state of the AdversarialSimulation repository as of commit SHA: `", latest_sha, "`.\n\n",
-                       "This ensures that all analyses, code, and results presented in this document are based on this specific version of the project.\n")
-cat(version_note)
+
+```{=latex}
+\vspace*{\fill} % Fills up space until the bottom of the page
+\noindent % Prevents indent
+{\textbf{Document Version:} \\
+This document was generated using the state of the repository as of commit SHA: `r Sys.getenv("LATEST_SHA")`.}
 ```
 
 \newpage
