@@ -13,6 +13,9 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    env:
+      DOCUMENT_LINK: https://github.com/${{ github.repository }}/blob/${{ github.sha }}/LK/thesis.qmd
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -25,6 +28,9 @@ jobs:
           LK_SHA=$(git log -n 1 --format=format:%h --full-diff -- LK/thesis.qmd)
           echo "Short File SHA of LK/thesis.qmd: $LK_SHA"
           echo "LK_SHA=$LK_SHA" >> $GITHUB_ENV
+
+      - name: Set LK_THESIS_LINK environment variable
+        run: echo "LK_THESIS_LINK=https://github.com/${GITHUB_REPOSITORY}/blob/${GITHUB_SHA}/LK/thesis.qmd" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -54,7 +60,8 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/quarto-render:latest
           build-args: |
-            LK_SHA=${{ env.LK_SHA }}  # Pass the short file SHA as a build argument
+            LK_SHA=${{ env.LK_SHA }}
+            LK_THESIS_LINK=${{ env.LK_THESIS_LINK }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
           load: false
