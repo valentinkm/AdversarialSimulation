@@ -51,13 +51,9 @@ jobs:
         run: |
           # Set the SHA of the latest push that triggered the build
           echo "LATEST_SHA=${{ github.sha }}" >> $GITHUB_ENV
-          # Set the document link variable if it's not already set
-          echo "LK_THESIS_LINK=https://github.com/${{ github.repository }}/blob/${{ github.sha }}/LK/thesis.qmd" >> $GITHUB_ENV
 
-      # Add this debug step right before building and pushing the Docker image
       - name: Print Environment Variables
         run: |
-          echo "LK_THESIS_LINK is: ${{ env.LK_THESIS_LINK }}"
           echo "LATEST_SHA is: ${{ env.LATEST_SHA }}"
           echo "LK_SHA is: ${{ env.LK_SHA }}"
 
@@ -69,7 +65,6 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/quarto-render:latest
           build-args: |
             LK_SHA=${{ env.LK_SHA }}
-            LK_THESIS_LINK=${{ env.LK_THESIS_LINK }}
             LATEST_SHA=${{ env.LATEST_SHA }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new

@@ -114,11 +114,10 @@ latest_sha <- Sys.getenv("LATEST_SHA")
 \noindent
 {{< include abstract.qmd >}}
 
-```{=latex}
-\vspace*{\fill} % Fills up space until the bottom of the page
-\noindent % Prevents indent
-{\textbf{Document Version:} \\
-This document was generated using the state of the repository as of commit SHA: `r Sys.getenv("LATEST_SHA")`.}
+
+```{r, results = 'asis'}
+cat("#### Document Version: \n")
+cat(paste0("Generated using the state of [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) as of commit SHA:", latest_sha))
 ```
 
 \newpage
@@ -158,27 +157,15 @@ This two-step approach is designed to highlight differences in a systematic way 
 
 ```{r, results = 'asis'}
 file_sha <- Sys.getenv("LK_SHA")
-document_link <- Sys.getenv("DOCUMENT_LINK")
+LK_THESIS_LINK <- Sys.getenv("LK_THESIS_LINK")
+cat("#### Quoted verbatim from [Kosanke's report](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)\n")
+cat(paste0("\\textit{(Git commit SHA:", file_sha, "):}\n\n"))
+cat(paste0("You can view the specific version of the thesis [here](", LK_THESIS_LINK, ").\n"))
+cat(paste0(LK_THESIS_LINK, "\n"))
 
-print(paste("File SHA:", file_sha))
-print(paste("Document Link:", document_link))
-
-if (nzchar(document_link)) {
-  cat("#### Quoted verbatim from Kosanke's report\n")
-
-  cat(paste0("\\textit{(Version identified by Git commit SHA of thesis.qmd: ", file_sha, ")}\n\n"))
-
-
-  cat(paste0("\\href{", document_link, "}{Click here to view the document}\n\n"))
-
-
-  cat(paste0("Direct link: \\url{", document_link, "}\n"))
-} else {
-  cat("Document link not available.\n")
-}
-
-print(paste("Debug - File SHA:", file_sha))
-print(paste("Debug - Document Link:", document_link))
+# print debug:
+print(paste("Debug - LK_SHA:", file_sha))
+print(paste("Debug - LK_THESIS_LINK:", LK_THESIS_LINK))
 ```
 
 
