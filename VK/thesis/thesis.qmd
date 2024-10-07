@@ -104,7 +104,6 @@ appendix: true
 ```{r, include=FALSE}
 library(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
-latest_sha <- Sys.getenv("LATEST_SHA")
 ```
 
 \includepdf{cover.pdf}
@@ -114,10 +113,26 @@ latest_sha <- Sys.getenv("LATEST_SHA")
 \noindent
 {{< include abstract.qmd >}}
 
+\vspace{1cm}
 
 ```{r, results = 'asis'}
+latest_sha <- Sys.getenv("LATEST_SHA")
 cat("#### Document Version: \n")
 cat(paste0("Generated using the state of [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) as of commit SHA:", latest_sha))
+
+
+# Get LATEST_SHA and LK_SHA from environment variables
+latest_sha <- Sys.getenv("LATEST_SHA")
+lk_sha <- Sys.getenv("LK_SHA")
+
+# Check if the environment variables are set correctly
+cat("#### Document Version: \n")
+if (nzchar(latest_sha)) {
+  cat(paste0("Generated using the state of [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) as of commit SHA:", latest_sha, "\n"))
+} else {
+  cat("LATEST_SHA is not set.\n")
+}
+
 ```
 
 \newpage
@@ -151,6 +166,10 @@ This two-step approach is designed to highlight differences in a systematic way 
 
 ### Studies by Kriegmair
 
+The methodological setup of my individual simulation studies follows the structure we established for our *adversarial simulation* framework to facilitate stepwise collaboration. It is based on a preregistered protocol but includes some deviations from the preregistration ([See Appendix A](#appendix-a) for the full protocol and all deviations from the preregistration).
+
+In the initial phase of our case study, I independently conducted two separate simulation studies without my collaborator's involvement with the goal to conceptually replicate the findings regarding SAM compared to standard SEM estimation of @rosseel_structural_2022 and @dhaene_evaluation_2023. However, there are several differences in the design and setup of the studies compared to the original studies as outlined below. 
+
 {{< include methods.qmd >}}
 
 ### Studies by Kosanke
@@ -158,7 +177,7 @@ This two-step approach is designed to highlight differences in a systematic way 
 ```{r, results = 'asis'}
 file_sha <- Sys.getenv("LK_SHA")
 cat("#### Quoted verbatim from [Kosanke's report](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)\n")
-cat(paste0("\\textit{(Git commit SHA:", file_sha, "):}\n\n"))
+cat(paste0("\\textit{(Git commit SHA ", file_sha, "):}\n\n"))
 ```
 
 
@@ -241,7 +260,7 @@ Idea: living simulations
 
 # Appendix {.appendix}
 
-## Appendix A: Simulation Protocol
+## Appendix A: Simulation Protocol {#appendix-a}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 {{< include appendix_a.qmd toc=false >}}
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
