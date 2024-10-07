@@ -163,9 +163,6 @@ cat(paste0("\\textit{(Git commit SHA:", file_sha, "):}\n\n"))
 cat(paste0("You can view the specific version of the thesis [here](", LK_THESIS_LINK, ").\n"))
 cat(paste0(LK_THESIS_LINK, "\n"))
 
-# print debug:
-print(paste("Debug - LK_SHA:", file_sha))
-print(paste("Debug - LK_THESIS_LINK:", LK_THESIS_LINK))
 ```
 
 
