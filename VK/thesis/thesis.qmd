@@ -117,7 +117,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```{r, results = 'asis'}
 latest_sha <- Sys.getenv("LATEST_SHA")
 cat("#### Document Version: \n")
-cat(paste0("Generated using the state of [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) as of commit SHA:", latest_sha))
+cat(paste0("Generated using [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) in state of Git commit SHA ", latest_sha))
 ```
 
 \newpage
@@ -162,7 +162,7 @@ In the initial phase of our case study, I independently conducted two separate s
 ```{r, results = 'asis'}
 file_sha <- Sys.getenv("LK_SHA")
 cat("#### Quoted verbatim from [Kosanke's report](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)\n")
-cat(paste0("\\textit{(Git commit SHA ", file_sha, "):}\n\n"))
+cat(paste0("(Git commit SHA ", file_sha, "):\n\n"))
 ```
 
 
