@@ -106,7 +106,6 @@ library(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
-\includepdf{cover.pdf}
 
 \begin{center} \section*{Abstract} \end{center}
 
@@ -119,20 +118,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 latest_sha <- Sys.getenv("LATEST_SHA")
 cat("#### Document Version: \n")
 cat(paste0("Generated using the state of [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) as of commit SHA:", latest_sha))
-
-
-# Get LATEST_SHA and LK_SHA from environment variables
-latest_sha <- Sys.getenv("LATEST_SHA")
-lk_sha <- Sys.getenv("LK_SHA")
-
-# Check if the environment variables are set correctly
-cat("#### Document Version: \n")
-if (nzchar(latest_sha)) {
-  cat(paste0("Generated using the state of [AdversarialSimulation](https://github.com/valentinkm/AdversarialSimulation) as of commit SHA:", latest_sha, "\n"))
-} else {
-  cat("LATEST_SHA is not set.\n")
-}
-
 ```
 
 \newpage

@@ -1,16 +1,16 @@
 **Preregistration template designed by:** Björn S. Siepe, František Bartoš, Tim P. Morris, Anne-Laure Boulesteix, Daniel W. Heck, and Samuel Pawel
 
-## 1. General Information {.unlisted}
+## 1. General Information
 
-### 1.1. What is the title of the project? {.unlisted}
+### 1.1. What is the title of the project? 
 
 Comparing a Structural After Measurement (SAM) Approach to Standard Structural Equation Model (SEM) Estimation
 
-### 1.2. Who are the current and future project contributors? {.unlisted}
+### 1.2. Who are the current and future project contributors?
 
 Valentin Kriegmair
 
-### 1.3. Provide a description of the project. {.unlisted}
+### 1.3. Provide a description of the project.
 
 The studies registered here are part of an adversarial collaboration project.
 Here the aim is to conceptually (only in part) replicate the results obtained by @dhaene_evaluation_2023 and @rosseel_structural_2022. 
@@ -40,27 +40,38 @@ In study 1 (conceptually replicating @rosseel_structural_2022) data will be gene
 
 - $\boldsymbol{B}$ as $M \times M$ matrix representing latent regression coefficients with all $b = 0.1$.
 
-- Model 1.1, 1.2, and 1.3:
-$$
-\boldsymbol{B} = \begin{bmatrix}
-0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 \\
-0.1 & 0.1 & 0 & 0.1 & 0 \\
-0.1 & 0.1 & 0 & 0 & 0 \\
-0 & 0 & 0.1 & 0.1 & 0
-\end{bmatrix}
-$$
+    - Model 1.1, 1.2
+    $$
+    \boldsymbol{B} = \begin{bmatrix}
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 \\
+    0.1 & 0.1 & 0 & 0.1 & 0 \\
+    0.1 & 0.1 & 0 & 0 & 0 \\
+    0 & 0 & 0.1 & 0.1 & 0
+    \end{bmatrix}
+    $$
 
-- Model 1.4 (reversed effect between $\eta_3$ and $\eta_4$):
-$$
-\boldsymbol{B} = \begin{bmatrix}
-0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 \\
-0.1 & 0.1 & 0 & 0 & 0 \\
-0.1 & 0.1 & 0.1 & 0 & 0 \\
-0 & 0 & 0.1 & 0.1 & 0
-\end{bmatrix}
-$$
+    - Model 1.3 in deviation from the preregistration with a reversed effect between $\eta_3$ and $\eta_4$ to introduce another realistic and more severe misspecification to show the potential of SAM in most challenging conditions:
+    $$
+    \boldsymbol{B} = \begin{bmatrix}
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 \\
+    0.1 & 0.1 & 0 & 0 & 0 \\
+    0.1 & 0.1 & 0.1 & 0 & 0 \\
+    0 & 0 & 0.1 & 0.1 & 0
+    \end{bmatrix}
+    $$
+
+    - Model 1.4 in deviation from the preregistration with a bidirectional structural relation between factors 3 and 4 specified as only one directional instead of just reversing the effect to investigate a different type of misspecification:
+    $$
+    \boldsymbol{B} = \begin{bmatrix}
+        0 & 0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 & 0 \\
+        0.1 & 0.1 & 0 & 0.1 & 0 \\
+        0.1 & 0.1 & 0.1 & 0 & 0 \\
+        0 & 0 & 0.1 & 0.1 & 0
+    \end{bmatrix}
+    $$
 
 - $\boldsymbol{\Psi}$ as $M \times M$ as diagonal matrix (0 on the off diagonal) representing variances of the factors with $1-kb^2$ on the diagonal where $k$ is the number of latent regressor per factor and $b$ the regression coefficients (0.1):
 so the variance for f3 is $1-2*0.1^2 = 0.98$ and for f4 and f5 $1-2*0.1^2 = 0.97$.
