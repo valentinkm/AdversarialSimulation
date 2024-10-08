@@ -49,11 +49,14 @@ RUN install2.r --error --skipinstalled renv
 # Verify that rsvg-convert is available and on the path
 RUN which rsvg-convert
 
-# Declare the build argument for the file SHA
+# Declare the build argument for the SHA variables
+ARG LATEST_SHA
 ARG LK_SHA
 
-# Set the build argument as an environment variable
+# Set the build arguments as environment variables
+ENV LATEST_SHA=$LATEST_SHA
 ENV LK_SHA=$LK_SHA
+
 
 # Set up working directories and copy project files
 COPY VK/ /home/rstudio/VK/
