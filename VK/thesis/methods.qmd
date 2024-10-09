@@ -4,7 +4,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 #### Aims, objectives and research questions
 
-Both studies aimed to evaluate the performance of vanilla SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as general basis for both studies:
+Both studies aimed to evaluate the performance of traditional SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as general basis for both studies:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
@@ -13,7 +13,7 @@ Both studies aimed to evaluate the performance of vanilla SEM (with maximum like
 
 ##### Study 1
 
-Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see figure 1-4). In line with @rosseel_structural_2022 this model design was chosen to represent a realistic model with sufficient complexity to pose a challange for the estimation methods, especially in the presence of misspecifications:
+Data were generated based on a 5-factor population structural model with 3 indicators for each factor. Four different models were simulated (see Figure 1). In line with @rosseel_structural_2022 this model design was chosen to represent a realistic model with sufficient complexity to pose a challange for the estimation methods, especially in the presence of misspecifications:
 
 -   Model 1.1: Correctly specified model.
 -   Model 1.2: Misspecified with cross-loadings in the population model that are ignored in the estimation model (model 1.1)
@@ -42,13 +42,7 @@ Population Model Variations of Study 1
 
 ##### Study 2
 
-Data were generated based on a 5-factor population structural model with 3 indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained ($R^2$) by the endogenous factors set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$). Note however that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The population models resulted in the following model types with varying misspecification in the estimation model:
-
--   Model 2.1: structural misspecifcation with falsely specified paths in the estimation model absent in the population model (Figure 5)
-
--   Model 2.2: correlated residuals and a factor cross-loading in either the exogenous (Model 2.2-exo), endogenous (Model 2.2-endo) part of the model or both (Model 2.2-both) with falsely specified paths in the estimation model absent in the population model (see figure 5-6).
-
-To enable the analysis of the impact of falsely specified paths in the estiamtion model that are not present in the population model and how well the different methods recover these non-existing relations both population models included several such misspecifications in addtion to the measurement misspecifications evaluated by @dhaene_evaluation_2023.
+Data were generated based on a 5-factor population structural model with three indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained ($R^2$) by the endogenous factors set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$). Note however that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The population models resulted in the following model types with varying misspecification in the estimation model: (1) Structural misspecifcation with falsely specified paths in the estimation model absent in the population model (See Figure 2). (2) correlated residuals and a factor cross-loading in either the exogenous, endogenous part of the model or both with falsely specified paths in the estimation model absent in the population model (see Figure 2). To enable the analysis of the impact of falsely specified paths in the estiamtion model that are not present in the population model and how well the different methods recover these non-existing relations both population models included several such misspecifications in addtion to the measurement misspecifications evaluated by @dhaene_evaluation_2023.
 
 ::: {#fig-study2-models}
 ```{r, echo=FALSE}
@@ -60,7 +54,7 @@ knitr::include_graphics(c("figures/model2_1.tex",
                           "figures/model2_2.tex"))
 ```
 
-\raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For Model 2.2, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part of the model. These types of misspecifications result in different realizations of model 2.2 when they are modulated as factors in study 2 but are subsumed under one model here.
+\raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For the model on the right, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part. These types of misspecifications result in different realizations of the model when they are modulated as factors of misspecification (endogenous, exogenous or endo- and exogenous) in study 2 but are subsumed under one model here.
 
 Population Model Variations of Study 2
 :::
@@ -77,7 +71,7 @@ Study 2 varied five conditions: (1) sample sizes: small ($N = 100$), medium ($N 
 
 #### Method Selection
 
-Both studies compared the performance of four estimation methods: Vanilla SEM with maximum likelihood (ML), Global SAM with maximum likelihood (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).
+Both studies compared the performance of four estimation methods: Traditional SEM with maximum likelihood (ML), Global SAM with maximum likelihood (gSAM), Local SAM with maximum likelihood (lSAM-ML), Local SAM with unweighted least squares (lSAM-ULS).
 
 #### Performance Measures
 

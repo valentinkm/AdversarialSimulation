@@ -106,10 +106,19 @@ gen_mat <- function(model_type, nfactors = 5, nvar.factor = 3, lambda = 0.70,
     VAL <- BETA[BETA != 0]  # true values
     
     # 3. PSI
-    PSI <- matrix(0, nrow = nfactors, ncol = nfactors)
-    PSI[1, 1] <- PSI[2, 2] <- 1  # the exogenous latent variables
-    RES <- (1 - beta_value^2)
-    PSI[lav_matrix_diag_idx(nfactors)[-c(1:2)]] <- RES
+    if (grepl("^3\\.", model_type)) {
+      # Adjust PSI for models starting with "3.*"
+      k <- rowSums(BETA != 0)
+      beta_squared <- beta_value^2
+      psi_diag <- 1 - k * beta_squared
+      PSI <- diag(psi_diag)
+    } else {
+      # Existing code for other models
+      PSI <- matrix(0, nrow = nfactors, ncol = nfactors)
+      PSI[1, 1] <- PSI[2, 2] <- 1  # the exogenous latent variables
+      RES <- (1 - beta_value^2)
+      PSI[lav_matrix_diag_idx(nfactors)[-c(1:2)]] <- RES
+    }
     
     # Calculate Sigma_eta
     IB_inv <- solve(diag(nfactors) - BETA)
@@ -143,27 +152,31 @@ lav_matrix_diag_idx <- function(n) {
   return(seq(1, n^2, by = n + 1))
 }
 
-# # Test the function with models 1.1 to 1.4, 3.1, 3.2, and return the matrices
-# test_models_study1 <- function() {
-#   models <- c("1.3", "3.2", "3.2_negative")
-#   for (model in models) {
-#     cat("Testing model:", model, "\n")
-#     MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
-#                      beta_value = 0.1, psi.cor = 0.3, reliability = 0.80,
-#                      rho = 0.80, R_squared = 0.1)
-#     cat("Lambda matrix:\n")
-#     print(MLIST$lambda)
-#     cat("Theta matrix:\n")
-#     print(MLIST$theta)
-#     cat("Psi matrix:\n")
-#     print(MLIST$psi)
-#     cat("Beta matrix:\n")
-#     print(MLIST$beta)
-#     cat("\n")
-#   }
-# }
 
-# test_models_study1()
+# # Test the function with models 1.1 to 1.4, 3.1, 3.2, and return the matrices
+test_models_study1 <- function() {
+  models <- c("3.1", "3.1_negative", "3.2", "3.2_negative")
+  # models <- c("1.1", "1.2", "1.3", "1.4")
+  # models <- c("2.1", "2.2_exo", "2.2_endo", "2.2_both")
+  for (model in models) {
+    cat("Testing model:", model, "\n")
+    MLIST <- gen_mat(model, nfactors = 5, nvar.factor = 3, lambda = 0.70,
+                     beta_value = 0.1, psi.cor = 0.3, reliability = 0.80,
+                     rho = 0.80, R_squared = 0.1)
+    # cat("Lambda matrix:\n")
+    # print(MLIST$lambda)
+    # cat("Theta matrix:\n")
+    # print(MLIST$theta)
+    cat("Psi matrix:\n")
+    print(MLIST$psi)
+    cat("Beta matrix:\n")
+    print(MLIST$beta)
+    # cat("\n")
+  }
+}
+
+
+test_models_study1()
 
 # Uncomment the following to test study 2 models
 # test_all_models_2 <- function() {

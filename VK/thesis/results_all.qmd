@@ -248,7 +248,6 @@ plot_data_study_1 <- param_summary_study_1 %>%
   mutate(parameter = factor(parameter, levels = unique(parameter)))
 
 # Prepare data for aggregated bias plot study 1:
-
 plot_data_aggregated_study1 <- aggr_summary_study_1 %>%
   select(model_type, N, reliability, method, mean_Bias, mean_RelativeBias, mean_MCSE_Bias, mean_MCSE_RMSE) %>%
   mutate(
@@ -330,7 +329,6 @@ plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
     ),
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
   )
-
 ```
 
 \blandscape
@@ -347,11 +345,9 @@ full_grid <- expand.grid(
   model_type = unique(plot_data_study_1$model_type)
 )
 
-# Merge with your existing data
 plot_data_study_1_complete <- full_grid %>%
   left_join(plot_data_study_1, by = c("N", "reliability", "method", "parameter", "model_type"))
 
-# Data preparation remains the same
 data_plot3 <- plot_data_study_1
 
 p3 <- data_plot3 %>%
