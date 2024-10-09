@@ -105,9 +105,6 @@ digraph circular_process {
 :::
 :::
 
-:::{.notes}
-Karl Popper once famously described science as the art of "systematic over-simplification." This term ironically yet accurately describes the very basic cycle of empirical research, where we lay out general claims about the world as hypotheses, translate them into measurable constructs, and choose how to gather data from certain populations, which finally, in turn, updates our beliefs about general verbal claims about the world.
-:::
 
 ## The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
@@ -169,9 +166,6 @@ digraph circular_process {
 :::
 :::
 
-:::{.notes}
-One core challenge in every research endeavor is mapping the general to the specific when designing and conducting a study, or from the specific and empirical to the verbal and general when interpreting the results. [▶︎]This mapping appears to be the crux of most research and is where most, if not all, of a researcher's degrees of freedom lie. [▶︎]Divergences in these mappings can be the source of ambiguity and verbal disputes. When differences in mappings from the verbal plane are not recognized or lack transparency, persistent and seemingly unresolvable disagreements in the general and verbal domains can occur
-:::
 
 ## The Generalizability Challenge {auto-animate=true auto-animate-easing="ease-in-out"}
 
@@ -234,9 +228,6 @@ digraph circular_process {
 :::
 :::
 
-:::{.notes}
-This challenge transfers to Monte Carlo simulation studies. These are commonly used tools to test statistical methods in simulated data to evaluate any method against a known ground truth. As it is impossible to simulate and test every possible data and analysis model combination, researchers are confronted with a multitude of degrees of freedom and decisions about what "prototypical" models to test in which "prototypical" data and settings. Especially the comparison of different methods in their "general" applicability and performance for various research settings is prone to conflicting verbal claims based on diverging simulation decisions. Biases for a specific method developed by one researcher might additionally amplify these divergences, not only at the step of interpreting results but importantly also when designing a simulation.
-:::
 
 ## Adversarial Collaboration (AC) as a Remedy?{auto-animate=true 
 auto-animate-easing="ease-in-out"}
@@ -250,10 +241,6 @@ Recognized in Empirical Research @melloni_adversarial_2023 @clark_adversarial_20
 
 :::
 
-:::{.notes}
-To address these challenges of entrenched disagreements, the practice of adversarial collaboration has been proposed to unveil discrepancies in underlying methodological decisions and assumptions.
-It was famously pioneered by Ralph Hertwig and Daniel Kahneman, who tried to settle a persistent scientific disagreement about frequency representation and consulted Barbara Mellers as a neutral arbiter. Today, it is recognized as a potent tool in the social empirical research community.
-:::
 
 
 ## Adversarial Collaboration (AC){auto-animate=true auto-animate-easing="ease-in-out"}
@@ -311,9 +298,6 @@ digraph circular_process {
 :::
 :::
 
-:::{.notes}
-The basic idea is for two researchers in disagreement to first identify a general verbal dispute [▶︎] and agree on a research question to settle the debate. Based on this, they collaboratively work on operationalizing, testing, and interpreting this verbal claim [▶︎]. This process aims to unveil and concretize underlying disagreements and thus reduce ambiguity and increase generalizability [▶︎]. In this project, we aimed to transfer the concept of adversarial collaboration from the empirical domain to Monte Carlo simulation studies and assess its feasibility and viability in a case study in this context.
-:::
 
 ## Creating an Adversarial Simulation <span style="color:#4682B4;">Framework</span>{auto-animate=true}
 

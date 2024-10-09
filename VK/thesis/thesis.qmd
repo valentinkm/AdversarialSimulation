@@ -110,7 +110,8 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```{=tex}
 \begin{center} \section*{Abstract} \end{center}
 ```
-\noindent {{< include abstract.qmd >}}
+\noindent 
+{{< include abstract.qmd >}}
 
 \vspace{1cm}
 
