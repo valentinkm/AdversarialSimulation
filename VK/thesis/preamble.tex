@@ -1,0 +1,73 @@
+% preamble.tex
+
+% Basic Packages
+\usepackage{pdfpages}  
+\usepackage{hyperref}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{array}
+\usepackage{float}
+\floatplacement{table}{H}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usepackage{caption}
+\captionsetup{justification=raggedright, singlelinecheck=false, parskip=0pt}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage{lscape}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{longtable}
+
+% APA-style Figure and Table Captions
+\DeclareCaptionFormat{APAfigure}{\raggedright\textbf{Figure~\thefigure}\\[1.5\baselineskip]\textit{#3}}
+\captionsetup[figure]{format=APAfigure, labelsep=none, justification=raggedright}
+\DeclareCaptionFormat{APAlongtable}{\textbf{Table~\thetable}\\[1.5\baselineskip]\textit{#3}}
+\captionsetup[table]{format=plain, justification=raggedright, singlelinecheck=false, labelfont=bf, labelsep=none, skip=0pt}
+\captionsetup[longtable]{format=APAlongtable, labelformat=empty, justification=raggedright, singlelinecheck=false, skip=0pt}
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+
+% Custom Commands
+\newcommand{\blandscape}{\begin{landscape}}
+\newcommand{\elandscape}{\end{landscape}}
+\newenvironment{fignote}{\par\vspace{\baselineskip}\small\textit{Note.}\space}{}
+
+% Paragraph Indentation and Spacing
+\setlength{\parindent}{1.27cm}  % 0.5-inch paragraph indent for new paragraphs
+\setlength{\parskip}{0pt}  % No additional spacing between paragraphs
+\linespread{2.0}  % Set line spacing to double (2.0)
+
+% Section Formatting using KOMA-Script
+\RedeclareSectionCommand[
+  beforeskip=1\baselineskip,  % Add spacing before the heading
+  afterskip=1\baselineskip,  % Add spacing after the heading
+  font=\normalfont\bfseries\centering
+]{section}
+
+\RedeclareSectionCommand[
+  beforeskip=1\baselineskip,
+  afterskip=1\baselineskip,
+  font=\normalfont\bfseries\flushleft
+]{subsection}
+
+\RedeclareSectionCommand[
+  beforeskip=0.5\baselineskip,
+  afterskip=0.5\baselineskip,
+  font=\normalfont\bfseries\itshape\flushleft
+]{subsubsection}
+
+\RedeclareSectionCommand[
+  beforeskip=0.5\baselineskip,
+  afterskip=0.5\baselineskip,
+  indent=\parindent,
+  font=\normalfont\bfseries,
+  runin=true  % Run-in heading with the paragraph
+]{paragraph}
+
+\RedeclareSectionCommand[
+  beforeskip=0.5\baselineskip,
+  afterskip=0.5\baselineskip,
+  indent=\parindent,
+  font=\normalfont\bfseries\itshape,
+  runin=true  % Run-in heading with the paragraph
+]{subparagraph}
