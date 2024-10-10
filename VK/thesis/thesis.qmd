@@ -20,10 +20,11 @@ bibliography: ../bibliography.bib
 csl: ../apa.csl
 appendix: true
 ---
-
 ```{r, include=FALSE}
 library(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+```
+```{r child = 'plots.qmd'}
 ```
 
 ```{=tex}
@@ -31,9 +32,10 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
     colorlinks=true,
     linkcolor=black,
 }
-\begin{center} \section*{Abstract} \end{center}
 ```
-\noindent 
+
+\begin{center} \section*{Abstract} \end{center}
+\noindent
 {{< include abstract.qmd >}}
 
 \vspace{1cm}
@@ -135,7 +137,9 @@ cat(paste(after_table, collapse = "\n"))
 lines <- readLines("../../LK/thesis.qmd")
 ```
 
-## Results of the "Joint" Simulation Study
+## Joint Simulation Study
+
+{{< include results_joint.qmd >}}
 
 ## Results of the Adversarial Collaboration
 

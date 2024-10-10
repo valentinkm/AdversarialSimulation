@@ -5,3 +5,7 @@ HU Siegel logo.svg
 *.log
 cover.tex
 cover.pdf
+*.log
+*.html
+*.pdf
+_site

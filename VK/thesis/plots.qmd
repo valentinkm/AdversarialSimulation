@@ -1,28 +1,9 @@
----
-Title: "Thesis"
-author:
-  - name: Valentin Kriegmair
-    affiliations: "Humboldt-Universität zu Berlin"
-fig-cap-location: top
-format:
-    pdf:
-        fig-numbering: false
-        fontsize: 11pt
-        linestretch: 1.5
-        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
-        classoption: oneside
-        papersize: a4
-        header-includes: |
-          \input{preamble.tex}
-fontsize: 11pt
-engine: knitr
-bibliography: ../bibliography.bib
-csl: ../apa.csl
-appendix: true
----
-
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
+
+conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
+conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
+conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
 
 library(dplyr)
 library(tidyr)
@@ -32,22 +13,6 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 library(ggh4x)
-```
-
-```{r}
-# Convergence Rate
-conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
-conv_rate_study_2 <- readRDS("../simulation/results/convergence_rate2.rds")
-conv_rate_study_3 <- readRDS("../simulation/results/convergence_rate3.rds")
-```
-
-
-\blandscape
-::: {fig-cr-study1}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Convergence Rate and Rate of Proper Solutions in Study 1"
-
-# convergence rate plot for study 1
 
 conv_rate1 <- conv_rate_study_1 %>%
   mutate(
@@ -66,7 +31,7 @@ conv_rate1 <- conv_rate_study_1 %>%
 
 
 # Create the heatmap with labeled metrics and heatmap fill
-p_convergence_heatmap <- conv_rate1 %>%
+fig_conv_rate_study1 <- conv_rate1 %>%
   ggplot(aes(x = factor(N, labels = paste("N =", c(100, 400, 6400))), y = model_type)) +
   geom_tile(aes(fill = ConvergenceRate), color = "white") +
   geom_text(aes(label = CombinedLabel), size = 2.5, color = "black") +
@@ -94,22 +59,6 @@ p_convergence_heatmap <- conv_rate1 %>%
   ) +
   scale_y_discrete(expand = c(0, 0), position = "right")
 
-# Print the convergence heatmap
-print(p_convergence_heatmap)
-# ggsave("tables/convergence_rate_study1.png", plot = p_convergence_heatmap, width = 12, height = 6.5)
-```
-
-::: {fig-note}
-\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
-:::
-:::
-\elandscape
-
-\blandscape
-::: {fig-cr-study2}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Convergence Rate and Rate of Proper Solutions in Study 2"
-# convergence rate plot for study 2
 
 # Prepare the data with formatted rate values between 0 and 1 for study 2
 conv_rate2 <- conv_rate_study_2 %>%
@@ -164,23 +113,6 @@ p_convergence_heatmap_study2 <- conv_rate2 %>%
   ) +
   scale_y_discrete(expand = c(0, 0), position = "right")
 
-# Print the heatmap for study 2
-print(p_convergence_heatmap_study2)
-
-
-# ggplot2::ggsave("tables/convergence_rate_study2.png", plot = p_convergence_heatmap_study2, width = 12, height = 6.5)
-```
-
-::: {fig-note}
-\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecification location for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
-:::
-:::
-\elandscape
-
-\blandscape
-::: {fig-cr-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Convergence Rate and Rate of Proper Solutions in Study 3"
 
 conv_rate3 <- conv_rate_study_3 %>%
   mutate(
@@ -198,7 +130,7 @@ conv_rate3 <- conv_rate_study_3 %>%
   select(model_type, N, reliability, method, ConvergenceRate, ProperSolutionRate, CombinedLabel)
 
 # Create the heatmap for study 3 with centered values
-p_convergence_heatmap_study3 <- conv_rate3 %>%
+fig_conv_rate_study3 <- conv_rate3 %>%
   ggplot(aes(x = factor(N, labels = paste("N =", c(50, 100, 250, 400))), y = model_type)) +
   geom_tile(aes(fill = ConvergenceRate), color = "white") +
   geom_text(aes(label = CombinedLabel), size = 2.5, color = "black") +
@@ -226,17 +158,9 @@ p_convergence_heatmap_study3 <- conv_rate3 %>%
   ) +
   scale_y_discrete(expand = c(0, 0), position = "right")
 
-print(p_convergence_heatmap_study3)
-# ggsave("tables/convergence_rate_study3.png", plot = p_convergence_heatmap_study3, width = 12, height = 6.5)
 ```
 
-::: {fig-note}
-\raggedright \textit{Note.} Convergence and (proper solutions) rates across sample sizes (N), reliability (r), for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM with cross-loadings (CL) and correlated residuals (CR).
-:::
-:::
-\elandscape
-
-```{r}
+```{r, include=FALSE}
 param_summary_study_1 <- readRDS("../simulation/results/parameter_wise_summary_study1.rds")
 aggr_summary_study_1 <- readRDS("../simulation/results/aggregated_summary_study1.rds")
 
@@ -350,12 +274,9 @@ plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
   )
 ```
 
-\blandscape
-::: {fig-bias-parameterwise-study1}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Average Bias of Regression Parameters in Study 1"
+```{r, include=FALSE}
+# Parameterwise bias for study 1
 
-# Generate a full grid of all possible combinations
 full_grid <- expand.grid(
   N = factor(c(100, 400, 6400), levels = c(100, 400, 6400)),
   reliability = factor(paste("r =", c(0.3, 0.5, 0.7)), levels = paste("r =", c(0.3, 0.5, 0.7))),
@@ -367,9 +288,9 @@ full_grid <- expand.grid(
 plot_data_study_1_complete <- full_grid %>%
   left_join(plot_data_study_1, by = c("N", "reliability", "method", "parameter", "model_type"))
 
-data_plot3 <- plot_data_study_1
+bias_data_plot_study1 <- plot_data_study_1
 
-p3 <- data_plot3 %>%
+fig_bias_parameterwise_study1 <- bias_data_plot_study1 %>%
   ggplot(aes(x = N, y = parameter)) +
   geom_tile(aes(fill = Bias), color = "white") +
   geom_text(aes(label = sprintf("%.2f", Bias)), size = 1.5, show.legend = FALSE) +  
@@ -382,7 +303,7 @@ p3 <- data_plot3 %>%
     text = element_text(size = 8), 
     axis.text.x = element_text(size = 8),
     axis.text.y = element_text(size = 5),
-    legend.position = "right", 
+    legend.position = "none", 
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 8),
     strip.text.y = element_text(size = 6),
@@ -400,23 +321,11 @@ p3 <- data_plot3 %>%
   ) +
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
-
-print(p3)
-# ggplot2::ggsave("tables/abs_bias_parameterwise_study1.png", plot = p3, width = 12, height = 6.5)
 ```
 
-:::{fig-note}
-\raggedright \textit{Note.} Mean bias (unnormed) for each parameter across sample sizes (N), reliability (r) and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM
-:::
-:::
-\elandscape
+```{r, include=FALSE}
 
-\blandscape
-::: {fig-bias-aggregated-study1}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Mean Average Bias of Regression Parameters in Study 1"
-
-plot_aggregated_study1 <- plot_data_aggregated_study1 %>%
+fig_bias_aggregated_study1 <- plot_data_aggregated_study1 %>%
   mutate(
     # Create labels with mean bias (two decimal places) and MCSE (three decimal places)
     label_bias = sprintf("%.3f", mean_Bias),
@@ -449,24 +358,8 @@ plot_aggregated_study1 <- plot_data_aggregated_study1 %>%
   scale_y_discrete(expand = c(0, 0), position = "right") +
   scale_x_discrete(expand = c(0, 0))
 
-# Print the heatmap with updated labels
-print(plot_aggregated_study1)
-# ggsave("tables/aggregated_bias_study1.png", plot = plot_aggregated_study1, width = 12, height = 6.5)
-```
 
-:::{fig-note}
-\raggedright \textit{Note.} Mean bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.
-:::
-:::
-
-\elandscape
-
-\blandscape
-::: {fig-rmse-aggregated-study1}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Mean Average Root Mean Squared Error (RMSE) of Regression Parameters in Study 1"
-
-plot_aggregated_study1 <- plot_data_aggregated_study1 %>%
+fig_rmse_aggregated_study1 <- plot_data_aggregated_study1 %>%
   mutate(
     # Create labels with mean bias (two decimal places) and MCSE (three decimal places)
     label_rmse = sprintf("%.3f", mean_RMSE),
@@ -498,27 +391,13 @@ plot_aggregated_study1 <- plot_data_aggregated_study1 %>%
   ) +
   scale_y_discrete(expand = c(0, 0), position = "right") +
   scale_x_discrete(expand = c(0, 0))
-
-# Print the heatmap with updated labels
-print(plot_aggregated_study1)
-# ggsave("tables/aggregated_bias_study1.png", plot = plot_aggregated_study1, width = 12, height = 6.5)
 ```
 
-:::{fig-note}
-\raggedright \textit{Note.} Mean RMSE averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.
-:::
-:::
-
-\elandscape
-
-\blandscape
-::: {fig-rel-bias-parameterwise-study2}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Relative Average Bias of Regression Parameters in Study 2"
-data_plot1 <- plot_data_study_2 %>%
+```{r, include=FALSE}
+data_plot2 <- plot_data_study_2 %>%
   filter(!parameter %in% misspecified_paths)
 
-p1 <- data_plot1 %>%
+fig_relbias_parameterwise_study2 <- data_plot2 %>%
   ggplot(aes(x = N, y = parameter)) +
   geom_tile(aes(fill = Bias), color = "white") +
   geom_text(aes(label = sprintf("%.2f", round(Bias, 2))), size = 1.5, show.legend = FALSE) +
@@ -532,7 +411,7 @@ p1 <- data_plot1 %>%
     text = element_text(size = 10),
     axis.text.x = element_text(size = 10),
     axis.text.y = element_text(size = 6),
-    legend.position = "right", 
+    legend.position = "none", 
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 8),
     strip.text.y = element_text(size = 7),
@@ -550,28 +429,15 @@ p1 <- data_plot1 %>%
   ) +
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
-
-print(p1)
-# ggplot2::ggsave("tables/rel_bias_parameterwise_study2.png", plot = p1, width = 12, height = 6.5)
 ```
 
-:::{fig-note}
-\raggedright \textit{Note.} Relative average bias for each parameter across sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
-:::
-:::
-\elandscape
-
-\blandscape
-::: {fig-abs-bias-parameterwise-study2}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Average Bias of Regression Parameters not Present (set to 0) in the Population Model in Study 2"
-
+```{r, include=FALSE}
 # Data for misspecified parameters
 data_plot2 <- plot_data_study_2 %>%
   filter(parameter %in% misspecified_paths)
 
 # Create the plot
-p2 <- data_plot2 %>%
+fig_bias_misspecified_study2 <- data_plot2 %>%
   ggplot(aes(x = N, y = parameter)) +
   geom_tile(aes(fill = Bias), color = "white") +
   geom_text(aes(label = sprintf("%.2f", Bias)), size = 2.5, show.legend = FALSE) +
@@ -584,7 +450,7 @@ p2 <- data_plot2 %>%
     text = element_text(size = 10),
     axis.text.x = element_text(size = 10),
     axis.text.y = element_text(size = 6),
-    legend.position = "right", 
+    legend.position = "none", 
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 8),
     strip.text.y = element_text(size = 7),
@@ -602,22 +468,10 @@ p2 <- data_plot2 %>%
   ) +
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
-
-print(p2)
-# ggplot2::ggsave("tables/abs_bias_parameterwise_study2.png", plot = p2, width = 12, height = 6.5)
 ```
 
-:::{fig-note}
-\raggedright \textit{Note.} Mean bias (unnormed) for each misspecified parameter (0 in population) across sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
-:::
-:::
-\elandscape
-
-\blandscape
-::: {fig-aggregated-rel-bias-study2}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5}
-#| fig-cap: "Aggregated Relative Bias of Regression Parameters in Study 2"
-
+```{r, include=FALSE}
+# Aggregated Relative Bias for Study 2 (excluding misspecified paths)
 plot_data_aggregated_study2 <- aggr_summary_study_2 %>%
   select(model_type, N, reliability, method, R_squared, b, mean_RelativeBias, mean_RelativeRMSE, mean_MCSE_RelativeBias, mean_MCSE_RelativeRMSE) %>%
   mutate(
@@ -636,12 +490,12 @@ plot_data_aggregated_study2 <- aggr_summary_study_2 %>%
   )
 
 
-plot_aggregated_bias_study2 <- plot_data_aggregated_study2 %>%
+fig_relbias_aggregated_study2 <- plot_data_aggregated_study2 %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_RelativeBias), color = "white") +
   geom_text(aes(label = sprintf("%.2f", mean_RelativeBias)), size = 2.5, color = "black") +
   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
-                       limits = c(0, 0.5), oob = scales::squish) +
+                       limits = c(0, 2), oob = scales::squish) +
   ggh4x::facet_nested(
     reliability_label ~ method + b_label + R_squared_label, 
     scales = "free", 
@@ -654,7 +508,7 @@ plot_aggregated_bias_study2 <- plot_data_aggregated_study2 %>%
     text = element_text(size = 8),
     axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 7),
-    legend.position = "right", 
+    legend.position = "none", 
     legend.title = element_text(size = 8),
     legend.text = element_text(size = 7),
     strip.text.y = element_text(size = 7),
@@ -672,59 +526,49 @@ plot_aggregated_bias_study2 <- plot_data_aggregated_study2 %>%
   scale_y_discrete(expand = c(0, 0), position = "right") +
   scale_x_discrete(expand = c(0, 0))
 
-# Print the heatmap for study 2
-print(plot_aggregated_bias_study2)
-# ggplot2::ggsave("tables/aggregated_rel_bias_study2.png", plot = plot_aggregated_bias_study2, width = 12, height = 6.5)
-```
 
-:::{fig-note}
-\raggedright \textit{Note.} Mean relative bias averaged over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
-:::
-:::
-\elandscape
-
-```{r}
-
-comparison_data <- plot_data_aggregated_study2 %>%
-  group_by(model_type, N, reliability, method, R_squared, b) %>%
-  summarise(mean_RelativeBias = mean(mean_RelativeBias, na.rm = TRUE)) %>%
-  ungroup()
-
-p_boxplot <- comparison_data %>%
-  ggplot(aes(x = factor(R_squared), y = mean_RelativeBias, fill = factor(b))) +
-  geom_boxplot() +
-  facet_grid(reliability ~ method, scales = "free") +
+fig_relrmse_aggregated_study2 <- plot_data_aggregated_study2 %>%
+  ggplot(aes(x = N, y = model_type)) +
+  geom_tile(aes(fill = mean_RelativeRMSE), color = "white") +
+  geom_text(aes(label = sprintf("%.2f", mean_RelativeRMSE)), size = 2.5, color = "black") +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
+                       limits = c(0, 2), oob = scales::squish) +
+  ggh4x::facet_nested(
+    reliability_label ~ method + b_label + R_squared_label, 
+    scales = "free", 
+    space = "free", 
+    switch = "y",
+    labeller = label_parsed 
+  ) +
   theme_bw() +
   theme(
-    text = element_text(size = 10),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    axis.title.x = element_text(size = 12),
-    axis.title.y = element_text(size = 12),
-    legend.position = "bottom",
-    legend.title = element_text(size = 10),
-    legend.text = element_text(size = 9)
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 7),
+    legend.position = "none", 
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 7),
+    strip.text.y = element_text(size = 7),
+    strip.text.x = element_text(size = 7),
+    legend.key.width = unit(0.8, "cm"),
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
   ) +
   labs(
-    x = expression(R^2 ~ "Value"),
-    y = "Mean Bias",
-    fill = "Measurement Blocks"
+    x = "Sample Size",
+    y = "Model Type",
+    fill = "Mean Bias"
   ) +
-  scale_fill_manual(values = c("3" = "#9467bd", "5" = "#17becf"),
-                    labels = c("b = 3", "b = 5")) +
-  scale_x_discrete(labels = function(x) parse(text = paste0("R^2==", x)))
-
-# Print the improved box plot
-print(p_boxplot)
-# ggplot2::ggsave("tables/boxplot_study2.png", plot = p_boxplot, width = 12, height = 6.5)
+  scale_y_discrete(expand = c(0, 0), position = "right") +
+  scale_x_discrete(expand = c(0, 0))
 ```
 
-\blandscape
-::: {#tbl-abs-bias-parameterwise-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=6.5}
-# All parameters are correctly specified in study 3
-data_plot4 <- plot_data_study_3
+```{r, include=FALSE}
+# Parameterwise bias for study 3
+data_plot <- plot_data_study_3
 
-p4 <- data_plot4 %>%
+fig_bias_parameterwise_study3 <- data_plot %>%
   ggplot(aes(x = N, y = parameter)) +
   geom_tile(aes(fill = Bias), color = "white") +
   geom_text(aes(label = sprintf("%.2f", Bias)), size = 1.5, show.legend = FALSE) +
@@ -740,8 +584,8 @@ p4 <- data_plot4 %>%
     legend.position = "right", 
     legend.title = element_text(size = 6),
     legend.text = element_text(size = 6),
-    strip.text.y.left = element_text(size = 7),  # General y-axis label formatting
-    strip.text.y = element_text(size = 15),  # Nested y-axis label formatting
+    strip.text.y.left = element_text(size = 7),
+    strip.text.y = element_text(size = 15),
     strip.text.x = element_text(size = 15),
     legend.key.width = unit(1, "cm"),
     panel.grid = element_line(linewidth = 0.01, color = "gray98"),
@@ -757,25 +601,49 @@ p4 <- data_plot4 %>%
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
 
-print(p4)
-# ggplot2::ggsave("tables/abs_bias_parameterwise_study3.png", plot = p4, width = 12, height = 6.5)
+# parameterwise RMSE for study 3
+
+fig_rmse_parameterwise_study3 <- data_plot %>%
+  ggplot(aes(x = N, y = parameter)) +
+  geom_tile(aes(fill = RMSE), color = "white") +
+  geom_text(aes(label = sprintf("%.2f", RMSE)), size = 1.5, show.legend = FALSE) +
+  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
+                       limits = c(0, 0.5), 
+                       oob = scales::squish) +
+  ggh4x::facet_nested(model_type + reliability ~ method, scales = "free", space = "free", switch="y") +
+  theme_bw() +
+  theme(
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 5),
+    axis.text.y = element_text(size = 4),
+    legend.position = "right", 
+    legend.title = element_text(size = 6),
+    legend.text = element_text(size = 6),
+    strip.text.y.left = element_text(size = 7),
+    strip.text.y = element_text(size = 15),
+    strip.text.x = element_text(size = 15),
+    legend.key.width = unit(1, "cm"),
+    panel.grid = element_line(linewidth = 0.01, color = "gray98"),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +
+  guides(fill = guide_colorbar(title.position = "top", title.hjust = 0.5, barheight = 5, barwidth = 0.5, direction = "vertical")) +
+  labs(
+    x = "\n Sample Size",
+    y = "Parameter \n",
+    fill = "RMSE"
+  ) +
+  scale_y_discrete(expand = c(0,0), position = "right") +
+  scale_x_discrete(expand = c(0,0))
+
 ```
 
-*Note.* This figure shows the average absolute bias values for each parameter in the different conditions of simulation study 3.
-
-Absolute Average Bias of Regression Parameters (Study 3)
-
-:::
-\elandscape
-
-\blandscape
-::: {#tbl-aggregated-bias-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=6.5}
-# Create the heatmap with text labels
-p_heatmap <- plot_data_aggregated_study3 %>%
+```{r, include=FALSE}
+# Aggregated Bias for Study 3
+fig_bias_aggregated_study3 <- plot_data_aggregated_study3 %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_Bias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", mean_RelativeBias)), size = 2.5, color = "black") +
+  geom_text(aes(label = sprintf("%.2f", mean_Bias)), size = 2.5, color = "black") +
   scale_fill_gradient2(low = "white", high = "red", limits = c(0, 0.5), oob = scales::squish) +
   ggh4x::facet_nested(reliability ~ method, scales = "free", space = "free", switch = "y") +
   theme_bw() +
@@ -801,14 +669,36 @@ p_heatmap <- plot_data_aggregated_study3 %>%
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
 
-# Print the heatmap
-print(p_heatmap)
-# ggplot2::ggsave("tables/aggregated_bias_study3.png", plot = p_heatmap, width = 12, height = 6.5)
+
+# Aggregated RMSE for Study 3
+fig_rmse_aggregated_study3 <- plot_data_aggregated_study3 %>%
+  ggplot(aes(x = N, y = model_type)) +
+  geom_tile(aes(fill = mean_RMSE), color = "white") +
+  geom_text(aes(label = sprintf("%.2f", mean_RMSE)), size = 2.5, color = "black") +
+  scale_fill_gradient2(low = "white", high = "red", limits = c(0, 0.5), oob = scales::squish) +
+  ggh4x::facet_nested(reliability ~ method, scales = "free", space = "free", switch = "y") +
+  theme_bw() +
+  theme(
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 7),
+    legend.position = "none", 
+    legend.title = element_text(size = 8),
+    legend.text = element_text(size = 7),
+    strip.text.y = element_text(size = 7),
+    strip.text.x = element_text(size = 7),
+    legend.key.width = unit(0.8, "cm"),
+    panel.grid = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  ) +
+  labs(
+    x = "Sample Size",
+    y = "Model Type",
+    fill = "Mean Bias"
+  ) +
+  scale_y_discrete(expand = c(0,0), position = "right") +
+  scale_x_discrete(expand = c(0,0))
+
+
 ```
-
-*Note.* Tis figure shows the aggregated bias (absolute values) of the estimated regression parameters for the different methods and conditions.
-
-Aggregated Bias of Regression Parameters
-
-:::
-\elandscape
