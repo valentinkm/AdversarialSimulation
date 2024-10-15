@@ -49,7 +49,7 @@ generate_seeds <- function(n, seed) {
 }
 
 # Directory to save results
-results_dir <- if (is_on_tardis()) "/home/mpib/kriegmair/AdversarialSimulation/results" else "results"
+results_dir <- if (is_on_tardis()) "/home/mpib/kriegmair/AdversarialSimulation/results" else "results_replic"
 
 # Ensure the results directory exists
 if (!dir.exists(results_dir)) {

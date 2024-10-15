@@ -26,8 +26,8 @@ process_study1 <- function(file_path) {
   timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")
   
   # Define filenames with timestamp for study 1
-  paramwise_filename <- paste0("../simulation/results_replic/parameter_wise_summary_study1_", timestamp, ".rda")
-  aggregated_filename <- paste0("../simulation/results_replic/aggregated_summary_study1_", timestamp, ".rda")
+  paramwise_filename <- paste0("../simulation/results_replic/parameter_wise_summary_study1_", timestamp, ".rds")
+  aggregated_filename <- paste0("../simulation/results_replic/aggregated_summary_study1_", timestamp, ".rds")
   
   # Save results with the new filenames
   saveRDS(study1_paramwise, file = paramwise_filename)

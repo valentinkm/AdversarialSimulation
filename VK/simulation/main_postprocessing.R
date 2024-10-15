@@ -6,7 +6,6 @@ source("process_study1.R")
 source("process_study2.R")
 source("process_study3.R")
 
-getwd
 
 get_latest_file <- function(directory, pattern) {
   # Normalize the directory path
@@ -35,15 +34,12 @@ get_latest_file <- function(directory, pattern) {
 main_processing <- function() {
   all_warnings <- list()
   
-  # Define the directory where the .rda files are stored
-  simulation_directory <- "../simulation/results/"
-  
-  # Get the latest files for each study based on the pattern
+  simulation_directory <- "../simulation/results_replic/"
+
   study1_path <- get_latest_file(simulation_directory, "simulation_results_study1r[0-9]{12,}\\.rda$")
   study2_path <- get_latest_file(simulation_directory, "simulation_results_study2r[0-9]{12,}\\.rda$")
   study3_path <- get_latest_file(simulation_directory, "simulation_results_study3r[0-9]{12,}\\.rda$")
   
-  # Load each study
   study1 <- readRDS(study1_path)
   study2 <- readRDS(study2_path)
   study3 <- readRDS(study3_path)
@@ -53,14 +49,14 @@ main_processing <- function() {
   all_warnings[[1]] <- process_study1(study1_path)
   gc()
   
-  # Process Study 3
-  print("Processing Study 3...")
-  all_warnings[[3]] <- process_study3(study3_path)
-  gc()
-  
   # Process Study 2
   print("Processing Study 2...")
   all_warnings[[2]] <- process_study2(study2_path)
+  gc()
+  
+  # Process Study 3
+  print("Processing Study 3 (joint study)...")
+  all_warnings[[3]] <- process_study3(study3_path)
   gc()
   
   # Combine all unique messages
@@ -87,10 +83,10 @@ main_processing <- function() {
     )
   
   # Save combined_messages_list
-  saveRDS(combined_messages_list, file = "../simulation/results_test/list_messages.rds")
+  saveRDS(combined_messages_list, file = "../simulation/results_replic/list_messages.rds")
   
   # Save combined_messages_summary
-  saveRDS(combined_messages_summary, file = "../simulation/results_test/summary_messages.rds")
+  saveRDS(combined_messages_summary, file = "../simulation/results_replic/summary_messages.rds")
   
   rm(all_warnings, all_unique_messages, combined_messages_list, combined_messages_summary, id_map)
   gc()

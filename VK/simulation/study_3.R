@@ -27,7 +27,7 @@ n_reps <- 2
 params <- expand.grid(
   seed = parallel_seeds(n_reps, seed = 42),
   model_type = c("3.1", "3.2", "3.1_negative", "3.2_negative"),
-  N = c(50, 100, 250, 400),
+  N = c(50, 100, 400, 6400),
   reliability = c(0.3, 0.5, 0.7),
   method = c("SEM_bound", "SEM_unbound", "gSAM", "lSAM_ML")
 )
