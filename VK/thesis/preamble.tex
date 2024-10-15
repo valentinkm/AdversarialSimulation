@@ -16,6 +16,7 @@
 \usepackage{indentfirst}
 \usepackage{longtable}
 \usepackage{etoolbox}
+\usepackage{threeparttable}
 
 % APA-style Figure and Table Captions
 \DeclareCaptionFormat{APAfigure}{\raggedright\textbf{Figure~\thefigure}\\[1.5\baselineskip]\textit{#3}}
@@ -30,6 +31,9 @@
 \newcommand{\blandscape}{\begin{landscape}}
 \newcommand{\elandscape}{\end{landscape}}
 \newenvironment{fignote}{\par\vspace{\baselineskip}\small\textit{Note.}\space}{}
+
+
+\renewcommand\TPTnoteSettings{\gdef\TPTnoteFont{\footnotesize}\setlength\parindent{0pt}}
 
 % Paragraph Indentation and Spacing
 \setlength{\parindent}{1.27cm}  % 0.5-inch paragraph indent for new paragraphs

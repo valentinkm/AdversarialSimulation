@@ -132,10 +132,7 @@ cat(paste(after_table, collapse = "\n"))
 
 ### Results of Collaborator B (Kosanke)
 
-```{r}
-# Read the results section from Kosanke
-lines <- readLines("../../LK/thesis.qmd")
-```
+{{< include results_kosanke.qmd >}}
 
 ## Joint Simulation Study
 
