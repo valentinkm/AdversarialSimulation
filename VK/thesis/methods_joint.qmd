@@ -1,6 +1,5 @@
-After collaborating based on the individually conducted studies and the respective results, we did not jointly arrive at the conclusion that conducting a collaborative simulation study as planned was warrented. 
-
-However I identified several reasons for setting up another simulation. Firstly, to test and evaluate the viability and technical fesability of AC for simulation studies, setting up a study based on the individual studies, their results and with Kosanke can provide valuable...
+\setlength{\parindent}{1.27cm}
+After collaborating based on the individually conducted studies and the respective results, we did not jointly arrive at the conclusion that conducting a collaborative simulation study as planned was warrented. However I identified several reasons for setting up another simulation. Firstly, to test and evaluate the viability and technical fesability of AC for simulation studies, setting up a study based on the individual studies, their results and with Kosanke can provide valuable...
 
 #### Aims, objectives and research questions
 
@@ -31,7 +30,7 @@ The joint study varied three conditions: (1) sample sizes of very small ($N = 50
 
 #### Method Selection
 
-To address the question ...
+To address the question ... 
 
 #### Performance Measures
 
