@@ -15,21 +15,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Check out the code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Get UID and GID of the GitHub Actions runner
       - name: Get UID and GID
         run: |
           echo "UID=$(id -u)" >> $GITHUB_ENV
           echo "GID=$(id -g)" >> $GITHUB_ENV
 
-      # 3. Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # 4. Log in to GitHub Container Registry
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -37,7 +33,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
-      # 5. Build and push the Docker image to GHCR
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
@@ -53,13 +48,11 @@ jobs:
     needs: build_and_push_docker_image
 
     steps:
-      # 1. Check out the code without persisting default credentials
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           persist-credentials: false
 
-      # 2. Set up Git authentication with GH_TOKEN
       - name: Set up Git authentication
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -68,7 +61,6 @@ jobs:
           git config --global user.name "GitHub Action"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
 
-      # 3. Log in to GitHub Container Registry
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -76,22 +68,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
-      # 4. Ensure the results directory exists
       - name: Prepare results directory
         run: mkdir -p ${{ github.workspace }}/$RESULTS_DIR
 
-      # 5. Run the Docker container and execute the simulation
       - name: Run simulation in Docker container
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}/$RESULTS_DIR:/results_replic \
+            -v ${{ github.workspace }}/$RESULTS_DIR:/simulation/results_replic \
             ${{ env.DOCKER_IMAGE_NAME }}
 
-      # 6. List the results directory contents
       - name: List results directory contents
         run: ls -la ${{ github.workspace }}/$RESULTS_DIR
 
-      # 7. Commit and push the results generated from the simulation
       - name: Commit and push results
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
