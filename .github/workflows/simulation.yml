@@ -6,9 +6,6 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 env:
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/simulation_image:latest
   RESULTS_DIR: VK/simulation/results_replic
@@ -22,9 +19,54 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Docker Buildx (for multi-platform builds if needed)
+      # 2. Get UID and GID of the GitHub Actions runner
+      - name: Get UID and GID
+        run: |
+          echo "UID=$(id -u)" >> $GITHUB_ENV
+          echo "GID=$(id -g)" >> $GITHUB_ENV
+
+      # 3. Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      # 4. Log in to GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_TOKEN }}
+
+      # 5. Build and push the Docker image to GHCR
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./VK/simulation
+          build-args: |
+            USER_ID=${{ env.UID }}
+            GROUP_ID=${{ env.GID }}
+          tags: ${{ env.DOCKER_IMAGE_NAME }}
+          push: true
+
+  run_simulation_in_docker:
+    runs-on: ubuntu-latest
+    needs: build_and_push_docker_image
+
+    steps:
+      # 1. Check out the code without persisting default credentials
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      # 2. Set up Git authentication with GH_TOKEN
+      - name: Set up Git authentication
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
 
       # 3. Log in to GitHub Container Registry
       - name: Log in to GitHub Container Registry
@@ -34,57 +76,26 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
-      # 4. Build and push the Docker image to GHCR
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./VK/simulation
-          tags: ${{ env.DOCKER_IMAGE_NAME }}
-          push: true
+      # 4. Ensure the results directory exists
+      - name: Prepare results directory
+        run: mkdir -p ${{ github.workspace }}/$RESULTS_DIR
 
-  run_simulation_in_docker:
-    runs-on: ubuntu-latest
-    needs: build_and_push_docker_image
-
-    steps:
-      # 1. Check out the code again
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # 2. Log in to GitHub Container Registry
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
-
-      # 3. Run the Docker container and execute the simulation
+      # 5. Run the Docker container and execute the simulation
       - name: Run simulation in Docker container
         run: |
-          # Ensure the results directory exists on the host
-          mkdir -p ${{ github.workspace }}/$RESULTS_DIR
-          
-          # Run Docker as the host user to avoid permission issues
           docker run --rm \
-            --user $(id -u):$(id -g) \
             -v ${{ github.workspace }}/$RESULTS_DIR:/results_replic \
             ${{ env.DOCKER_IMAGE_NAME }}
 
-      # 4. Debugging step: List the results directory contents
+      # 6. List the results directory contents
       - name: List results directory contents
         run: ls -la ${{ github.workspace }}/$RESULTS_DIR
 
-      # 5. Debugging step: Check permissions of the results directory
-      - name: Debug results directory permissions
-        run: ls -ld ${{ github.workspace }}/$RESULTS_DIR
-
-      # 6. Commit and push the results generated from the simulation
+      # 7. Commit and push the results generated from the simulation
       - name: Commit and push results
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
           git add $RESULTS_DIR
           git commit -m "Add simulation results" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin main
