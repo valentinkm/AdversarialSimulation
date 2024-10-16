@@ -29,7 +29,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.GH_TOKEN }}
 
     # 4. Build and push the Docker image to GHCR
     - name: Build and push Docker image
@@ -54,7 +54,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.GH_TOKEN }}
 
     # 3. Run the Docker container and execute the simulation
     - name: Run simulation in Docker container
