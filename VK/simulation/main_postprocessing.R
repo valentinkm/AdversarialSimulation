@@ -73,7 +73,7 @@ main_processing <- function() {
   # Combine all summaries
   combined_messages_summary <- bind_rows(all_warnings) %>%
     mutate(MessageID = id_map[Message]) %>%
-    select(-Message) %>%
+    dplyr::select(-Message) %>%
     rename(
       `Model Type` = model_type,
       `Message ID` = MessageID,

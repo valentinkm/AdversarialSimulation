@@ -1,4 +1,5 @@
 # run_all.R
+source("renv/activate.R")
 
 # Run all studies
 

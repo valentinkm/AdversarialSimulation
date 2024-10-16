@@ -1,34 +1,41 @@
-FROM ubuntu:22.04
+# Use the R 4.4 base image from Rocker
+FROM rocker/r-ver:4.4
 
-# Install necessary dependencies and R
-RUN apt-get update && \
-    apt-get install -y software-properties-common dirmngr gnupg \
-    libcurl4-openssl-dev libssl-dev libxml2-dev libgit2-dev make wget slurm-client && \
-    apt-get clean
+# Install system dependencies for R packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libfontconfig1-dev \
+    libcairo2-dev \
+    libxt-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libudunits2-dev \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    libglpk40 \
+    libglpk-dev \
+    libmagick++-dev \
+    libbz2-dev \
+    liblzma-dev \
+    libzstd-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set non-interactive frontend to avoid tzdata prompt
-ENV DEBIAN_FRONTEND=noninteractive
+# Set the working directory
+WORKDIR /simulation
 
-# Add CRAN repository and key
-RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/cran-ubuntu.gpg && \
-    add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/' && \
-    apt-get update && \
-    apt-get install -y r-base
+# Copy the entire project into the image
+COPY . /simulation
 
-# renv
-RUN R -e "install.packages('renv', repos='http://cran.rstudio.com/')"
+# Install renv and restore packages
+RUN Rscript -e 'install.packages("renv"); renv::restore()'
 
-# Copy all files from VK/simulation to the working directory
-COPY VK/simulation /home/rstudio/simulation
-
-# Set up working directory
-WORKDIR /home/rstudio/simulation
-
-# Check the contents of the working directory to ensure renv.lock is present
-RUN ls -l /home/rstudio/simulation
-
-# Restore environment
-RUN R -e "renv::restore(library = '/usr/local/lib/R/site-library')"
-
-# Default command to run all simulations using make
-CMD ["make"]
+# Set the entrypoint to run your simulation
+CMD ["Rscript", "run_all.R"]

@@ -335,7 +335,7 @@ process_study_parameterwise <- function(study_data, study_number, chunk_size = 1
       MCSE_RelativeRMSE = if_else(abs(TrueValue) > 1e-10, MCSE_RMSE / abs(TrueValue), NA_real_),
       Coverage = MeanCoverage
     ) %>%
-    select(-SumEstimate, -SumSquaredEstimate, -MeanCoverage)
+    dplyr::select(-SumEstimate, -SumSquaredEstimate, -MeanCoverage)
   
   return(final_results)
 }
