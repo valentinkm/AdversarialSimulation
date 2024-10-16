@@ -122,28 +122,30 @@ simulate_outer <- function(chunk, chunk_params) {
 
 run_study_1 <- function(params, true_values) {
   # Run the simulations and analysis in parallel
-  results_df <- params %>%
-    mutate(chunk = row_number() %% 100) %>%
-    nest(.by = c(chunk, seed), .key = 'design') %>%
-    nest(.by = chunk, .key = 'chunk_params') %>%
-    mutate(results = future_map2(chunk, chunk_params, simulate_outer, .options = furrr_options(seed=NULL))) %>%
-    unnest(c(chunk_params, results)) %>%
-    unnest(c(design, results)) %>%
-    mutate(
-      Converged = map_dbl(results, ~ .x$Converged),
-      NonConverged = map_dbl(results, ~ .x$NonConverged),
-      Warnings = map_chr(results, ~ .x$Warnings),
-      Messages = map_chr(results, ~ .x$Messages),
-      Errors = map_chr(results, ~ .x$Errors),
-      EstimatedPaths = map(results, ~ .x$EstimatedPaths[[1]]),
-      SanityCheckEstimates = map(results, ~ .x$SanityCheckEstimates[[1]]),
-      Coverage = map_dbl(results, ~ .x$Coverage),
-      RelativeBias = map_dbl(results, ~ .x$RelativeBias),
-      RelativeRMSE = map_dbl(results, ~ .x$RelativeRMSE),
-      RelativeBiasList = map(results, ~ .x$RelativeBiasList[[1]]),
-      RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]]),
-      ImproperSolution = map_lgl(results, ~ .x$ImproperSolution)
-    )
+  results_df <- suppress_specific_warning({
+    params %>%
+      mutate(chunk = row_number() %% 100) %>%
+      nest(.by = c(chunk, seed), .key = 'design') %>%
+      nest(.by = chunk, .key = 'chunk_params') %>%
+      mutate(results = future_map2(chunk, chunk_params, simulate_outer, .options = furrr_options(seed=NULL))) %>%
+      unnest(c(chunk_params, results)) %>%
+      unnest(c(design, results)) %>%
+      mutate(
+        Converged = map_dbl(results, ~ .x$Converged),
+        NonConverged = map_dbl(results, ~ .x$NonConverged),
+        Warnings = map_chr(results, ~ .x$Warnings),
+        Messages = map_chr(results, ~ .x$Messages),
+        Errors = map_chr(results, ~ .x$Errors),
+        EstimatedPaths = map(results, ~ .x$EstimatedPaths[[1]]),
+        SanityCheckEstimates = map(results, ~ .x$SanityCheckEstimates[[1]]),
+        Coverage = map_dbl(results, ~ .x$Coverage),
+        RelativeBias = map_dbl(results, ~ .x$RelativeBias),
+        RelativeRMSE = map_dbl(results, ~ .x$RelativeRMSE),
+        RelativeBiasList = map(results, ~ .x$RelativeBiasList[[1]]),
+        RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]]),
+        ImproperSolution = map_lgl(results, ~ .x$ImproperSolution)
+      )
+  }, "no non-missing arguments to max; returning -Inf")
   
   print('Parallel computation done')
   

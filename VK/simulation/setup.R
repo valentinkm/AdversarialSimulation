@@ -61,3 +61,16 @@ save_results <- function(results, filename) {
   saveRDS(results, file.path(results_dir, filename))
 }
 
+
+# Custom function to suppress specific warnings
+suppress_specific_warning <- function(expr, warning_message_pattern) {
+  withCallingHandlers(
+    expr,
+    warning = function(w) {
+      if (grepl(warning_message_pattern, conditionMessage(w))) {
+        invokeRestart("muffleWarning")
+      }
+    }
+  )
+}
+

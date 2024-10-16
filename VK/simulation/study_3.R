@@ -191,7 +191,8 @@ simulate_outer <- function(chunk, chunk_params) {
 }
 run_study_3 <- function(params, true_values) {
   # Run the simulations and analysis in parallel
-  results_df <- params %>%
+  results_df <- suppress_specific_warning({
+    params %>%
     mutate(chunk = row_number() %% 100) %>%
     nest(.by = c(chunk, seed), .key = 'design') %>%
     nest(.by = chunk, .key = 'chunk_params') %>%
@@ -213,7 +214,7 @@ run_study_3 <- function(params, true_values) {
       RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]]),
       ImproperSolution = map_lgl(results, ~ .x$ImproperSolution)
     )
-  
+  }, "no non-missing arguments to max; returning -Inf")
   print('Parallel computation done')
   
   # Remove NAs from the lists before calculating MCSE

@@ -148,7 +148,8 @@ simulate_outer <- function(chunk, chunk_params) {
 run_study_2 <- function(params) {
  
   # Create dataframe for results
-  results_df <- params %>%
+  results_df <- suppress_specific_warning({
+    params %>%
     mutate(chunk = row_number() %% ceiling(max(n_reps / 100, 1))) %>%
     nest(.by = c(chunk, seed), .key = 'design') %>%
     nest(.by = chunk, .key = 'chunk_params') %>%
@@ -170,7 +171,7 @@ run_study_2 <- function(params) {
       RelativeRMSEList = map(results, ~ .x$RelativeRMSEList[[1]]),
       ImproperSolution = map_lgl(results, ~ .x$ImproperSolution)
     )
-  
+  }, "no non-missing arguments to max; returning -Inf")
   # Remove NAs from the lists before calculating MCSE
   relative_bias_list <- unlist(results_df$RelativeBiasList)
   relative_rmse_list <- unlist(results_df$RelativeRMSEList)
