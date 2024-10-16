@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/simulation_image:latest
   RESULTS_DIR: VK/simulation/results_replic
@@ -19,7 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Docker Buildx
+      # 2. Set up Docker Buildx (for multi-platform builds if needed)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -44,11 +47,9 @@ jobs:
     needs: build_and_push_docker_image
 
     steps:
-      # 1. Check out the code again with the GH_TOKEN
+      # 1. Check out the code again
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
 
       # 2. Log in to GitHub Container Registry
       - name: Log in to GitHub Container Registry
@@ -61,24 +62,29 @@ jobs:
       # 3. Run the Docker container and execute the simulation
       - name: Run simulation in Docker container
         run: |
+          # Ensure the results directory exists on the host
           mkdir -p ${{ github.workspace }}/$RESULTS_DIR
+          
+          # Run Docker as the host user to avoid permission issues
           docker run --rm \
             --user $(id -u):$(id -g) \
             -v ${{ github.workspace }}/$RESULTS_DIR:/results_replic \
             ${{ env.DOCKER_IMAGE_NAME }}
 
-      # 4. Debugging step: List the results directory
+      # 4. Debugging step: List the results directory contents
       - name: List results directory contents
         run: ls -la ${{ github.workspace }}/$RESULTS_DIR
 
-      # 5. Commit and push the results generated from the simulation
+      # 5. Debugging step: Check permissions of the results directory
+      - name: Debug results directory permissions
+        run: ls -ld ${{ github.workspace }}/$RESULTS_DIR
+
+      # 6. Commit and push the results generated from the simulation
       - name: Commit and push results
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add $RESULTS_DIR
           git commit -m "Add simulation results" || echo "No changes to commit"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin main
