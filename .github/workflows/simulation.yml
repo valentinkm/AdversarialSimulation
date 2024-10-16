@@ -29,7 +29,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GH_TOKEN }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     # 4. Build and push the Docker image to GHCR
     - name: Build and push Docker image
@@ -54,17 +54,17 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GH_TOKEN }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     # 3. Run the Docker container and execute the simulation
     - name: Run simulation in Docker container
       run: |
         docker pull ${{ env.DOCKER_IMAGE_NAME }}
-        docker run --rm --user $(id -u):$(id -g) -v ${{ github.workspace }}/VK/simulation/results_replic:/simulation/results_replic ${{ env.DOCKER_IMAGE_NAME }}
+        docker run --rm -v ${{ github.workspace }}/VK/simulation/results_replic:/results_replic ${{ env.DOCKER_IMAGE_NAME }}
 
     # 4. Debugging step: List the results directory
     - name: List results directory contents
-      run: ls -l ${{ github.workspace }}/VK/simulation/results_replic
+      run: ls -la ${{ github.workspace }}/VK/simulation/results_replic
 
     # 5. Add and commit the results generated from the simulation
     - name: Commit and push results
