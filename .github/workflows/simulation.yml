@@ -9,7 +9,6 @@ on:
 env:
   # Define the Docker image name for GitHub Container Registry (GHCR)
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/simulation_image:latest
-  RESULTS_DIR: VK/simulation/results_replic
 
 jobs:
   build_and_push_docker_image:
@@ -61,14 +60,18 @@ jobs:
     - name: Run simulation in Docker container
       run: |
         docker pull ${{ env.DOCKER_IMAGE_NAME }}
-        docker run --rm -v ${{ github.workspace }}/$RESULTS_DIR:/results_replic ${{ env.DOCKER_IMAGE_NAME }}
+        docker run --rm --user $(id -u):$(id -g) -v ${{ github.workspace }}/VK/simulation/results_replic:/simulation/results_replic ${{ env.DOCKER_IMAGE_NAME }}
 
-    # 4. Add and commit the results generated from the simulation
+    # 4. Debugging step: List the results directory
+    - name: List results directory contents
+      run: ls -l ${{ github.workspace }}/VK/simulation/results_replic
+
+    # 5. Add and commit the results generated from the simulation
     - name: Commit and push results
       run: |
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "GitHub Actions"
-        cd ${{ github.workspace }}/$RESULTS_DIR
+        cd ${{ github.workspace }}/VK/simulation/results_replic
         git add .
-        git commit -m "Add simulation results"
+        git commit -m "Add simulation results" || echo "No changes to commit"
         git push origin main
