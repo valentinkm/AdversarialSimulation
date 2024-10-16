@@ -7,10 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  # Define the Docker image name following the GitHub Container Registry naming convention
+  # Define the Docker image name for GitHub Container Registry (GHCR)
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/simulation_image:latest
   RESULTS_DIR: VK/simulation/results_replic
-  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   build_and_push_docker_image:
@@ -29,14 +28,17 @@ jobs:
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v2
       with:
+        registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
 
-    # 4. Build and push the Docker image from VK/simulation directory
+    # 4. Build and push the Docker image to GHCR
     - name: Build and push Docker image
-      run: |
-        docker build -t $DOCKER_IMAGE_NAME ./VK/simulation
-        docker push $DOCKER_IMAGE_NAME
+      uses: docker/build-push-action@v4
+      with:
+        context: ./VK/simulation
+        tags: ${{ env.DOCKER_IMAGE_NAME }}
+        push: true
 
   run_simulation_in_docker:
     runs-on: ubuntu-latest
@@ -50,15 +52,15 @@ jobs:
     # 2. Run the Docker container and execute the simulation
     - name: Run simulation in Docker container
       run: |
-        docker pull $DOCKER_IMAGE_NAME
-        docker run --rm -v ${{ github.workspace }}/VK/simulation/results_replic:/simulation/results_replic $DOCKER_IMAGE_NAME
+        docker pull ${{ env.DOCKER_IMAGE_NAME }}
+        docker run --rm -v ${{ github.workspace }}/$RESULTS_DIR:/simulation/results_replic ${{ env.DOCKER_IMAGE_NAME }}
 
     # 3. Add and commit the results generated from the simulation
     - name: Commit and push results
       run: |
-        git config --global user.email "you@example.com"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git config --global user.name "GitHub Actions"
-        cd ${{ github.workspace }}/VK/simulation/results_replic
+        cd ${{ github.workspace }}/$RESULTS_DIR
         git add .
         git commit -m "Add simulation results"
         git push origin main
