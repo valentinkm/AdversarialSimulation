@@ -34,8 +34,15 @@ WORKDIR /simulation
 # Copy the entire project into the image
 COPY . /simulation
 
+# Set environment variables for renv to avoid permission issues
+ENV RENV_PATHS_ROOT=/simulation/renv
+ENV RENV_CONFIG_SANDBOX_ENABLED=FALSE
+
 # Install renv and restore packages
-RUN Rscript -e 'install.packages("renv"); renv::restore()'
+RUN Rscript -e 'install.packages("renv", repos = "https://cloud.r-project.org"); renv::restore()'
+
+RUN Rscript -e 'installed.packages()[,c("Package", "Version")]'
+
 
 # Set the entrypoint to run your simulation
 CMD ["Rscript", "run_all.R"]
