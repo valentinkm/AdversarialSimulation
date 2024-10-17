@@ -89,6 +89,6 @@ jobs:
           commit-message: 'Add simulation results'
           branch: 'simulation-results/${{ github.run_id }}'
           title: 'Add simulation results'
-          body: 'This PR adds the latest simulation results.'
+          body: 'This PR adds the simulation results of a minimal replication.'
           token: ${{ secrets.GH_TOKEN }}
           delete-branch: true
