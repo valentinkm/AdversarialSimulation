@@ -1,4 +1,4 @@
-name: Render and Publish Thesis and Presentation
+name: Publish Thesis and Presentation
 
 on:
   workflow_run:

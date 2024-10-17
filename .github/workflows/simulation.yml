@@ -1,4 +1,4 @@
-name: Simulation Workflow
+name: Minimal Simulation Replication
 
 on:
   push:
