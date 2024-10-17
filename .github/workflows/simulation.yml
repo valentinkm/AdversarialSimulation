@@ -3,9 +3,11 @@ name: Minimal Simulation Replication
 on:
   push:
     paths:
-      - 'VK/simulation/Dockerfile'
-      - '.github/workflows/simulation.yml'
       - 'VK/simulation/**'
+      - '.github/workflows/simulation.yml'
+    paths-ignore:
+      - 'VK/simulation/results/**'
+      - 'VK/simulation/results/replic/**'
 
 env:
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/simulation_image:latest
