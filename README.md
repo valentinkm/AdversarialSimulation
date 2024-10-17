@@ -31,16 +31,10 @@ git clone https://github.com/yourusername/adversarial-simulation.git
 cd adversarial-simulation/VK/simulation
 ```
 
-##### 2. Build the Docker Image
+##### 2. Run Simulation in Docker Container
 
 ```bash
-docker build -t simulation_image .
-```
-
-##### 3. Run Simulation in Docker Container
-
-```bash
-docker run --rm -v "$(pwd)/results_replic:/simulation/results_replic" simulation_image
+make
 ```
 
 This command will run the individual studies (study 1 & study 2) as well as the "joint" study (study 3) and save the results in the `results_replic/` directory. The default number of replications is set to 2 for each study. 
