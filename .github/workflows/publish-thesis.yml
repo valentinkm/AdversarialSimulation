@@ -1,4 +1,4 @@
-name: Publish Thesis and Presentation
+name: Publish Thesis
 
 on:
   workflow_run:
