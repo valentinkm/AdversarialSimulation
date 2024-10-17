@@ -146,7 +146,7 @@ cat(paste(after_table, collapse = "\n"))
 
 ## Disucssing the Adversarial Collaboration
 
-Idea: living simulations
+Idea: living simulations..
 
 # References
 
