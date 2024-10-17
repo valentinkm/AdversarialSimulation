@@ -16,13 +16,11 @@ The `VK/thesis` subdirectory contains all files generating the Master's thesis b
 
 The `VK/simulation` subdirectory contains the code and Docker setup to replicate the studies conducted in the adversarial simulation by Kriegmair. For local replication use the following instructions:
 
-#### Prerequisites
+#### 1. Prerequisites
 
 - **Docker**: Ensure you have Docker installed on your system. You can download and install Docker [here](https://www.docker.com/get-started).
 
-#### Setup Instructions
-
-##### 1. Clone the Repository
+##### 2. Clone the Repository
 
 First, clone this repository to your local machine and navigate to the simulation directory:
 
@@ -31,7 +29,7 @@ git clone https://github.com/yourusername/adversarial-simulation.git
 cd adversarial-simulation/VK/simulation
 ```
 
-##### 2. Run Simulation in Docker Container
+##### 3. Run Simulation in Docker Container
 
 ```bash
 make
