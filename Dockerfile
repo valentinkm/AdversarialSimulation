@@ -1,3 +1,4 @@
+# Dockerfile to render VK thesis
 FROM rocker/r-ver:4.4.0
 
 ENV DEBIAN_FRONTEND=noninteractive

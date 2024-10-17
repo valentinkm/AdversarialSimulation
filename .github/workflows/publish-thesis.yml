@@ -5,6 +5,7 @@ on:
     workflows: ["Build and Publish Docker Image"]
     types:
       - completed
+    workflow_dispatch:
 
 jobs:
   render-and-publish:

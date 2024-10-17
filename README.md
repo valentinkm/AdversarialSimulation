@@ -33,7 +33,8 @@ This command will run the individual studies (study 1 & study 2) as well as the 
 
 ##### 4. Additional Information
 
-The R environment is managed using `renv`, and the exact package versions are recorded in the renv.lock file.
+- The R environment for the simulation is managed using `renv`, and the exact package versions are recorded in the `VK/simulation/renv.lock` file.
+- All further visualization of the results is done in `VK/thesis` resulting in the [thesis](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). This is also managed using Docker and `renv` with the `VK/thesis/renv.lock` file and can be replicated [here](
 
 ## Preregistration
 
