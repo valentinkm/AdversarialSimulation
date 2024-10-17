@@ -1,12 +1,6 @@
 # AdversarialSimulation
 [![Minimal Simulation Replication](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml/badge.svg)](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml)
 
-## Preregistration
-
-Preregistered Simulation protocol by Kosanke: [![DOI](https://zenodo.org/badge/754060177.svg)](https://zenodo.org/doi/10.5281/zenodo.10792671)
-
-Preregistered Simulation protocol Kriegmair: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11458547.svg)](https://doi.org/10.5281/zenodo.11458547)
-
 
 ## Thesis by Kriegmair
 
@@ -40,6 +34,12 @@ This command will run the individual studies (study 1 & study 2) as well as the 
 ##### 4. Additional Information
 
 The R environment is managed using `renv`, and the exact package versions are recorded in the renv.lock file.
+
+## Preregistration
+
+Preregistered Simulation protocol by Kosanke: [![DOI](https://zenodo.org/badge/754060177.svg)](https://zenodo.org/doi/10.5281/zenodo.10792671)
+
+Preregistered Simulation protocol Kriegmair: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11458547.svg)](https://doi.org/10.5281/zenodo.11458547)
 
 ## Presentation
 
