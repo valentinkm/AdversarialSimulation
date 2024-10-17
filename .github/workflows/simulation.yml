@@ -61,7 +61,6 @@ jobs:
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -82,10 +81,12 @@ jobs:
       - name: List results directory contents
         run: ls -la ${{ github.workspace }}/$RESULTS_DIR
 
-      - name: Commit and push results
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          git add $RESULTS_DIR
-          git commit -m "Add simulation results" || echo "No changes to commit"
-          git push origin main
+      - name: Commit and create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'Add simulation results'
+          branch: 'simulation-results/${{ github.run_id }}'
+          title: 'Add simulation results'
+          body: 'This PR adds the latest simulation results.'
+          token: ${{ secrets.GH_TOKEN }}
+          delete-branch: true
