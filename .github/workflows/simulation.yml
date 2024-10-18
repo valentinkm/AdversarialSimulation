@@ -6,6 +6,8 @@ on:
       - 'VK/simulation/Dockerfile'
       - '.github/workflows/simulation.yml'
 
+  workflow_dispatch:
+    
 env:
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/simulation_image:latest
   RESULTS_DIR: VK/simulation/results_replic
@@ -85,7 +87,7 @@ jobs:
         with:
           commit-message: 'Add simulation results'
           branch: 'simulation-results/${{ github.run_id }}'
-          title: 'Add simulation results'
-          body: 'This PR adds the latest simulation results.'
+          title: 'Add minimal replication results'
+          body: 'This PR adds minimal replication simulation results.'
           token: ${{ secrets.GH_TOKEN }}
           delete-branch: true

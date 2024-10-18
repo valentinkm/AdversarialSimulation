@@ -5,7 +5,12 @@ on:
     workflows: ["Build and Publish Thesis Docker Image"]
     types:
       - completed
-    workflow_dispatch:
+
+  workflow_dispatch:
+  
+  push:
+    paths:
+      - "publish-thesis.yml"
 
 jobs:
   render-and-publish:
