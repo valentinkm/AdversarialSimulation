@@ -10,7 +10,7 @@ on:
   
   push:
     paths:
-      - "publish-thesis.yml"
+      - ".github/workflows/publish-thesis.yml"
 
 jobs:
   render-and-publish:
