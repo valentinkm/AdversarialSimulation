@@ -4,7 +4,7 @@
 
 ## Thesis by Kriegmair
 
-The `VK/thesis` subdirectory contains all files generating the Master's thesis by Kriegmair using data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf).
+The `VK/thesis` subdirectory contains all files generating the Master's thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). The rendering of the thesis is managed using Docker and `renv` with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml).
 
 ### Simulations by Kriegmair
 
@@ -34,7 +34,6 @@ This command will run the individual studies (study 1 & study 2) as well as the 
 ##### 4. Additional Information
 
 - The R environment for the simulation is managed using `renv`, and the exact package versions are recorded in the `VK/simulation/renv.lock` file.
-- All further visualization of the results is done in `VK/thesis` resulting in the [thesis](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). This is also managed using Docker and `renv` with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml).
 
 ## Preregistration
 
