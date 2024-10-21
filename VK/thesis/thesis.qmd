@@ -27,13 +27,6 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```{r child = 'plots.qmd'}
 ```
 
-```{=tex}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=black,
-}
-```
-
 \begin{center} \section*{Abstract} \end{center}
 \noindent
 {{< include abstract.qmd >}}
@@ -49,10 +42,25 @@ cat(paste0("Generated using [AdversarialSimulation](https://github.com/valentink
 \newpage
 
 ```{=tex}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+}
+```
+
+```{=tex}
 \newpage
 \tableofcontents
 \newpage
 ```
+
+```{=tex}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+}
+```
+
 # Introduction
 
 Work in progress, just a placeholder for now: Karl Popper once described science as the art of "systematic over-simplification." This term ironically yet accurately describes the very basic cycle of empirical research, where we lay out general claims about the world as hypotheses, translate them into measurable constructs, and choose how to gather data from certain populations, which finally, in turn, updates our beliefs about general verbal claims about the world. One core challenge in every research endeavor is mapping the general to the specific when designing and conducting a study, or from the specific and empirical to the verbal and general when interpreting the results. This mapping appears to be the crux of most research and is where most, if not all, of a researcher's degrees of freedom lie.Divergences in these mappings can be the source of ambiguity and verbal disputes. When differences in mappings from the verbal plane are not recognized or lack transparency, persistent and seemingly unresolvable disagreements in the general and verbal domains can occur. This challenge transfers to Monte Carlo simulation studies. These are commonly used tools to test statistical methods in simulated data to evaluate any method against a known ground truth. As it is impossible to simulate and test every possible data and analysis model combination, researchers are confronted with a multitude of degrees of freedom and decisions about what "prototypical" models to test in which "prototypical" data and settings. Especially the comparison of different methods in their "general" applicability and performance for various research settings is prone to conflicting verbal claims based on diverging simulation decisions. Biases for a specific method developed by one researcher might additionally amplify these divergences, not only at the step of interpreting results but importantly also when designing a simulation. To address these challenges of entrenched disagreements, the practice of adversarial collaboration has been proposed to unveil discrepancies in underlying methodological decisions and assumptions. It was famously pioneered by Ralph Hertwig and Daniel Kahneman, who tried to settle a persistent scientific disagreement about frequency representation and consulted Barbara Mellers as a neutral arbiter. Today, it is recognized as a potent tool in the social empirical research community. The basic idea is for two researchers in disagreement to first identify a general verbal dispute and agree on a research question to settle the debate. Based on this, they collaboratively work on operationalizing, testing, and interpreting this verbal claim. This process aims to unveil and concretize underlying disagreements and thus reduce ambiguity and increase generalizability. In this project, we aimed to transfer the concept of adversarial collaboration from the empirical domain to Monte Carlo simulation studies and assess its feasibility and viability in a case study in this context. To conduct such an exemplary adversarial collaboration, we first need a framework that structures the collaborative process tailored to the outline of simulation studies. Traditional SEM methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously under the assumption of multivariate normality. While powerful and although robust estimation techniques relax the normality assumption, all system wide estimators suffer from several shortcomings, they often face issues such as non-convergence, improper solutions (with parameters out of definitional range), and biases from local measurement misspecifications that affect the entire model. They also typically require large sample sizes for adequate performance, especially in complex models.
@@ -73,50 +81,7 @@ The methodological setup of my individual simulation studies follows the structu
 
 ### Studies by Collaborator B (Kosanke)
 
-```{r, results = 'asis'}
-file_sha <- Sys.getenv("LK_SHA")
-cat("#### Quoted verbatim from [Kosanke's report](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)\n")
-cat(paste0("(Git commit SHA ", file_sha, "):\n\n"))
-```
-
-```{r, results = 'asis'}
-lines <- readLines("../../LK/thesis.qmd")
-
-
-methods_headings <- grep("^### Methods", lines)
-results_headings <- grep("^### Results", lines)
-
-start <- methods_headings[2] + 1  # skip "### Methods" header
-end <- results_headings[2] - 1    # skip "### Results" header
-
-extracted_lines <- lines[(start):(end-1)]
-
-table_placeholder <- grep("\\*\\*Table 7\\*\\*", extracted_lines)
-
-before_table <- extracted_lines[1:(table_placeholder - 1)]
-after_table <- extracted_lines[(table_placeholder + 1):length(extracted_lines)]
-
-before_table <- before_table[!grepl("Overview of the individual simulation studies by Leonard Kosanke.", before_table)]
-before_table <- before_table[!grepl("\\*\\*Table 7\\*\\*", before_table)]
-
-cat(paste(before_table, collapse = "\n"))
-```
-
-::: {fig-kosanke-studies}
-```{r fig.cap="Overview of Simulation Studies Conducted by Kosanke\\label{tbl:studies-kosanke}", echo=FALSE, out.width="100%"}
-knitr::include_graphics("../../LK/images/TableOverviewIndividualStudies.pdf")
-```
-
-\raggedright
-
-\textit{Note.} $\Phi$: factor correlation, N: sample size, $\lambda$: factor loading, $\sigma$: residual variance, $\tau$: factor variance, RC: residual correlations, CL: cross-loadings, CFA: confirmatory factor analysis, $\beta$: regression coefficient between factors.
-:::
-
-```{r, results = 'asis'}
-after_table <- after_table[!grepl("\\{r|knitr::include_graphics|```", after_table)]
-after_table <- after_table[!grepl("Overview of the individual simulation studies by Leonard Kosanke.", after_table)]
-cat(paste(after_table, collapse = "\n"))
-```
+{{< include methods_kosanke.qmd >}}
 
 ## Joint Simulation Study
 

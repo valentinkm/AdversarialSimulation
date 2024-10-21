@@ -1,5 +1,3 @@
-
-
 ```{r include = FALSE}
 library(knitr)
 library(kableExtra)
@@ -9,7 +7,9 @@ library(dplyr)
 library(stringr)
 ```
 
-The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
+The results of Kosanke's individual simulation studies are presented verbatim from his report (Git commit SHA [4d0e95e](https://github.com/lkosanke/AdversarialSimulation/blob/4d0e95e24639f4b65b36ad7f5eb20033d1805e30/LK/thesis.qmd)):
+
+*The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
 The repository readme.md contains a detailed explanation of how the analyses were implemented and how they can be reproduced.
 In this section, I will focus on the most important results only.
 For the most part, results from @robitzsch_comparing_2022 have been successfully replicated:
@@ -19,11 +19,11 @@ SAM exhibited a negative small sample bias that made SAM appear superior in cond
 This bias was especially strong for lower lambda and higher phi or beta values.
 Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
-If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
+If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*
 
-#### Convergence
+#### *Convergence*
 
-As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.
+*As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.
 Nevertheless, I captured all messages, warnings and errors that occurred during the simulations.
 No messages and errors were present in any of the studies.
 Multiple warnings were observed in the first 4 simulations, some of them referring to potential problems with convergence.
@@ -34,17 +34,16 @@ These warnings referred to potential problems with positive definite matrices an
 In total, these numbers are negligible in size and align with the report of @robitzsch_comparing_2022, that convergence issues were not substantial for my estimations.
 Additionally, a larger number of warnings was present with regards to the computation of fit indices in these final two studies.
 As we were not interest in fit indices in our research question, they were not relevant for our purposes.
-A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the Github repository.
+A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the Github repository.*
 
-#### Conditions without misspecification
+#### *Conditions without misspecification*
 
-Tables 8 and 9 show the most relevant results of Studies 1 and 4 were I investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
+*Tables 8 and 9 show the most relevant results of Studies 1 and 4 where I investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.
 In Study 4a, only slight differences could be observed in terms of bias and RMSE between LSAM- and classical ML-estimation. 
 In Study 1, both SEM outperformed all SAM estimators in samples of N=50-500. 
 This was true for both relative bias and RMSE, and visible for the former in Table 9.
-Here, SAM's negative small sample bias is already visible as well.
-
+Here, SAM's negative small sample bias is already visible as well.*
 ```{r eval = TRUE, echo = FALSE}
 
 # Load the absolute bias results
@@ -72,9 +71,6 @@ create_styled_table <- function(data, caption_text, footnote_text) {
              escape = FALSE,
              footnote_as_chunk = TRUE)
 }
-
-
-
 ```
 
 ```{r eval = TRUE, echo = FALSE}
@@ -147,21 +143,20 @@ create_styled_table(bias_ci_s1[["0_0.12"]], caption_text, footnote_text)
 
 ```
 
-#### Conditions with negatively valenced unmodelled parameters
+#### *Conditions with negatively valenced unmodelled parameters*
 
-Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
+*Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
 In these studies, it became apparent that traditional SEM outperformed SAM estimation.
-
 As can be seen in Table 10, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
 The same was true in Study 2, in the presence of two negative cross-loadings.
 In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
-Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.
+Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.*
 
-#### Conditions with positively valenced unmodelled parameters
+#### *Conditions with positively valenced unmodelled parameters*
 
-In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. 
+*In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. 
 Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
-Only from N=100-1000 did SAM outperform SEM.
+Only from N=100-1000 did SAM outperform SEM.*
 
 \vspace{0.5\baselineskip}
 
@@ -197,7 +192,6 @@ create_styled_table(rmse_s2[["2_-0.3"]], caption_text, footnote_text)
 ```
 
 \vspace{0.5\baselineskip}
-
 
 ```{r eval = TRUE, echo = FALSE}
 # Load the relative bias results for Study 3
@@ -284,19 +278,17 @@ create_styled_table <- function(data, caption_text, footnote_text) {
 
 ```
 
-In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but only for smaller samples.
+*In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but only for smaller samples.*
 
-With regards to RMSE, results were mixed as well. 
+*With regards to RMSE, results were mixed as well. 
 LSAM appeared to outperform in Table 13 for DGM 2 of Study 4.
-In other conditions, however, no substantial differences arose in terms of RMSE.
+In other conditions, however, no substantial differences arose in terms of RMSE.*
 
-#### Small sample bias in LSAM estimation
+#### *Small sample bias in LSAM estimation*
 
-The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.
-Table 14 shows this was especially apparent in a sample size of 50.
-
+*The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.*
+*Table 14 shows this was especially apparent in a sample size of 50.*
 \vspace{0.5\baselineskip}
-
 ```{r eval = TRUE, echo = FALSE}
 caption_text4 <- "Study 4 (Kosanke): RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings)."
 footnote_text <- "SEM ML = Maximum-likelihood estimation, SEM ULS = Unweighted-least-squares estimation, LSAM ML = Local-SAM-maximum-likelihood estimation."
@@ -318,7 +310,6 @@ bias_ci_s1b[["N_50"]][["LSAM_ML"]] <- bias_ci_s1b[["N_50"]][["LSAM_ML"]] %>%
 ```
 
 \vspace{0.5\baselineskip}
-
 
 ```{r eval = TRUE, echo = FALSE}
 # Function to create a styled table for Study 1b
@@ -354,30 +345,29 @@ create_styled_table(bias_ci_s1b[["N_50"]][["LSAM_ML"]], caption_text1b, "LSAM ML
 
 \vspace{\baselineskip}
 
-Note that the absolute values of bias were calculated in this study.
+*Note that the absolute values of bias were calculated in this study.
 Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
 The bias persisted, but to a lesser degree in samples of 100.
 Thus, as expected, a clear effect of sample size was present.
-Overall, comparing LSAM-ML and -ULS estimation, results were very similar.
+Overall, comparing LSAM-ML and -ULS estimation, results were very similar.*
 
-Importantly, differential effects due to lambda and phi were present in Study 1b.
+*Importantly, differential effects due to lambda and phi were present in Study 1b.
 The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations.
 Also, a new insight is that the bias remained relevant for low values of phi, unlike in the original paper by @robitzsch_comparing_2022.
-In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.
+In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.*
 
-Another new insight lied in the presence of what could be called a reversal effect: For higher values of lambda, the bias did not increase for higher values of phi. 
-On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.
+*Another new insight lied in the presence of what could be called a reversal effect: For higher values of lambda, the bias did not increase for higher values of phi. 
+On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.*
 
-As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
-Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).
+*As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
+Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).*
 
-Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
+*Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
 Thus, the negative small sample bias came into play in this study as well.
 Results looked very similar with regards to RMSE.
-Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.
+Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.*
 
 \vspace{0.5\baselineskip}
-
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("../../LK/SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
@@ -428,18 +418,18 @@ kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
 
 \vspace{\baselineskip}
 
-One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
+*One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
 Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
 This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.
-But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.
+But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.*
 
-#### Summary of results
+#### *Summary of results*
 
-For the most part, I succesfully replicated the results from @robitzsch_comparing_2022:
+*For the most part, I succesfully replicated the results from @robitzsch_comparing_2022:
 I did not observe substantial convergence issues in any study.
 Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
 SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
 This bias was especially strong for lower lambda and higher phi or beta values.
 Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
 Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
-If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.
+If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*

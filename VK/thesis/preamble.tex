@@ -35,44 +35,47 @@
 
 \renewcommand\TPTnoteSettings{\gdef\TPTnoteFont{\footnotesize}\setlength\parindent{0pt}}
 
+\newcommand{\negvspace}[1]{\vspace{-#1}}
+
+
 % Paragraph Indentation and Spacing
 \setlength{\parindent}{1.27cm}  % 0.5-inch paragraph indent for new paragraphs
 \setlength{\parskip}{0pt}  % No additional spacing between paragraphs
-\linespread{2.0}  % Set line spacing to double (2.0)
+\linespread{1.5}  % Line spacing
 
 % Ensure paragraph indentation within landscape environments
-\AtBeginEnvironment{landscape}{\setlength{\parindent}{1.27cm}}  % Add this line
+\AtBeginEnvironment{landscape}{\setlength{\parindent}{1.27cm}}
 
-% Section Formatting using KOMA-Script
+% APA7 Section Formatting using KOMA-Script
 \RedeclareSectionCommand[
-  beforeskip=1\baselineskip,  % Add spacing before the heading
-  afterskip=1\baselineskip,  % Add spacing after the heading
+  beforeskip=0.75\baselineskip,  % Reduce spacing before the heading
+  afterskip=0.75\baselineskip,   % Reduce spacing after the heading
   font=\normalfont\bfseries\centering
 ]{section}
 
 \RedeclareSectionCommand[
-  beforeskip=1\baselineskip,
-  afterskip=1\baselineskip,
+  beforeskip=0.75\baselineskip,
+  afterskip=0.75\baselineskip,
   font=\normalfont\bfseries\flushleft
 ]{subsection}
 
 \RedeclareSectionCommand[
-  beforeskip=0.5\baselineskip,
-  afterskip=0.5\baselineskip,
+  beforeskip=0.4\baselineskip,
+  afterskip=0.4\baselineskip,
   font=\normalfont\bfseries\itshape\flushleft
 ]{subsubsection}
 
 \RedeclareSectionCommand[
-  beforeskip=0.5\baselineskip,
-  afterskip=0.5\baselineskip,
+  beforeskip=0.4\baselineskip,
+  afterskip=0.4\baselineskip,
   indent=\parindent,
   font=\normalfont\bfseries,
   runin=true  % Run-in heading with the paragraph
 ]{paragraph}
 
 \RedeclareSectionCommand[
-  beforeskip=0.5\baselineskip,
-  afterskip=0.5\baselineskip,
+  beforeskip=0.4\baselineskip,
+  afterskip=0.4\baselineskip,
   indent=\parindent,
   font=\normalfont\bfseries\itshape,
   runin=true  % Run-in heading with the paragraph
