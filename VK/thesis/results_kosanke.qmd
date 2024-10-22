@@ -1,25 +1,3 @@
----
-Title: "Thesis"
-author:
-  - name: Valentin Kriegmair
-    affiliations: "Humboldt-Universität zu Berlin"
-fig-cap-location: top
-format:
-    pdf:
-        fig-numbering: false
-        fontsize: 11pt
-        linestretch: 1.5
-        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
-        classoption: oneside
-        papersize: a4
-        header-includes: |
-          \input{preamble.tex}
-fontsize: 11pt
-engine: knitr
-bibliography: ../bibliography.bib
-csl: ../apa.csl
-appendix: true
----
 ```{r include = FALSE}
 library(knitr)
 library(kableExtra)
@@ -225,44 +203,6 @@ create_styled_table(bias_ci_s3, caption_text_3, footnote_text)
 # Load the absolute bias results for Study 4
 bias_ci_s4 <- readRDS("../../LK/SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 
-# Function to create a styled table for Study 4
-create_styled_table <- function(data, caption_text, footnote_text) {
-  
-  colnames(data) <- c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "100000")
-  
-  # Determine the total number of columns
-  num_cols <- ncol(data)
-  
-
-  total_width_cm <- 15  
-  
-  # Set width for the first column
-  col1_width_cm <- 3.5
-  
-  # Calculate width for the remaining columns
-  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
-  
-  # Create the table
-  data %>%
-    dplyr::rename_all(~ gsub("_", " ", .)) %>%
-    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
-    kable("latex", booktabs = TRUE, longtable = TRUE,
-          caption = caption_text,
-          align = c("l", rep("c", num_cols - 1))) %>%
-    kable_styling(latex_options = c("repeat_header"),
-                  font_size = 11,
-                  position = "center") %>%
-    add_header_above(c(" " = 1, "Sample Size" = num_cols - 1)) %>%
-    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
-    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
-    row_spec(0, bold = TRUE) %>%
-    footnote(general = footnote_text,
-             general_title = "Note.",
-             threeparttable = TRUE,
-             escape = FALSE,
-             footnote_as_chunk = TRUE)
-}
-
 ```
 
 *In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but only for smaller samples.*
@@ -301,7 +241,7 @@ bias_ci_s1b[["N_50"]][["LSAM_ML"]] <- bias_ci_s1b[["N_50"]][["LSAM_ML"]] %>%
 ```{r eval = TRUE, echo = FALSE}
 # Function to create a styled table for Study 1b
 # Adjusted function to create a styled table for Study 1b
-create_styled_table <- function(data, caption_text, footnote_text) {
+create_styled_table_study1b <- function(data, caption_text, footnote_text) {
   
   colnames(data) <- c("Lambda", "0", "0.2", "0.4", "0.6", "0.8")
   
@@ -341,7 +281,7 @@ create_styled_table <- function(data, caption_text, footnote_text) {
 
 caption_text1b <- "Study 1b (Kosanke): Absolute bias of LSAM-ML for N=50."
 
-create_styled_table(bias_ci_s1b[["N_50"]][["LSAM_ML"]], caption_text1b, "LSAM ML = Local-SAM-maximum-likelihood estimation.")
+create_styled_table_study1b(bias_ci_s1b[["N_50"]][["LSAM_ML"]], caption_text1b, "LSAM ML = Local-SAM-maximum-likelihood estimation.")
 
 ```
 
