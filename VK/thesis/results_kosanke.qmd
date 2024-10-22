@@ -1,3 +1,25 @@
+---
+Title: "Thesis"
+author:
+  - name: Valentin Kriegmair
+    affiliations: "Humboldt-Universität zu Berlin"
+fig-cap-location: top
+format:
+    pdf:
+        fig-numbering: false
+        fontsize: 11pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes: |
+          \input{preamble.tex}
+fontsize: 11pt
+engine: knitr
+bibliography: ../bibliography.bib
+csl: ../apa.csl
+appendix: true
+---
 ```{r include = FALSE}
 library(knitr)
 library(kableExtra)
@@ -9,61 +31,77 @@ library(stringr)
 
 The results of Kosanke's individual simulation studies are presented verbatim from his report (Git commit SHA [4d0e95e](https://github.com/lkosanke/AdversarialSimulation/blob/4d0e95e24639f4b65b36ad7f5eb20033d1805e30/LK/thesis.qmd)):
 
-*The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.
-The repository readme.md contains a detailed explanation of how the analyses were implemented and how they can be reproduced.
-In this section, I will focus on the most important results only.
-For the most part, results from @robitzsch_comparing_2022 have been successfully replicated:
-I did not observe substantial convergence issues in any study.
-Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
-SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias was especially strong for lower lambda and higher phi or beta values.
-Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
-Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
-If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*
+*The full result analysis for my individual study is available here: <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/results.pdf>.*
+*The repository readme.md contains a detailed explanation of how the analyses were implemented and how they can be reproduced.*
+*In this section, I will focus on the most important results only.*
+*For the most part, results from @robitzsch_comparing_2022 have been successfully replicated:*
+*I did not observe substantial convergence issues in any study.
+Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.*
+*SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.*
+*This bias was especially strong for lower lambda and higher phi or beta values.*
+*Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.*
+*Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.*
+*If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*
 
 #### *Convergence*
 
-*As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.
-Nevertheless, I captured all messages, warnings and errors that occurred during the simulations.
-No messages and errors were present in any of the studies.
+*As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.*
+*Nevertheless, I captured all messages, warnings and errors that occurred during the simulations.*
+*No messages and errors were present in any of the studies.
 Multiple warnings were observed in the first 4 simulations, some of them referring to potential problems with convergence.
-Overall, the number of these warnings was very small compared to the total number of estimations performed.
-They amounted to between 0.5-1.8%.
-In studies 4 and 4a, an even smaller number of warnings was present, amounting to problems in 0.02% of estimations in study 4 and 0.1% in study 4a.
-These warnings referred to potential problems with positive definite matrices and model identification.
-In total, these numbers are negligible in size and align with the report of @robitzsch_comparing_2022, that convergence issues were not substantial for my estimations.
-Additionally, a larger number of warnings was present with regards to the computation of fit indices in these final two studies.
-As we were not interest in fit indices in our research question, they were not relevant for our purposes.
-A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the Github repository.*
+Overall, the number of these warnings was very small compared to the total number of estimations performed.*
+*They amounted to between 0.5-1.8%.
+In studies 4 and 4a, an even smaller number of warnings was present, amounting to problems in 0.02% of estimations in study 4 and 0.1% in study 4a.*
+*These warnings referred to potential problems with positive definite matrices and model identification.*
+*In total, these numbers are negligible in size and align with the report of @robitzsch_comparing_2022, that convergence issues were not substantial for my estimations.*
+*Additionally, a larger number of warnings was present with regards to the computation of fit indices in these final two studies.*
+*As we were not interest in fit indices in our research question, they were not relevant for our purposes.*
+*A detailed analysis of all the warnings was conducted in the *results.pdf* document in my sub-folder of the Github repository.*
 
 #### *Conditions without misspecification*
 
 *Tables 8 and 9 show the most relevant results of Studies 1 and 4 where I investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
-Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.
-In Study 4a, only slight differences could be observed in terms of bias and RMSE between LSAM- and classical ML-estimation. 
-In Study 1, both SEM outperformed all SAM estimators in samples of N=50-500. 
-This was true for both relative bias and RMSE, and visible for the former in Table 9.
+Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.*
+*In Study 4a, only slight differences could be observed in terms of bias and RMSE between LSAM- and classical ML-estimation. 
+In Study 1, both SEM outperformed all SAM estimators in samples of N=50-500.* 
+*This was true for both relative bias and RMSE, and visible for the former in Table 9.
 Here, SAM's negative small sample bias is already visible as well.*
-```{r eval = TRUE, echo = FALSE}
 
+```{r eval = TRUE, echo = FALSE}
 # Load the absolute bias results
 bias_ci_s4 <- readRDS("../../LK/SimulationResultsProcessed/sim4_abs_bias_ci.rds")
 
+# Adjusted function to create a styled table to match the first table
 create_styled_table <- function(data, caption_text, footnote_text) {
   
   colnames(data) <- c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "100000")
   
+  # Determine the total number of columns
+  num_cols <- ncol(data)
+  
+
+  total_width_cm <- 15  
+  
+  # Set width for the first column
+  col1_width_cm <- 3.5
+  
+  # Calculate width for the remaining columns
+  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
+  
   # Create the table
   data %>%
+    mutate(across(where(is.numeric), ~ round(., 3))) %>%
+    dplyr::rename_all(~ gsub("_", " ", .)) %>%
+    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
     kable("latex", booktabs = TRUE, longtable = TRUE,
           caption = caption_text,
-          align = c("l", "c", "c", "c", "c", "c", "c", "c")) %>%  # Adjust alignments as needed
+          align = c("l", rep("c", num_cols - 1))) %>%
     kable_styling(latex_options = c("repeat_header"),
-                  full_width = FALSE,
                   font_size = 11,
-                  position = "left") %>%
-    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
-    column_spec(1, width = "3.5cm") %>%
+                  position = "center") %>%
+    add_header_above(c(" " = 1, "Sample Size" = num_cols - 1)) %>%
+    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
+    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
     row_spec(0, bold = TRUE) %>%
     footnote(general = footnote_text,
              general_title = "Note.",
@@ -99,37 +137,6 @@ shorten_names <- function(df) {
   df$method_metric <- sub("_rel_bias", "", df$method_metric)
   return(df)
 }
-
-# Adjusted function to create a styled table to match the first table
-create_styled_table <- function(data, caption_text, footnote_text) {
-  data <- shorten_names(data)
-
-  colnames(data) <- c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "100000")
-
-  # Round numeric columns and remove underscores
-  data <- data %>%
-    mutate(across(where(is.numeric), ~ round(., 3))) %>%
-    dplyr::rename_all(~ gsub("_", " ", .)) %>%
-    dplyr::mutate(across(everything(), ~ gsub("_", " ", .)))
-
-  # Format table
-  data %>%
-    kable("latex", booktabs = TRUE, longtable = TRUE,
-          caption = caption_text,
-          align = c("l", "c", "c", "c", "c", "c", "c", "c")) %>%
-    kable_styling(latex_options = c("repeat_header"),
-                  full_width = FALSE,
-                  font_size = 11,
-                  position = "left") %>%
-    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
-    column_spec(1, width = "3.5cm") %>%
-    row_spec(0, bold = TRUE) %>%
-    footnote(general = footnote_text,
-             general_title = "Note.",
-             threeparttable = TRUE,
-             escape = FALSE,
-             footnote_as_chunk = TRUE)
-}
 ```
 
 \vspace{0.5\baselineskip}
@@ -145,17 +152,17 @@ create_styled_table(bias_ci_s1[["0_0.12"]], caption_text, footnote_text)
 
 #### *Conditions with negatively valenced unmodelled parameters*
 
-*Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.
-In these studies, it became apparent that traditional SEM outperformed SAM estimation.
-As can be seen in Table 10, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.
-The same was true in Study 2, in the presence of two negative cross-loadings.
-In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.
-Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.*
+*Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.*
+*In these studies, it became apparent that traditional SEM outperformed SAM estimation.*
+*As can be seen in Table 10, both SEM estimators outperformed all four SAM estimators in terms of relative bias with two negative residual correlations present.*
+*The same was true in Study 2, in the presence of two negative cross-loadings.*
+*In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.*
+*Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 11 for the negative cross-loadings in study 2.*
 
 #### *Conditions with positively valenced unmodelled parameters*
 
-*In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. 
-Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
+*In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. *
+*Table 12 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
 Only from N=100-1000 did SAM outperform SEM.*
 
 \vspace{0.5\baselineskip}
@@ -204,26 +211,35 @@ shorten_names <- function(df) {
 
 # Function to create a styled table for Study 3
 create_styled_table <- function(data, caption_text, footnote_text) {
-  data <- shorten_names(data)
+  
   colnames(data) <- c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "100000")
-  data <- data %>%
-    mutate(across(where(is.numeric), ~ round(., 3)))
   
-  # Remove underscores from column names and values
-  data <- data %>%
+  # Determine the total number of columns
+  num_cols <- ncol(data)
+  
+
+  total_width_cm <- 15  
+  
+  # Set width for the first column
+  col1_width_cm <- 3.5
+  
+  # Calculate width for the remaining columns
+  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
+  
+  # Create the table
+  data %>%
     dplyr::rename_all(~ gsub("_", " ", .)) %>%
-    dplyr::mutate(across(everything(), ~ gsub("_", " ", .)))
-  
-  # Format table
-  kbl(data,
-      col.names = c("Method/Metric", "50", "100", "250", 
-                    "500", "1000", "2500", "100000"), booktabs = TRUE, longtable = TRUE, 
-      caption = caption_text) %>%
-    kable_styling(full_width = FALSE, position = "left", font_size = 11) %>%
-    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
-    column_spec(1, width = "4cm") %>% 
+    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
+    kable("latex", booktabs = TRUE, longtable = TRUE,
+          caption = caption_text,
+          align = c("l", rep("c", num_cols - 1))) %>%
+    kable_styling(latex_options = c("repeat_header"),
+                  font_size = 11,
+                  position = "center") %>%
+    add_header_above(c(" " = 1, "Sample Size" = num_cols - 1)) %>%
+    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
+    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
     row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = FALSE) %>%
     footnote(general = footnote_text,
              general_title = "Note.",
              threeparttable = TRUE,
@@ -249,26 +265,35 @@ bias_ci_s4 <- readRDS("../../LK/SimulationResultsProcessed/sim4_abs_bias_ci.rds"
 
 # Function to create a styled table for Study 4
 create_styled_table <- function(data, caption_text, footnote_text) {
-  data <- data %>%
-    mutate(across(where(is.numeric), ~ round(., 3)))
   
   colnames(data) <- c("Method/Metric", "50", "100", "250", "500", "1000", "2500", "100000")
-
-  # Remove underscores from column names and values
-  data <- data %>%
-    dplyr::rename_all(~ gsub("_", " ", .)) %>%
-    dplyr::mutate(across(everything(), ~ gsub("_", " ", .)))
   
-  # Format table
-  kbl(data,
-      col.names = c("Method/Metric", "50", "100", "250",
-                    "500", "1000", "2500", "100000"), booktabs = TRUE, longtable = TRUE, 
-      caption = caption_text) %>%
-    kable_styling(full_width = FALSE, position = "left", font_size = 11) %>%
-    add_header_above(c(" " = 1, "Sample Size" = 7)) %>%
-    column_spec(1, width = "3.5cm") %>% 
+  # Determine the total number of columns
+  num_cols <- ncol(data)
+  
+
+  total_width_cm <- 15  
+  
+  # Set width for the first column
+  col1_width_cm <- 3.5
+  
+  # Calculate width for the remaining columns
+  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
+  
+  # Create the table
+  data %>%
+    dplyr::rename_all(~ gsub("_", " ", .)) %>%
+    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
+    kable("latex", booktabs = TRUE, longtable = TRUE,
+          caption = caption_text,
+          align = c("l", rep("c", num_cols - 1))) %>%
+    kable_styling(latex_options = c("repeat_header"),
+                  font_size = 11,
+                  position = "center") %>%
+    add_header_above(c(" " = 1, "Sample Size" = num_cols - 1)) %>%
+    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
+    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
     row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = FALSE) %>%
     footnote(general = footnote_text,
              general_title = "Note.",
              threeparttable = TRUE,
@@ -279,16 +304,16 @@ create_styled_table <- function(data, caption_text, footnote_text) {
 ```
 
 *In Study 4, a comparative advantage of LSAM compared to SEM-ML was present, but only for smaller samples.*
-
-*With regards to RMSE, results were mixed as well. 
-LSAM appeared to outperform in Table 13 for DGM 2 of Study 4.
-In other conditions, however, no substantial differences arose in terms of RMSE.*
+*With regards to RMSE, results were mixed as well. LSAM appeared to outperform in Table 13 for DGM 2 of Study 4.*
+*In other conditions, however, no substantial differences arose in terms of RMSE.*
 
 #### *Small sample bias in LSAM estimation*
 
 *The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.*
 *Table 14 shows this was especially apparent in a sample size of 50.*
+
 \vspace{0.5\baselineskip}
+
 ```{r eval = TRUE, echo = FALSE}
 caption_text4 <- "Study 4 (Kosanke): RMSE in DGM 2 (conditions with five positive unmodelled cross-loadings)."
 footnote_text <- "SEM ML = Maximum-likelihood estimation, SEM ULS = Unweighted-least-squares estimation, LSAM ML = Local-SAM-maximum-likelihood estimation."
@@ -313,29 +338,44 @@ bias_ci_s1b[["N_50"]][["LSAM_ML"]] <- bias_ci_s1b[["N_50"]][["LSAM_ML"]] %>%
 
 ```{r eval = TRUE, echo = FALSE}
 # Function to create a styled table for Study 1b
+# Adjusted function to create a styled table for Study 1b
 create_styled_table <- function(data, caption_text, footnote_text) {
-  data <- data %>%
-    mutate(across(where(is.numeric), ~ round(., 3)))
-
-  # Remove underscores from column names and values
-  data <- data %>%
-    dplyr::rename_all(~ gsub("_", " ", .)) %>%
-    dplyr::mutate(across(everything(), ~ gsub("_", " ", .)))
   
-  # Format table
-  kbl(data,
-      col.names = c("Lambda", "phi = 0", "phi = 0.2", 
-                    "phi = 0.4", "phi = 0.6", "phi = 0.8"), booktabs = TRUE, longtable = TRUE, 
-      caption = caption_text) %>%
-    kable_styling(full_width = FALSE, position = "left", font_size = 11) %>%
+  colnames(data) <- c("Lambda", "0", "0.2", "0.4", "0.6", "0.8")
+  
+  # Determine the total number of columns
+  num_cols <- ncol(data)
+  
+
+  total_width_cm <- 15  
+  
+  # Set width for the first column
+  col1_width_cm <- 3.5
+  
+  # Calculate width for the remaining columns
+  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
+  
+  # Create the table
+  data %>%
+    dplyr::rename_all(~ gsub("_", " ", .)) %>%
+    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
+    kable("latex", booktabs = TRUE, longtable = TRUE,
+          caption = caption_text,
+          align = c("l", rep("c", num_cols - 1))) %>%
+    kable_styling(latex_options = c("repeat_header"),
+                  font_size = 11,
+                  position = "center") %>%
+    add_header_above(c(" " = 1, "Phi Levels" = num_cols - 1)) %>%
+    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
+    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
     row_spec(0, bold = TRUE) %>%
-    kable_classic(full_width = FALSE) %>%
     footnote(general = footnote_text,
              general_title = "Note.",
              threeparttable = TRUE,
              escape = FALSE,
              footnote_as_chunk = TRUE)
 }
+
 
 caption_text1b <- "Study 1b (Kosanke): Absolute bias of LSAM-ML for N=50."
 
@@ -345,29 +385,26 @@ create_styled_table(bias_ci_s1b[["N_50"]][["LSAM_ML"]], caption_text1b, "LSAM ML
 
 \vspace{\baselineskip}
 
-*Note that the absolute values of bias were calculated in this study.
-Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].
-The bias persisted, but to a lesser degree in samples of 100.
-Thus, as expected, a clear effect of sample size was present.
-Overall, comparing LSAM-ML and -ULS estimation, results were very similar.*
-
-*Importantly, differential effects due to lambda and phi were present in Study 1b.
-The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations.
-Also, a new insight is that the bias remained relevant for low values of phi, unlike in the original paper by @robitzsch_comparing_2022.
-In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.*
-
-*Another new insight lied in the presence of what could be called a reversal effect: For higher values of lambda, the bias did not increase for higher values of phi. 
-On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.*
-
-*As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.
-Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).*
-
-*Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.
-Thus, the negative small sample bias came into play in this study as well.
-Results looked very similar with regards to RMSE.
-Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.*
+*Note that the absolute values of bias were calculated in this study.*
+*Consequently, the values of the bias should be interpreted as negative, as follows from the results of the original paper [@robitzsch_comparing_2022].*
+*The bias persisted, but to a lesser degree in samples of 100.*
+*Thus, as expected, a clear effect of sample size was present.*
+*Overall, comparing LSAM-ML and -ULS estimation, results were very similar.*
+*Importantly, differential effects due to lambda and phi were present in Study 1b.*
+*The small sample bias was especially strong for lower lambda and higher phi values, thus in contexts of low reliability and high factor correlations.*
+*Also, a new insight is that the bias remained relevant for low values of phi, unlike in the original paper by @robitzsch_comparing_2022.*
+*In consequence, there seemed to be no conditions were SAM's small sample bias was negligible.*
+*Another new insight lied in the presence of what could be called a reversal effect: For higher values of lambda, the bias did not increase for higher values of phi.* 
+*On the contrary, absolute bias values decreased for higher phi values, when looking at the conditions with lambda = 0.7-0.8.*
+*As an additional investigation of the small sample bias, I included Study 4a to see its effect come to play in a 5-factor-model with regressions.*
+*Table 15 shows the performance of SEM-ML, whereas Table 16 shows the performance of LSAM-ML in DGM 2 (in presence of unmodelled cross-loadings).*
+*Aligning with the findings of Study 1b, the results suggested an even better relative performance of LSAM- over traditional SEM-ML estimation for smaller N and higher beta.*
+*Thus, the negative small sample bias came into play in this study as well.*
+*Results looked very similar with regards to RMSE.*
+*Note that this trend was less strong, but still present in the conditions of DGM 3 when looking at residual correlations.*
 
 \vspace{0.5\baselineskip}
+
 ```{r eval = TRUE, echo = FALSE}
 bias_ci_s4a <- readRDS("../../LK/SimulationResultsProcessed/sim4a_abs_bias_ci.rds")
 
@@ -383,53 +420,108 @@ bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]] <- bias_ci_s4a[["DGM_1"]][["LSAM_ML_
 
 ```{r eval = TRUE, echo = FALSE}
 
-# Format table for Study 4a
-kbl(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]], 
-    col.names = c("Beta", "50", "100", "250", "500", 
-                  "1000", "2500", "100000"), booktabs = TRUE, longtable = TRUE, 
-    caption = "Study 4a (Kosanke): Absolute bias of SEM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).") %>%
-  kable_styling(full_width = FALSE, position = "left", font_size = 11) %>%
-  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
-  row_spec(0, bold = TRUE) %>%
-  kable_classic(full_width = FALSE) %>%
-  footnote(general = "SEM ML = Maximum-likelihood estimation, SEM ULS = Unweighted-least-squares estimation, LSAM ML = Local-SAM-maximum-likelihood estimation, LSAM ULS = Local-SAM-unweighted-least-squares estimation, GSAM ML = Global-SAM-maximum-likelihood estimation, GSAM ULS = Global-SAM-unweighted-least-squares estimation.",
-           general_title = "Note.",
-           threeparttable = TRUE,
-           escape = FALSE,
-           footnote_as_chunk = TRUE)
+# Adjusted function to format the table for Study 4a
+create_styled_table_study4a <- function(data, caption_text, footnote_text) {
+  
+  # Column names for the table
+  colnames(data) <- c("Beta", "50", "100", "250", "500", "1000", "2500", "100000")
+  
+  # Determine the total number of columns
+  num_cols <- ncol(data)
+  
+
+  total_width_cm <- 15  
+  
+  # Set width for the first column
+  col1_width_cm <- 3.5
+  
+  # Calculate width for the remaining columns
+  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
+  
+  # Create the table
+  data %>%
+    dplyr::rename_all(~ gsub("_", " ", .)) %>%
+    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
+    kable("latex", booktabs = TRUE, longtable = TRUE,
+          caption = caption_text,
+          align = c("l", rep("c", num_cols - 1))) %>%
+    kable_styling(latex_options = c("repeat_header"),
+                  font_size = 11,
+                  position = "center") %>%
+    add_header_above(c(" " = 1, "Sample Size" = num_cols - 1)) %>%
+    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
+    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
+    row_spec(0, bold = TRUE) %>%
+    footnote(general = footnote_text,
+             general_title = "Note.",
+             threeparttable = TRUE,
+             escape = FALSE,
+             footnote_as_chunk = TRUE)
+}
+
+create_styled_table_study4a(bias_ci_s4a[["DGM_1"]][["SEM_ML_metrics"]],
+                            caption_text = "Study 4a (Kosanke): Absolute bias of SEM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).",
+                            footnote_text = "SEM ML = Maximum-likelihood estimation, SEM ULS = Unweighted-least-squares estimation, LSAM ML = Local-SAM-maximum-likelihood estimation, LSAM ULS = Local-SAM-unweighted-least-squares estimation, GSAM ML = Global-SAM-maximum-likelihood estimation, GSAM ULS = Global-SAM-unweighted-least-squares estimation.")
+
 
 ```
 
 \vspace{0.5\baselineskip}
 
 ```{r eval = TRUE, echo = FALSE}
+create_styled_table_study4a_lsam_ml <- function(data, caption_text) {
+  # Column names for the table
+  colnames(data) <- c("Beta", "50", "100", "250", "500", "1000", "2500", "100000")
+  
+  # Determine the total number of columns
+  num_cols <- ncol(data)
+  
 
-# Format table for Study 4a (LSAM-ML)
-kbl(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]], 
-    col.names = c("Beta", "50", "100", "250", "500", 
-                  "1000", "2500", "100000"), booktabs = TRUE, longtable = TRUE, 
-    caption = "Study 4a (Kosanke): Absolute bias of LSAM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).") %>%
-  kable_styling(full_width = FALSE, position = "left", font_size = 11) %>%
-  add_header_above(c(" " = 1, "Sample size" = 7)) %>%
-  row_spec(0, bold = TRUE) %>%
-  kable_classic(full_width = FALSE)
+  total_width_cm <- 15  
+  
+  # Set width for the first column
+  col1_width_cm <- 3.5
+  
+  # Calculate width for the remaining columns
+  other_cols_width_cm <- (total_width_cm - col1_width_cm) / (num_cols - 1)
+  
+  # Create the table
+  data %>%
+    dplyr::rename_all(~ gsub("_", " ", .)) %>%
+    dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
+    kable("latex", booktabs = TRUE, longtable = TRUE,
+          caption = caption_text,
+          align = c("l", rep("c", num_cols - 1))) %>%
+    kable_styling(latex_options = c("repeat_header"),
+                  font_size = 11,
+                  position = "center") %>%
+    add_header_above(c(" " = 1, "Sample Size" = num_cols - 1)) %>%
+    column_spec(1, width = paste0(col1_width_cm, "cm")) %>%
+    column_spec(2:num_cols, width = paste0(other_cols_width_cm, "cm")) %>%
+    row_spec(0, bold = TRUE)
+}
+
+# Usage of the function with Study 4a LSAM-ML data
+create_styled_table_study4a_lsam_ml(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
+                                   caption_text = "Study 4a (Kosanke): Absolute bias of LSAM-ML for DGM 2 (conditions with five positive unmodelled cross-loadings).")
+
 
 ```
 
 \vspace{\baselineskip}
 
-*One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).
-Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.
-This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.
-But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.*
+*One aspect to mention is that lambda values were quite high in study 4a (lambda=0.7).*
+*Matching the results from Study 1b, SAM's bias did not increase for higher values of beta, unlike SEM's.*
+*This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.*
+*But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.*
 
 #### *Summary of results*
 
-*For the most part, I succesfully replicated the results from @robitzsch_comparing_2022:
-I did not observe substantial convergence issues in any study.
-Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.
-SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.
-This bias was especially strong for lower lambda and higher phi or beta values.
-Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.
-Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.
-If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*
+*For the most part, I succesfully replicated the results from @robitzsch_comparing_2022:*
+*I did not observe substantial convergence issues in any study.*
+*Across studies, as in the original paper, SAM did not generally outperform SEM in small to moderate samples.*
+*SAM exhibited a negative small sample bias that made SAM appear superior in conditions with unmodelled positive cross-loadings and residual correlations.*
+*This bias was especially strong for lower lambda and higher phi or beta values.*
+*Going ahead of what was investigated in @robitzsch_comparing_2022, I found that this bias is also present in models with lower phi or beta values.*
+*Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.*
+*If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*
