@@ -27,6 +27,16 @@
 \setlength{\LTpre}{0pt}
 \setlength{\LTpost}{0pt}
 
+% Ensure longtable aligns with text margins
+\setlength{\LTleft}{\fill}
+\setlength{\LTright}{\fill}
+
+\setlength{\tabcolsep}{4pt}  % Default is 6pt; reducing it saves space
+
+\usepackage{adjustbox}
+
+
+
 % Custom Commands
 \newcommand{\blandscape}{\begin{landscape}}
 \newcommand{\elandscape}{\end{landscape}}
