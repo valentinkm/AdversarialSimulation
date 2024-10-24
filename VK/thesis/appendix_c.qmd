@@ -1,10 +1,31 @@
+---
+Title: "Thesis"
+author:
+  - name: Valentin Kriegmair
+    affiliations: "Humboldt-Universität zu Berlin"
+fig-cap-location: top
+format:
+    pdf:
+        fig-numbering: false
+        fontsize: 11pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes: |
+          \input{preamble.tex}
+fontsize: 11pt
+engine: knitr
+bibliography: ../bibliography.bib
+csl: ../apa.csl
+appendix: true
+---
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 knitr::opts_knit$set(root.dir = "../../")
 ```
 
 ```{r, echo=FALSE}
-# Your R code for loading libraries and data
 library(dplyr)
 library(purrr)
 library(knitr)
@@ -41,20 +62,42 @@ combined_list %>%
 
 ```{r, echo=FALSE}
 combined_summary %>%
+  dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
+  dplyr::rename(Misspecification = `Model Type`) %>%
+  dplyr::rename(ID = `Message ID`) %>%
+  dplyr::rename(Type = MessageType) %>%
+  dplyr::mutate(
+    Misspecification = case_when(
+      Misspecification == "1.1" ~ "no measurement MP",
+      Misspecification == "1.2" ~ "cross loadings",
+      Misspecification == "1.3" ~ "correlated errors",
+      Misspecification == "1.4" ~ "structural MP",
+      Misspecification == "2.1" ~ "no measurement MP",
+      Misspecification == "2.2 exo" ~ "exogenous MP",
+      Misspecification == "2.2 endo" ~ "endogenous MP",
+      Misspecification == "2.2 both" ~ "endo- & exogenous MP",
+      Misspecification == "3.1" ~ "positive CL",
+      Misspecification == "3.2" ~ "positive CR",
+      Misspecification == "3.1 negative" ~ "negative CL",
+      Misspecification == "3.2 negative" ~ "negative CR",
+      TRUE ~ Misspecification)
+  ) %>%
   kable("latex", booktabs = TRUE, longtable = TRUE, 
-        caption = "Summary of Warnings and Errors by Condition with ID for All Studies") %>%
+        caption = "Summary of Warnings and Errors by Condition with ID for All Studies",
+        align = c("l", "l", "l", "l", "l", "l", "c", "c")) %>%
   kable_styling(latex_options = c("repeat_header", "hold_position"), 
                 full_width = FALSE, 
                 font_size = 10,
                 position = "left") %>%
   column_spec(1, width = "1.5cm") %>%  # Study
-  column_spec(2, width = "2.5cm") %>%  # Model Type
+  column_spec(2, width = "4cm") %>%  # Model Type
   column_spec(3, width = "1cm") %>%    # N
   column_spec(4, width = "2cm") %>%    # reliability
   column_spec(5, width = "1.5cm") %>%  # method
-  column_spec(6, width = "2cm") %>%    # Message ID
-  column_spec(7, width = "1.5cm") %>%  # count
-  row_spec(0, bold = TRUE, align = "c") %>%
+  column_spec(6, width = "2cm") %>%    # message type
+  column_spec(7, width = "1cm") %>%  # count
+  column_spec(8, width = "0.5cm") %>%  # message ID
+  row_spec(0, bold = TRUE, align = "l") %>%  # Left-align header row
   footnote(general = "This table summarizes the count of warnings and errors for each condition in all three simulation studies with the respective ID number corresponding to Table 1.",
            general_title = "Note.",
            threeparttable = TRUE,
