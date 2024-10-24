@@ -119,9 +119,9 @@ The methodological setup of my individual simulation studies follows the structu
 
 # Discussion
 
-## Discussing the substantial results
+## Discussing the Results of the Simulations
 
-## Disucssing the Adversarial Collaboration
+## Evaluating the Adversarial Collaboration
 
 Idea: living simulations..
 
