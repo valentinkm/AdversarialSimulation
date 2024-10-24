@@ -4,11 +4,9 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
 There were no convergence issues for all SAM methods (gSAM, lSAM ML, and ULS) with a convergence rate of 100% and no improper solutions across all conditions, even in small samples with low reliability. Standard SEM demonstrated severe convergence issues, particularly in small samples with low to moderate reliability. The convergence rate was as low as 50%, with 50% of the solutions being improper, especially under the challenging condition of cross-loading misspecification (see Figure \ref{fig:convergence-study-1}). Convergence rates in study 2 were consistent with this, with 100% convergence rates for all SAM methods and as low as 60% for standard SEM with exogenous measurement misspecifications posing more challenges than endogenous misspecification (see Figure \ref{fig:convergence-study-2} in Appendix B).
-
 Next, the bias of the path coefficient estimates averaged across each model in absolute values showed that in small to medium sample sizes with low to moderate reliability, all SAM methods were closer to the true parameters than standard SEM. This difference was especially pronounced under omitted cross-loadings in the analysis model.
-Large sample sizes and high reliability conditions showed the least bias, with no differences observed between the methods (see \ref{fig:bias-aggregated-study1}). Further, among the different SAM methods, there was no difference between gSAM and lSAM-ML, while lSAM-ULS performed slightly worse.
+Large sample sizes and high reliability conditions showed the least bias, with no differences observed between the methods (see Figure \ref{fig:bias-aggregated-study1}). Further, among the different SAM methods, there was no difference between gSAM and lSAM-ML, while lSAM-ULS performed slightly worse.
 This pattern was consistent with the RMSE of the path coefficients for which SAM methods showed lower values than standard SEM in small to medium sample sizes with low to moderate reliability, also indicating higher overall accuracy for SAM methods in challenging conditions (see Figure \ref{fig:rmse-aggregated-study1}). In contrast to the bias, the RMSE showed that lSAM-ML performed better than gSAM and lSAM-ULS under cross-loading and structural misspecifications. However, SAM methods, even though outperforming standard SEM under omitted cross-loadings, still showed substantial deviations in this condition (with bias values between 69% and 77% of the true value for SAM-ML) and inaccuracy (with RMSE values between 86% and 277% of the true value for SAM-ML). Additionally, while an increase in sample size led to lower RMSE values for all methods, bias only decreased for standard SEM in larger samples, whereas SAM methods showed a slight increase in bias with larger samples with measurement misspecifications in low and moderate reliability.
-
 
 \blandscape
 ::: {fig-cr-s1}
@@ -32,3 +30,18 @@ print(fig_bias_aggregated_study1)
 :::
 \elandscape
 
+The pattern of results from study 1 was consistent with the findings of study 2 with some additional insights regarding the study specific conditions. Firstly, as in study 1 there were 100% convergence rate and rate of proper solutions for all SAM methods across all conditions, even in small samples with low reliability. Standard SEM in contrast showed severe convergence issues and frequent improper solutions in in small samples with low reliability with exogenous misspecifications being more challenging than endogenous misspecifications (see Figure \ref{fig:convergence-study-2}).
+
+The relative bias of the correctly specified path coefficient estimates averaged across each model in absolute values in study 2 showed again that in small to medium sample sizes with low to moderate reliability, all SAM estimations were on average closer to the true parameters than standard SEM. For bias this increased performance of SAM was present for all item reliability levels but only for gSAM and l-SAM with separate measurement blocks for each factor (b = 5). All methods performed worse for lower variance explained by the structural model in low and moderate reliability and measurement missepcifcations except SAM methods (with b = 5 and gSAM). The average relative RMSE values of the path coefficients paint a similar picture. Here too lower $R^2$ values were more challenging. Other than for the bias exogenous misspecifications were more challenging than endogenous misspecifications. Further, gSAM and lSAM-ML with five measurement block (here not ULS) produced notably lower RMSE values than standard SEM however only in small and medium samples with low item reliability present.
+As all population models included structural misspecifications in study 2 there was also a slight advantage visible in low sample size and low reliability without measurement misspecification, indicating that SAM methods are also more robust to the impact of falsely specified paths not present in the popultion on the estimation of the remaining correctly specified parameters.
+Figure \ref{fig:bias-misspecified-study2} shows the absolute bias of the parameters misspecified (excluded from the previous results to avoid distortion of relative metric values from parameters with a true value of 0) indicating that also such parameters are recovered more accurately by SAM methods than standard SEM but only if measurement misspecifications are present.
+
+::: {fig-relbias-aggregated-study2}
+```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean Average Relative Bias of Regression Parameters in Study 2\\label{fig:relbias-aggregated-study2}"}
+print(fig_relbias_aggregated_study2)
+```
+
+:::{fig-note}
+\raggedright \textit{Note.} Mean relative bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.
+:::
+:::
