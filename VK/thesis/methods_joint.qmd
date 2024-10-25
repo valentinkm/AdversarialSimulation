@@ -1,3 +1,25 @@
+---
+Title: "Thesis"
+author:
+  - name: Valentin Kriegmair
+    affiliations: "Humboldt-Universität zu Berlin"
+fig-cap-location: top
+format:
+    pdf:
+        fig-numbering: false
+        fontsize: 11pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes: |
+          \input{preamble.tex}
+fontsize: 11pt
+engine: knitr
+bibliography: ../bibliography.bib
+csl: ../apa.csl
+appendix: true
+---
 \setlength{\parindent}{1.27cm}
 After collaborating based on the individually conducted studies and the respective results, we did not jointly arrive at the conclusion that conducting a collaborative simulation study as planned was warrented. However I identified several reasons for setting up another simulation. Firstly, to test and evaluate the viability and technical fesability of AC for simulation studies, setting up a study based on the individual studies, their results and with Kosanke can provide valuable...
 
@@ -7,7 +29,10 @@ Following our framework for collaboration the research questions for the joint s
 
 #### Population Models and Data Generation Mechanisms
 
-As in study 1 and 2 data for study 3 was generated based on a 5-factor population structural model with 3 indicators for each factor. Factor loadings and indicator reliability was computed in the same way as in study 1. Two different population models were simulated that resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in Study 1. The omitted crossloadings (see figure 7) could either be all positive or negative and were set to be 10% lower in absolute values than the factor loadings. Correlated residuals were also either all positive or all negative and were set to not exceed a factor of 0.6 of the residual variances of the indicators.
+As in my individually conducted studies 1 and 2 (Collaborator A, Kriegmair) data for this *joint* study was generated based on a 5-factor population structural model with 3 indicators for each factor. 
+Factor loadings and indicator reliability was computed in the same way as in my first study. Two different population models were simulated that resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in my first study by adjusting the measurement error variances (instead of Kosanke's approach of factor loadings modulation) to achieve a more valid representation of item reliability as the amount of indicator variance explained by the latent factor.
+The omitted crossloadings (see Figure 4) could either be all positive or negative and were set to be 10% lower in absolute values than the factor loadings. Correlated residuals were also either all positive or all negative and were set to not exceed a factor of 0.6 of the residual variances of the indicators.
+Thus this represents a sufficiently complex model with directed structural paths of interest, as a prototypical scenario for which SAM promises to be advantagous and inclduing negative misspecified measurment parameters to test the robustness of SAM to such misspecifications. No CFA models, as in Kosanke's (Collaborator B) studies, were included as SAM is intended to be applied to models with a substantial directed structural part of interest in presence of misspecifications (@rosseel_structural_2022, @dhaene_evaluation_2023). Further
 
 ::: {#fig-combined-models3}
 ```{r, echo=FALSE}
@@ -18,21 +43,23 @@ knitr::include_graphics(c("figures/model3_1.tex",
                           "figures/model3_2.tex"))
 ```
 
-\raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. Unspecified crossloadings and correlated residuals could be either positive or negative resulting in 2 modulations of model 3.1 and 3.2 in the study.
+\raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. Unspecified crossloadings and correlated residuals could be either positive or negative resulting in two modulations of model 3.1 and 3.2 in the study.
 
 Population Model Variations for Study 3
 :::
 
 #### Experimental Design of simulation procedures
 
-The joint study varied three conditions: (1) sample sizes of very small ($N = 50$), small ($N = 100$) or moderate ($N = 400$). (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$) or high ($= 0.7$); (3) Model misspecifications with not-specified cross loadings in the population model that were positive or negative (see figure ) or not-specified correlated residuals in the population model that were postive or negative (see figure 8).
-
+The joint study varied three conditions: (1) sample sizes of very small ($N = 50$), small ($N = 100$), moderate ($N = 400$) and large ($N = 6400$). (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$) or high ($= 0.7$); (3) Model misspecifications with not-specified cross loadings in the population model that were positive or negative (see figure ) or not-specified correlated residuals in the population model that were postive or negative (see Figure 4). Thus negative misspecifications werer here included in a more complex model with directed structural paths of interest, modulating reliability as before but with a more comprehensive (lower) range of sample sizes as in my studies. 
 
 #### Method Selection
 
-To address the question ... 
+Four estimation methods were compared in this study: bound SEM-ML (with factor and residual variances constrained to be positive), unbdound SEM-ML, gSAM (also with ML estimation of the structural model) and lSAM-ML. The choice of thee methods was based on the results of the individual studies to (1) observe the effect of constraining the analysis model for standard SEM, (2) directly compare this to unbound standard SEM estimation and the SAM methods. To limit the computational SAM-ULS was not included as it is taiolred to provide robust estimates in conditions of non-normal data distribution which were not simulated in this study and it was, based on our previous results, not expected to outperform SAM-ML in this study.
 
 #### Performance Measures
+
+The bias and RMSE of the estimated factor correlations were calculated as in the individual studies and averaged (using absolute values) over all parameters in one model for each condition. Further, to better investigate a potential negative bias that Kosanke (based on @robitzsch_comparing_2022) was assuming for SAM in presence of negative measurement misspecifications, bias values were analysed parameterwise to investigate negative bias values without the cancellation due to averaging.
+
 
 #### Software
 
