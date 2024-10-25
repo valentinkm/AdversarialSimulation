@@ -57,7 +57,7 @@ unbound_model_syntax <- "
 "
 
 bound_model_syntax <- "
-  # Structural 
+  # Measurement 
   f1 =~ y1 + y2 + y3
   f2 =~ y4 + y5 + y6
   f3 =~ y7 + y8 + y9
@@ -77,7 +77,7 @@ bound_model_syntax <- "
   v_f4 > 0.01
   v_f5 > 0.01
   
-  # Measurement 
+  # Structural 
   f3 ~ f1 + f2 + f4
   f4 ~ f1 + f2
   f5 ~ f3 + f4 + f1
