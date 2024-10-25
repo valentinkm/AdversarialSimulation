@@ -249,10 +249,10 @@ plot_data_aggregated_study1 <- aggr_summary_study_1 %>%
     reliability = factor(paste("r =", reliability), levels = paste("r =", c(0.3, 0.5, 0.7)))
   )
 
-# Prepare data for study 2 parameterwise bias plot:
+# Prepare data for study 2 misspec bias plot:
 misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
 plot_data_study_2 <- param_summary_study_2 %>%
-  filter(R_squared == 0.4, b == 3) %>% 
+  #filter(R_squared == 0.4, b == 3) %>% 
   select(N, reliability, method, parameter, Bias, model_type, RMSE) %>%
   mutate(
     N = factor(N, levels = c(100, 400, 6400)),
@@ -324,11 +324,12 @@ full_data_paramwise <- full_data_paramwise %>%
     Bias_plot = ifelse(ConvergenceRateFlag == TRUE | is.na(Bias), NA, Bias),
     RMSE_plot = ifelse(ConvergenceRateFlag == TRUE | is.na(RMSE), NA, RMSE)
   )
+
 # Prepare data for aggregated bias and RMSE plots study 3:
 plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
   select(
     model_type, N, reliability, method, mean_Bias, mean_RMSE,
-    mean_RelativeBias, mean_MCSE_RelativeBias, mean_MCSE_RelativeRMSE
+    mean_RelativeBias, mean_MCSE_Bias, mean_MCSE_RMSE
   ) %>%
   mutate(
     N = factor(N, levels = c(50, 100, 400, 6400)),
@@ -360,7 +361,7 @@ full_grid$model_type <- factor(full_grid$model_type, levels = c("positive CL", "
 full_grid$method <- factor(full_grid$method, levels = levels(plot_data_aggregated_study3$method))
 
 # Merge data and convergence rate
-full_data <- full_grid %>%
+full_data_study3 <- full_grid %>%
   left_join(plot_data_aggregated_study3, by = c("model_type", "N", "reliability", "method")) %>%
   left_join(conv_rate3, by = c("model_type", "N", "reliability", "method")) %>%
   mutate(
@@ -368,7 +369,7 @@ full_data <- full_grid %>%
   )
 
 # Set mean_Bias_plot and mean_RMSE_plot
-full_data <- full_data %>%
+full_data_study3<- full_data_study3%>%
   mutate(
     mean_Bias_plot = ifelse(ConvergenceRateFlag == TRUE | is.na(mean_Bias), NA, mean_Bias),
     mean_RMSE_plot = ifelse(ConvergenceRateFlag == TRUE | is.na(mean_RMSE), NA, mean_RMSE)
@@ -527,45 +528,122 @@ fig_relbias_parameterwise_study2 <- data_plot2 %>%
 ```
 
 ```{r, include=FALSE}
-data_plot2 <- plot_data_study_2 %>%
-  filter(parameter %in% misspecified_paths)
+# Prepare base data with consistent structure
+plot_data_study_2 <- param_summary_study_2 %>%
+  select(N, reliability, method, parameter, Bias, MCSE_Bias, model_type, RMSE, R_squared, b) %>%
+  mutate(
+    N = factor(N, levels = c(100, 400, 6400)),
+    reliability = factor(reliability, levels = c(0.3, 0.5, 0.7)),
+    method = gsub("_", "-", method),
+    model_type = case_when(
+      model_type == "2.1" ~ "no measurement MP",
+      model_type == "2.2_exo" ~ "exogenous MP",
+      model_type == "2.2_endo" ~ "endogenous MP",
+      model_type == "2.2_both" ~ "endo- & exogenous MP",
+      TRUE ~ model_type
+    ),
+    model_type = factor(model_type, 
+                        levels = c("no measurement MP", "exogenous MP", 
+                                   "endogenous MP", "endo- & exogenous MP"))
+  ) %>%
+  # Filter based on method-specific conditions
+  filter(
+    !(method == "gSAM" & b == 3),  # Remove b=3 for gSAM
+    !(method == "SEM" & b != 3)     # Keep only one b value for SEM
+  )
 
-fig_bias_misspecified_study2 <- data_plot2 %>%
-  ggplot(aes(x = N, y = parameter)) +
-  geom_tile(aes(fill = Bias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", Bias)), size = 2.5, show.legend = FALSE) +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
-                       limits = c(-0.5, 0.5), 
-                       oob = scales::squish) +
-  ggh4x::facet_nested(model_type + reliability ~ method, scales = "free", space = "free", switch="y") +
+# Filter and aggregate misspecified paths
+misspecified_paths <- c("f3~f1", "f4~f3", "f3~f2")
+aggregated_misspec_bias <- plot_data_study_2 %>%
+  filter(parameter %in% misspecified_paths) %>%
+  group_by(model_type, N, reliability, method, R_squared, b) %>%
+  summarize(
+    mean_abs_misspec_bias = mean(abs(Bias), na.rm = TRUE),
+    mean_mcse = mean(MCSE_Bias, na.rm = TRUE),
+    relative_mcse = (mean_mcse / mean_abs_misspec_bias) * 100,
+    mcse_flag = relative_mcse > 10,
+    .groups = 'drop'
+  ) %>%
+  mutate(
+    reliability_label = factor(paste0("r==", reliability)),
+    R_squared_label = factor(paste0("R^2==", R_squared)),
+    # Create b_label only for non-SEM methods
+    b_label = case_when(
+      method == "SEM" ~ "",
+      TRUE ~ paste0("b==", b)
+    ),
+    # Create label with just asterisk for high MCSE cases
+    display_label = sprintf("%.2f%s", 
+                            mean_abs_misspec_bias,
+                            ifelse(mcse_flag, "*", ""))
+  )
+
+# Calculate overall MCSE range for flagged cases
+mcse_range <- plot_data_study_2 %>%
+  filter(parameter %in% misspecified_paths) %>%
+  left_join(
+    aggregated_misspec_bias %>% 
+      select(model_type, N, reliability, method, R_squared, b, mcse_flag),
+    by = c("model_type", "N", "reliability", "method", "R_squared", "b")
+  ) %>%
+  filter(mcse_flag) %>%
+  summarize(
+    min_mcse = min(MCSE_Bias, na.rm = TRUE),
+    max_mcse = max(MCSE_Bias, na.rm = TRUE)
+  )
+
+# Create visualization with method-specific faceting
+fig_bias_aggregated_misspec_study2 <- aggregated_misspec_bias %>%
+  ggplot(aes(x = N, y = model_type)) +
+  geom_tile(aes(fill = mean_abs_misspec_bias), color = "white") +
+  geom_text(aes(label = display_label), 
+            size = 2.5, 
+            color = "black") +
+  scale_fill_gradient(
+    low = "white",
+    high = "red",
+    limits = c(0, 0.5),
+    oob = scales::squish
+  ) +
+  ggh4x::facet_nested(
+    reliability_label ~ method + b_label + R_squared_label,
+    scales = "free",
+    space = "free",
+    switch = "y",
+    labeller = labeller(
+      reliability_label = label_parsed,
+      R_squared_label = label_parsed,
+      b_label = label_parsed
+    )
+  ) +
   theme_bw() +
   theme(
-    text = element_text(size = 10),
-    axis.text.x = element_text(size = 10),
-    axis.text.y = element_text(size = 6),
-    legend.position = "none", 
-    legend.title = element_text(size = 8),
-    legend.text = element_text(size = 8),
+    text = element_text(size = 8),
+    axis.text.x = element_text(size = 7, angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 7),
+    legend.position = "none",
     strip.text.y = element_text(size = 7),
-    strip.text.x = element_text(size = 12),
-    legend.key.width = unit(1.4, "cm"),
-    panel.grid = element_line(linewidth = 0.01, color = "gray98"),
+    strip.text.x = element_text(size = 7),
+    panel.grid = element_blank(),
     axis.title.x = element_blank(),
     axis.title.y = element_blank()
   ) +
-  guides(fill = guide_colorbar(title.position = "top", title.hjust = 0.5, barheight = 7, barwidth = 0.5, direction = "vertical")) +
   labs(
-    x = "\n Sample Size",
-    y = "Parameter \n",
-    fill = "Bias"
+    x = "Sample Size",
+    y = "Model Type",
+    fill = "Mean |Bias|",
+    caption = sprintf("(MCSE range: %.3f-%.3f)", 
+                      mcse_range$min_mcse, mcse_range$max_mcse)
   ) +
-  scale_y_discrete(expand = c(0,0), position = "right") +
-  scale_x_discrete(expand = c(0,0))
+  scale_y_discrete(expand = c(0, 0), position = "right") +
+  scale_x_discrete(expand = c(0, 0))
 ```
 
 ```{r, include=FALSE}
+# Prepare data with labels for both RelativeBias and RelativeRMSE
 plot_data_aggregated_study2 <- aggr_summary_study_2 %>%
-  select(model_type, N, reliability, method, R_squared, b, mean_RelativeBias, mean_RelativeRMSE, mean_MCSE_RelativeBias, mean_MCSE_RelativeRMSE) %>%
+  select(model_type, N, reliability, method, R_squared, b, mean_RelativeBias, mean_RelativeRMSE, 
+         mean_MCSE_RelativeBias, mean_MCSE_RelativeRMSE) %>%
   mutate(
     N = factor(N, levels = c(100, 400, 6400)),
     reliability_label = factor(paste0("r==", reliability)),
@@ -582,17 +660,28 @@ plot_data_aggregated_study2 <- aggr_summary_study_2 %>%
       method == "lSAM_ML" ~ "lSAM-ML",
       method == "lSAM_ULS" ~ "lSAM-ULS",
       TRUE ~ method
-    )
+    ),
+    # Add asterisk for RelativeBias if MCSE is > 10% of estimate
+    label_bias = ifelse(abs(mean_MCSE_RelativeBias) > abs(0.1 * mean_RelativeBias),
+                       sprintf("%.2f*", mean_RelativeBias),
+                       sprintf("%.2f", mean_RelativeBias)),
+    # Add asterisk for RelativeRMSE if MCSE is > 10% of estimate
+    label_rmse = ifelse(abs(mean_MCSE_RelativeRMSE) > abs(0.1 * mean_RelativeRMSE),
+                       sprintf("%.2f*", mean_RelativeRMSE),
+                       sprintf("%.2f", mean_RelativeRMSE))
   )
 
+# Calculate MCSE ranges
+mcse_bias_range <- range(aggr_summary_study_2$mean_MCSE_RelativeBias, na.rm = TRUE)
+mcse_rmse_range <- range(aggr_summary_study_2$mean_MCSE_RelativeRMSE, na.rm = TRUE)
 
-
+# RelativeBias Plot
 fig_relbias_aggregated_study2 <- plot_data_aggregated_study2 %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_RelativeBias), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", mean_RelativeBias)), size = 2.5, color = "black") +
+  geom_text(aes(label = label_bias), size = 2.5, color = "black") +
   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
-                       limits = c(0, 2), oob = scales::squish) +
+                      limits = c(0, 2), oob = scales::squish) +
   ggh4x::facet_nested(
     reliability_label ~ method + b_label + R_squared_label, 
     scales = "free", 
@@ -618,18 +707,19 @@ fig_relbias_aggregated_study2 <- plot_data_aggregated_study2 %>%
   labs(
     x = "Sample Size",
     y = "Model Type",
-    fill = "Mean Bias"
+    fill = "Mean Bias",
+    caption = sprintf("(MCSE range: %.3f-%.3f)", mcse_bias_range[1], mcse_bias_range[2])
   ) +
   scale_y_discrete(expand = c(0, 0), position = "right") +
   scale_x_discrete(expand = c(0, 0))
 
-
+# RelativeRMSE Plot
 fig_relrmse_aggregated_study2 <- plot_data_aggregated_study2 %>%
   ggplot(aes(x = N, y = model_type)) +
   geom_tile(aes(fill = mean_RelativeRMSE), color = "white") +
-  geom_text(aes(label = sprintf("%.2f", mean_RelativeRMSE)), size = 2.5, color = "black") +
+  geom_text(aes(label = label_rmse), size = 2.5, color = "black") +
   scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, 
-                       limits = c(0, 2), oob = scales::squish) +
+                      limits = c(0, 2), oob = scales::squish) +
   ggh4x::facet_nested(
     reliability_label ~ method + b_label + R_squared_label, 
     scales = "free", 
@@ -655,7 +745,8 @@ fig_relrmse_aggregated_study2 <- plot_data_aggregated_study2 %>%
   labs(
     x = "Sample Size",
     y = "Model Type",
-    fill = "Mean Bias"
+    fill = "Mean RMSE",
+    caption = sprintf("(MCSE range: %.3f-%.3f)", mcse_rmse_range[1], mcse_rmse_range[2])
   ) +
   scale_y_discrete(expand = c(0, 0), position = "right") +
   scale_x_discrete(expand = c(0, 0))
@@ -757,12 +848,14 @@ fig_rmse_parameterwise_study3 <- data_plot %>%
 
 ```{r, include=FALSE}
 # Plotting code for aggregated bias plot:
-fig_bias_aggregated_study3 <- full_data %>%
+fig_bias_aggregated_study3 <- full_data_study3 %>%
   ggplot(aes(x = N, y = model_type, fill = mean_Bias_plot)) +
   geom_tile(color = "white") +
+  # Add mean values and MCSE
   geom_text(
-    data = full_data %>% filter(ConvergenceRateFlag == FALSE & !is.na(mean_Bias)),
-    aes(label = sprintf("%.2f", mean_Bias)),
+    data = full_data_study3 %>% 
+      filter(ConvergenceRateFlag == FALSE & !is.na(mean_Bias)),
+    aes(label = sprintf("%.2f\n(%.3f)", mean_Bias, mean_MCSE_Bias)),
     size = 2.5,
     color = "black"
   ) +
@@ -799,12 +892,14 @@ fig_bias_aggregated_study3 <- full_data %>%
   scale_x_discrete(expand = c(0, 0))
 
 # Plotting code for aggregated RMSE plot:
-fig_rmse_aggregated_study3 <- full_data %>%
+fig_rmse_aggregated_study3 <- full_data_study3 %>%
   ggplot(aes(x = N, y = model_type, fill = mean_RMSE_plot)) +
   geom_tile(color = "white") +
+  # Add mean values and MCSE
   geom_text(
-    data = full_data %>% filter(ConvergenceRateFlag == FALSE & !is.na(mean_RMSE)),
-    aes(label = sprintf("%.2f", mean_RMSE)),
+    data = full_data_study3 %>% 
+      filter(ConvergenceRateFlag == FALSE & !is.na(mean_RMSE)),
+    aes(label = sprintf("%.2f\n(%.3f)", mean_RMSE, mean_MCSE_RMSE)),
     size = 2.5,
     color = "black"
   ) +
@@ -839,6 +934,5 @@ fig_rmse_aggregated_study3 <- full_data %>%
   ) +
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
-
 
 ```

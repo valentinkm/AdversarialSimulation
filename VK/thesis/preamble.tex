@@ -17,6 +17,13 @@
 \usepackage{longtable}
 \usepackage{etoolbox}
 \usepackage{threeparttable}
+\usepackage{fancyhdr}
+
+% pages numbering
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
 
 % APA-style Figure and Table Captions
 \DeclareCaptionFormat{APAfigure}{\raggedright\textbf{Figure~\thefigure}\\[1.5\baselineskip]\textit{#3}}
