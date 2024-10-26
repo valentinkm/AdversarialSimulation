@@ -8,6 +8,7 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 library(ggh4x)
+library(patchwork)
 
 # Read the convergence rate results
 conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
@@ -935,4 +936,114 @@ fig_rmse_aggregated_study3 <- full_data_study3 %>%
   scale_y_discrete(expand = c(0,0), position = "right") +
   scale_x_discrete(expand = c(0,0))
 
+```
+
+```{r, include=FALSE}
+# Function to analyze differences between bounded SEM and SAM methods
+analyze_differences <- function(data) {
+  # Process data
+  processed_data <- data %>%
+    mutate(
+      N = factor(paste("N =", N), levels = paste("N =", c(50, 100, 400, 6400))),
+      reliability = factor(paste("r =", reliability), 
+                           levels = paste("r =", c(0.3, 0.5, 0.7))),
+      method = gsub("_", "-", method),
+      model_type = case_when(
+        model_type == "3.1" ~ "Cross Loadings positive",
+        model_type == "3.2" ~ "Correlated Residuals positive",
+        model_type == "3.1_negative" ~ "Cross Loadings negative",
+        model_type == "3.2_negative" ~ "Correlated Residuals negative",
+        TRUE ~ model_type
+      )
+    )
+  
+  # Get reference values for bounded SEM for both metrics
+  sem_ref <- processed_data %>%
+    filter(method == "SEM-bound") %>%
+    select(model_type, N, reliability, mean_Bias, mean_RMSE) %>%
+    rename(sem_bound_bias = mean_Bias,
+           sem_bound_rmse = mean_RMSE)
+  
+  # Calculate differences for SAM methods
+  differences <- processed_data %>%
+    filter(method %in% c("gSAM", "lSAM-ML")) %>%
+    left_join(sem_ref, by = c("model_type", "N", "reliability")) %>%
+    mutate(
+      bias_diff = mean_Bias - sem_bound_bias,
+      rmse_diff = mean_RMSE - sem_bound_rmse
+    )
+  
+  return(differences)
+}
+
+differences <- analyze_differences(aggr_summary_study_3)
+
+# theme
+common_theme <- theme_classic() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    legend.position = "top",
+    strip.text = element_text(size = 10),
+    panel.background = element_rect(fill = "white"),
+    plot.background = element_rect(fill = "white"),
+    strip.background = element_blank(),
+    panel.border = element_blank()
+  )
+
+# bias plot
+p_bias <- ggplot(differences, 
+                 aes(x = interaction(N, reliability, sep = "\n"), 
+                     y = bias_diff,
+                     fill = method)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = bias_diff - mean_MCSE_Bias, 
+                    ymax = bias_diff + mean_MCSE_Bias),
+                position = position_dodge(width = 0.8),
+                width = 0.2) +
+  scale_fill_brewer(palette = "Set2") +
+  common_theme +
+  labs(
+    x = "",
+    y = "Bias Difference (SAM - SEM-bound)",
+    fill = "Method"
+  ) +
+  facet_wrap(~model_type, scales = "free_x") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40")
+
+# RMSE plot
+p_rmse <- ggplot(differences, 
+                 aes(x = interaction(N, reliability, sep = "\n"), 
+                     y = rmse_diff,
+                     fill = method)) +
+  geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+  geom_errorbar(aes(ymin = rmse_diff - mean_MCSE_RMSE, 
+                    ymax = rmse_diff + mean_MCSE_RMSE),
+                position = position_dodge(width = 0.8),
+                width = 0.2) +
+  scale_fill_brewer(palette = "Set2") +
+  common_theme +
+  labs(
+    x = "",
+    y = "RMSE Difference (SAM - SEM-bound)",
+    fill = "Method"
+  ) +
+  facet_wrap(~model_type, scales = "free_x") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40")
+
+# Combine plots vertically
+fig_sam_sem_diff_study3 <- p_bias / p_rmse + 
+  plot_layout(guides = "collect") &
+  theme(legend.position = "top")
+
+
+summary_stats <- differences %>%
+  group_by(model_type, method) %>%
+  summarize(
+    mean_bias_diff = mean(bias_diff),
+    mean_rmse_diff = mean(rmse_diff),
+    bias_beyond_threshold = sum(abs(bias_diff) > 0.01),
+    total_conditions = n(),
+    .groups = "drop"
+  ) %>%
+  arrange(model_type, mean_bias_diff)
 ```
