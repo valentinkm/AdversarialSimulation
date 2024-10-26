@@ -9,7 +9,7 @@ library(dplyr)
 library(tidyr)
 library(ggh4x)
 library(patchwork)
-#library(scales)
+library(scales)
 
 
 
@@ -951,6 +951,7 @@ fig_rmse_aggregated_study3 <- full_data_study3 %>%
 ```
 
 ```{r, include=FALSE}
+
 # Function to analyze differences between bounded SEM and SAM methods
 analyze_differences <- function(data) {
   # Process data
@@ -1002,7 +1003,15 @@ common_theme <- theme_classic() +
     panel.border = element_blank()
   )
 
-# bias plot
+# Define the signed square root transformation
+sign_sqrt_trans <- function() {
+  trans_new("sign_sqrt",
+            transform = function(x) sign(x) * sqrt(abs(x)),
+            inverse = function(x) sign(x) * x^2,
+            domain = c(-Inf, Inf))
+}
+
+# Modify the bias plot
 p_bias <- ggplot(differences, 
                  aes(x = interaction(N, reliability, sep = "\n"), 
                      y = bias_diff,
@@ -1020,9 +1029,10 @@ p_bias <- ggplot(differences,
     fill = "Method"
   ) +
   facet_wrap(~model_type, scales = "free_x") +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40")
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
+  scale_y_continuous(trans = sign_sqrt_trans())
 
-# RMSE plot
+# Modify the RMSE plot
 p_rmse <- ggplot(differences, 
                  aes(x = interaction(N, reliability, sep = "\n"), 
                      y = rmse_diff,
@@ -1040,11 +1050,16 @@ p_rmse <- ggplot(differences,
     fill = "Method"
   ) +
   facet_wrap(~model_type, scales = "free_x") +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40")
+  geom_hline(yintercept = 0, linetype = "dashed", color = "gray40") +
+  scale_y_continuous(trans = sign_sqrt_trans())
 
 # Combine plots vertically
 fig_sam_sem_diff_study3 <- p_bias / p_rmse + 
   plot_layout(guides = "collect") &
   theme(legend.position = "top")
+
+# Display the combined plot
+print(fig_sam_sem_diff_study3)
+
 
 ```
