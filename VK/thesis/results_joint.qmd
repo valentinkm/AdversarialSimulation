@@ -5,6 +5,8 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 The joint study showed that using bound maximum likelihood estimation for standard SEM as proposed by Kosanke did infact eliminate the convergence issues convergence rate as well as improper solutions issues in all conditions. Next a parameterwise comparison of the bias of the path coeffecient estimates averaged across each model in absolute values showed... (see Figure \ref{fig:bias-parameterwise-study3}). The RMSE of the path coeffecients showd a similar pattern as the bias with... (see Figurefig:rmse-parameterwise-study3). Aggregating the metrics across all parameters in one model showed that... (see Figure \ref{fig:bias-aggregated-study3} and Figure \ref{fig:rmse-aggregated-study3}).
 
+There was little to no difference between gSAM and lSAM with lSAM being very slightly less biased in most conditions.
+
 \blandscape
 ::: {fig-cr-s3}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Convergence Rate and Rate of Proper Solutions in Study 3\\label{fig:convergence-study-3}"}
@@ -25,6 +27,18 @@ print(fig_bias_parameterwise_study3)
 \raggedright \textit{Note.} Mean absolute bias for each parameter with true value of 0.1 in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.
 :::
 :::
+
+
+::: {fig-sam-sem-diff-study3}
+```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean RMSE of Regression Parameters in Study 3\\label{fig:sam-sem-diff-study3}"}
+fig_sam_sem_diff_study3
+```
+
+:::{fig-note}
+\raggedright \textit{Note.} Bias (top) and RMSE (bottom) differences between SAM methods and SEM-bound for Cross Loadings and Correlated Residuals models across sample sizes (N) and reliabilities (r). Error bars indicate Monte Carlo standard errors.
+:::
+:::
+
 
 ::: {fig-bias-aggregated-study3}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Aggregated Bias of Regression Parameters in Study 3\\label{fig:bias-aggregated-study3}"}
