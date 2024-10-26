@@ -80,7 +80,7 @@ For both studies convergence rates were tracked via lavaan's built-in function t
 
 #### Software
 
-All analyses were conducted in @r_core_team_r_2023. Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications. For further details and a complete list of libraries and dependencies, visit <https://github.com/valentinkm/AdversarialSimulation>.
+All analyses were conducted in R (version 4.4) (@r_core_team_r_2023). Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications and the simulations were dockerized. Further details and a complete list of libraries and dependencies, are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation)
 
 #### Analysis and Interpretation plan
 
