@@ -9,6 +9,9 @@ library(dplyr)
 library(tidyr)
 library(ggh4x)
 library(patchwork)
+#library(scales)
+
+
 
 # Read the convergence rate results
 conv_rate_study_1 <- readRDS("../simulation/results/convergence_rate1.rds")
@@ -211,6 +214,7 @@ aggr_summary_study_2 <- readRDS("../simulation/results/aggregated_summary_study2
 param_summary_study_3 <- readRDS("../simulation/results/parameter_wise_summary_study3.rds")
 aggr_summary_study_3 <- readRDS("../simulation/results/aggregated_summary_study3.rds")
 
+
 # Prepare data for study 1 parameterwise bias plot:
 plot_data_study_1 <- param_summary_study_1 %>%
   select(N, reliability, method, parameter, Bias, model_type, RMSE) %>%
@@ -275,6 +279,14 @@ plot_data_study_2 <- param_summary_study_2 %>%
 
 
 # Prepare data for study 3 parameterwise bias plot:
+
+# rename lSAM
+aggr_summary_study_3 <- aggr_summary_study_3 %>%
+  mutate(method = case_when(
+    method == "lSAM_ML" ~ "lSAM",
+    TRUE ~ method
+  ))
+
 plot_data_study_3 <- param_summary_study_3 %>%
   select(N, reliability, method, parameter, Bias, model_type, RMSE) %>%
   mutate(
@@ -964,13 +976,13 @@ analyze_differences <- function(data) {
     rename(sem_bound_bias = mean_Bias,
            sem_bound_rmse = mean_RMSE)
   
-  # Calculate differences for SAM methods
+  # Calculate differences for SAM methods (SEM - SAM)
   differences <- processed_data %>%
-    filter(method %in% c("gSAM", "lSAM-ML")) %>%
+    filter(method %in% c("gSAM", "lSAM")) %>%
     left_join(sem_ref, by = c("model_type", "N", "reliability")) %>%
     mutate(
-      bias_diff = mean_Bias - sem_bound_bias,
-      rmse_diff = mean_RMSE - sem_bound_rmse
+      bias_diff = sem_bound_bias - mean_Bias,
+      rmse_diff = sem_bound_rmse - mean_RMSE
     )
   
   return(differences)
@@ -981,7 +993,7 @@ differences <- analyze_differences(aggr_summary_study_3)
 # theme
 common_theme <- theme_classic() +
   theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    axis.text.x = element_text(angle = 0, hjust = 0.5, size = 8),  # Reduced text size here
     legend.position = "top",
     strip.text = element_text(size = 10),
     panel.background = element_rect(fill = "white"),
@@ -1004,7 +1016,7 @@ p_bias <- ggplot(differences,
   common_theme +
   labs(
     x = "",
-    y = "Bias Difference (SAM - SEM-bound)",
+    y = "Bias (SEM - SAM)",
     fill = "Method"
   ) +
   facet_wrap(~model_type, scales = "free_x") +
@@ -1024,7 +1036,7 @@ p_rmse <- ggplot(differences,
   common_theme +
   labs(
     x = "",
-    y = "RMSE Difference (SAM - SEM-bound)",
+    y = "RMSE (SEM - SAM)",
     fill = "Method"
   ) +
   facet_wrap(~model_type, scales = "free_x") +
@@ -1035,15 +1047,4 @@ fig_sam_sem_diff_study3 <- p_bias / p_rmse +
   plot_layout(guides = "collect") &
   theme(legend.position = "top")
 
-
-summary_stats <- differences %>%
-  group_by(model_type, method) %>%
-  summarize(
-    mean_bias_diff = mean(bias_diff),
-    mean_rmse_diff = mean(rmse_diff),
-    bias_beyond_threshold = sum(abs(bias_diff) > 0.01),
-    total_conditions = n(),
-    .groups = "drop"
-  ) %>%
-  arrange(model_type, mean_bias_diff)
 ```

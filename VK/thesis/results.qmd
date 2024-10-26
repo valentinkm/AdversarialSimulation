@@ -37,6 +37,7 @@ Further, in study 2 the relative bias (to account for modulated path coefficient
 As all population models included structural misspecifications in study 2, there was also a slight advantage visible in low sample size and low reliability without measurement misspecification, indicating that SAM methods are also more robust to the impact of falsely specified paths not present in the population on the estimation of the remaining correctly specified parameters.
 Figure \ref{fig:bias-misspecified-study2} shows the absolute bias of the parameters misspecified (excluded from the results presented above to avoid distortion of relative metric values by parameters with a true value of 0), indicating that also such parameters are recovered more accurately by SAM methods than standard SEM but only if measurement misspecifications are present.
 
+\blandscape
 ::: {fig-relbias-aggregated-study2}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean Average Relative Bias of Regression Parameters in Study 2\\label{fig:relbias-aggregated-study2}"}
 print(fig_relbias_aggregated_study2)
@@ -46,5 +47,6 @@ print(fig_relbias_aggregated_study2)
 \raggedright \textit{Note.} Mean relative bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.
 :::
 :::
+\elandscape
 
 Overall, the results indicate that SAM methods (gSAM, lSAM-ML, and lSAM-ULS) outperformed standard SEM under challenging conditions. SAM methods achieved a 100% convergence rate with no improper solutions, even in small samples with low reliability, whereas standard SEM exhibited severe convergence issues and high rates of improper solutions, particularly with cross-loading misspecification. SAM methods provided less biased and more accurate path coefficient estimates, especially in small to medium samples with low to moderate reliability and measurement misspecifications like omitted cross-loadings. Among the SAM variants, gSAM and lSAM-ML generally performed better than lSAM-ULS, with lSAM-ML showing superior accuracy under cross-loading and structural misspecifications. Further, separate compared to joint measurement models in lSAM for latent variables was advantageous. Additionally, SAM methods in Study 2 were more robust to structural misspecifications, providing more accurate estimates of correctly specified parameters even when incorrect paths were included in the model.
