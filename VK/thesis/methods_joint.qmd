@@ -1,5 +1,4 @@
 \setlength{\parindent}{1.27cm}
-After collaborating based on the individually conducted studies and the respective results, we did not jointly arrive at the conclusion that conducting a collaborative simulation study as planned was warranted. However, I identified several reasons for setting up another simulation. Firstly, to test and evaluate the viability and technical feasibility of AC for simulation studies, setting up a study based on individual studies and their results with Kosanke can provide valuable information.
 
 #### Aims, objectives and research questions
 
@@ -16,7 +15,7 @@ Thus, this represents a sufficiently complex model with directed structural path
 ```{r, echo=FALSE}
 #| layout: "[[1,1]]"
 #| out.width: "100%"
-#| out.height: "100%"
+#| out.height: "80%"
 knitr::include_graphics(c("figures/model3_1.tex", 
                           "figures/model3_2.tex"))
 ```
@@ -42,6 +41,6 @@ The bias and RMSE of the estimated factor correlations were calculated as in the
 
 As in the individual studies by both collaborators, the simulation was conducted in R version 4.4 (@r_core_team_r_2023). The same (parallelizable and dockerized) setup as in my studies was used with a pre-generated set of seeds for reproducibility. The simulation scripts are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation).
 
-#### Analysis and Interpretation Plan
+#### Analysis and Interpretation
 
 The analysis was conducted largely in the same way as in the individual studies with the adddition of a display of parameter-wise bias values and a  direct difference between metrics of SEM and SAM.
