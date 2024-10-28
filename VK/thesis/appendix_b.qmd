@@ -3,6 +3,17 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE, fig.show =
 ```
 
 \blandscape
+::: {fig-cr-s3}
+```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Convergence Rate and Rate of Proper Solutions in Study 3\\label{fig:convergence-study-3}"}
+fig_conv_rate_study3
+```
+
+::: {fig-note}
+\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (*N*), reliability (*r*), and model misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
+:::
+:::
+
+
 ::: {fig-rmse-aggregated-study1}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean Average Root Mean Squared Error (RMSE) of Regression Parameters in Study 1\\label{fig:rmse-aggregated-study1}"}
 print(fig_rmse_aggregated_study1)
@@ -55,28 +66,6 @@ print(fig_bias_aggregated_misspec_study2)
 :::{fig-note}
 \fontsize{10}{12}\selectfont
 \raggedright \textit{Note.} Mean bias of parameters absent in the population and misspecified in the analysis model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. * indicating Monte-Carlos Standard Error (MCSE) above 10% of the estimate.
-:::
-:::
-
-::: {fig-bias-aggregated-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean Bias of Regression Parameters in Study 3\\label{fig:bias-aggregated-study3}"}
-print(fig_bias_aggregated_study3)
-```
-
-:::{fig-note}
-\fontsize{10}{12}\selectfont
-\raggedright \textit{Note.} Mean absolute bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Monte-Carlos Standard Errors (MCSE) in parentheses for each estimate.
-:::
-:::
-
-::: {fig-rmse-aggregated-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean RMSE of Regression Parameters in Study 3\\label{fig:rmse-aggregated-study3}"}
-print(fig_rmse_aggregated_study3)
-```
-
-:::{fig-note}
-\fontsize{10}{12}\selectfont
-\raggedright \textit{Note.} Mean RMSE averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Monte-Carlos Standard Errors (MCSE) in parentheses for each estimate.
 :::
 :::
 \elandscape
