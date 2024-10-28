@@ -73,13 +73,13 @@ Work in progress, just a placeholder for now: Karl Popper once described science
 
 ## Adversarial Collaboration
 
-To address these challenges of entrenched disagreements, the practice of adversarial collaboration has been proposed to unveil discrepancies in underlying methodological decisions and assumptions. It was famously pioneered by Ralph Hertwig and Daniel Kahneman, who tried to settle a persistent scientific disagreement about frequency representation and consulted Barbara Mellers as a neutral arbiter. Today, it is recognized as a potent tool in the social empirical research community. The basic idea is for two researchers in disagreement to first identify a general verbal dispute and agree on a research question to settle the debate. Based on this, they collaboratively work on operationalizing, testing, and interpreting this verbal claim. This process aims to unveil and concretize underlying disagreements and thus reduce ambiguity and increase generalizability. In this project, we aimed to transfer the concept of adversarial collaboration from the empirical domain to Monte Carlo simulation studies and assess its feasibility and viability in a case study in this context. To conduct such an exemplary adversarial collaboration, we first need a framework that structures the collaborative process tailored to the outline of simulation studies. 
+To address these challenges of entrenched disagreements, the practice of AC has been proposed to unveil discrepancies in underlying methodological decisions and assumptions. It was famously pioneered by Ralph Hertwig and Daniel Kahneman, who tried to settle a persistent scientific disagreement about frequency representation and consulted Barbara Mellers as a neutral arbiter. Today, it is recognized as a potent tool in the social empirical research community. The basic idea is for two researchers in disagreement to first identify a general verbal dispute and agree on a research question to settle the debate. Based on this, they collaboratively work on operationalizing, testing, and interpreting this verbal claim. This process aims to unveil and concretize underlying disagreements and thus reduce ambiguity and increase generalizability. In this project, we aimed to transfer the concept of AC from the empirical domain to Monte Carlo simulation studies and assess its feasibility and viability in a case study in this context. To conduct such an exemplary AC, we first need a framework that structures the collaborative process tailored to the outline of simulation studies. 
 
 ## SAM vs. SEM - a Case Study
 
 Traditional SEM methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously under the assumption of multivariate normality. While powerful and although robust estimation techniques relax the normality assumption, all system wide estimators suffer from several shortcomings, they often face issues such as non-convergence, improper solutions (with parameters out of definitional range), and biases from local measurement misspecifications that affect the entire model. They also typically require large sample sizes for adequate performance, especially in complex models.
  
-To conduct an adversarial collaboration in the context of simulation studies...
+To conduct an AC in the context of simulation studies...
 
 # Methods
 
@@ -120,6 +120,13 @@ The methodological setup of my individual simulation studies follows the structu
 {{< include results_joint.qmd >}}
 
 ## Results of the Adversarial Collaboration
+
+The following is a brief description of how the process of AC took place in this case study. Firstly, as outlined, the agreement on a joint starting point was successful and we were able to translate conflicting verbal claims from prior studies into joint research questions. Secondly, based on these research questions, we independently conducted simulation studies which were largely based on the simulations by @rosseel_structural_2022, @dhaene_evaluation_2023 and @rosseel_structural_2022 and successfully translated the verbal dispute (back) to the empirical domain. Note that this constituted only an emulated process of AC, including this additional layer of abstraction through replication of previously published research findings. In a practical application of AC to simulation studies as proposed here, this intermediary step would be bypassed. Instead, collaborators would design two original studies or choose to work directly together on a unified research study, contingent upon their identification of a specific verbal dispute. Thirdly, after assessing our individual studies and their results, we did not jointly arrive at the conclusion that conducting a collaborative unified simulation study as planned was warranted. Kosanke argued that...
+
+
+
+
+After collaborating based on the individually conducted studies and the respective results, we did not jointly arrive at the conclusion that conducting a collaborative simulation study as planned was warranted. However, I identified several reasons for setting up another simulation. Firstly, to test and evaluate the viability and technical feasibility of AC for simulation studies, setting up a study based on individual studies and their results with Kosanke can provide valuable information.
 
 # Discussion
 
