@@ -1,4 +1,5 @@
 \setlength{\parindent}{1.27cm}
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
@@ -7,8 +8,8 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 Both studies aimed to evaluate the performance of traditional SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as general basis for both studies:
 
-1. How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
-2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
+1.  How do SAM and traditional SEM methods (including ML and ULS) compare in terms ofbias, Mean Squared Error (MSE), and convergence rates in small to moderate samples?
+2.  What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
 
 #### Population Models and Data Generation Mechanisms
 
@@ -23,9 +24,9 @@ Data were generated based on a 5-factor population structural model with 3 indic
 
 Factor loadings were fixed across all reliability conditions, with the first indicator of each factor serving as the scaling indicator ($\lambda$ = 1.0), and the other two indicators having loadings of 0.7. Indicator reliability levels were manipulated by adjusting the measurement error variances in the $\Theta$ matrix. Specifically, the a reliability value was set at different levels (low = 0.3, moderate = 0.5 or high = 0.7) to compute the respective error variances on the diagonal of $\Theta$: $\Theta^{*} = \text{Var}(\eta)\Lambda^{T} \times \frac{1}{r - 1}$.
 
-To investigate additioanl possible and realisitic scenarios beyond the ones studied by @rosseel_structural_2022  model 1.3 included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications to introduce an even more severly misspecified model under which SAM methods might perform even better than traditional SEM. Further, model 1.4 included a (not estimated) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1.
+To investigate additioanl possible and realisitic scenarios beyond the ones studied by @rosseel_structural_2022 model 1.3 included a combination of measuremnt and structural misspecifications as opposed to only measurement misspecifications to introduce an even more severly misspecified model under which SAM methods might perform even better than traditional SEM. Further, model 1.4 included a (not estimated) bidirectional structural relation between factors 3 and 4 as opposed to the unidirectional reversed one. For all models, the population-level values of the structural parameters were set to 0.1.
 
-:::{#fig-study1-models}
+::: {#fig-study1-models}
 ```{r}
 #| layout: "[[1,1], [1.2,0.9]]"
 #| out.width: "90%"
@@ -36,7 +37,9 @@ knitr::include_graphics(c("figures/model1_1.tex",
                           "figures/model1_4.tex"))
 ```
 
-\raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model."
+\raggedright
+
+\textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model."
 
 Population Model Variations of Study 1
 :::
@@ -55,7 +58,9 @@ knitr::include_graphics(c("figures/model2_1.tex",
                           "figures/model2_2.tex"))
 ```
 
-\raggedright \textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For the model on the right, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part. These types of misspecifications result in different realizations of the model when they are modulated as factors of misspecification (endogenous, exogenous or endo- and exogenous) in study 2 but are subsumed under one model here.
+\raggedright
+
+\textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For the model on the right, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part. These types of misspecifications result in different realizations of the model when they are modulated as factors of misspecification (endogenous, exogenous or endo- and exogenous) in study 2 but are subsumed under one model here.
 
 Population Model Variations of Study 2
 :::
@@ -82,6 +87,6 @@ For both studies convergence rates were tracked via lavaan's built-in function t
 
 All analyses were conducted in R (version 4.4) (@r_core_team_r_2023). Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications and the simulations were dockerized. Further details and a complete list of libraries and dependencies, are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation)
 
-#### Analysis and Interpretation plan
+#### Analysis and Interpretation
 
 Similar to the studies by @rosseel_structural_2022 and @dhaene_evaluation_2023 results were interpreted by descriptively comparing the performance measures of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications without predetermined cut-off values or critical distances. Performance metric values were aggregated across all parameters excluding the misspecified parameters (present in the population but not in the estimation model).
