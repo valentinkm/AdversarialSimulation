@@ -280,8 +280,15 @@ plot_data_study_2 <- param_summary_study_2 %>%
 
 # Prepare data for study 3 parameterwise bias plot:
 
-# rename lSAM
+# simplified method names
+
 aggr_summary_study_3 <- aggr_summary_study_3 %>%
+  mutate(method = case_when(
+    method == "lSAM_ML" ~ "lSAM",
+    TRUE ~ method
+  ))
+
+param_summary_study_3 <- param_summary_study_3 %>%
   mutate(method = case_when(
     method == "lSAM_ML" ~ "lSAM",
     TRUE ~ method
@@ -357,6 +364,7 @@ plot_data_aggregated_study3 <- aggr_summary_study_3 %>%
       TRUE ~ model_type
     )
   )
+
 
 # Ensure full grid for study 3
 full_grid <- expand.grid(
