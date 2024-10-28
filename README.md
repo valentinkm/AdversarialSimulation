@@ -2,11 +2,11 @@
 [![Minimal Simulation Replication](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml/badge.svg)](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml)
 
 
-## Thesis by Kriegmair
+## Thesis
 
 The `VK/thesis` subdirectory contains all files generating the Master's thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). The rendering of the thesis is managed using Docker and `renv` with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml).
 
-### Simulations by Kriegmair
+### Simulations
 
 The `VK/simulation` subdirectory contains the code and Docker setup to replicate the studies conducted in the adversarial simulation by Kriegmair. For a simple minimal replication (with two repetitions) navigate [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml), press "Run workflow" and view the results on a new pull request after about 20 Minutes. For a local replication use the following instructions:
 
