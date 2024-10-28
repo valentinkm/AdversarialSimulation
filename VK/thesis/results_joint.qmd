@@ -1,23 +1,36 @@
+---
+Title: "Thesis"
+author:
+  - name: Valentin Kriegmair
+    affiliations: "Humboldt-Universität zu Berlin"
+fig-cap-location: top
+format:
+    pdf:
+        fig-numbering: false
+        fontsize: 11pt
+        linestretch: 1.5
+        geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
+        classoption: oneside
+        papersize: a4
+        header-includes: |
+          \input{preamble.tex}
+fontsize: 11pt
+engine: knitr
+bibliography: ../bibliography.bib
+csl: ../apa.csl
+appendix: true
+---
+
 \setlength{\parindent}{1.27cm}
 ```{r, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
-The joint study showed that using bound maximum likelihood estimation for standard SEM as proposed by Kosanke did infact eliminate the convergence issues convergence rate as well as improper solutions issues in all conditions. Next a parameterwise comparison of the bias of the path coeffecient estimates averaged across each model in absolute values showed... (see Figure \ref{fig:bias-parameterwise-study3}). The RMSE of the path coeffecients showd a similar pattern as the bias with... (see Figurefig:rmse-parameterwise-study3). Aggregating the metrics across all parameters in one model showed that... (see Figure \ref{fig:bias-aggregated-study3} and Figure \ref{fig:rmse-aggregated-study3}).
-
-There was little to no difference between gSAM and lSAM with lSAM being very slightly less biased in most conditions.
+The joint study showed that using bound maximum likelihood estimation for standard SEM as proposed by Kosanke did infact eliminate the low convergence rate as well as improper solutions in all conditions (see \ref{fig:convergence-study-3}). Next, the parameterwise signed mean bias values of the single regression weight estimates showed that omitting positive cross-loadings results in an overall positive bias, whereas omitting negative cross-loadings results in a negative bias. As in previous studies, the positive bias was less pronounced for SAM (gSAM and lSAM) than for SEM, especially with lower sample sizes and reliability. However, contrary to the findings by Kosanke and Robitzsch (2022), in this study the negative bias was also less pronounced for both SAM methods. Conditions with omitted correltated residual correlations resulted in predominantly negative bias values for all methods irrespective of the sign of the misspecification with standard SEM being slightly less biased than SAM methods (see Figure \ref{fig:bias-parameterwise-study3}).
+A direct comparision of standard SEM with SAM for bias and RMSE showed that SAM methods were less biased for cross loadings and when accounting for variance via RMSE more accurate especially in lower samples sizes and indicator reliability levels (see Figure \ref{fig:sam-sem-diff-study3}). Further, there were little to no differences between gSAM and lSAM with lSAM being overall slightly more accurate in terms of RMSE.
+Overall these findings suggest that the explanation for SAM's lower bias under positive misspecifications being due to a general negative bias that would lead to overly negative bias in case of negative measurement misspecifications (proposed by Kosanke and @robitzsch_comparing_2022) does not hold in a more complex (and realistic) model that SAM could be favorable choice of SEM estimation especially challenging conditions.
 
 \blandscape
-::: {fig-cr-s3}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Convergence Rate and Rate of Proper Solutions in Study 3\\label{fig:convergence-study-3}"}
-fig_conv_rate_study3
-```
-
-::: {fig-note}
-\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (*N*), reliability (*r*), and model misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM.
-:::
-:::
-
 ::: {fig-bias-parameterwise-study3}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean Bias of Regression Parameters in *Joint* Study\\label{fig:bias-parameterwise-study3}"}
 fig_bias_parameterwise_study3
@@ -28,25 +41,14 @@ fig_bias_parameterwise_study3
 :::
 :::
 
-
 ::: {fig-sam-sem-diff-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=6.5, fig.cap="Aggregated Mean Difference between Bound Standard SEM and SAM Estimation in Bias and RMSE of regression coefficients estimates in *Joint* Study\\label{fig:sam-sem-diff-study3}"}
+```{r, echo=FALSE, fig.width=12, fig.height=6, fig.cap="Aggregated Mean Difference between Bound Standard SEM and SAM Estimation in Bias and RMSE of regression coefficients estimates in *Joint* Study\\label{fig:sam-sem-diff-study3}"}
 fig_sam_sem_diff_study3
 ```
 
 :::{fig-note}
 
 \raggedright \textit{Note.} Bias (top) and RMSE (bottom) differences between SEM and gloabal and local SAM (gSAM and lSAM) , averaged across estimates of true regression coefficients (0.1) over varying *N*, *r*, and misspecifications. Error bars show Monte Carlo SEs.
-:::
-:::
-
-::: {fig-bias-aggregated-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Aggregated Mean Bias of Regression Parameter Estimates in *Joint* Study \\label{fig:bias-aggregated-study3}"}
-fig_bias_aggregated_study3
-```
-
-:::{fig-note}
-\raggedright \textit{Note.} Mean bias of regression parameters avereaged across all estimates of each condition for sample sizes (*N*), reliability (*r*), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML) and SEM (bound and unbound ML).
 :::
 :::
 \elandscape
