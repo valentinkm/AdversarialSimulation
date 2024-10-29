@@ -7,6 +7,5 @@ cover.tex
 cover.pdf
 *.log
 *.html
-*.pdf
 _site
 .Rhistory

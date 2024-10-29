@@ -13,7 +13,6 @@ fig_conv_rate_study3
 :::
 :::
 
-
 ::: {fig-rmse-aggregated-study1}
 ```{r, echo=FALSE, fig.width=12, fig.height=5.5, fig.cap="Mean Average Root Mean Squared Error (RMSE) of Regression Parameters in Study 1\\label{fig:rmse-aggregated-study1}"}
 print(fig_rmse_aggregated_study1)
