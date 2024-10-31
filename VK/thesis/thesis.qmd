@@ -17,7 +17,7 @@ format:
 fontsize: 11pt
 engine: knitr
 bibliography: ../bibliography.bib
-csl: ../apa.csl
+bibliographystyle: apa
 appendix: true
 ---
 ```{r, include=FALSE}
@@ -69,28 +69,20 @@ cat(paste0("Generated using [AdversarialSimulation](https://github.com/valentink
 
 ## The Generalizability Challange
 
-### Generalizability Problems and entrenched disagreements in empircal Research
+Karl Popper once descriibed science "as the art of systematic over-simplification — the art of discerning what we may with advantage omit." This pointedly encapsulates the fundamental cycle of empirical research. Researchers formulate general claims about the world, translate them into specific measurable constructs, select appropriate methods to collect data from specific populations, and finally update their beliefs about these general claims based on the gathered data. A core challenge in every research endeavor is this mapping from the general to the specific when designing and conducting a study and, conversely, form the specific & empirical back to the general when interpreting the results. This traversing between layers of abstraction is the crux of most research and it is where many if not all of a researcher's degrees of freedom lie. If there is ambiguity in these mappings or they lack transparency, irreplicable and ungeneralizable results [@earp_replication_2015] as well as persistent and seemingly unresolvable disagreements on the general and verbal level can emerge.
 
-Karl Popper (1957) described science as "the art of systematic over-simplification." This phrase ironically yet accurately encapsulates the fundamental cycle of empirical research. Researchers formulate general hypotheses about the world, translate them into measurable constructs, select appropriate methods to collect data from specific populations, and finally update their beliefs about these general claims based on the gathered data. A core challenge in every research endeavor is mapping the general to the specific when designing and conducting a study and, conversely, mapping the specific empirical findings back to the general domain when interpreting results. This mapping process is central to research and is where many if not all of a researcher's degrees of freedom lie. When there is ambiguity in these mappings or they lack transparency, irreplicable and ungeneralizable results (@earp_replication_2015) as well as persistent and seemingly unresolvable disagreements on the general and verbal level can emerge.
-
-### These issues translate to simulation studies
-
-This challenge of generalizability manifests uniquely in Monte Carlo simulations. These simulations are commonly used tools to test statistical methods by evaluating them against known ground truths in simulated data. Simulation studies occupy a unique position because they are not directly tied to empirical data but instead operate within a hypothetical world of data generation. [this sentence needs to be worked out]
-
-One perspective views simulations as theoretical studies, akin to mathematical proofs (@beisbart_why_2012), and, one might conclude, thus not subject to the same generalizability and replicability issues as empirical studies. However, as simulations are limited to very specific settings they heavily rely on inductive reasoning to draw general conclusions. Due to this impossibiltiy to simulate and test every possible combination of data and statistical method, researchers face numerous degrees of freedom in deciding which prototypical models and settings to test to draw conclusions about a method's general applicability and performance. From this it becomes clear that simulation studies follow the same general research cycle as empirical studies, with similar challenges of generalizability and replicability.
+This challenge of generalizability manifests uniquely in Monte Carlo simulation stuies. They  are widely utilized to assess the reliability and validity of statistical methods by testing their performance against controlled, simulated data, where the true parameter values are known. This approach allows researchers to investigate biases, variances, and other properties of estimators or models under various conditions, often informing best practices and model improvements [@thomopoulos2012essentials, @banack_monte_2021]. 
+These simulations, constrained by their specific settings, heavily depend on inductive reasoning to draw general conclusions, as it is impossible to simulate and test every conceivable combination of popuolation and analysis model. Consequently, researchers face numerous degrees of freedom in deciding which prototypical models and settings to examine when assessing a method's general applicability and performance. Hence, it becomes clear that simulation studies follow the same general research cycle as empirical studies, with similar challenges of generalizability and replicability (see Figure \ref{fig:simulation-cycle}).
 
 ::: {fig-simulation-cycle}
-```{r fig-simulation-cycle, echo=FALSE, fig.cap="The research cycle of simulation studies."}
+
+```{r, echo=FALSE, fig.cap="The research cycle of simulation studies\\label{fig:simulation-cycle}"}
 knitr::include_graphics("figures/research_cycle.pdf")
 ```
 
-:::{fig-note}
-:::
 :::
 
-### Open Science Practices as a Remedy
-
-This generalizability challenge has been recognized in simulation studies. and open science practices such as preregistration, transparency, and reproducibility have been proposed as remedy. These practices are pivotal for increasing rigor and transparency in simulations and beyond. However, in the basic cyclical process of research as outlined above they mainly address the issue of generalizability at the point of moving from operationalization to data simulation, e.g. by enforcing transparancy and reproducibility of the simulation, or at the point of verbally interpreting gathered data through preregistered analysis plans.
+\noindent To address these challenges, just like for empirical resarch, open science practices such as preregistration, transparency, and reproducibility have been proposed for simulation studies. These practices are pivotal for increasing rigor and transparency in simulations and beyond. However, in the basic cyclical process of research as outlined above they mainly address the issue of generalizability at the point of moving from operationalization to data simulation, e.g. by enforcing transparancy and reproducibility of the simulation, or at the point of verbally interpreting gathered data through preregistered analysis plans.
 Crucially however, these practices do not address the transition from the verbal claim to its operationalization. Decisions about how to operationalize, for example, which models and settings to choose and how to design the study remain subject to researchers' degrees of freedom and their (often implicit) biases.
 Furthermore, even rigorous and transparent studies can produce conflicting verbal claims stemming from ambiguities in operationalizations, and specific simulation setups. Such disagreements may not be readily resolvable, or only inefficiently so, by independently conducting and publishing simulation studies.
 Researchers' biases toward specific methods they have developed themselves may further amplify these divergences, affecting not only the interpretation of results but also (implicit or explicit) choices in design of simulations studies.
@@ -153,7 +145,7 @@ The methodological setup of my individual simulation studies follows the structu
 
 # Discussion
 
-The goal of this study was two-fold: First, to test the viability and practical applicability of adversarial collaboration (AC) as a tool to resolve disagreeing research claims and enhance generalizability and rigor in the context of simulation studies. Second, serving as a case study for this, to evaluate the performance of traditional Structural Equation Modeling (SEM) compared to Structural After Measurement (SAM) and resolve the conflicting claims of previous studies whether SAM consitently outperforms traditional SEM in the presence of model misspecifications in small to moderate sample sizes (@robitzsch_comparing_2022, @rosseel_structural_2022, @dhaene_evaluation_2023).
+The goal of this study was two-fold: First, to test the viability and practical applicability of adversarial collaboration (AC) as a tool to resolve disagreeing research claims and enhance generalizability and rigor in the context of simulation studies. Second, serving as a case study for this, to evaluate the performance of traditional Structural Equation Modeling (SEM) compared to Structural After Measurement (SAM) and resolve the conflicting claims of previous studies whether SAM consitently outperforms traditional SEM in the presence of model misspecifications in small to moderate sample sizes [@robitzsch_comparing_2022, @rosseel_structural_2022, @dhaene_evaluation_2023].
 
 We successfully agreed on a joint starting point and translated conflicting verbal claims from prior studies into shared research questions. Based on these research questions, we independently conducted simulation studies largely based on the simulations by Rosseel (2022) and Dhaene and Rosseel (2023), successfully translating the verbal dispute back into the empirical domain.
 It is important to note that this constituted only an emulated process of adversarial collaboration (AC), including an additional layer of abstraction through replication of previously published research findings. In a practical application of AC to simulation studies as proposed here, this intermediary step could be bypassed. Instead, collaborators could design two original studies or choose to work directly together on a unified research study, contingent upon their identification of a specific verbal disagreement.
@@ -172,7 +164,7 @@ Idea: living simulations..
 
 ## Appendix A: Simulation Protocol {#appendix-a}
 
-Here the full simulation protocol of my simulation studies conducted individually prior to collaboration as well as the follow up study I conducted in light of the collaboration with Kosanke after the first round of conducting and evaluating our individual studies is presented. It is based on the preregistration of my individual studies (@kriegmair_preregistration_2024) and outlines all deviations from it.
+Here the full simulation protocol of my simulation studies conducted individually prior to collaboration as well as the follow up study I conducted in light of the collaboration with Kosanke after the first round of conducting and evaluating our individual studies is presented. It is based on the preregistration of my individual studies [@kriegmair_preregistration_2024] and outlines all deviations from it.
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 
