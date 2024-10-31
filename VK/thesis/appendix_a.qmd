@@ -255,11 +255,11 @@ Both studies will compare four different estimation methods for SEMs:
 - Traditional SEM: (structural and measurement model estimated simultaneously) (rationale: the current standard approach in SEM estimation serving as a baseline with maximum likelihood (ML)):
 - SAM: (separating the estimation of the measurement and structural model to alleviate the potential for propagation of bias from (e.g. misspecified) measurement part to the structural part of the model)
     - Local SAM (Uses summary statistics from the measurement model to derive the model-implied mean vector and variance-covariance matrix of latent variables. These statistics are then utilized to estimate the structural parameters. A mapping matrix (M) is used to transform the observed data into the latent variable space. It can be estimated using different methods.)
-        - With ML mapping matrix (Akin to a factor score approach (@bartlett_statistical_1937, @bartlett_methods_1938))
+        - With ML mapping matrix (Akin to a factor score approach [@bartlett_statistical_1937, @bartlett_methods_1938])
         - With ULS mapping matrix (Uses the Moore-Penrose pseudoinverse, suitable for scenarios with complex or underdetermined systems, where the K matrix is rank-deficient but requires adjustments for structural constraints.)
     - Global SAM (rationale: Fixing the parameters obtained from the measurement model in the first step, and then using them as constants in the full SEM during the second step. Suitable for models where local SAM is impractical due to higher-order latent variables or rank deficiencies in $\lambda$.)
 
-Traditional SEM as well as both steps in the SAM approach will be estimated using Maximum Likelihood (ML) using the `lavaan` (@rosseel_lavaan_2012) package in R (@r_core_team_r_2023).
+Traditional SEM as well as both steps in the SAM approach will be estimated using Maximum Likelihood (ML) using `lavaan` [@rosseel_lavaan_2012] in R 4.4 [@r_core_team_r_2023].
 
 ## 6. Performance Measures
 
@@ -289,7 +289,7 @@ As mentioned above convergence rates were captured and only converged propper so
 
 ## 10. Software and Libraries
 
-The simulation was set up and conducted in @r_core_team_r_2023 using the `lavaan` package for generating data based on the population models as well as for applying SEM estimation methods (@rosseel_lavaan_2012) as well as the `furrr` (@davis_furrr_2022) package for parallel simulation execution. A full list of libraries and dependencies can be found on [GitHub](https://github.com/valentinkm/AdversarialSimulation/blob/main/VK/simulation/renv.lock)
+The simulation was set up and conducted in @r_core_team_r_2023 using `lavaan` [@rosseel_lavaan_2012] for generating data and estimation. The `furrr` [@davis_furrr_2022] package for parallel simulation execution. A full list of libraries and dependencies can be found on [GitHub](https://github.com/valentinkm/AdversarialSimulation/blob/main/VK/simulation/renv.lock)
 
 ## 11. Computational Environment
 

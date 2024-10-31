@@ -85,8 +85,10 @@ For both studies convergence rates were tracked via lavaan's built-in function t
 
 #### Software
 
-All analyses were conducted in R (version 4.4) (@r_core_team_r_2023). Simulation and estimation was done using @rosseel_lavaan_2012. To ensure reproducability and avoid synchronization in parallelized a pre-generated list of seeds was used for all replications and the simulations were dockerized. Further details and a complete list of libraries and dependencies, are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation)
+The simulations were executed on the high-performance computing cluster of the Max Planck Institute for Human Development Berlin (MPIB). All analyses were conducted in R (version 4.4). [@r_core_team_r_2023]. Main libraries includeded `lavaan` [@rosseel_lavaan_2012] for estimation and data generation, `furrr` [@davis_furrr_2022] for parallelization and `tidyverse`[@wickham_welcome_2019], `ggplot2` as well as `kableExtra` [@hao_zhu_2024] for results analysis and display. 
+##### Reproducibility
+To ensure reproducability and avoid seed synchronization in parallelized execution a pre-generated list of seeds was used for all replications and the simulations were dockerized [@merkel2014docker]. Further details and a complete list of libraries and dependencies, are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation)
 
 #### Analysis and Interpretation
 
-Similar to the studies by @rosseel_structural_2022 and @dhaene_evaluation_2023 results were interpreted by descriptively comparing the performance measures of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications without predetermined cut-off values or critical distances. Performance metric values were aggregated across all parameters excluding the misspecified parameters (present in the population but not in the estimation model).
+Similar to the studies by @rosseel_structural_2022 and @dhaene_evaluation_2023 results were interpreted by descriptively comparing the performance measures of the different estimation methods under varying sample sizes, indicator reliability levels, and model misspecifications. Performance metric values were aggregated across all parameters excluding the misspecified parameters (present in the population but not in the estimation model).
