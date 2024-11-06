@@ -321,7 +321,7 @@ traditional Structural Equation Modeling (SEM) compared to Structural After Meas
 claims of previous studies regarding whether SAM consistently outperforms traditional SEM in the presence of model 
 misspecifications in small to moderate sample sizes [@robitzsch_comparing_2022; @rosseel_structural_2022; @dhaene_evaluation_2023].
 
-## SAM vs. SEM
+## Strucutral After Measurement (SAM) vs. Standard Strucutral Equation Modeling (SEM)
 
 Overall, within the case study, the individually conducted simulation alongside the joint study, systematically 
 assessed how different implementations of SAM and standard SEM performed under different degrees of sample size, 
@@ -356,7 +356,12 @@ indicates that these biases may be mitigated in more complex and realistic model
 could be a favorable choice for SEM estimation in practice, especially when dealing with small sample sizes, low 
 reliability, and potential model misspecifications.
 
-## Evaluating Adversarial Simulation
+## Limiations
+
+All the simulations conducted here suffer from several shortcomings. First, inherently only a very specific subset of models and conditions could be tested limiting the generalizability of the results to specific settings in which the analysed methods perform differently. Of particular interest would be for example to further investigate SAM in causal models and longitudunal data as this represents cases for which the apprach seems to be tailored where structural parameters are of particualar interest while including (potetentially misspecified) measurement models. Additionally next to assessing the impact on specific structural paramters such as mediating effects vs. direct effects in mediation models could be of particualr interest as well. 
+
+
+## Adversarial Collaboration in Simulation Studies
 
 Shifting the perspective on the adversarial collaboration, we successfully agreed on a joint starting point and 
 translated conflicting verbal claims from prior studies into shared research questions. Based on these research 
@@ -387,8 +392,6 @@ computing modulated indicator reliability levels could be identified as another 
 which was resolved in the joint study.
 Even if conducted only by myself, such a joint study served as a demonstrative proof of concept for the application of 
 adversarial collaboration to simulation studies addressing the question of technical feasability of Adverarial Simulation.
-
-## Evaluation of Adversarial Collaboration in Simulation Studies
 
 All in all the current study demonstrates that adversarial collaboration is a technically feasible and viable approach 
 in the context of simulation studies. By successfully translating a general conflict in conclusions about the 
