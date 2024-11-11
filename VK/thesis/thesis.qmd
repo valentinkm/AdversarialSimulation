@@ -68,31 +68,18 @@ cat(paste0("Generated using [AdversarialSimulation](https://github.com/valentink
 
 ## The Challenge of Generalizability within the Research Cycle of Simulation Studies
 
-Karl Popper once described science "as the art of systematic over-simplification — the art of discerning what we may 
-with advantage omit" [@popper1988open]. This pointedly encapsulates the fundamental cycle of empirical research. 
-Researchers formulate general claims about the world, translate them into specific, measurable constructs, select 
-appropriate methods to collect data from specific populations, and finally update their beliefs about these general 
-claims based on the gathered data [@supino_overview_2012]. A core challenge in every research endeavour is this 
-mapping from the general to the specific when designing and conducting a study and, conversely, from the specific and 
-empirical back to the general when interpreting the results. This traversing between layers of abstraction is the crux 
-of most research, and it is where many, if not all, of a researcher's degrees of freedom lie 
-[@dellsen2021disagreement; @carrillo_scientific_2023; @martinez2011epistemic]. If there is ambiguity or lack of 
-transparency in these mappings, irreproducible and ungeneralizable results [@earp_replication_2015; 
-@camerer2018evaluating; @nosek2022replicability] as well as persistent and seemingly unresolvable disagreements on the 
-general and verbal level can emerge [@dellsen2021disagreement; @cleeremans2022theory].
+Karl Popper once described science "as the art of systematic over-simplification — the art of discerning what we may with advantage omit" [@popper1988open]. 
+This pointedly encapsulates the fundamental cycle of empirical research. 
+Researchers formulate general claims about the world, translate them into specific, measurable constructs, select appropriate methods to collect data from specific populations, and finally update their beliefs about these general claims based on the gathered data [@supino_overview_2012]. 
+A core challenge in every research endeavour is this mapping from the general to the specific when designing and conducting a study and, conversely, from the specific and empirical back to the general when interpreting the results. 
+This traversing between the abstract and concrete is the crux of most research, and it is where many, if not all, of a researcher's degrees of freedom lie [@dellsen2021disagreement; @carrillo_scientific_2023; @martinez2011epistemic]. 
+If there is ambiguity or lack of transparency in these mappings due to explicit or implicit questionable research practices, irreproducible and ungeneralizable results [@earp_replication_2015; @camerer2018evaluating; @nosek2022replicability; @mccarley2023open] as well as persistent and seemingly unresolvable disagreements on the general and verbal level can emerge [@dellsen2021disagreement; @cleeremans2022theory].
 
-This challenge of generalizability manifests uniquely in Monte Carlo simulation studies. These are widely utilized 
-tools to assess the reliability and validity of statistical methods by testing their performance against controlled, 
-simulated data, where the true population parameter values (of the data generating mechanism) are known. This approach 
-allows researchers to investigate biases, variances, and other properties of estimators or models under various 
-conditions, often informing best practices and model improvements [@thomopoulos2012essentials, @banack_monte_2021, 
-@morris_using_2019]. These simulations, constrained by their specific settings, heavily depend on inductive reasoning 
-to draw general conclusions, as it is impossible to simulate and test every conceivable combination of population and 
-analysis model [@feinberg_conducting_2016; @gilbert2024multilevel]. Consequently, researchers face numerous degrees of 
-freedom in deciding which prototypical models and settings to examine when assessing a method's general applicability 
-and performance [@bollmann_what_2015, @kulinskaya_exploring_2020]. Hence, it becomes clear that simulation studies 
-follow the same general research cycle as empirical studies, with similar challenges of generalizability ambiguity 
-(see Figure \ref{fig:simulation-cycle}).
+This challenge of generalizability manifests uniquely in Monte Carlo simulation studies. These are widely utilized tools to assess the reliability and validity of statistical methods by testing their performance against controlled, simulated data, where the true population parameter values (of the data generating mechanism) are known. 
+This approach allows researchers to investigate biases, variances, and other properties of estimators or models under various conditions, often informing best practices and model improvements [@thomopoulos2012essentials, @banack_monte_2021, @morris_using_2019]. 
+These simulations, constrained by their specific settings, heavily depend on inductive reasoning to draw general conclusions, as it is impossible to simulate and test every conceivable combination of population and analysis model [@feinberg_conducting_2016; @gilbert2024multilevel]. 
+Consequently, researchers face numerous degrees of freedom in deciding which prototypical models and settings to examine when assessing a method's general applicability and performance [@bollmann_what_2015, @kulinskaya_exploring_2020]. 
+Hence, it becomes clear that simulation studies follow the same general research cycle as empirical studies, with similar challenges of generalizability and ambiguity (see Figure \ref{fig:simulation-cycle}).
 
 ::: {fig-simulation-cycle}
 ```{r, echo=FALSE, fig.cap="The research cycle of simulation studies\\label{fig:simulation-cycle}"}
@@ -113,9 +100,9 @@ generalizability at the point of moving from operationalization to data simulati
 reproducibility of the simulation [@luijken_replicability_2023], or at the point of verbally interpreting gathered 
 data through adherence to preregistration protocols. Crucially, however, these practices do not address the transition 
 from the verbal claim to its operationalization (in empirical research, referred to as *translational validity
-(@slife2016using)). Decisions about operationalizing, for example, which models and settings to choose and how to 
+(@slife2016using; @clark_keep_2022)). Decisions about operationalizing, for example, which models and settings to choose and how to 
 design the study, remain subject to researchers' degrees of freedom and their (often implicit) biases 
-[@buchka_optimistic_2021]. Furthermore, even rigorous and transparent studies may produce conflicting verbal claims 
+[@buchka_optimistic_2021; @flake2020measurement]. Furthermore, even rigorous and transparent studies may produce conflicting verbal claims 
 from ambiguities in operationalizations and specific simulation setups. Such disagreements may not be readily 
 resolvable, or only inefficiently so, by independently conducting and publishing simulation studies. Researchers' 
 biases toward specific methods they have developed themselves may further amplify these divergences, affecting not 
@@ -131,13 +118,9 @@ for its potential within the open science movement [@clark_keep_2022; @rakow_adv
 @clark_adversarial_2021]. Unlike standard open science practices, which may not account for researchers' degrees of 
 freedom in hypothesis generation and operationalization, AC allows for detecting and reducing biased methodological 
 decisions. In AC, opposing researchers first identify general verbal theoretical disputes, agree on a shared research 
-question that could settle the debate, and collaboratively design studies they agree to have the potential to change 
-their minds and jointly publish the results regardless of the outcome [@melloni_making_2021]. This process aims to 
-unveil and concretize even subtle discrepancies in methodological assumptions and decisions as well as framing of 
-conclusions [@clark_keep_2022], thus tracing back general and verbal disagreements of conflicting theories to their 
-specific and empirical roots, reducing ambiguity and increasing generalizability by generating shared language of 
-assumptions and operationalizations. Hence, it promises to enhance rigour and transparency and, importantly, reduce 
-ambiguity and bias at the stage of operationalization and design of studies [@clark_adversarial_2021].
+question that could settle the debate, and collaboratively design studies they agree to have the potential to change their minds and jointly publish the results regardless of the outcome [@melloni_making_2021]. 
+This process aims to unveil and concretize even subtle discrepancies in methodological assumptions and decisions as well as framing of conclusions [@clark_keep_2022], thus tracing back general and verbal disagreements of conflicting theories to their specific and empirical roots, reducing ambiguity and increasing generalizability by generating shared language of assumptions and operationalizations. 
+Hence, it promises to enhance rigour and transparency and, importantly, reduce ambiguity and bias at the stage of operationalization and design of studies [@clark_adversarial_2021].
 
 ## SAM vs. SEM - A Case Study for *Adversarial Simulation*
 
@@ -148,19 +131,7 @@ Measurement (SAM) — a method for Structural Equation Model (SEM) estimation re
 
 Structural equation modelling (SEM) encompasses various statistical techniques frequently applied in the social and 
 behavioural sciences [@bollen2014structural; @hoyle2012handbook]. SEM is most commonly employed to study models 
-incorporating measurement and structural components. The measurement model describes the relationships between latent 
-variables and their observed indicators, while the structural model specifies the relationships among the latent 
-variables themselves, often reflecting substantive theoretical constructs of interest [@hair2021introduction].
-Traditional SEM estimation methods, like maximum likelihood estimation, optimize all parameters of a model 
-simultaneously (under the assumption of multivariate normality) by minimizing a discrepancy function $F(\theta)$, 
-where $\theta$ represents all parameters of both the measurement and structural models [@kline2023principles].
-While powerful, this system-wide estimation suffers from several shortcomings, such as non-convergence, improper 
-solutions (with solutions including parameters out of their definitional range, such as negative variances 
-[@van1978various]), poor model fit, and estimation biases arising from local measurement misspecifications that can 
-affect the entire model.
-They also typically require large sample sizes for adequate performance, especially in complex models with many 
-parameters[@rosseel2020small].
-SAM - as proposed by @rosseel_structural_2022 - addresses these issues and separates the estimation process into two 
+incorporating measurement and structural components. The measurement model describes the relationships between latent variables and their observed indicators, while the structural model specifies the relationships among the latent variables themselves, often reflecting substantive theoretical constructs of interest [@hair2021introduction]. Traditional SEM estimation methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously (under the assumption of multivariate normality) by minimizing a discrepancy function $F(\theta)$, where $\theta$ represents all parameters of both the measurement and structural models [@kline2023principles]. While powerful, this system-wide estimation suffers from several shortcomings, such as non-convergence, improper solutions (with solutions including parameters out of their definitional range, such as negative variances [@van1978various]), poor model fit, and estimation biases arising from local measurement misspecifications that can affect the entire model. They also typically require large sample sizes for adequate performance, especially in complex models with many parameters[@rosseel2020small]. SAM - as proposed by @rosseel_structural_2022 - addresses these issues and separates the estimation process into two 
 distinct stages. First, the measurement model parameters are estimated independently to capture the relationships 
 between latent variables ($\eta$) and their observed indicators ($y$), represented by:
 $$
@@ -172,8 +143,7 @@ $$
 \eta = \alpha + B \eta + \zeta,
 $$
 with $\alpha$ as a vector of intercepts, $B$ as the matrix of structural coefficients, and $\zeta$ as structural disturbances.
-@rosseel_structural_2022 proposes two distinct approaches to SAM estimation:
-(1) Local SAM constructs estimators for latent variable means and covariances from first-stage estimates and applies them directly in second-stage analyses (e.g., linear regression). Expected values $E(\eta)$ and covariance $\text{Var}(\eta)$ are derived as:
+@rosseel_structural_2022 proposes two distinct approaches to SAM estimation: (1) Local SAM constructs estimators for latent variable means and covariances from first-stage estimates and applies them directly in second-stage analyses (e.g., linear regression). Expected values $E(\eta)$ and covariance $\text{Var}(\eta)$ are derived as:
 $$
 E(\eta) = M(y - \mu),
 $$
@@ -183,44 +153,24 @@ $$
 where $M$ is derived from factor loadings and measurement error covariances, $S$ is the sample covariance matrix of $y$, and $\Theta$ is the covariance matrix of $\epsilon$.
 (2) Global SAM keeps first-stage measurement model parameters fixed while estimating structural model parameters using standard SEM techniques.
 
-Recent studies by @rosseel_structural_2022 and @dhaene_evaluation_2023 have shown that SAM can outperform traditional 
-SEM estimation in the presence of model misspecifications, especially in small to moderate sample sizes. However, 
-@robitzsch_comparing_2022 has challenged these findings, arguing that SAM may systematically underestimate parameters 
-in the presence of negative misspecifications. This disagreement highlights the need for a systematic evaluation of 
-SAM's performance in the presence of model misspecifications in small to moderate sample sizes.
-These diverging claims served as the starting point for an adversarial collaboration between a fellow student 
-researcher (Collaborator B, Kosanke) and me (Collaborator A, Kriegmair), each representing one of the above sides of 
-the differing findings. 
-We developed a basic framework to tailor the concept of AC to simulation studies and facilitate a structured and 
-systematic conduct and evaluation of the AC process in which a conceptual replication of respective findings by each 
-collaborator marks the starting point representing a suitable testing ground for *Adversarial Simulation*.
-The framework, outlined in detail in the following section, consisted of two rounds: In the first round, each 
-collaborator would independently conduct a separate simulation study. In the second round the adversarail 
-collaboration would take place and we planned to collaboratively design and conduct a study based on the first round. 
-This two-stage approach was designed to systematically highlight differences between the individual approaches and 
-establish a virtual foundation for collaboration before engaging in a joint effort in our case study. As the first 
-step of this process, we jointly formulated two *specific* research questions based on the above-mentioned conflicting 
-claims:
+Recent studies by @rosseel_structural_2022 and @dhaene_evaluation_2023 have shown that SAM can outperform traditional SEM estimation in the presence of model misspecifications, especially in small to moderate sample sizes. 
+However, @robitzsch_comparing_2022 has challenged these findings, arguing that SAM may systematically underestimate parameters in the presence of negative misspecifications. 
+This disagreement highlights the need for a systematic evaluation of SAM's performance in the presence of model misspecifications in small to moderate sample sizes.These diverging claims served as the starting point for an adversarial collaboration between a fellow student researcher (Collaborator B, Kosanke) and me (Collaborator A, Kriegmair), each representing one of the above sides of the differing findings. 
+We developed a basic framework to tailor the concept of AC to simulation studies and facilitate a structured and systematic conduct and evaluation of the AC process in which a conceptual replication of respective findings by each collaborator marks the starting point representing a suitable testing ground for *Adversarial Simulation*. 
+The framework, outlined in detail in the following section, consisted of two rounds: In the first round, each collaborator would independently conduct a separate simulation study. In the second round the adversarail collaboration would take place and we planned to collaboratively design and conduct a study based on the first round. This two-stage approach was designed to systematically highlight differences between the individual approaches and establish a virtual foundation for collaboration before engaging in a joint effort in our case study. As the first step of this process, we jointly formulated two *specific* research questions based on the above-mentioned conflicting claims:
 
 1. How do SAM and traditional SEM methods (including ML and ULS) compare regarding bias, Mean Squared Error (MSE), and convergence rates in small to moderate samples? 
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
 
-Finally, by conducting this case study, we thus aimed to answer our *general* meta-research question:
-Is adversarial collaboration a viable and practical applicable tool to resolve disagreeing research claims and enhance 
-generalizability and rigour in the context of simulation studies?
+Finally, by conducting this case study, we thus aimed to answer our *general* meta-research question: Is adversarial collaboration a viable and practical applicable tool to resolve disagreeing research claims and enhance generalizability and rigour in the context of simulation studies?
 
 # Methods
 
 ## A Framework for Adversarial Collaboration
 
-We developed a specific adversarial simulation framework and structured the collaboration into two rounds. In the 
-first round, each collaborator independently conducts a separate simulation study. In the second round, they come 
-together to work on a joint study, building on the findings from the first round. This two-step approach is designed 
-to highlight differences in a systematic way and to establish a virtual foundation for collaboration before engaging 
-in a joint effort in our case study. Further, we aimed to adhere the individual studies to a protocol of core steps of 
-a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur 
-(see Figure 2). Thus we aimed to facilitate a structured and systematic comparision of the individual studies and 
-enable stepwise retracing of collaborative decisions.
+We developed a specific adversarial simulation framework and structured the collaboration into two rounds. In the first round, each collaborator independently conducts a separate simulation study. 
+In the second round, they come together to work on a joint study, building on the findings from the first round. This two-step approach is designed to highlight differences in a systematic way and to establish a virtual foundation for collaboration before engaging in a joint effort in our case study. 
+Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Figure 2). Thus we aimed to facilitate a structured and systematic comparision of the individual studies and enable stepwise retracing of collaborative decisions.
 
 ::: {#fig-framework}
 
@@ -290,183 +240,58 @@ differences in the design and setup of the studies compared to the original stud
 
 {{< include results_joint.qmd >}}
 
-## Adversarial Collaboration
+## Adversarial Collaboration Process   
 
-Although we did not jointly arrive at the conclusion to conduct a collaborative unified simulation study as planned, 
-the individual studies provided a comprehensive basis for a joint study. As outlined in the next section, I decided to 
-conduct a "joint" study on my own formally completing the adversarial collaboration process. The joint study, based on 
-the individual studies, constituted a stepwise integration of settings from the individual studies with the goal of 
-resolving the conflicting verbal claims. A 5-factor population structural model with 3 indicators per factor, as used 
-in Collaborator A's (Kriegmair) approach, was selected to provide a complex model suitable for testing the advantages 
-of SAM. To assess the robustness of SAM, particularly in response to negative misspecifications highlighted by 
-Collaborator B (Kosanke), both positive and negative omitted cross-loadings and correlated residuals were included in 
-the model misspecifications. Indicator reliability was manipulated by adjusting measurement error variances, following 
-Collaborator A's implementation, to achieve a valid representation of item reliability. CFA models from Collaborator 
-B’s studies were excluded since SAM is designed for models with directed structural paths. The experimental design 
-extended sample size variation to very small (N = 50) for a more extensive range than in Collaborator A's studies. 
-Both positive and negative misspecifications were included to assess a potential negative bias in SAM. In the 
-selection of estimation methods, bound SEM-ML, unbound SEM-ML, gSAM, and lSAM-ML were compared, to address the 
-convergence issues of standard SEM as proposed by Collaborator B. SAM-ULS and SEM-ULS were excluded to focus on the 
-most relevant methods and manage computational demands. Bias and RMSE of the estimated factor correlations were 
-calculated, and parameter-wise bias analysis was performed to identify any potential negative bias in SAM without the 
-averaging effects. The analysis was largely consistent with the individual studies, with the addition of 
-parameter-wise bias displays to gain deeper insights into the biases and a direct computation of metric-differences between SEM and SAM.
+Although the collaborators did not jointly arrive at the conclusion to conduct a collaborative unified simulation study as planned, the individual studies provided a comprehensive basis for a joint study. In this thesis a unified study was conducted, formally completing the adversarial collaboration process. This joint study, based on the individual studies, constituted a stepwise integration of settings from the individual studies with the goal of resolving the conflicting verbal claims.
+Collaborator B (Kosanke) decided to terminate the adversarial collaboration after the first stage of the individual studies. He argued that while in most cases the Structural After Measurement (SAM) approach showed less bias and root mean square error (RMSE), in some settings — especially in cases of negative unmodeled residuals and cross-loadings — the advantages of traditional Structural Equation Modeling (SEM) countered those of SAM, replicating the finding of @robitzsch_comparing_2022 of a general negative bias in SAM. Furthe, he reasoned that Collaborator A's findings did not directly contradict this and by integrating the results of the individual studies a general conclusion could be drawn that SAM does not consistently outperform SEM in small to moderate samples.
+However, I identified several reasons for conducting another simulation based on this first round of replicated studies and set up an integrated study. Kosanke's conclusion about SAM's inconsistent outperformance of SEM in the presence of negative misspecifications was applied to a very specific type of model with no directed relations between factors and was not tested in a more complex model with directed structural paths of interest. Importanyly, these represent scenarios for which @rosseel_structural_2022 proposed SAM to be advantageous. In addition, to thoroughly investigate this assumed systematic underestimation of SAM, a parameter-wise analysis of bias was warranted. Aggregation of bias values across model parameters could lead to canceling out negative and positive values or not showing them at all when using absolute values.
+
+A five-factor population structural model with three indicators per factor, based on Collaborator A's (Kriegmair) approach, was selected to provide a complex model suitable for testing the advantages of SAM. To evaluate the robustness of SAM, especially in response to negative misspecifications identified by Collaborator B (Kosanke), both positive and negative omitted cross-loadings and correlated residuals were included in the model misspecifications. Indicator reliability was manipulated by adjusting measurement error variances, following Collaborator A's method, to achieve a valid representation of item reliability. CFA models from Collaborator B’s studies were excluded, as SAM is intended for models with directed structural paths.
+The experimental design extended sample size variation to include very small samples (N = 50), providing a wider range than in Collaborator A's studies. Both positive and negative misspecifications were incorporated to assess potential negative biases in SAM. In selecting estimation methods, bound SEM-ML, unbound SEM-ML, gSAM, and lSAM-ML were compared to address convergence issues with standard SEM, as proposed by Collaborator B. SAM-ULS and SEM-ULS were excluded to focus on the most relevant methods and manage computational demands.
+Bias and RMSE of the estimated factor correlations were calculated, and parameter-wise bias analysis was conducted to identify any potential negative bias in SAM, eliminating the effects of averaging. The analysis was largely consistent with the individual studies, with the addition of parameter-wise bias displays to provide deeper insights into the biases and direct computation of metric differences between SEM and SAM.
 
 # Discussion
 
-The goal of this study was twofold: first, to test the viability and practical applicability of adversarial 
-collaboration (AC) as a tool to resolve disagreeing research claims and enhance generalizability and rigor in the 
-context of simulation studies. Second, serving as a case study for this first aim, to evaluate the performance of 
-traditional Structural Equation Modeling (SEM) compared to Structural After Measurement (SAM), and resolve conflicting 
-claims of previous studies regarding whether SAM consistently outperforms traditional SEM in the presence of model 
-misspecifications in small to moderate sample sizes [@robitzsch_comparing_2022; @rosseel_structural_2022; @dhaene_evaluation_2023].
+The goal of the current study was twofold: First, to test the viability and practical applicability of adversarial collaboration (AC) as a tool to resolve disagreeing research claims and enhance generalizability and rigor in the context of simulation studies. Second, serving as a case study for this first aim, to evaluate the performance of traditional Structural Equation Modeling (SEM) compared to Structural After Measurement (SAM), and resolve conflicting claims of previous studies regarding whether SAM consistently outperforms traditional SEM in the presence of model misspecifications in small to moderate sample sizes [@robitzsch_comparing_2022; @rosseel_structural_2022; @dhaene_evaluation_2023].
 
 ## Strucutral After Measurement (SAM) vs. Standard Strucutral Equation Modeling (SEM)
 
-Overall, within the case study, the individually conducted simulation alongside the joint study, systematically 
-assessed how different implementations of SAM and standard SEM performed under different degrees of sample size, 
-indicator reliability, and model misspecification.
-In Collaborator A's (Kriegmair) individual studies, SAM methods—including global SAM (GSAM) and local SAM (lSAM) with 
-Maximum Likelihood (ML) and Unweighted Least Squares (ULS) estimators consistently outperformed traditional SEM. 
-Especially under challenging conditions - replicating previous findings [@rosseel_structural_2022; 
-@dhaene_evaluation_2023] - SAM methods achieved higher convergence rates and demonstrated lower average relative 
-biases and RMSE values compared to standard (unconstrained) SEM. Standard SEM exhibited significant convergence issues 
-and a higher incidence of improper solutions, particularly when models were misspecified by omitting cross-loadings or 
-correlated residuals.
-Collaborator B's (Kosanke) individual studies replicated findings from @robitzsch_comparing_2022, indicating that SAM 
-did not generally outperform SEM in small to moderate samples. SAM exhibited a negative small sample bias, making it 
-appear superior in conditions with unmodeled positive cross-loadings and residual correlations. This bias was 
-especially pronounced with lower indicator reliability and higher factor correlations Under conditions without 
-misspecification or with unmodeled negative cross-loadings and residual correlations, SEM tended to perform better 
-than SAM.
-The joint study aimed to reconcile these differing findings. By applying bound maximum likelihood estimation for SEM, 
-as proposed by Kosanke, the convergence issues and improper solutions previously observed in SEM were effectively 
-eliminated across all conditions. The parameter-wise analysis revealed that omitting positive cross-loadings resulted 
-in an overall positive bias, while omitting negative cross-loadings led to a negative bias. Notably, SAM methods 
-exhibited less pronounced biases in both cases compared to SEM, particularly at lower sample sizes and reliability 
-levels. Contrary to Collaborator B's (Kosanke) findings, the negative bias was also less pronounced for SAM methods in 
-the joint study. When directly comparing SEM and SAM in terms of bias and RMSE, SAM methods were generally less biased 
-and more accurate, especially under conditions involving omitted cross-loadings and in scenarios with smaller sample 
-sizes and lower indicator reliability. Differences between GSAM and lSAM were minimal, with lSAM showing a slight 
-advantage in RMSE.
-Collectively, these findings suggest that SAM methods may offer advantages over traditional SEM in handling model 
-misspecifications, particularly under challenging conditions. While the indivdual studies replicating 
-(@robitzsch_comparing_2022) highlighted potential biases associated with SAM in small samples, the joint study 
-indicates that these biases may be mitigated in more complex and realistic models. This supports the notion that SAM 
-could be a favorable choice for SEM estimation in practice, especially when dealing with small sample sizes, low 
-reliability, and potential model misspecifications.
+Overall, this case study systematically assessed how different implementations of SAM and standard SEM performed under varying sample sizes, indicator reliabilities, and degrees of model misspecification.
 
-## Limiations
+In Collaborator A's (Kriegmair) individual studies, SAM methods—including global SAM (gSAM) and local SAM (lSAM) with Maximum Likelihood (ML) and Unweighted Least Squares (ULS) estimators—consistently outperformed traditional SEM, particularly under challenging conditions that replicated previous findings [@rosseel_structural_2022; @dhaene_evaluation_2023]. Under these conditions, SAM methods achieved higher convergence rates and demonstrated lower average relative biases and RMSE values compared to standard, unconstrained SEM. Standard SEM exhibited significant convergence issues and a higher incidence of improper solutions, especially when models were misspecified by omitting cross-loadings or correlated residuals.
 
-All the simulations conducted here suffer from several shortcomings. First, inherently only a very specific subset of models and conditions could be tested limiting the generalizability of the results to specific settings in which the analysed methods perform differently. Of particular interest would be for example to further investigate SAM in causal models and longitudunal data as this represents cases for which the apprach seems to be tailored where structural parameters are of particualar interest while including (potetentially misspecified) measurement models. Additionally next to assessing the impact on specific structural paramters such as mediating effects vs. direct effects in mediation models could be of particualr interest as well. 
+Collaborator B's (Kosanke) individual studies replicated findings from @robitzsch_comparing_2022, indicating that SAM did not generally outperform SEM in small to moderate samples. SAM exhibited a small-sample bias, making it appear superior under conditions with unmodeled positive cross-loadings and residual correlations; this bias was especially pronounced with lower indicator reliability and higher factor correlations. In conditions without misspecification or with unmodeled negative cross-loadings and residual correlations, SEM tended to outperform SAM.
+The joint study sought to reconcile these differing findings. By applying bound maximum likelihood estimation for SEM, as proposed by Kosanke, the convergence issues and improper solutions previously observed in SEM were effectively eliminated across all conditions. Parameter-wise analysis revealed that omitting positive cross-loadings led to an overall positive bias, while omitting negative cross-loadings led to a negative bias. Notably, SAM methods exhibited less pronounced biases in both cases compared to SEM, especially at lower sample sizes and reliability levels. Contrary to Collaborator B's findings, the negative bias was also less pronounced for SAM methods in the joint study. When directly comparing SEM and SAM in terms of bias and RMSE, SAM methods were generally less biased and more accurate, particularly in conditions involving omitted cross-loadings and in scenarios with smaller sample sizes and lower indicator reliability. Differences between gSAM and lSAM were minimal, with lSAM showing a slight advantage in RMSE.
+Additionally, given constrained standard SEM’s improved convergence and stable performance relative to unconstrained SEM, it appears advantageous for complex models. Although constrained estimation can sometimes obscure model misfit (@savalei2008constrained) the benefits in convergence make constrained SEM a promising alternative.
 
+Collectively, these findings suggest that SAM methods may offer advantages over traditional SEM in handling model misspecifications, particularly under challenging conditions. While the individual studies, replicating @robitzsch_comparing_2022, highlighted potential biases associated with SAM in small samples, the joint study indicates that these biases are not sustained in more complex and realistic models. This supports the notion that SAM could be a favorable choice for SEM estimation in practice, particularly when addressing small sample sizes, low reliability, and potential model misspecifications.
+
+The simulations conducted in this study have several limitations. They focused on a limited subset of models and conditions, constraining the generalizability of the findings to specific scenarios where the analyzed methods exhibit differential performance. The measurement models for most simulated data were restricted to three indicators per factor, without variation across factors. Apart from certain models where factor loadings were adjusted to influence reliability, these loadings were generally kept constant and unrealistically high (between 0.7 and 0.9), following the studies by @rosseel_structural_2022 and @dhaene_evaluation_2023. Additional modulation of factor loadings, alongside reliability modulation via measurement error variances, could have provided more realistic and extensive simulated data.
+Future research could explore the performance of Structural After Measurement (SAM) in longitudinal data contexts, particularly with causal models, as SAM is aimed at applications where structural parameters are central and measurement models may be (potentially) misspecified [@rosseel_structural_2022]. Additionally, it would be valuable to assess the differential impact of SAM on various structural parameters, such as mediating versus direct effects within mediation models. As suggested by @rosseel_structural_2022, SAM is particularly advantageous for scenarios involving small sample sizes relative to model complexity. Future studies could include conditions that systematically vary model complexity alongside sample size, potentially leading to the development of a metric to balance model complexity and sample size.
 
 ## Adversarial Collaboration in Simulation Studies
 
-Shifting the perspective on the adversarial collaboration, we successfully agreed on a joint starting point and 
-translated conflicting verbal claims from prior studies into shared research questions. Based on these research 
-questions, we independently conducted simulation studies largely based on the simulations by @rosseel_structural_2022, 
-@dhaene_evaluation_2023, and @robitzsch_comparing_2022, thereby successfully translating the verbal dispute back to 
-empirical grounds. It is important to note that this constituted only an emulated process of adversarial 
-collaboration, including the additional layer of replicating previously published research findings in *Round 1* of 
-our framework. In a practical application of AC to simulation studies as proposed here, this intermediary step could 
-be bypassed. Instead, collaborators could design two original studies or choose to work directly together on a unified 
-research study, contingent upon their identification of a specific verbal disagreement.
-After assessing our individual studies and their results, we did not jointly conclude that conducting a collaborative 
-unified simulation study as planned was warranted. Kosanke decided to terminate the AC at this point. He argued that 
-while in most cases the Structural After Measurement (SAM) approach showed less bias and root mean square error 
-(RMSE), in some settings—especially in cases of negative unmodeled residuals and cross-loadings—the advantages of 
-traditional Structural Equation Modeling (SEM) countered those of SAM. This indicated that neither method consistently 
-outperformed the other in broader applications.
-However, I identified several reasons for conducting another simulation based on this first round of replicated 
-studies and, based on this, set up a joint study. Kosanke's conclusion about SAM's inconsistent outperformance of SEM 
-in the presence of negative misspecifications was applied to a very specific type of confirmatory factor analysis 
-(CFA) model and was not tested in a more complex model with directed structural paths of interest. These represent 
-scenarios for which @rosseel_structural_2022 proposed SAM to be advantageous. In addition, to thoroughly investigate 
-this assumed systematic underestimation of SAM, a parameter-wise analysis of bias was warranted. Aggregation of bias 
-values across model parameters could lead to canceling out negative and positive values or not showing them at all 
-when using absolute values.
-Furthermore, a joint study allowed for unifying simulation choices, such as extending the sample range to very small 
-sizes (N = 50) to examine more extreme settings. Also, collaborator-specific choices of tracking convergence rates and 
-computing modulated indicator reliability levels could be identified as another potential source of diverging results, 
-which was resolved in the joint study.
-Even if conducted only by myself, such a joint study served as a demonstrative proof of concept for the application of 
-adversarial collaboration to simulation studies addressing the question of technical feasability of Adverarial Simulation.
+Shifting perspective, we successfully established a joint starting point by translating conflicting verbal claims from prior studies into shared research questions. Based on these questions, we independently conducted simulation studies, largely drawing on the methodologies of @rosseel_structural_2022, @dhaene_evaluation_2023, and @robitzsch_comparing_2022. This approach effectively translated the verbal dispute into an empirical investigation. Notably, this process was only an emulation of adversarial collaboration, incorporating an additional layer by replicating previously published research findings in the first round of our framework. In a practical application of adversarial collaboration to simulation studies as proposed here, this intermediate step could be omitted. Instead, collaborators might design two original studies or opt to work directly together on a unified research study, depending on the identification of a specific verbal disagreement.
+Furthermore, although the unified simulation study was conducted by one collaborator, the individual studies highlighted both areas of agreement and divergence. While Collaborator B concluded that neither SAM nor SEM consistently outperformed the other across broader applications, I identified a need for further exploration of SAM's performance in more complex models with directed structural paths. Additionally, even if conducted only by one collaborator, the joint study serves as a proof of concept for applying adversarial collaboration to simulation studies.
 
-All in all the current study demonstrates that adversarial collaboration is a technically feasible and viable approach 
-in the context of simulation studies. By successfully translating a general conflict in conclusions about the 
-performance of SAM and standard SEM in a joint research question and based on this directly juxtaposing our different 
-simulation setups, we were able to trace back general diverging conclusions to specific methodological 
-operationalizations and technical decisions. This effectively enhanced transparency and reduced ambiguity of the 
-conflicting claims allowing for a more precise identification of the sources of disagreement in a similar way as its 
-was previously demonstrated in empirical research [@mellers_frequency_2001; @melloni_adversarial_2023]. 
-In particular, this approach enforced direct engagement with each adversary’s specific arguments for their 
-conclusions, transparently linking each claim to its operationalized source and integrating it into a joint study that 
-respects both viewpoints. Thus this presents adversarial collaboration in simulation studies as a promising tool to 
-enhance generalizability and rigor beyond other open science practices [@pawel_pitfalls_2023; @okelly_proposed_2017] 
-at the point of simulation design without overly constraining researchers degrees of freedom in hypothesis generation 
-and operationalization [@buchka_optimistic_2021; @clark_keep_2022].
-This led to more targeted, less ambigues and arguably more generalizable results by adjusting multiple aspects of the 
-simulation setup, such as model type, misspecifications, reliability computation, sample size, and analysis.
-However, it is important to note that due to the specific circumstances of this case study, which included a prior 
-replication of previous results, these results explicitly impacted the collaboration and the joint study. If this step 
-were omitted in a practical application of adversarial collaboration, the joint study would potentially need to be 
-more comprehensive, covering a broader range of settings, as prior results would not be available to inform it.
-For preexisting disagreements, nevertheless, this initial independent replication phase has the advantage of isolating 
-initial discrepancies, which can clarify specific origins of divergencies. As recently demonstrated in an empirical 
-setting by @melloni_adversarial_2023 involving cross-lab replications in an adversarial collaboration project, such a 
-step can help identify key factors that contribute to preexisting conflicting claims, allowing collaborators to later 
-design a more streamlined and focused joint study.
-This connects to another possible objection: one could argue that most cases of contrasting simulation studies could 
-be resolved by just extending the simulation to include all relevant settings and this objection is partly valid as 
-demonstrated for example by the extension of the sample size factor in the joint study. However, as also showed by 
-this study there are also diverging operationalizations that are exclusively and directly tied to specific conclusions 
-unresolvable by extending the simulation settings. Further, individual authors might be explicitely or implicitely 
-tempted to a biased conclusion from overly extensive simulation settings when mapping the results back to the general 
-level cherry picking the most favorable results and clouding a clear and transparent interpretatiom [@clark_keep_2022; @buchka_optimistic_2021].
+In conclusion, the current study demonstrates that adversarial collaboration is a technically feasible and viable approach in the context of simulation studies. By successfully translating a general conflict in findings about the performance of SAM and standard SEM into a joint research question and, based on this, directly juxtaposing our different simulation setups, we were able to trace back general diverging conclusions to specific methodological operationalizations and technical decisions. This effectively enhanced transparency and reduced ambiguity of the conflicting claims, allowing for a more precise identification of the sources of disagreement, akin to successful previous implementations of AC in empirical research [@mellers_frequency_2001; @melloni_adversarial_2023]. In particular, this approach enforced direct engagement with each adversary's specific arguments for their conclusions, transparently linking each claim to its operationalized source and integrating it into a joint study aimed at falsifying the conflicting claims. This demonstrates how the practice of AC can aid in moving simulation studies closer to a Popperian ideal of falsificationism [@popper1963science; @lakatos1978methodology] by systematically testing and potentially refuting conflicting claims in a structured and transparent way instead of explicitly or implicitly designing studies to confirm specific claims about a method's performance. Hence, adversarial simulation appears as a promising tool to enhance generalizability and rigor beyond other open science practices [@pawel_pitfalls_2023; @okelly_proposed_2017] at the point of simulation design without overly constraining researchers' degrees of freedom in hypothesis generation and operationalization [@buchka_optimistic_2021; @clark_keep_2022].
+This led to more targeted, less ambiguous, and arguably more generalizable results by adjusting multiple aspects of the simulation setup, such as model type, misspecifications, reliability computation, sample size, and analysis. However, it is important to note that due to the specific circumstances of this case study, which included a prior replication of previous results, these results impacted the collaboration and the joint study. If this step were omitted in a practical application of adversarial collaboration, the joint study would potentially need to be more comprehensive, covering a broader range of settings, as prior results would not be available to inform it. For preexisting disagreements, nevertheless, this initial independent replication phase has the advantage of isolating initial discrepancies, which can clarify specific origins of divergences. As recently demonstrated in an empirical setting by @melloni_adversarial_2023 involving cross-lab replications in an adversarial collaboration project, such a step can help identify key factors that contribute to preexisting conflicting claims, allowing collaborators to later design a more streamlined and focused joint study. This connects to another possible objection: one could argue that most cases of contrasting simulation studies could be resolved by just extending the simulation to include all relevant settings, and this objection is partly valid, as demonstrated, for example, by the extension of the sample size factor in the joint study. However, as also shown by this study, there are diverging operationalizations that are exclusively and directly tied to specific conclusions, unresolvable by extending the simulation settings. Furthermore, individual authors might be explicitly or implicitly tempted toward biased conclusions from overly extensive simulation settings when mapping the results back to the general level, cherry-picking the most favorable results and clouding a clear and transparent interpretation [@clark_keep_2022; @buchka_optimistic_2021].
 
-Despite the above, several challenges for Adversarial Simulation emerged. First, even after collaboration and merging 
-the individual studies the settings of the joint study remained limited to very specific conditions and any general 
-conclusions from its results still rely on induction with the premise of having considered a prototypical scenario 
-representing various application settings [@feinberg_conducting_2016; @gilbert2024multilevel; @bollmann_what_2015].
-Second, as already emphasized by @clark_road_2022, adversarial collaboration demands increased resources in terms of 
-time and coordination. The process requires careful planning, open communication, and a willingness to reconcile 
-differing viewpoints and may only justify their high cost if they advance science by rigorously clarifying core issues 
-in disputes and not as a default.
-In our case, the termination of the collaboration by one party underscores the potential difficulties in sustaining 
-such efforts. Even though simulation studies are less resource intensive than empirical data acquisition, here too, 
-additional relative time and effort required may pose practical constraints, especially in academic environments with 
-tight schedules and resource limitations.
-Third, the applicability of adversarial collaboration may be limited to specific settings where there are clear, 
-conflicting viewpoints on particular methods or theories. It may not be as effective in areas where disagreements are 
-less defined or more complex. The focus on specific methodological disputes means that broader issues or more subtle 
-disagreements might not be as amenable to this approach [@clark_adversarial_2023].
-Despite these challenges, overall this case study shows that adversarial collaboration has the potential to increase 
-generalizability and rigor in simulation studies beyond other open science practices by promoting transparency, 
-reducing biases. By bringing together researchers with opposing views, it encourages a more thorough examination of 
-assumptions and methodological choices, potentially leading to more robust and reliable conclusions.
+Several challenges for adversarial simulation emerged.
+First, as already emphasized by @clark_road_2022, adversarial collaboration demands increased resources in terms of time and coordination. The process requires careful planning, open communication, and a willingness to reconcile differing viewpoints, and may only justify its high cost if it advances science by rigorously clarifying core issues in disputes, and not as a default. In our case, the termination of the collaboration by one party underscores the potential difficulties in sustaining such efforts. Even though simulation studies are less resource-intensive than empirical data acquisition, here too, the additional relative time and effort required may pose practical constraints, especially in academic environments with tight schedules and resource limitations.
+Second, even after collaborating and merging, the individual studies and settings of the joint study remained limited to very specific conditions, and any general conclusions from its results still rely on induction with the premise of having considered a prototypical scenario representing various application settings [@feinberg_conducting_2016; @gilbert2024multilevel; @bollmann_what_2015].
+Third, the current project constitutes only an artificial case of adversarial collaboration, where the collaborators had no disagreement based on personal prior research but were assigned to represent conflicting viewpoints without any stakes or personal investment in the outcome. Furthermore, the final stage of collaboratively designing and conducting a study was conducted by one collaborator. Thus, this merely serves as a proof of concept showcasing the potential and technical applicability of AC in simulation studies.
+Fourth, the applicability of adversarial collaboration may be limited to specific settings where there are clear, conflicting viewpoints on particular methods or theories. It may not be as effective in areas where disagreements are less defined or more complex. The focus on specific methodological disputes means that broader issues or more subtle disagreements might not be as amenable to this approach [@clark_adversarial_2023].
+Despite these challenges, overall, this case study shows that adversarial collaboration has the potential to increase generalizability and rigor in simulation studies beyond other open science practices by promoting transparency and reducing biases. By bringing together researchers with opposing views, it encourages a more thorough examination of assumptions and methodological choices, potentially leading to more robust and reliable conclusions.
 
-An alternative approach to address the the generalizability challange specifically at the point of operationalization 
-and simulation design more head on is to ground simulations in empirical data, incorporating actual models and 
-parameters from practice [@bollmann_what_2015] by sampling model and parameters from the literature to effectively 
-bridge the gap between prototypical simulations and real-world applications to directly target the generalizability 
-challenge of simulation studies.
-Another avenue for future research inspired by this project is the development of collaborative simulation platforms 
-that could facilitate ongoing contributions from multiple researchers. By leveraging open-source tools and platforms 
-such as GitHub similar to the current project but more elaborate and refined, simulations can be made "living" 
-projects that are continuously updated and refined. Collaborators could open pull requests to add new conditions or 
-settings to existing simulations, allowing for dynamic testing and continuious integration of new results.
-For example, a research team interested in assessing the performance of one method for a specific type of model and 
-data relevant to their work could contribute to an existing simulation repository. With minimal coding effort, they 
-could add their conditions, request a rerun of the simulation, and obtain updated results that inform both their 
-specific research and the general understanding of the method's performance. This collaborative approach could 
-effectively enhance generalizability of simulation studies, making them more accessible and responsive to the needs of 
-the research community, better capturing the complexities across different contexts.
-Implementing such collaborative simulation platforms would require computational infrastructure and a system for 
-regulating when simulations are rerun to manage computational costs. Streamlined pipelines, involving containerization 
-technologies like Docker or Singularity, could facilitate a dynamic deployment of simulations on high-performance 
-computing resources. Additionally, establishing guidelines and open peer review mechanisms for contributions would 
-ensure the quality and integrity of the simulations.
+An alternative approach to address the generalizability challenge, specifically at the point of operationalization and simulation design, is to ground simulations in empirical data. By incorporating actual models and parameters from practice [@bollmann_what_2015], sampling models and parameters from the literature can effectively bridge the gap between prototypical simulations and real-world applications, more directly targeting the generalizability challenge of simulation studies.
+Another avenue for future research inspired by this project is the development of collaborative simulation platforms that could facilitate ongoing contributions from multiple researchers. By leveraging open-source tools and platforms such as GitHub, similar to the current project but more elaborate and refined, simulations can be made "living" projects that are continuously updated and refined. Collaborators could open pull requests to add new conditions or settings to existing simulations, allowing for dynamic testing and continuous integration of new results.
+For example, a research team interested in assessing the performance of one method for a specific type of model and data relevant to their work could contribute to an existing simulation repository. With minimal coding effort, they could add their conditions, request a rerun of the simulation, and obtain updated results that inform both their specific research and the general understanding of the method's performance. This collaborative approach could effectively enhance the generalizability of simulation studies, making them more accessible and responsive to the needs of the research community, better capturing the complexities across different contexts.
+Implementing such collaborative simulation platforms would require computational infrastructure and a system for regulating when simulations are rerun to manage computational costs. Streamlined pipelines, involving containerization technologies like Docker or Singularity, could facilitate the dynamic deployment of simulations on high-performance computing resources. Additionally, establishing guidelines and open peer review mechanisms for contributions would ensure the quality and integrity of the simulations.
+Finally, the comparison of the individual studies and the process of conducting a joint study also highlighted the need for a more structured and standardized code of conduct for programming the simulation studies that could facilitate collaboration. This could include a common modular file structure and naming conventions, standardized code comments, and documentation.
+
+To conclude, scientific progress relies on a delicate balance between broad theoretical claims, concrete operationalizations, and rigorous testing. This thesis demonstrates how adversarial collaboration can effectively map onto this dynamic within Monte Carlo simulation studies, addressing inherent and potentially address challenges inherent to this interplay. Adversarial Simulation provides a rigorous testing ground where conflicting claims are systematically examined and refined through empirical and operationalized inquiry, embracing research as a communal endeavor.
+
 
 # References
 
