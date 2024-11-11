@@ -254,7 +254,7 @@ Bias and RMSE of the estimated factor correlations were calculated, and paramete
 
 The goal of the current study was twofold: First, to test the viability and practical applicability of adversarial collaboration (AC) as a tool to resolve disagreeing research claims and enhance generalizability and rigor in the context of simulation studies. Second, serving as a case study for this first aim, to evaluate the performance of traditional Structural Equation Modeling (SEM) compared to Structural After Measurement (SAM), and resolve conflicting claims of previous studies regarding whether SAM consistently outperforms traditional SEM in the presence of model misspecifications in small to moderate sample sizes [@robitzsch_comparing_2022; @rosseel_structural_2022; @dhaene_evaluation_2023].
 
-## Strucutral After Measurement (SAM) vs. Standard Strucutral Equation Modeling (SEM)
+## SAM vs. SEM
 
 Overall, this case study systematically assessed how different implementations of SAM and standard SEM performed under varying sample sizes, indicator reliabilities, and degrees of model misspecification.
 
