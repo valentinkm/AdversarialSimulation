@@ -17,7 +17,7 @@ format:
 fontsize: 11pt
 engine: knitr
 bibliography: ../bibliography.bib
-bibliographystyle: apa
+bibliographystyle: apa.csl
 appendix: true
 ---
 \setlength{\parindent}{1.27cm}
