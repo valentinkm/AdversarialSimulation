@@ -1,4 +1,4 @@
-Here Kosanke's studies are presented verbatim from his report (Git commit SHA [3e7f706](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)): *The structure of this section closely aligns to our agreed upon structure of simulation studies […]. In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.* 
+Here Collaborator B's (Kosanke) studies are presented verbatim from his report (Git commit SHA [3e7f706](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)): *The structure of this section closely aligns to our agreed upon structure of simulation studies […]. In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.* 
 *This protocol can be accessed here:* <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
 
 #### *Aims, objectives and research questions*
