@@ -40,10 +40,6 @@ main_processing <- function() {
   study2_path <- get_latest_file(simulation_directory, "simulation_results_study2r[0-9]{12,}\\.rda$")
   study3_path <- get_latest_file(simulation_directory, "simulation_results_study3r[0-9]{12,}\\.rda$")
   
-  study1 <- readRDS(study1_path)
-  study2 <- readRDS(study2_path)
-  study3 <- readRDS(study3_path)
-
   # Process Study 1
   print("Processing Study 1...")
   all_warnings[[1]] <- process_study1(study1_path)
