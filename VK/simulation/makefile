@@ -10,7 +10,7 @@ PWD := $(shell pwd)
 # Adjust GROUP_ID if it's less than 1000 (common on macOS)
 ifeq ($(shell uname), Darwin)
     ifeq ($(shell [ $(GROUP_ID) -lt 1000 ] && echo yes), yes)
-        OVERRIDE_GROUP_ID := 1000
+        OVERRIDE_GROUP_ID := $(shell expr $(GROUP_ID) + 10000)
     else
         OVERRIDE_GROUP_ID := $(GROUP_ID)
     endif
