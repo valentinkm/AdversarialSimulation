@@ -25,7 +25,7 @@ fig_sam_sem_diff_study3
 
 :::{fig-note}
 
-\raggedright \textit{Note.} bias (top) and RMSE (bottom) differences between SEM and global and local SAM (gSAM and lSAM), averaged across estimates of true regression coefficients (0.1) over varying sample size (*N*), reliability (*r*), and misspecifications. Error bars show Monte Carlo SEs.
+\raggedright \textit{Note.} bias (top) and RMSE (bottom) differences between SEM and global and local SAM (gSAM and lSAM), averaged across estimates of true regression coefficients (0.1) over varying sample size (*N*), reliability (*r*), and misspecifications. Error bars indicate Monte Carlo Standard Errors.
 :::
 :::
 \elandscape

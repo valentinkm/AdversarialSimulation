@@ -20,7 +20,7 @@ print(fig_rmse_aggregated_study1)
 
 :::{fig-note}
 \fontsize{10}{12}\selectfont
-\raggedright \textit{Note.} Mean RMSE averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM.
+\raggedright \textit{Note.} Mean RMSE averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Monte Carlo Standard Error (MCSE) in parentheses.
 :::
 :::
 
