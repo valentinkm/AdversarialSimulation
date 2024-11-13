@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 220">
+  <!-- Background -->
+  <rect width="800" height="220" fill="white"/>
+
+  <!-- Main Components with Text Labels -->
+  <g transform="translate(250, 5)">
+    <!-- Upper Context Label - moved to align with Verbal Claim -->
+    <text x="-100" y="67" text-anchor="end" font-family="Times New Roman" font-size="12" font-style="italic">
+      general &amp; verbal
+    </text>
+
+    <!-- Boxes and Main Labels -->
+    <!-- Verbal Claim Box -->
+    <rect x="100" y="40" width="130" height="65" fill="white" stroke="black" stroke-width="1"/>
+    <text x="165" y="60" text-anchor="middle" font-family="Times New Roman" font-size="14">
+      Verbal Claim
+      <tspan x="165" y="75" font-size="12">(e.g. "Method A vs. B")</tspan>
+    </text>
+
+    <!-- Operationalize Box -->
+    <rect x="0" y="140" width="130" height="65" fill="white" stroke="black" stroke-width="1"/>
+    <text x="65" y="160" text-anchor="middle" font-family="Times New Roman" font-size="14">
+      Operationalize
+      <tspan x="65" y="175" font-size="12">Model, Estimands, etc. ...</tspan>
+    </text>
+
+    <!-- Gather Data Box -->
+    <rect x="200" y="140" width="130" height="65" fill="white" stroke="black" stroke-width="1"/>
+    <text x="265" y="160" text-anchor="middle" font-family="Times New Roman" font-size="14">
+      Gather Data
+      <tspan x="265" y="175" font-size="12">Simulate and Test</tspan>
+    </text>
+
+    <!-- Arrows -->
+    <!-- From Verbal Claim to Operationalize -->
+    <path d="M165,105 L65,140" fill="none" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"/>
+    <!-- From Operationalize to Gather Data -->
+    <path d="M130,172.5 L200,172.5" fill="none" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"/>
+    <!-- From Gather Data back to Verbal Claim -->
+    <path d="M265,140 L165,105" fill="none" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+    <!-- Dashed Grey Line -->
+    <line x1="-50" y1="120" x2="350" y2="120" stroke="grey" stroke-width="1" stroke-dasharray="5,5"/>
+
+    <!-- Lower Context Label - moved to align with Operationalize/Gather Data -->
+    <text x="-100" y="172.5" text-anchor="end" font-family="Times New Roman" font-size="12" font-style="italic">
+      specific &amp; empirical
+    </text>
+
+    <!-- Arrow Marker Definition -->
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+      </marker>
+    </defs>
+  </g>
+</svg>
