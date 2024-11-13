@@ -82,13 +82,10 @@ Consequently, researchers face numerous degrees of freedom in deciding which pro
 Hence, it becomes clear that simulation studies follow the same general research cycle as empirical studies, with similar challenges of generalizability and ambiguity (see Figure \ref{fig:simulation-cycle}).
 
 ::: {fig-simulation-cycle}
-```{r, echo=FALSE, fig.cap="The research cycle of simulation studies\\label{fig:simulation-cycle}"}
+```{r, echo=FALSE, fig.cap="The Basic Cycle of Research (in simulation studies) \\label{fig:simulation-cycle}"}
 knitr::include_graphics("figures/research_cycle.pdf")
 ```
 
-::: {.fig-note}
-\raggedright \textit{Note.} Arrows represent the progression from each stage of the research cycle to the next, involving various decision-making elements when moving from the general to the specific and back to the general.
-:::
 :::
 \setlength{\parindent}{1.27cm}
 
