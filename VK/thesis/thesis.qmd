@@ -119,7 +119,7 @@ question that could settle the debate, and collaboratively design studies they a
 This process aims to unveil and concretize even subtle discrepancies in methodological assumptions and decisions and in the framing of conclusions [@clark_keep_2022]. Thus, it traces back general and verbal disagreements of conflicting theories to their specific and empirical roots, reducing ambiguity and increasing generalizability by generating a shared language of assumptions and operationalizations.
 Hence, it promises to enhance rigour and transparency and, importantly, reduce ambiguity and bias at the operationalization and design stages of studies [@clark_adversarial_2021].
 
-## SAM vs. SEM - A Case Study for *Adversarial Simulation*
+## SAM vs. SEM - A Case Study of *Adversarial Simulation*
 
 In this project, we aimed to adapt this concept of AC from empirical research to Monte Carlo simulation studies, 
 examining the feasibility and viability of such an *Adversarial Simulation*.
