@@ -64,6 +64,7 @@ combined_list %>%
 combined_summary %>%
   dplyr::mutate(across(everything(), ~ gsub("_", " ", .))) %>%
   dplyr::rename(Misspecification = `Model Type`) %>%
+  dplyr::rename(r = Reliability) %>%
   dplyr::rename(ID = `Message ID`) %>%
   dplyr::rename(Type = MessageType) %>%
   dplyr::mutate(
@@ -92,8 +93,8 @@ combined_summary %>%
   column_spec(1, width = "1.5cm") %>%  # Study
   column_spec(2, width = "4cm") %>%  # Model Type
   column_spec(3, width = "1cm") %>%    # N
-  column_spec(4, width = "2cm") %>%    # reliability
-  column_spec(5, width = "1.5cm") %>%  # method
+  column_spec(4, width = "1cm") %>%    # reliability
+  column_spec(5, width = "2.5cm") %>%  # method
   column_spec(6, width = "2cm") %>%    # message type
   column_spec(7, width = "1cm") %>%  # count
   column_spec(8, width = "0.5cm") %>%  # message ID
