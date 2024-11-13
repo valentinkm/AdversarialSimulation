@@ -14,7 +14,7 @@ fig_bias_parameterwise_study3
 ```
 
 :::{fig-note}
-\raggedright \textit{Note.} Mean absolute bias for each parameter with a true value of 0.1 in one model for sample sizes (*N*), reliability (*r*), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Grey fields indicate excluded conditions with convergence rate below 50%.
+\raggedright \textit{Note.} Mean absolute bias for each parameter with a true value of 0.1 in one model for sample sizes (*N*), reliability (*r*), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Grey fields indicate excluded conditions with convergence rate below 50%. The Figure is adapted from @dhaene_evaluation_2023.
 :::
 :::
 

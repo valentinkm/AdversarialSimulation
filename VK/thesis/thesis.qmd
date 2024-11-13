@@ -197,6 +197,8 @@ table_data <- data.frame(
 kable(table_data, caption = "Framework for Simulation Studies")
 ```
 
+:::{fig-note}
+The structure is adapted from @paxton_monte_2001.
 :::
 
 ## Individual Simulation Studies
@@ -283,6 +285,8 @@ Finally, the comparison of the individual studies and the process of conducting 
 
 Scientific progress relies on a delicate balance between general theoretical claims, concrete operationalizations, and rigorous testing where researchers degrees of freedom are essential for designing and conducting innovative and impactful research. However, these same freedoms can introduce ambiguity and bias, posing risks to the reproducibility and generalizability of findings.
 In sum this thesis demonstrates how Adversarial Collaboration can effectively map onto this dynamic in the context of Monte Carlo simulation studies, offering a rigorous testing ground where conflicting general claims are systematically examined and refined through empirical and operationalized inquiry, embracing (methodological) research as a communal endeavor.
+
+\newpage
 
 # References
 

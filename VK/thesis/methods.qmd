@@ -39,7 +39,7 @@ knitr::include_graphics(c("figures/model1_1.tex",
 
 \raggedright
 
-\textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model."
+\textit{Note.} Error terms are not explicitly shown in the figure. Dashed lines represent relations omitted in the estimation model present in the population model. The figure is adapted from @rosseel_structural_2022.
 
 Population Model Variations of Study 1
 :::
@@ -60,7 +60,7 @@ knitr::include_graphics(c("figures/model2_1.tex",
 
 \raggedright
 
-\textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For the model on the right, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part. These types of misspecifications result in different realizations of the model when they are modulated as factors of misspecification (endogenous, exogenous or endo- and exogenous) in study 2 but are subsumed under one model here.
+\textit{Note.} Error terms are not explicitly shown in the figure. Dotted paths represent relations specified in the estimation model not present in the population model. For the model on the right, orange lines represent misspecifications in the exogenous part of the model, and green lines represent misspecifications in the endogenous part. These types of misspecifications result in different realizations of the model when they are modulated as factors of misspecification (endogenous, exogenous or endo- and exogenous) in study 2 but are subsumed under one model here. The figure adapted from @dhaene_evaluation_2023.
 
 Population Model Variations of Study 2
 :::
