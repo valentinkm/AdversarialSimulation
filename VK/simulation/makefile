@@ -7,7 +7,7 @@ USER_ID := $(shell id -u)
 GROUP_ID := $(shell id -g)
 PWD := $(shell pwd)
 
-# Adjust GROUP_ID (for macOS)
+# Adjust GROUP_ID (for macOS only)
 ifeq ($(shell uname), Darwin)
     ifeq ($(shell [ $(GROUP_ID) -lt 1000 ] && echo yes), yes)
         OVERRIDE_GROUP_ID := $(shell expr $(GROUP_ID) + 10000)
