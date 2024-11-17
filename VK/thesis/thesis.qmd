@@ -161,12 +161,11 @@ Finally, this case study explored the overarching research question: Is AC a via
 
 ## A Framework for Adversarial Collaboration
 
-We developed a specific adversarial simulation framework and structured the collaboration into two rounds. In the first round, each collaborator independently conducts a separate simulation study. 
-In the second round, they come together to work on a combined study, building on the findings from the first round. This two-step approach is designed to highlight differences in a systematic way and to establish a virtual foundation for collaboration before engaging in a joint effort in our case study. 
-Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Figure 2). Thus we aimed to facilitate a structured and systematic comparision of the individual studies and enable stepwise retracing of collaborative decisions.
+We developed a specific adversarial simulation framework and structured the collaboration into two rounds. First, as outlined above, the collaborators identify their disagreement and jointly formulate research questions that could resolve the diverging claims. Based on these research questions, in the first round, each collaborator independently conducts a separate simulation study. 
+In the second round, the collaborators come together to work on a combined study, building on the findings from the first round. This two-step approach is designed to highlight differences in a systematic way and to establish a virtual foundation for collaboration before engaging in a joint effort in our case study. 
+Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Figure 2). Thus, this was aimed at facilitating a systematic and stepwise comparision of the individual studies and integration to a joint study. 
 
 ::: {#fig-framework}
-
 ```{r}
 library(knitr)
 table_data <- data.frame(
@@ -180,7 +179,7 @@ table_data <- data.frame(
   Description = c(
     "Agreed upon before any Adversarial Collaboration (e.g., examine model fit under misspecification)",
     "Optional: Define structure (e.g., CFA, SEM), size (number of latent variables and indicators) and complexity (e.g., cross-loadings) of population models.",
-    "Choose resampling vs. parametric draw and set the random data generation method.",
+    "Choose between resampling and parametric draw and set the random data generation method.",
     "Define varying factors (e.g., sample size and distribution).",
     "Select estimation methods based on the research question.",
     "Reflect applied values, e.g., R², statistical significance, power considerations.",
@@ -192,7 +191,10 @@ table_data <- data.frame(
 
 kable(table_data, caption = "A Framework of Simulation Studies (adapted from Paxton etl al., 2001)")
 ```
+
 :::
+
+\newpage
 
 ## Individual Simulation Studies
 
@@ -200,6 +202,7 @@ kable(table_data, caption = "A Framework of Simulation Studies (adapted from Pax
 
 The design and implementation of my (Collaborator A) individual simulation studies follow the structure established for the adversarial simulation framework to facilitate stepwise collaboration. They are based on a preregistered protocol (@kriegmair_preregistration_2024) but include some deviations from it ([See Appendix A](#appendix-a) for the full protocol and all deviations from the preregistration).
 As outlined above, in the initial phase of the current case study, I conducted two simulation studies without my collaborator's involvement aimed at conceptually replicating the findings regarding SAM compared to standard SEM estimation of @rosseel_structural_2022 and @dhaene_evaluation_2023 as a basis for further adversarial collaboration with my collaborator. However, there are several differences in the design and setup of the studies compared to the original studies, as outlined below.
+
 {{< include methods.qmd >}}
 
 ### Studies by Collaborator B (Kosanke)
