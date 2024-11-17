@@ -86,7 +86,49 @@ Both studies compared the performance of four estimation methods: Traditional SE
 
 #### Performance Measures
 
-For both studies, convergence rates were tracked via lavaan's built-in function, which indicates convergence. Further, improper solutions converged models that showed negative variances (as the only type of improper solution present) were tracked via lavaan warning messages. Next of all converged and propper solutions bias ($\bar{T} - \theta$), and RMSE ($\sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}$) where $T_k$ is the estimated parameter, $\bar{T}$ the mean of the estimated parameters and $\theta$ the true parameter value, and $K$ is the number of replications computed. For comparability across varying regression weights for study 2, relative bias ($\frac{\bar{T} - \theta}{\theta}$) and relative RMSE ($\sqrt{\frac{(\bar{T} - \theta)^2 + S_T^2}{\theta^2}}$) were computed. Monte Carlo standard errors (MCSE) were computed for bias and RMSE as well as relative bias and relative RMSE: $\sqrt{\frac{S_T^2}{K}}$ and $\sqrt{\frac{S_T^2}{K\theta^2}}$ for bias and relative bias, and $\sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{RMSE}_{(j)} - \text{RMSE} \right)^2}$ and $\sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( rRMSE_{(j)} - rRMSE \right)^2}$ for RMSE and relative RMSE.
+For both studies, convergence rates were tracked via lavaan's built-in function, which indicates convergence. Further, improper solutions—converged models that showed negative variances (as the only type of improper solution present)—were tracked via lavaan warning messages. Next, for all converged and proper solutions, bias and RMSE were computed using the following equations [@megha_joshi_2024].
+The bias was calculated as:
+\begin{equation}
+\text{Bias} = \bar{T} - \theta
+\label{eq:bias}
+\end{equation}
+The RMSE was calculated as:
+\begin{equation}
+\text{RMSE} = \sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}
+\label{eq:rmse}
+\end{equation}
+where $T_k$ is the estimated parameter, $\bar{T}$ is the mean of the estimated parameters, $\theta$ is the true parameter value, and $K$ is the number of replications computed.
+For comparability across varying regression weights for study 2, relative bias and relative RMSE were computed as:
+\begin{equation}
+\text{Relative Bias} = \frac{\bar{T} - \theta}{\theta}
+\label{eq:rel_bias}
+\end{equation}
+\begin{equation}
+\text{Relative RMSE} = \sqrt{\frac{(\bar{T} - \theta)^2 + S_T^2}{\theta^2}}
+\label{eq:rel_rmse}
+\end{equation}
+where $S_T^2$ is the variance of the estimated parameters.
+Monte Carlo standard errors (MCSE) were computed for bias, RMSE, relative bias, and relative RMSE using the following equations.
+For bias:
+\begin{equation}
+\text{MCSE}_{\text{Bias}} = \sqrt{\frac{S_T^2}{K}}
+\label{eq:mcse_bias}
+\end{equation}
+For relative bias:
+\begin{equation}
+\text{MCSE}_{\text{Relative Bias}} = \sqrt{\frac{S_T^2}{K\theta^2}}
+\label{eq:mcse_rel_bias}
+\end{equation}
+For RMSE:
+\begin{equation}
+\text{MCSE}_{\text{RMSE}} = \sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{RMSE}_{(j)} - \text{RMSE} \right)^2}
+\label{eq:mcse_rmse}
+\end{equation}
+For relative RMSE:
+\begin{equation}
+\text{MCSE}_{\text{Relative RMSE}} = \sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{rRMSE}_{(j)} - \text{rRMSE} \right)^2}
+\label{eq:mcse_rel_rmse}
+\end{equation}
 
 #### Software
 
