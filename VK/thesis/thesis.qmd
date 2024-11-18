@@ -85,16 +85,20 @@ Hence, it becomes clear that simulation studies follow the same general research
 knitr::include_graphics("figures/research_cycle.pdf")
 ```
 
+:::{fig-note}
+\raggedright \textit{Note.} The dashed red arrow from *Verbal Claim* to *Operationalization* indicates translational validity as the mapping from the general to the specific not directly addressed by most open science practices.
 :::
+:::
+\vspace{0.5cm}
 \setlength{\parindent}{1.27cm}
 
 To address these challenges, just like for empirical research, open science practices such as preregistration, 
-transparency, and reproducibility have been proposed for simulation studies [@pawel_pitfalls_2023; 
+open data, and reproducibility have been proposed for simulation studies [@pawel_pitfalls_2023; 
 @okelly_proposed_2017]. These practices are pivotal for increasing rigor and transparency in simulations and beyond. 
 However, in the basic cyclical process of research, as outlined above, they address the issue of generalizability only indirectly by promoting scientific rigor at the point of moving from operationalization to data simulation, e.g. by enforcing transparency and 
 reproducibility of the simulation [@luijken_replicability_2023], or at the point of verbally interpreting gathered 
 data through adherence to preregistration protocols. Crucially, however, these practices do not address the transition 
-from the verbal claim to its operationalization, also referred to as *translational validity [@slife2016using; @clark_keep_2022]. Decisions about operationalization, for example, which models and simulation settings to choose remain subject to researchers degrees of freedom and their (often implicit) biases [@buchka_optimistic_2021; @flake2020measurement]. This can produce conflicting verbal claims and disagreements that may not be readily 
+from the verbal claim to its operationalization (See \ref{fig:simulation-cycle}), also referred to as *translational validity* [@slife2016using; @clark_keep_2022]. Decisions about operationalization, for example, which models and simulation settings to choose remain subject to researchers degrees of freedom and their (often implicit) biases [@buchka_optimistic_2021; @flake2020measurement]. This can produce conflicting verbal claims and disagreements that may not be readily 
 resolvable, or only inefficiently so, by independently conducting and publishing simulation studies that may require extensive review articles to inform a broader audience of researchers.
 Researchers biases toward specific methods they have developed themselves may further amplify these divergences, affecting not 
 only the interpretation of results but crucially also choices in the design of simulation studies [@buchka_optimistic_2021].
@@ -302,31 +306,33 @@ Here the full simulation protocol of my simulation studies conducted individuall
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
-## Appendix B: Supplementary Figures
+## Appendix B: Supplementary Figures {#appendix-b}
 
 ```{=tex}
 \renewcommand{\thefigure}{B\arabic{figure}}
 \setcounter{figure}{0}
 ```
+In the following, additional figures are presented that were not included in the main text and provide further insights into the simulation results.
+
 {{< include appendix_b.qmd toc=false >}}
 
-## Appendix C: Detailed Error and Warning Messages
+## Appendix C: Detailed Error and Warning Messages {#appendix-c}
 
 ```{=tex}
 \renewcommand{\thetable}{C\arabic{table}}
 \setcounter{table}{0}
 ```
-In the following, all different warning and error messages raised during the studies are listed (see Table C1) and shown how often they occurred under various fitting conditions (see Table C2).
+Here, all warning and error messages raised during the studies are listed (see Table C1) and shown how often they occurred under various fitting conditions (see Table C2).
 
 {{< include appendix_c.qmd toc=false >}}
 
 
-## Appendix D: Reproducability Instructions
+## Appendix D: Reproducibility Instructions {#appendix-d}
 
 {{< include appendix_d.qmd toc=false >}}
 
 \newpage
 
 ```{=tex}
-\includepdf[pages=-]{Eigenständigkeitserklärung.pdf}
+\includepdf[pages=-]{Statement.pdf}
 ```

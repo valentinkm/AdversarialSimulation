@@ -34,7 +34,7 @@
 
     <!-- Arrows -->
     <!-- From Verbal Claim to Operationalize -->
-    <path d="M165,105 L65,140" fill="none" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"/>
+    <path d="M165,105 L65,140" fill="none" stroke="red" stroke-width="1" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
     <!-- From Operationalize to Gather Data -->
     <path d="M130,172.5 L200,172.5" fill="none" stroke="black" stroke-width="1" marker-end="url(#arrowhead)"/>
     <!-- From Gather Data back to Verbal Claim -->

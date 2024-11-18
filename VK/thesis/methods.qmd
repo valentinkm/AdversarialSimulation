@@ -86,13 +86,11 @@ Both studies compared the performance of four estimation methods: Traditional SE
 
 #### Performance Measures
 
-For both studies, convergence rates were tracked via lavaan's built-in function, which indicates convergence. Further, improper solutions—converged models that showed negative variances (as the only type of improper solution present)—were tracked via lavaan warning messages. Next, for all converged and proper solutions, bias and RMSE were computed using the following equations [@megha_joshi_2024].
-The bias was calculated as:
+For both studies, convergence rates were tracked via lavaan's built-in function, which indicates convergence. Further, improper solutions—converged models that showed negative variances (as the only type of improper solution present)—were tracked via lavaan warning messages. Next, for all converged and proper solutions, bias, for tracking systematic deviations, and root mean squared error for tracking overall accurcy were computed for structural parameter estimates were computed using the following equations [@megha_joshi_2024]:
 \begin{equation}
 \text{Bias} = \bar{T} - \theta
 \label{eq:bias}
 \end{equation}
-The RMSE was calculated as:
 \begin{equation}
 \text{RMSE} = \sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}
 \label{eq:rmse}
@@ -109,22 +107,18 @@ For comparability across varying regression weights for study 2, relative bias a
 \end{equation}
 where $S_T^2$ is the variance of the estimated parameters.
 Monte Carlo standard errors (MCSE) were computed for bias, RMSE, relative bias, and relative RMSE using the following equations.
-For bias:
 \begin{equation}
 \text{MCSE}_{\text{Bias}} = \sqrt{\frac{S_T^2}{K}}
 \label{eq:mcse_bias}
 \end{equation}
-For relative bias:
 \begin{equation}
 \text{MCSE}_{\text{Relative Bias}} = \sqrt{\frac{S_T^2}{K\theta^2}}
 \label{eq:mcse_rel_bias}
 \end{equation}
-For RMSE:
 \begin{equation}
 \text{MCSE}_{\text{RMSE}} = \sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{RMSE}_{(j)} - \text{RMSE} \right)^2}
 \label{eq:mcse_rmse}
 \end{equation}
-For relative RMSE:
 \begin{equation}
 \text{MCSE}_{\text{Relative RMSE}} = \sqrt{\frac{K-1}{K} \sum_{j=1}^{K} \left( \text{rRMSE}_{(j)} - \text{rRMSE} \right)^2}
 \label{eq:mcse_rel_rmse}
@@ -133,7 +127,7 @@ For relative RMSE:
 #### Software
 
 The simulations were executed on the high-performance computing cluster of the Max Planck Institute for Human Development Berlin (MPIB). All analyses were conducted in R (version 4.4). [@r_core_team_r_2023]. Main libraries included `lavaan` [@rosseel_lavaan_2012] for estimation and data generation, `furrr` [@davis_furrr_2022] for parallelization and `tidyverse`[@wickham_welcome_2019], `ggplot2` as well as `kableExtra` [@hao_zhu_2024] for results analysis and display. 
-To ensure reproducibility and prevent seed synchronization in parallelized simulation runs, a pre-generated list of seeds was applied across all replications, and the simulations were containerized with Docker [@merkel2014docker]. Further details, full replication instructions, and a complete list of libraries and dependencies are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation). 
+To ensure reproducibility and prevent seed synchronization in parallelized simulation runs, a pre-generated list of seeds was applied across all replications, and the simulations were containerized with Docker [@merkel2014docker]. Further details, full replication instructions, and a complete list of libraries and dependencies are available in [Appendix D](#appendix-d) or on [GitHub](https://github.com/valentinkm/AdversarialSimulation).
 
 #### Analysis and Interpretation
 
