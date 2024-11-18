@@ -9,7 +9,7 @@ Following our framework for collaboration the research questions for the joint s
 As in my individually conducted studies 1 and 2 (Collaborator A, Kriegmair) data for this *joint* study was generated based on a 5-factor population structural model with 3 indicators for each factor. 
 Factor loadings and indicator reliability was computed in the same way as in my first study. Two different population models were simulated, which resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in my first study by adjusting the measurement error variances (instead of Kosanke's approach of factor loadings modulation) to achieve a more valid representation of item reliability as the amount of indicator variance explained by the latent factor.
 The omitted crossloadings (see Figure 5) could either be all positive or negative and were set to be 10% lower in absolute values than the factor loadings. Correlated residuals were also either all positive or all negative and were set to not exceed a factor of 0.6 of the residual variances of the indicators.
-Thus, this represents a sufficiently complex model with directed structural paths of interest as a prototypical scenario for which SAM promises to be advantageous, including negative misspecified measurement parameters to test the robustness of SAM to such misspecifications. No CFA models, as in Kosanke's (Collaborator B) studies, were included as SAM is intended to be applied to models with a directed structural part of interest in the presence of misspecifications [@rosseel_structural_2022, @dhaene_evaluation_2023].
+Thus, this represents a sufficiently complex model with directed structural paths of interest as a prototypical scenario for which SAM promises to be advantageous, including negative misspecified measurement parameters to test the robustness of SAM to such misspecifications. No CFA models, as in Kosanke's (Collaborator B) studies, were included as SAM is intended to be applied to models with a directed structural part of interest in the presence of misspecifications [@rosseel_structural_2022; @dhaene_evaluation_2023].
 
 ::: {#fig-combined-models3}
 ```{r, echo=FALSE}
@@ -31,7 +31,7 @@ The joint study varied three conditions: (1) sample sizes of very small ($N = 50
 
 #### Method Selection
 
-Four estimation methods were compared in this study: bound SEM-ML (with factor and residual variances constrained to be positive), unbound SEM-ML, gSAM (also with ML estimation of the structural model) and lSAM-ML. The choice of these methods was based on the results of the individual studies to (1) observe the effect of constraining the analysis model for standard SEM and (2) directly compare this to unbound standard SEM estimation and the SAM methods. To limit the computational scope and narrow down the comparison, SAM-ULS and SEM-ULS were not included as ULS estimation is mainly aimed to provide robust estimates in conditions of non-normal data distribution, which were not simulated in this study, and it was, based on our previous results, not expected to outperform SAM-ML in this study.
+Four estimation methods were compared in this study: bound SEM-ML (with factor and residual variances constrained to be positive), unbound SEM-ML, gSAM (also with ML estimation of the structural model) and lSAM-ML. The choice of these methods was based on the results of the individual studies to (1) observe the effect of constraining the analysis model for standard SEM and (2) directly compare this to unbound standard SEM estimation and the SAM methods. To limit the computational scope and narrow down the comparison, SAM-ULS and SEM-ULS were not included as ULS estimation is mainly aimed to provide robust estimates in conditions of non-normal data distribution [@krijnen1996algorithms], which were not simulated in this study. In small samples ULS might still be superior to ML but, based on our previous results, not expected to outperform SAM-ML in this study likely due to the high factor loadings simulated in the populations[@wolins1995monte].
 
 #### Performance Measures
 
@@ -39,7 +39,7 @@ The bias and RMSE of the estimated factor correlations were calculated as in the
 
 #### Software
 
-As in the individual studies by both collaborators, the simulation was conducted in R version 4.4 [@r_core_team_r_2023]. The same (parallelizable and dockerized) setup as in my studies was used with a pre-generated set of seeds for reproducibility. The simulation scripts are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation).
+As in the individual studies by both collaborators, the simulation was conducted in R (version 4.4) [@r_core_team_r_2023]. The same (parallelizable and dockerized) setup as in my studies was used with a pre-generated set of seeds for reproducibility. The simulation scripts are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation).
 
 #### Analysis and Interpretation
 
