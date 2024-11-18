@@ -43,7 +43,7 @@ print(fig_relbias_aggregated_study2)
 ```
 
 :::{fig-note}
-\raggedright \textit{Note.} Mean relative bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. * indicating Monte-Carlos Standard Error (MCSE) above 10% of the estimate. Graphic adapted from @dhaene_evaluation_2023.
+\raggedright \textit{Note.} Mean relative bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. * indicating Monte Carlo Standard Error (MCSE) above 10% of the estimate. Graphic adapted from @dhaene_evaluation_2023.
 :::
 :::
 \elandscape
