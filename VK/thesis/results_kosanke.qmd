@@ -21,7 +21,7 @@ Across studies, as in the original paper, SAM did not generally outperform SEM i
 *Thus, it cannot be concluded that SAM is more robust in models with non-saturated structural parameters.*
 *If there was no misspecification or unmodelled negative cross-loadings and residual correlations, SAM tended to perform worse than traditional SEM, as far as can be concluded from my results.*
 
-#### *Convergence*
+#### *Convergence*.
 
 *As @robitzsch_comparing_2022 argued in their paper, I did not expect convergence issues due to constrained ML estimation that only allows for positive variances and loadings.*
 *Nevertheless, I captured all messages, warnings and errors that occurred during the simulations.*
@@ -36,7 +36,7 @@ In studies 4 and 4a, an even smaller number of warnings was present, amounting t
 *As we were not interest in fit indices in our research question, they were not relevant for our purposes.*
 *A detailed analysis of all the warnings was conducted in the results.pdf document in my sub-folder of the Github repository.*
 
-#### *Conditions without misspecification*
+#### *Conditions without misspecification*.
 
 *Tables 2 and 3 show the most relevant results of Studies 1 and 4 where I investigated the comparative performance of SAM vs. traditional SEM estimation under correctly specified models.
 Here it became apparent, that in absence of misspecification, none of the two estimation methods clearly outperformed the other.*
@@ -128,7 +128,7 @@ create_styled_table(bias_ci_s1[["0_0.12"]], caption_text, footnote_text)
 
 ```
 
-#### *Conditions with negatively valenced unmodelled parameters*
+#### *Conditions with negatively valenced unmodelled parameters*.
 
 *Studies 1 and 2 explicitly investigated negatively valenced unmodelled parameters in the generating model.*
 *In these studies, it became apparent that traditional SEM outperformed SAM estimation.*
@@ -137,7 +137,7 @@ create_styled_table(bias_ci_s1[["0_0.12"]], caption_text, footnote_text)
 *In both these cases, bias values overall remained high but substantially less so in the traditional SEM methods. when comparing them in small to moderate sample sizes.*
 *Additionally, slight differences between the two approaches arose in these two examples in terms of RMSE, as can be seen in Table 5 for the negative cross-loadings in study 2.*
 
-#### *Conditions with positively valenced unmodelled parameters*
+#### *Conditions with positively valenced unmodelled parameters*.
 
 *In terms of performance for positively valenced cross-loadings and residual correlations, SAM appeared to outperform traditional SEM estimation, but not in all scenarios of interest. *
 *Table 6 shows this finding in Study 3, in conditions with both one unmodelled residual correlation and one cross-loading.
@@ -209,7 +209,7 @@ bias_ci_s4 <- readRDS("../../LK/SimulationResultsProcessed/sim4_abs_bias_ci.rds"
 *With regards to RMSE, results were mixed as well. LSAM appeared to outperform in Table 7 for DGM 2 of Study 4.*
 *In other conditions, however, no substantial differences arose in terms of RMSE.*
 
-#### *Small sample bias in LSAM estimation*
+#### *Small sample bias in LSAM estimation*.
 
 *The small sample bias of LSAM estimation in Study 1b revealed that in smaller samples ranging from N=50 to N=100, both LSAM-ML and LSAM-ULS estimation were biased.*
 *Table 8 shows this was especially apparent in a sample size of 50.*
@@ -417,7 +417,7 @@ create_styled_table_study4a_lsam_ml(bias_ci_s4a[["DGM_1"]][["LSAM_ML_metrics"]],
 *This effect could hint at a stronger robustness of SAM in contexts of higher correlations with misspecifications present.*
 *But, as the effect could not be observed in other conditions (e.g. in DGM 3 with residual correlations), I did not deem it substantial.*
 
-#### *Summary of results*
+#### *Summary of results*.
 
 *For the most part, I succesfully replicated the results from @robitzsch_comparing_2022:*
 *I did not observe substantial convergence issues in any study.*

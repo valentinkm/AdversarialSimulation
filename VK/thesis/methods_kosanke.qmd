@@ -1,7 +1,7 @@
 Here Collaborator B's (Kosanke) studies are presented verbatim from his report (Git commit SHA [3e7f706](https://github.com/valentinkm/AdversarialSimulation/blob/3e7f706d25bcaf9dbe3f6748377eba076e7cc40d/LK/thesis.qmd#L1032C1-L1128C55)): *The structure of this section closely aligns to our agreed upon structure of simulation studies […]. In a first step, I published a simulation protocol containing all the planned analysis to be replicated from the original paper by @robitzsch_comparing_2022.* 
 *This protocol can be accessed here:* <https://github.com/lkosanke/AdversarialSimulation/blob/main/LK/simulation_protocol.pdf>.
 
-#### *Aims, objectives and research questions*
+#### *Aims, Objectives and Research Questions*
 
 *For my individual study, I replicated parts of @robitzsch_comparing_2022 that were relevant to our two substantive research questions. Overall, I conducted 6 simulation studies.*
 
@@ -26,7 +26,7 @@ knitr::include_graphics("../../LK/images/TableOverviewIndividualStudies.pdf")
 \textit{Note.} $\Phi$: factor correlation, N: sample size, $\lambda$: factor loading, $\sigma$: residual variance, $\tau$: factor variance, RC: residual correlations, CL: cross-loadings, CFA: confirmatory factor analysis, $\beta$: regression coefficient between factors.
 :::
 
-#### *Experimental Design of simulation procedures*
+#### *Experimental Design of Simulation Procedures*
 
 *Overall, 3 different types of factors were varied that can be deduced from Table 7 and are detailed again in the simulation scripts provided.
 Firstly, I varied the sample size in all studies, ranging from N = 50 to 100.000.
@@ -71,7 +71,7 @@ I did include, however, a mechanism to track the total number of warnings for ea
 *All analyses were conducted in R [@r_core_team_r_2023].
 I used the packages lavaan, purrr, tidyverse, furrr to conduct the simulations, as well as knitr and kableExtra for presenting the results [@rosseel_lavaan_2012; @purrr; @wickham_welcome_2019; @davis_furrr_2022; @knitr; @zhu_kableextra_2024].*
 
-#### *Analysis and Interpretation plan*
+#### *Analysis and Interpretation Plan*
 
 *For the interpretation of results, I oriented on cut-offs that were used in the original paper by @robitzsch_comparing_2022.
 For bias, I interpreted differences of 0.05 or higher as substantial.

@@ -1,10 +1,10 @@
 \setlength{\parindent}{1.27cm}
 
-#### Aims, objectives and research questions
+#### Aims, Objectives and Research Questions.
 
 Following our framework for collaboration the research questions for the joint study remains the same as specified prior to the individual studies.
 
-#### Population Models and Data Generation Mechanisms
+#### Population Models and Data Generation Mechanisms.
 
 As in my individually conducted studies 1 and 2 (Collaborator A, Kriegmair) data for this *joint* study was generated based on a 5-factor population structural model with 3 indicators for each factor. 
 Factor loadings and indicator reliability was computed in the same way as in my first study. Two different population models were simulated, which resulted in misspecifications of either omitted crossloadings (model 3.1) or omitted correlated residuals (model 3.2). The population-level values of the structural parameters were set to 0.1. Reliability levels were manipulated as in my first study by adjusting the measurement error variances (instead of Kosanke's approach of factor loadings modulation) to achieve a more valid representation of item reliability as the amount of indicator variance explained by the latent factor.
@@ -25,22 +25,22 @@ knitr::include_graphics(c("figures/model3_1.tex",
 Population Model Variations for Study 3
 :::
 
-#### Experimental Design of simulation procedures
+#### Experimental Design of Simulation Procedures.
 
 The joint study varied three conditions: (1) sample sizes of very small ($N = 50$), small ($N = 100$), moderate ($N = 400$) and large ($N = 6400$). (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$) or high ($= 0.7$); (3) Model misspecifications with not-specified cross-loadings in the population model that were positive or negative (see figure ) or not-specified correlated residuals in the population model that were positive or negative (see Figure 4). Thus, negative misspecifications were here included in a more complex model with directed structural paths of interest, modulating reliability as before but with a more comprehensive (lower) range of sample sizes as in my studies. 
 
-#### Method Selection
+#### Method Selection.
 
 Four estimation methods were compared in this study: bound SEM-ML (with factor and residual variances constrained to be positive), unbound SEM-ML, gSAM (also with ML estimation of the structural model) and lSAM-ML. The choice of these methods was based on the results of the individual studies to (1) observe the effect of constraining the analysis model for standard SEM and (2) directly compare this to unbound standard SEM estimation and the SAM methods. To limit the computational scope and narrow down the comparison, SAM-ULS and SEM-ULS were not included as ULS estimation is mainly aimed to provide robust estimates in conditions of non-normal data distribution [@krijnen1996algorithms], which were not simulated in this study. In small samples ULS might still be superior to ML but, based on our previous results, not expected to outperform SAM-ML in this study likely due to the high factor loadings simulated in the populations[@wolins1995monte].
 
-#### Performance Measures
+#### Performance Measures.
 
 The bias and RMSE of the estimated factor correlations were calculated as in the individual studies and averaged (using absolute values) over all parameters in one model for each condition. Further, to better investigate a potential negative bias that Kosanke (based on @robitzsch_comparing_2022) was assuming for SAM in the presence of negative measurement misspecifications, bias values were analyzed parameterwise to investigate negative bias values without cancellation due to averaging.
 
-#### Software
+#### Software.
 
 As in the individual studies by both collaborators, the simulation was conducted in R (version 4.4) [@r_core_team_r_2023]. The same (parallelizable and dockerized) setup as in my studies was used with a pre-generated set of seeds for reproducibility. The simulation scripts are available on [GitHub](https://github.com/valentinkm/AdversarialSimulation).
 
-#### Analysis and Interpretation
+#### Analysis and Interpretation.
 
 The analysis was conducted largely in the same way as in the individual studies with the adddition of a display of parameter-wise bias values and a  direct difference between metrics of SEM and SAM.

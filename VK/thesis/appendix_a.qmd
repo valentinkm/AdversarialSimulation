@@ -209,7 +209,7 @@ and $\boldsymbol{\Psi}$ as $M \times M$ as diagonal matrix (0 on the off diagona
 
 ### 3.2 Factors of the Data-Generating Mechanism
 
-#### 3.2.1 Study 1
+#### 3.2.1 Study 1.
 
 The first study modulated the following factors:
 
@@ -217,7 +217,7 @@ The first study modulated the following factors:
 - Sample sizes of small (N = 100), medium (N = 400), or large (N = 6400)
 - Indicator reliability of low (.3), moderate (.5), or high (.7)
 
-#### 3.2.2 Study 2
+#### 3.2.2 Study 2.
 
 The second study modulated the following factors of the data generating process across both studies:
 
@@ -231,7 +231,7 @@ The second study modulated the following factors of the data generating process 
 
 In deviation from the preregistration, additionally all models in study 2 were estimated including stuructral specifications that were not present in the population model to investigate the performance of the methods on recovering falsely specified absent structural relations.
 
-#### 3.2.3 Study 3
+#### 3.2.3 Study 3.
 
 The third study modulated the following factors of the data generating process:
 
@@ -256,10 +256,10 @@ Both studies will compare four different estimation methods for SEMs:
 - SAM: (separating the estimation of the measurement and structural model to alleviate the potential for propagation of bias from (e.g. misspecified) measurement part to the structural part of the model)
     - Local SAM (Uses summary statistics from the measurement model to derive the model-implied mean vector and variance-covariance matrix of latent variables. These statistics are then utilized to estimate the structural parameters. A mapping matrix (M) is used to transform the observed data into the latent variable space. It can be estimated using different methods.)
         - With ML mapping matrix (Akin to a factor score approach [@bartlett_statistical_1937, @bartlett_methods_1938])
-        - With ULS mapping matrix (Uses the Moore-Penrose pseudoinverse, suitable for scenarios with complex or underdetermined systems, where the K matrix is rank-deficient but requires adjustments for structural constraints.)
+        - With unweighted least squares (ULS) mapping matrix (uses the Moore-Penrose pseudoinverse, suitable for scenarios with complex or underdetermined systems, where the K matrix is rank-deficient but requires adjustments for structural constraints.)
     - Global SAM (rationale: Fixing the parameters obtained from the measurement model in the first step, and then using them as constants in the full SEM during the second step. Suitable for models where local SAM is impractical due to higher-order latent variables or rank deficiencies in $\lambda$.)
 
-Traditional SEM as well as both steps in the SAM approach will be estimated using Maximum Likelihood (ML) using `lavaan` [@rosseel_lavaan_2012] in R 4.4 [@r_core_team_r_2023].
+Traditional SEM as well as both steps in the SAM approach will be estimated using maximum likelihood (ML) using `lavaan` [@rosseel_lavaan_2012] in R 4.4 [@r_core_team_r_2023].
 
 ## 6. Performance Measures
 
@@ -269,8 +269,8 @@ Across both studies the following performance measures were captured:
 - In deviation from the preregistration also impropper solutions of converged models showing negative variances as the only type of improper solution present were computed.
 - Rrelative biases: Average difference between an estimate and its true value, normalized by the true value, assessed across all path coefficients: $\frac{\bar{T} - \theta}{\theta}$
 - Absolute biases: (in deviation from the preregistration this measure as it might be more intuitive and applicable for study 1 and 3 with invariant regression weights): ($\bar{T} - \theta$)
-- Root Mean Squared Errors (RMSE): Calculated as the square root of the average squared difference between an estimate and its true value, evaluated under conditions of model misspecification: ($\sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}$) where $T_k$ is the estimated parameter, $\bar{T}$ the mean of the estimated parameters and $\theta$ the true parameter value, and $K$ is the number of replications computed.
-- Relative Root Mean Squared Errors (RRMSE) in deviation from preregistration for better comparability in study 2 under varying regression weights:$\sqrt{\frac{(\bar{T} - \theta)^2 + S_T^2}{\theta^2}}$
+- Root mean squared errors (RMSE): Calculated as the square root of the average squared difference between an estimate and its true value, evaluated under conditions of model misspecification: ($\sqrt{\frac{1}{K} \sum_{k=1}^{K} (T_k - \theta)^2}$) where $T_k$ is the estimated parameter, $\bar{T}$ the mean of the estimated parameters and $\theta$ the true parameter value, and $K$ is the number of replications computed.
+- Relative root mean squared errors (RRMSE) in deviation from preregistration for better comparability in study 2 under varying regression weights:$\sqrt{\frac{(\bar{T} - \theta)^2 + S_T^2}{\theta^2}}$
 - Empirical coverage levels of 95% confidence intervals (CIs): Proportion of observed data sets where the constructed CIs included the true value. (Not reported to limit the scope)
 
 ## 7. Monte Carlo Uncertainty of the Estimated Performance Measures

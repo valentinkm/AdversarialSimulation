@@ -15,7 +15,7 @@ print(fig_conv_rate_study1)
 ```
 
 ::: {fig-note}
-\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS), and SEM. Graphic adapted from @dhaene_evaluation_2023.
+\raggedright \textit{Note.} Convergence and proper solutions (in parentheses) rates across sample sizes (N), reliability (r), and model misspecifications for global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), unweighted least squares (lSAM-ULS), and SEM. Graphic adapted from @dhaene_evaluation_2023.
 :::
 :::
 
@@ -25,7 +25,7 @@ print(fig_bias_aggregated_study1)
 ```
 
 :::{fig-note}
-\raggedright \textit{Note.} Mean absolute bias averaged (in absolute values) over all parameters with a true value of 0.1 in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Monte Carlo Standard Errors (MCSE) are shown in parentheses for each value. Graphic adapted from @dhaene_evaluation_2023.
+\raggedright \textit{Note.} Mean absolute bias averaged (in absolute values) over all parameters with a true value of 0.1 in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), unweighted least squares (lSAM-ULS) and SEM. Monte Carlo standard errors (MCSE) are shown in parentheses for each value. Graphic adapted from @dhaene_evaluation_2023.
 :::
 :::
 \elandscape
@@ -43,9 +43,9 @@ print(fig_relbias_aggregated_study2)
 ```
 
 :::{fig-note}
-\raggedright \textit{Note.} Mean relative bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. * indicating Monte Carlo Standard Error (MCSE) above 10% of the estimate. Graphic adapted from @dhaene_evaluation_2023.
+\raggedright \textit{Note.} Mean relative bias averaged (in absolute values) over all parameters in one model for sample sizes (N), reliability (r), and misspecifications for global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), unweighted least squares (lSAM-ULS) and SEM. * indicating Monte Carlo standard error (MCSE) above 10% of the estimate. Graphic adapted from @dhaene_evaluation_2023.
 :::
 :::
 \elandscape
 
-Overall, the results indicate that SAM methods (gSAM, lSAM-ML, and lSAM-ULS) outperformed standard SEM under challenging conditions. SAM methods achieved a 100% convergence rate with no improper solutions, even in small samples with low reliability, whereas standard SEM exhibited severe convergence issues and high rates of improper solutions, particularly with cross-loading misspecification. SAM methods provided less biased and more accurate path coefficient estimates, especially in small to medium samples with low to moderate reliability and measurement misspecifications like omitted cross-loadings. Among the SAM variants, gSAM and lSAM-ML generally performed better than lSAM-ULS, with lSAM-ML showing superior accuracy under cross-loading and structural misspecifications. Further, separate compared to joint measurement models in lSAM for latent variables was advantageous. Additionally, SAM methods in Study 2 were more robust to structural misspecifications, providing more accurate estimates of correctly specified parameters even when incorrect paths were included in the model.
+Overall, the results indicate that SAM methods (gSAM, lSAM-ML, and lSAM-ULS) outperformed standard SEM under challenging conditions. SAM methods achieved a 100% convergence rate with no improper solutions, even in small samples with low reliability, whereas standard SEM exhibited severe convergence issues and high rates of improper solutions, particularly with cross-loading misspecification. SAM methods provided less biased and more accurate path coefficient estimates, especially in small to medium samples with low to moderate reliability and measurement misspecifications like omitted cross-loadings. Among the SAM variants, gSAM and lSAM-ML generally performed better than lSAM-ULS, with lSAM-ML showing superior accuracy under cross-loading and structural misspecifications. Further, separate compared to joint measurement models in lSAM for latent variables was advantageous. Additionally, SAM methods in study 2 were more robust to structural misspecifications, providing more accurate estimates of correctly specified parameters even when incorrect paths were included in the model.

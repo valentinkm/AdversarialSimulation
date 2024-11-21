@@ -14,18 +14,18 @@ fig_bias_parameterwise_study3
 ```
 
 :::{fig-note}
-\raggedright \textit{Note.} Mean absolute bias for each parameter with a true value of 0.1 in one model for sample sizes (*N*), reliability (*r*), and misspecifications for global SAM (gSAM), local SAM with Maximum Likelihood (lSAM-ML), Unweighted Least Squares (lSAM-ULS) and SEM. Grey fields indicate excluded conditions with convergence rate below 50%. The Figure is adapted from @dhaene_evaluation_2023.
+\raggedright \textit{Note.} Mean absolute bias for each parameter with a true value of 0.1 in one model for sample sizes (*N*), reliability (*r*), and misspecifications for global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), unweighted least squares (lSAM-ULS) and standard SEM. Grey fields indicate excluded conditions with convergence rate below 50%. The figure is adapted from @dhaene_evaluation_2023.
 :::
 :::
 
 ::: {fig-sam-sem-diff-study3}
-```{r, echo=FALSE, fig.width=12, fig.height=6, fig.cap="Aggregated Mean Difference between Bound Standard SEM and SAM Estimation in Bias and RMSE of regression coefficients estimates in *Joint* Study\\label{fig:sam-sem-diff-study3}"}
+```{r, echo=FALSE, fig.width=12, fig.height=6, fig.cap="Mean Difference between Bound standard SEM and SAM Estimation in Bias and RMSE of Regression Coefficients Estimates in Combined Study\\label{fig:sam-sem-diff-study3}"}
 fig_sam_sem_diff_study3
 ```
 
 :::{fig-note}
 
-\raggedright \textit{Note.} bias (top) and RMSE (bottom) differences between SEM and global and local SAM (gSAM and lSAM), averaged across estimates of true regression coefficients (0.1) over varying sample size (*N*), reliability (*r*), and misspecifications. Error bars indicate Monte Carlo Standard Errors.
+\raggedright \textit{Note.} Bias (top) and RMSE (bottom) differences between SEM and global and local SAM (gSAM and lSAM), averaged across estimates of true regression coefficients (0.1) over varying sample size (*N*), reliability (*r*), and misspecifications. Error bars indicate Monte Carlo standard errors.
 :::
 :::
 \elandscape
