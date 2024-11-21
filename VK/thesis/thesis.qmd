@@ -306,7 +306,7 @@ Implementing such collaborative simulation platforms would require computational
 Finally, the comparison of the individual studies and the process of conducting a combined study also highlighted the need for a more structured and standardized code of conduct for programming the simulation studies that could facilitate collaboration. This could include a common modular file structure and naming conventions, standardized code comments, and documentation.
 
 Scientific progress relies on a delicate balance between general theoretical claims, concrete operationalizations, and rigorous testing where researchers degrees of freedom are essential for designing and conducting innovative and impactful research. However, these same freedoms can introduce ambiguity and bias, posing risks to the reproducibility and generalizability of findings.
-In sum this thesis demonstrates how Adversarial Collaboration can effectively map onto this dynamic in the context of Monte Carlo simulation studies, offering a flexible and yet rigorous testing ground where conflicting general claims can be systematically examined and refined through operationalized inquiry, embracing (methodological) research as a communal endeavor.
+This thesis demonstrates how Adversarial Collaboration can effectively map onto this dynamic in the context of Monte Carlo simulation studies, offering a flexible and yet rigorous testing ground where conflicting general claims can be systematically examined and refined through operationalized inquiry, embracing (methodological) research as a communal endeavor.
 
 \newpage
 
