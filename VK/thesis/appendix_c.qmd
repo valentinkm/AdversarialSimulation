@@ -99,7 +99,7 @@ combined_summary %>%
   column_spec(7, width = "1cm") %>%  # count
   column_spec(8, width = "0.5cm") %>%  # message ID
   row_spec(0, bold = TRUE, align = "l") %>%  # Left-align header row
-  footnote(general = "This table summarizes the count of warnings and errors for each condition - sample size N, indicator reliability r and measurement misspecification (MP) of cross-loadings (CL) or correlated residuals (CR) - in all three simulation studies with the respective ID number corresponding to Table 1.",
+  footnote(general = "This table summarizes the count of warnings and errors for each condition - sample size N, indicator reliability r and measurement misspecification (MP) of cross-loadings (CL) or correlated residuals (CR) - in all three simulation studies with the respective ID number corresponding to Table C1.",
            general_title = "Note.",
            threeparttable = TRUE,
            escape = FALSE,

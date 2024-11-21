@@ -15,7 +15,7 @@ Both studies aimed to evaluate the performance of traditional SEM with maximum l
 
 ##### Study 1
 
-Data were generated based on a 5-factor population structural model with three indicators for each factor. Four different models were simulated (see Figure 3). In line with @rosseel_structural_2022, this model design was chosen to represent a realistic model with sufficient complexity to pose a challenge for the estimation methods, especially in the presence of misspecifications:
+Data were generated based on a 5-factor population structural model with three indicators for each factor. Four different models were simulated (see Figure 2). In line with @rosseel_structural_2022, this model design was chosen to represent a realistic model with sufficient complexity to pose a challenge for the estimation methods, especially in the presence of misspecifications:
 
 - Model 1.1: Correctly specified model.
 - Model 1.2: Misspecified with cross-loadings in the population model that are ignored in the estimation model (model 1.1)
@@ -51,7 +51,7 @@ Population Model Variations of Study 1
 
 ##### Study 2
 
-Data were generated based on a 5-factor population structural model with three indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained ($R^2$) by the endogenous factors set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$). Note, however, that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The population models resulted in the following model types with varying misspecification in the estimation model: (1) Structural misspecification with falsely specified paths in the estimation model absent in the population model. (2) correlated residuals and a factor cross-loading in either the exogenous, endogenous part of the model or both with falsely specified paths in the estimation model absent in the population model (see Figure 4). To enable the analysis of the impact of falsely specified paths in the estimation model that are not present in the population model and how well the different methods recover these non-existing relations, both population models included several such misspecifications in addition to the measurement misspecifications evaluated by @dhaene_evaluation_2023.
+Data were generated based on a 5-factor population structural model with three indicators for each factor with loadings set to 1, 0.9 and 0.8 for each factor and reliability modulated like in study 1. Regression weights were set to either 0.183 and 0.224 (low) or 0.365 and 0.447 (medium). This should represent varying variance explained ($R^2$) by the endogenous factors set at low ($R^2 = 0.1$) or medium ($R^2 = 0.4$). Note, however, that the computation of this was a simplification and does not accurately result in said $R^2$ values. The aim here was only to generally modulate between lower and higher regression weights. The population models resulted in the following model types with varying misspecification in the estimation model: (1) Structural misspecification with falsely specified paths in the estimation model absent in the population model. (2) correlated residuals and a factor cross-loading in either the exogenous, endogenous part of the model or both with falsely specified paths in the estimation model absent in the population model (see Figure 3). To enable the analysis of the impact of falsely specified paths in the estimation model that are not present in the population model and how well the different methods recover these non-existing relations, both population models included several such misspecifications in addition to the measurement misspecifications evaluated by @dhaene_evaluation_2023.
 
 ::: {#fig-study2-models}
 ```{r, echo=FALSE}
@@ -74,7 +74,7 @@ Population Model Variations of Study 2
 
 ##### Study 1
 
-Study 1 varied three main conditions: (1) sample sizes of small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$); (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$), high ($= 0.7$); (3) Model specifications: correctly specified model and misspecified with not specified cross-loadings in the population model misspecified with not-specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see Figure 3).
+Study 1 varied three main conditions: (1) sample sizes of small ($N = 100$), moderate ($N = 400$), and large ($N = 6400$); (2) Indicator reliability of low ($= 0.3$), moderate ($0.5$), high ($= 0.7$); (3) Model specifications: correctly specified model and misspecified with not specified cross-loadings in the population model misspecified with not-specified correlated residuals and a reversed structural path between the the third and the fourth latent factor in the population model and a recursive structural relation between factor 3 and 4 in the population specified as only one directional (see Figure 2).
 
 ##### Study 2
 

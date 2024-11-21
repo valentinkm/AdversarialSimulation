@@ -167,9 +167,11 @@ Finally, this case study explored the overarching research question: Is AC a via
 
 We developed a specific adversarial simulation framework and structured the collaboration into two rounds. First, as outlined above, the collaborators identify their disagreement and jointly formulate research questions that could resolve the diverging claims. Based on these research questions, in the first round, each collaborator independently conducts a separate simulation study. 
 In the second round, the collaborators come together to work on a combined study, building on the findings from the first round. This two-step approach is designed to highlight differences in a systematic way and to establish a virtual foundation for collaboration before engaging in a joint effort in our case study. 
-Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Figure 2). Thus, this was aimed at facilitating a systematic and stepwise comparision of the individual studies and integration to a joint study. 
+Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Figure 2). Thus, this was aimed at facilitating a systematic and stepwise comparision of the individual studies and integration to a joint study.
 
-::: {#fig-framework}
+\vspace{0.5cm}
+
+::: {fig-framework}
 ```{r}
 library(knitr)
 table_data <- data.frame(
@@ -197,7 +199,9 @@ kable(table_data, caption = "A Framework of Simulation Studies (adapted from Pax
 ```
 
 :::
+
 \vspace{0.5cm}
+
 ## Individual Simulation Studies
 
 ### Studies by Collaborator A (Kriegmair)
