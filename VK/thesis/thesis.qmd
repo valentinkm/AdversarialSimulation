@@ -30,7 +30,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 ```
 
 ```{=tex}
-%\includepdf[pages=-]{cover.pdf}
+\includepdf[pages=-]{cover.pdf}
 ```
 
 \begin{center} \section*{Abstract} \end{center}
@@ -68,7 +68,7 @@ cat(paste0("Generated using [AdversarialSimulation](https://github.com/valentink
 
 ## The Challenge of Generalizability in Simulation Studies
 
-Karl Popper once described science "as the art of systematic over-simplification — the art of discerning what we may with advantage omit" [@popper1988open]. 
+Karl Popper once described science "as the art of systematic over-simplification — the art of discerning what we may with advantage omit" [@popper1988open, p. 44]. 
 This pointedly encapsulates the fundamental cycle of empirical research. 
 Researchers formulate general claims about the world, translate them into specific, measurable constructs, select appropriate methods to collect data from specific populations, and finally update their beliefs about these general claims based on the gathered data [@supino_overview_2012]. 
 A core challenge in every research endeavour is this mapping from the general to the specific when designing and conducting a study and, conversely, from the specific and empirical back to the general when interpreting the results. 
