@@ -243,7 +243,8 @@ Thus, following this, Collaborator A (Kriegmair) identified multiple arguments f
 Although the collaborators did not jointly conclude to conduct a collaborative, unified simulation study as initially planned, the individual studies provided a solid foundation for a joint study. In this context, a unified study was conducted to formally complete the AC process, involving a stepwise integration of settings from the individual studies to address conflicting verbal claims.
 
 Thus, for the combined study, a five-factor population structural model with three indicators per factor, based on Collaborator A's approach, was selected to provide a complex model suitable for testing the advantages of SAM. To evaluate the robustness of SAM, especially in response to negative misspecifications identified by Collaborator B, both positive and negative omitted cross-loadings and correlated residuals were included in the model misspecifications. Indicator reliability was manipulated by adjusting measurement error variances, following Collaborator A's method, to achieve a valid representation of item reliability. CFA models from Collaborator B's studies were excluded, as SAM is intended for models with directed structural paths.
-The experimental design extended sample size variation to include very small samples (N = 50), providing a more comprehensive range than in Collaborator A's studies. Both positive and negative misspecifications were incorporated to assess potential negative biases in SAM. In selecting estimation methods, bound SEM-ML, unbound SEM-ML, gSAM, and lSAM-ML were compared to address convergence issues with standard SEM, as proposed by Collaborator B. SAM-ULS and SEM-ULS were excluded to focus on the most relevant methods and manage computational demands.
+The experimental design extended sample size variation to include very small samples (N = 50), providing a more comprehensive range than in Collaborator A's studies but very large (population level) samples (N = 10). Both positive and negative misspecifications were incorporated to assess potential negative biases in SAM. To limit the scope and narrow down on conditions relevant to expected differences between SAM and standard SEM, varying number of measurement blocks for SAM and strength of structural relations was not carried over from Collaborator A's studies as the results did not suggest a substantial impact on SAM compared to SEM.
+In selecting estimation methods, bound SEM-ML, unbound SEM-ML, gSAM, and lSAM-ML were compared to address convergence issues with standard SEM, as proposed by Collaborator B. SAM-ULS and SEM-ULS were excluded to focus on the most relevant methods and manage computational demands.
 Bias and RMSE of the estimated factor correlations were calculated, and parameter-wise bias analysis was conducted to identify any potential negative bias in SAM, eliminating the effects of averaging. The analysis was broadly consistent with the individual studies, with the addition of parameter-wise bias displays to provide deeper insights into the biases and direct computation of metric differences between SEM and SAM.
 
 # Discussion
@@ -285,9 +286,7 @@ Implementing such collaborative simulation platforms would require computational
 Finally, the comparison of the individual studies and the process of conducting a combined study also highlighted the need for a more structured and standardized code of conduct for programming the simulation studies that could facilitate collaboration. This could include a common modular file structure and naming conventions, standardized code comments, and documentation.
 
 Scientific progress relies on a delicate balance between general theoretical claims, concrete operationalizations, and rigorous testing where researchers degrees of freedom are essential for designing and conducting innovative and impactful research. However, these same freedoms can introduce ambiguity and bias, posing risks to the reproducibility and generalizability of findings.
-In sum this thesis demonstrates how Adversarial Collaboration can effectively map onto this dynamic in the context of Monte Carlo simulation studies, offering a rigorous testing ground where conflicting general claims are systematically examined and refined through empirical and operationalized inquiry, embracing (methodological) research as a communal endeavor.
-
-\newpage
+In sum this thesis demonstrates how Adversarial Collaboration can effectively map onto this dynamic in the context of Monte Carlo simulation studies, offering a flexible and yet rigorous testing ground where conflicting general claims can be systematically examined and refined through operationalized inquiry, embracing (methodological) research as a communal endeavor.
 
 # References
 
@@ -298,7 +297,7 @@ In sum this thesis demonstrates how Adversarial Collaboration can effectively ma
 
 ## Appendix A: Simulation Protocol {#appendix-a}
 
-Here the full simulation protocol of my simulation studies conducted individually prior to collaboration as well as the follow up study I conducted in light of the collaboration with Kosanke after the first round of conducting and evaluating our individual studies is presented. It is based on the preregistration of my individual studies [@kriegmair_preregistration_2024] and outlines all deviations from it.
+Here, the full simulation protocol of my simulation studies conducted individually prior to collaboration as well as the follow up study I conducted in light of the collaboration with Kosanke after the first round of conducting and evaluating our individual studies is presented. It is based on the preregistration of my individual studies [@kriegmair_preregistration_2024] and outlines all deviations from it.
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 
