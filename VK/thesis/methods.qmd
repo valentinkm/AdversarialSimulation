@@ -6,7 +6,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE, echo = FALSE)
 
 #### Aims, objectives and research questions
 
-Both studies aimed to evaluate the performance of traditional SEM (with maximum likelihood) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as a general basis for both studies:
+Both studies aimed to evaluate the performance of traditional SEM with maximum likelihood (ML) compared to global SAM (gSAM), local SAM with maximum likelihood (lSAM-ML), and local SAM with unweighted least squares (lSAM-ULS) under various conditions. The two research questions we jointly established prior to conducting the studies served as a general basis for both studies:
 
 1. How do SAM and traditional system-wide SEM estimation compare in terms of bias, mean squared error (MSE), and convergence rates in small to moderate samples?
 2. What is the impact of model misspecifications, such as residual correlations and cross-loadings, on the performance of SAM compared to traditional SEM methods?
