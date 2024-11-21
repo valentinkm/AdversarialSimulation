@@ -168,7 +168,7 @@ Finally, this case study explored the overarching research question: Is AC a via
 
 We developed a specific adversarial simulation framework and structured the collaboration into two rounds. First, as outlined above, the collaborators identify their disagreement and jointly formulate research questions that could resolve the diverging claims. Based on these research questions, in the first round, each collaborator independently conducts a separate simulation study. 
 In the second round, the collaborators come together to work on a combined study, building on the findings from the first round. This two-step approach is designed to highlight differences in a systematic way and to establish a virtual foundation for collaboration before engaging in a joint effort in our case study. 
-Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Figure 2). Thus, this was aimed at facilitating a systematic and stepwise comparision of the individual studies and integration to a joint study.
+Further, we aimed to adhere the individual studies to a protocol of core steps of a simulation study adapted from @paxton_monte_2001 where critical and distinctive decisions by the researchers occur (see Table 1). Thus, this was aimed at facilitating a systematic and stepwise comparision of the individual studies and integration to a joint study.
 
 \vspace{0.5cm}
 
@@ -196,9 +196,12 @@ table_data <- data.frame(
   )
 )
 
-kable(table_data, caption = "A Framework of Simulation Studies (adapted from Paxton etl al., 2001)")
+kable(table_data, caption = "A step-wise Framework of Simulation Studies (adapted from Paxton etl al., 2001)")
 ```
 
+:::{fig-note}
+\raggedright \textit{Note.} The table outlines the core steps of a simulation study adapted from @paxton_monte_2001. These steps are aimed at facilitating a systematic and stepwise comparison of the individual studies and integration to a joint study.
+:::
 :::
 
 \vspace{0.5cm}
