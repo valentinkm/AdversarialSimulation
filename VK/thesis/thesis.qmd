@@ -7,14 +7,14 @@ fig-cap-location: top
 format:
     pdf:
         fig-numbering: false
-        fontsize: 11pt
+        fontsize: 10pt
         linestretch: 1.5
         geometry: "left=25mm, right=20mm, top=20mm, bottom=20mm"
         classoption: oneside
         papersize: a4
         header-includes: |
           \input{preamble.tex}
-fontsize: 11pt
+fontsize: 10pt
 engine: knitr
 bibliography: ../bibliography.bib
 bibliographystyle: apa.csl
