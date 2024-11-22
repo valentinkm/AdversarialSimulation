@@ -3,8 +3,6 @@ HU Siegel Kombi.svg
 HU_Siegel_logo.svg
 *.aux
 *.log
-cover.tex
-cover.pdf
 *.log
 *.html
 _site
