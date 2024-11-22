@@ -1,3 +1,0 @@
-VK/simulation/results/simulation_results_study1.rda filter=lfs diff=lfs merge=lfs -text
-VK/simulation/results/simulation_results_study2.rda filter=lfs diff=lfs merge=lfs -text
-VK/simulation/results/simulation_results_study3.rda filter=lfs diff=lfs merge=lfs -text
