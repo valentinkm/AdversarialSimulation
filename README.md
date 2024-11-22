@@ -1,14 +1,16 @@
 # AdversarialSimulation
+
 [![Minimal Simulation Replication](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml/badge.svg)](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml)
 
 
 ## Thesis
 
 All files this thesis and the simulation is based on are hosted on GitHub in the [Adversarial Simulation](https://github.com/valentinkm/AdversarialSimulation) repository.
-The `VK/thesis` subdirectory contains all files generating the thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). The rendering of the thesis (including data visualization) is managed using Docker [@merkel2014docker] and `renv` [@kevin_renv_2024] with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml) with a click on "Run workflow". Alternatively use the following command inside the cloned repository to render the thesis locally:
+The `VK/thesis` subdirectory contains all files generating the thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). The rendering of the thesis (including data visualization) is managed using Docker [@merkel2014docker] and `renv` [@kevin_renv_2024] with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml) with a click on "Run workflow". Alternatively, with R (v. 4.4 and [quarto](https://quarto.org/docs/get-started/) installed) use the following command inside the cloned repository to render the thesis locally:
 
 ```bash
-quarto render VK/thesis/thesis.qmd
+cd VK/thesis
+make
 ```
 
 The `VK/simulation/results` directory contains all processed results of the simulations conducted by Collaborator A (Kriegmair). Results and reproducibility instructions of the studies conducted by Collaborator B (Kosanke) are available in the same repository in the `LK` subdirectory. For preprocessed (large) results files, please contact the authors directly as they exceed the GitHub LFS free storage limit.
