@@ -6,7 +6,7 @@
 ## Thesis
 
 All files this thesis and the simulation is based on are hosted on GitHub in the [Adversarial Simulation](https://github.com/valentinkm/AdversarialSimulation) repository.
-The `VK/thesis` subdirectory contains all files generating the thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). The rendering of the thesis (including data visualization) is managed using Docker [@merkel2014docker] and `renv` [@kevin_renv_2024] with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml) with a click on "Run workflow". Alternatively, with R (v. 4.4 and [quarto](https://quarto.org/docs/get-started/) installed) use the following command inside the cloned repository to render the thesis locally:
+The `VK/thesis` subdirectory contains all files generating the thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory and is viewable [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). The rendering of the thesis (including data visualization) is managed using Docker and `renv` with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml) with a click on "Run workflow". Alternatively, with R (v. 4.4 and [quarto](https://quarto.org/docs/get-started/) installed) use the following command inside the cloned repository to render the thesis locally:
 
 ```bash
 cd VK/thesis
@@ -38,7 +38,7 @@ The `VK/simulation` subdirectory contains the source code and Docker setup to re
     ```
     This command will run the individual studies (study 1 & study 2) as well as the "joint" study (study 3) and save the results in the `results_replic/` directory. The default number of replications is set to 2 for each study. 
 
-5. Additional Information: The R environment for the simulation is also managed using `renv` [@kevin_renv_2024], and the exact package versions are recorded in the `VK/simulation/renv.lock` file.
+5. Additional Information: The R environment for the simulation is also managed using `renv`, and the exact package versions are recorded in the `VK/simulation/renv.lock` file.
 
 ## Preregistration
 
