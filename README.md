@@ -3,9 +3,9 @@
 [![Minimal Simulation Replication](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml/badge.svg)](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/simulation.yml)
 
 
-## Thesis
+## [Thesis](https://valentinkm.github.io/AdversarialSimulation/thesis.pdf)
 
-The `VK/thesis` subdirectory contains all files generating the thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory. The results are available [here](https://valentinkm.github.io/AdversarialSimulation/thesis/thesis.pdf). For raw results files, please contact the authors directly as they exceed the GitHub LFS free storage limit.
+The `VK/thesis` subdirectory contains all files generating the thesis by Kriegmair using simulation study results data from the `VK/simulation/results` directory. For raw results files, please contact the authors directly as they exceed the GitHub LFS free storage limit.
 
 The rendering of the thesis (including data visualization) is managed using Docker and `renv` with the `VK/thesis/renv.lock` file and can be replicated [here](https://github.com/valentinkm/AdversarialSimulation/actions/workflows/publish-thesis.yml) with a click on "Run workflow". Alternatively, with R (v. 4.4), [quarto](https://quarto.org/docs/get-started/) and `renv` installed use the following command inside the cloned repository to render the thesis locally:
 
