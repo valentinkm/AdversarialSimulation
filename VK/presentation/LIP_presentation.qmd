@@ -4,7 +4,6 @@ subtitle: "Structural after Measurement vs. standard SEM estimation - a Case Stu
 fig-cap-location: top
 author: 
   - name: "Valentin Kriegmair"
-  - name: "Leonard Kosanke"
 format:
   revealjs:
     center: true
@@ -27,6 +26,7 @@ library(ggplot2)
 ```
 
 ::: {.r-fit-text style="font-size: 0.8em;"}
+
 ## Outline {auto-animate="true"}
 
 1.  The Generalizability Challenge & Adversarial Collaboration
@@ -35,28 +35,12 @@ library(ggplot2)
 
 3.  Background (SAM vs. SEM)
 
-4.  Research Questions <br> <br> [Time for questions]{style="color: grey;"} <br> <br>
+4.  Results & Evaluation
 
-5.  Results
-
-6.  Collaboration
-
-7.  Evaluation and Future Directions
-
-<br> [Discussion]{style="color: grey;"}
+5.  Personal Fit to the Project
 
 ::: notes
-Before we dive in, let me give you a quick overview of today's presentation.
-
-We'll start by exploring the challenges in generalizing research findings and how adversarial collaboration can address these issues. Then, I'll introduce the adversarial simulation framework we've developed.
-
-After setting the stage, I'll provide some background on Structural After Measurement as an alternative to traditional Structural Equation Model estimation, which is the substantial topic of our case study. I then introduce the research questions we aimed to answer in this project.
-
-In the latter part, I'll present and discuss our results and the collaborative process to conclude with an evaluation and future directions.
-
-Good afternoon everyone, and thank you for being here today. My name is Valentin Kriegmair, a master's student at Humboldt University. I'm excited to present my master's thesis to you today. This project was conducted in collaboration with Leonard Kosanke, who also wrote his thesis on this topic, under the supervision of Aaron Peikert from the Formal Methods Group at the LIP center and Mathias Ziegler from HU
-
-We explored how the practice of adversarial collaboration can be applied to simulation studies, using a comparison between Structural After Measurement and traditional Structural Equation Model estimation as a case study.
+Good afternoon, everyone. Thank you for having me here. I’m Valentin Kriegmair, a master’s student at Humboldt University. I will present my masters thesis project conducted in collaboration with Leonard Kosanke and supervised by Aaron Peikert and Mathias Ziegler. Our work explores how the practice of adversarial collaboration originally developed to tackle persistent scientific disagreements can be applied to simulation studies. We tested this approach by comparing a method called Structural After Measurement (SAM) with traditional Structural Equation Model (SEM) estimation techniques.
 :::
 :::
 
@@ -95,6 +79,11 @@ digraph circular_process {
 :::
 :::
 :::
+
+::: notes
+Karl Popper once famously described Science as the art of "systematic over simplification". This term ironically and yet accurately describes the very basic cycle of empirical research, where we lay out general claims about the world as hypotheses, translate them into measurable constructs and choose how to gather data from certain populations that finally in turn updates our beliefs in general verbal claims about the world.
+:::
+
 
 ## The Generalizability Challenge {auto-animate="true" auto-animate-easing="ease-in-out"}
 
@@ -140,6 +129,11 @@ digraph circular_process {
 ```
 :::
 :::
+:::
+
+::: notes
+One core challenge in every research endavour is the mapping of the general to the specific (when designing and conducting the study) or from the specific & empirical to the verbal & general (when interpreting the results) 
+(▶︎). This mapping seems the crux of most research and here most, if not all of of a researcher's degrees of freedom lie. (▶︎) This makes this mapping the source of ambiguity and persistant disputes. When divergences in mappings from the verbal plane are not recognized or not transparent, persistent and seemingly unresolvable disagreements in the general and verbal plane occur.
 :::
 
 ## The Generalizability Challenge {auto-animate="true" auto-animate-easing="ease-in-out"}
@@ -190,12 +184,22 @@ digraph circular_process {
 :::
 :::
 
+::: notes
+This challenge transfers to monte carlo simulation studies. These are commonly used tools to test statistical methods in simulated data that can be used to evaluate any method against a known ground truth. Researchers must decide which “prototypical” data and models to use. These decisions, influenced by prior beliefs and methodological preferences, can lead to persistent disagreements. For instance, two researchers might compare different methods under slightly different simulation conditions, each concluding their preferred method is superior.
+:::
+
 ## Adversarial Collaboration (AC) as a Remedy? {auto-animate="true" auto-animate-easing="ease-in-out"}
 
 ::: r-fit-text
 Pioneered by @mellers_frequency_2001: ![](figures/paper1.png){width="70%"}
 
 Recognized in Empirical Research @melloni_adversarial_2023 @clark_adversarial_2021
+:::
+
+::: notes
+Adversarial Collaboration is a scientific practice that aimed to tackle entrenched disagreeing positions and unveil underlying discrepancies in operationalizations.
+It was famously pioneered by Ralph Hertwig and Daniel Kahneman who tried to settle a persistent scientific disagreement about frequency representation and consulted Barbara Mellers as a neutral arbiter.
+Today it is recognized as a potent tool in the social empirical research community
 :::
 
 ## Adversarial Collaboration (AC) {auto-animate="true" auto-animate-easing="ease-in-out"}
@@ -250,6 +254,12 @@ digraph circular_process {
 :::
 :::
 
+::: notes
+The basic idea is for two researchers in disagreement to first identify a general verbal dispute and agree on a research question to settle the debate. (▶︎)
+Based on this they collaboratively work on operationalizing, testing and interpreting this verbal claim. (▶︎)
+This process aims to unveil and concretize underlying disagreements and thus reduce ambiguity and increase generalizability. (▶︎)
+:::
+
 ## Creating an Adversarial Simulation [Framework]{style="color:#4682B4;"} {auto-animate="true"}
 
 ::: notes
@@ -293,7 +303,7 @@ This two-step approach is designed to highlight differences in a systematic way 
 ## Structural after Measurement (SAM) vs traditional SEM estimation [ Background]{style="font-size: 20px;"}
 
 ::: notes
-Now, to set the stage for our specific case study, I briefly outline the background of Structural After Measurement (SAM) as a potential alternative to traditional Structural Equation Modeling (SEM) estimation.
+Now, to set the stage for our specific case study, I briefly outline the background of the case we applied our adversarial simulation framework to: Structural After Measurement (SAM) vs. traditional Structural Equation Model (SEM) estimation.
 :::
 
 ## Standard SEM Estimation [(e.g.ML, ADF, GLS, ULS)]{style="font-size: 20px;"} {auto-animate="true"}
@@ -324,7 +334,7 @@ Problems:
 :::
 
 ::: notes
-Traditional SEM methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously under the assumption of multivariate normality. While powerful and although robust estimation techniques relax the normality assumption, all system wide estimators suffer from several shortcomings, \[▶︎\] they often face issues such as non-convergence, improper solutions (with parameters out of definitional range), and biases from local measurement misspecifications that affect the entire model. They also typically require large sample sizes for adequate performance, especially in complex models.
+Traditional SEM methods, like maximum likelihood estimation, optimize all parameters of a model simultaneously under the assumption of multivariate normality. While powerful and although robust estimation techniques relax the normality assumption, all system wide estimators suffer from several shortcomings, \[▶︎\] they often face issues such as non-convergence, improper solutions (with parameters out of definitional range), and biases from local measurement misspecifications that affect the entire model.
 :::
 
 ## Structural After Measurement (SAM)
@@ -432,7 +442,7 @@ Now, let's delve into the results of our case study.
 As mentioned earlier, in the first round of our adversarial collaboration, Leonard Kosanke and I conducted individual simulation studies based on the conflicting reports by Rossel, Loh, and Dahene, as well as Robitzsch.
 :::
 
-## Study 1 [based on @rosseel_structural_2022]{style="font-size: 20px;"}
+## Studies by Kriegmair [based on @rosseel_structural_2022]{style="font-size: 20px;"}
 
 ::: r-fit-text
 ::: {layout="[20,60,20]"}
@@ -486,58 +496,7 @@ As mentioned earlier, in the first round of our adversarial collaboration, Leona
 :::
 
 ::: notes
-To begin, here is a brief overview of the study setup. In the first study, I considered four distinct population models, each differing in the presence of misspecifications, which was a key condition of interest. I also varied both sample size and indicator reliability. In each condition, four methods were compared: traditional SEM with ML, global SAM, local SAM with ML, and local SAM with unweighted least squares. As performance metrics, I assessed the bias of path estimates—indicating whether the model systematically over- or under-predicts by comparing the predicted and actual values—and the RMSE of path estimates, which measures the overall error magnitude and general accuracy of the estimates. Additionally, I calculated the coverage of the 95% confidence intervals for path estimates, representing the proportion of times the true path coefficient fell within the estimated interval.
-:::
-
-## Study 2 [based on @dhaene_evaluation_2023]{style="font-size: 20px;"}
-
-::: r-fit-text
-::: {layout="[[45,10,10,35]]" layout-align="top"}
-::: {.column width="45%"}
-::: {layout="[[1,1]]" layout-valign="top"}
-::: {.column width="50%"}
-#### 2.1:
-
--   No measurement misspecifications
--   Estimated paths absent in population
-
-![](figures/model2_1.svg){width="100%"}
-:::
-
-::: {.column width="50%"}
-#### 2.2:
-
--   Estimated paths absent in population
--   [In exogenous analysis model]{style="color: orange;"}
--   <span style="color: green;">In endogenous analysis model ![](figures/model2_2.svg){width="100%"}
-:::
-:::
-:::
-
-::: {.column width="7%"}
-<!-- Empty column for space -->
-:::
-
-::: {.column width="35%"}
-#### Other Conditions:
-
--   *N*: 100, 400, 6400
--   Indicator reliability: 0.3, 0.5, 0.7
--   $R^2$: 0.1, 0.4
--   **Measurement blocks: 3, 5**
-
-#### Methods:
-
--   Standard SEM
--   Global SAM
--   Local SAM
--   Local SAM with unweighted least squares
-:::
-:::
-:::
-
-::: notes
-In the second study, I again examined four population models, each differing in the presence of misspecifications. The first condition featured a model with no measurement misspecifications and included paths that were absent in the population but specified in the analysis model. I then considered scenarios with measurement misspecifications either in the exogenous or endogenous analysis model, or both. In addition to sample size and indicator reliability, I varied the regressions paths via total variance explained in the endogenous latet variables and the number of measurement blocks used for SAM. The same methods and performance metrics as in the first study were applied to each condition.
+To begin, here is an examplary outline of one of the studies conducted by myself. I considered four distinct population models, each differing in the presence of misspecifications, which was a key condition of interest. I also varied both sample size and indicator reliability. In each condition, four methods were compared: traditional SEM with ML, global SAM, local SAM with ML, and local SAM with unweighted least squares. As performance metrics, I assessed the bias of path estimates—indicating whether the model systematically over- or under-predicts by comparing the predicted and actual values—and the RMSE of path estimates, which measures the overall error magnitude and general accuracy of the estimates. Additionally, I calculated the coverage of the 95% confidence intervals for path estimates, representing the proportion of times the true path coefficient fell within the estimated interval.
 :::
 
 ## Studies by Kosanke [based on @robitzsch_comparing_2022]{style="font-size: 20px;"}
@@ -595,11 +554,7 @@ create_styled_table(bias_ci_s1[["2_-0.12"]], "2_-0.12")
 :::
 
 ::: notes
-Kosanke, on the other hand, supported his claims with findings showing that SEM consistently outperformed SAM in terms of bias in small to moderate samples in a 2-factor CFA model with two negative unmodeled residual correlations.
-
-In replicating Robitzsch's findings, Kosanke claimed that SAM appears to perform worse than traditional SEM under unmodeled negative cross-loadings and residual correlations. This occurs because LSAM tends to have a negative small-sample bias. When positive residual correlations are ignored, it introduces a positive bias. These two biases cancel each other out, making LSAM seem more accurate than it actually is.
-
-However, Kosanke argues that this is a false perception of robustness, as LSAM's performance varies across different conditions and, in cases of unmodeled negative correlations, actually performs worse than SEM.
+Kosanke supported his claims with findings showing that SEM outperformed SAM in small to moderate samples in a 2-factor CFA model with unmodeled negative residual correlations. He argued that SAM performs worse than SEM under unmodeled negative cross-loadings and residual correlations due to LSAM’s negative small-sample bias. Ignoring positive residual correlations introduces a positive bias, which can cancel out, falsely making LSAM appear more accurate. Kosanke emphasized that this perceived robustness is misleading, as LSAM performs worse than SEM under certain conditions, particularly with unmodeled negative correlations.
 :::
 
 
@@ -615,7 +570,7 @@ However, Kosanke argues that this is a false perception of robustness, as LSAM's
 +---------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | 5. Population Model                   | 5-factor-SEM                                                                                                                                                                 | 2-factor CFA & 5-factor SEM                                                                                                                                                                                                                                          |
 +---------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| 6. Analysis                           | Aggregated relative values and parameter-wise                                                                                                                               | Aggregated relative bias                                                                                                                                                                                                                                             |
+| 6. Analysis                           | Aggregated relative values and parameter-wise                                                                                                                                | Aggregated relative bias                                                                                                                                                                                                                                             |
 +---------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 :::
 
@@ -738,7 +693,7 @@ A closer examination allowed us to trace our differing claims back to specific c
 :::{.notes}
 We then proceeded to align our decisions step-by-step in round 2. Due to time constraints, we limited the joint study's scope to a minimal level.
 
-[▶︎] We agreed on using a 5-factor SEM population model since SAM is particularly designed for complex models with a structural part, as opposed to being tailored to CFA models.[▶︎] We maintained the data generation and software as they were in our individual studies. [▶︎] We selected bounded ML SEM as the method of choice, as this had been suggested as a reason why SAM does not necessarily have a convergence rate advantage over SEM. [▶︎]
+[▶︎] We agreed on using a 5-factor SEM population model since SAM is particularly designed for complex models with a structural part. [▶︎] We maintained the data generation and software as they were in our individual studies. [▶︎] We selected bounded ML SEM as the method of choice, as this had been suggested as a reason why SAM does not necessarily have a convergence rate advantage over SEM. [▶︎]
 :::
 
 ## Collaboration
@@ -905,14 +860,14 @@ We limited the estimands to fixed coefficients, as no significant differences fo
 ![](tables/fig_bias_parameterwise_study3.png)
 
 ::: notes
-Next, we examined parameter-wise bias values under positive and negative cross-loadings and residual correlations. This was to test if SAM outperforms SEM even in the presence of negative misspecifications and to check whether the claim that a negative bias in SAM in small samples cancels out the positive bias from positive misspecifications holds true in a more complex model with a structural part.
+We examined parameter-wise bias values under positive and negative cross-loadings and residual correlations. This was to test if SAM outperforms SEM even in the presence of negative misspecifications and to check whether the claim that a negative bias in SAM in small samples cancels out the positive bias from positive misspecifications holds true in a more complex model with a structural part.
 
 Our analysis showed that switching the sign of the cross-loadings from positive to negative also led to more negative biases in SEM compared to SAM. This finding contradicts the claim that SAM outperforms SEM in the presence of negative misspecifications, and we do not observe a more negative bias in SAM with negative cross-loadings.
 
 For correlated residuals, there was no clear relationship between bias direction and the sign of the correlation, with mostly negative biases across the board.
 :::
 
-## Bias - Difference between SEM and SAM [ after collaboration ]{style="font-size: 20px;"}
+## Bias: SEM - SAM [ after collaboration ]{style="font-size: 20px;"}
 
 ![](tables/fig_sam_sem_diff_study3.png){width=100%}
 
@@ -1008,7 +963,7 @@ still limited to specific (somewhat less) arbitrary choices for simulation<br>
 :::
 
 ::: fragment
-→ Establish the practice of (at least low-code) adversarial simulation by all co-authors of a study?
+→ "living" simulations akin to open source software development
 :::
 :::
 
@@ -1022,11 +977,20 @@ One way to address this limitation would be to empirically ground simulations by
 Another approach would be to establish the practice of at least low-code adversarial simulation by all co-authors of a study. Although this would require more resources, it would allow for a more diverse set of designs and thus produce more generalizable results.
 :::
 
-## Discussion
+## Personal Fit to the Project
 
-1.  Is the settling of verbal disputes through unified operationalizations really increasing generalizability?
-2.  Are individual studies prior to adversarial collaboration for joint projects beneficial and worth the cost?
-3.  How could an incentive structure be designed to encourage adversarial collaboration?
-4.  Could adversarial collaboration be implemented in the peer review process?
+### Meta Scientific Backgorund Experience
+- Focused on enhancing generalizability in Monte Carlo simulations.
+- Developed tools for sampling structural equation models as part of the **Taxonomy.jl project** at the Max Planck Institute.
+
+
+## Personal Fit to the Project
+
+### Skills
+- **R**, **Python**, **Julia**
+- Proficient in version control GitHub workflows and best practices for testdriven collaborative programming.
+- Rapid learning capability of libraries and tools.
+- Adversarial Simulation: Designed and realized collaborative computational research endavour.
+
 
 ## References
